@@ -5,25 +5,34 @@ import { disconnectSocket } from '../services/socket';
 import {
   LayoutDashboard, FileText, Package, ShoppingBag,
   Send, FileSearch, LogOut, User, Globe, ChevronRight,
-  Menu,
+  Menu, Users, Building2, ShieldCheck, BarChart2, Settings,
+  MessageSquare, Grid3X3,
 } from 'lucide-react';
 import { useState } from 'react';
 
 /* ── CSS variables injected once into :root ────────────────────────────────── */
 const CSS_VARS = `
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap');
+
   :root {
-    --emerald:     #059669;
-    --emerald-lt:  #ECFDF5;
-    --saffron:     #F59E0B;
-    --saffron-lt:  #FFFBEB;
-    --navy:        #1E40AF;
-    --navy-lt:     #EFF6FF;
-    --gold:        #D97706;
-    --gold-lt:     #FEF3C7;
-    --ink:         #1C1815;
-    --muted:       #6B7280;
-    --border-soft: #E5E7EB;
-    --warm-white:  #F9FAFB;
+    --cream:        #F4EFE4;
+    --cream-mid:    #EDE5D4;
+    --cream-deep:   #E4D9C4;
+    --warm-white:   #FAF7F1;
+    --saffron:      #D9600A;
+    --saffron-lt:   #FDF1E8;
+    --saffron-mid:  #F0B48A;
+    --emerald:      #1A7A4A;
+    --emerald-lt:   #EAF5EF;
+    --navy:         #1B3175;
+    --navy-lt:      #EEF2FB;
+    --gold:         #B8730A;
+    --gold-lt:      #FDF5E2;
+    --ink:          #1C1815;
+    --ink-soft:     #3D3731;
+    --muted:        #7A7068;
+    --border:       #D4C9B8;
+    --border-soft:  #E6DED0;
   }
 
   /* ── Sidebar nav button ──────────────────────────────────────────────────── */
@@ -48,8 +57,8 @@ const CSS_VARS = `
   }
 
   .sidebar-link:hover:not(.active) {
-    background: #F3F4F6;
-    color:      #111827;
+    background: var(--cream);
+    color:      var(--ink);
   }
 
   .sidebar-link.active {
@@ -75,20 +84,36 @@ if (!document.getElementById('globrix-vars')) {
 
 /* ── Nav link definitions ───────────────────────────────────────────────────── */
 const buyerLinks = [
-  { path: '/buyer-dashboard',        icon: LayoutDashboard, label: 'Overview'  },
-  { path: '/buyer-dashboard/rfqs',   icon: FileText,        label: 'My RFQs'   },
-  { path: '/buyer-dashboard/orders', icon: Package,         label: 'My Orders' },
-  { path: '/products',               icon: ShoppingBag,     label: 'Browse'    },
-  { path: '/edit-profile',           icon: User,            label: 'Profile'   },
+  { path: '/buyer-dashboard',          icon: LayoutDashboard, label: 'Overview'  },
+  { path: '/buyer-dashboard/rfqs',     icon: FileText,        label: 'My RFQs'   },
+  { path: '/buyer-dashboard/orders',   icon: Package,         label: 'My Orders' },
+  { path: '/buyer-dashboard/messages', icon: MessageSquare,   label: 'Messages'   },
+  { path: '/categories',              icon: Grid3X3,         label: 'Categories' },
+  { path: '/products',                icon: ShoppingBag,     label: 'Browse'     },
+  { path: '/edit-profile',            icon: User,            label: 'Profile'    },
 ];
 
 const supplierLinks = [
-  { path: '/supplier-dashboard',          icon: LayoutDashboard, label: 'Overview'  },
-  { path: '/supplier-dashboard/rfqs',     icon: FileSearch,      label: 'Open RFQs' },
-  { path: '/supplier-dashboard/quotes',   icon: Send,            label: 'My Quotes' },
-  { path: '/supplier-dashboard/orders',   icon: Package,         label: 'Orders'    },
-  { path: '/supplier-dashboard/catalog',  icon: ShoppingBag,     label: 'Catalog'   },
-  { path: '/edit-profile',                icon: User,            label: 'Profile'   },
+  { path: '/supplier-dashboard',           icon: LayoutDashboard, label: 'Overview'  },
+  { path: '/supplier-dashboard/rfqs',      icon: FileSearch,      label: 'Open RFQs' },
+  { path: '/supplier-dashboard/quotes',    icon: Send,            label: 'My Quotes' },
+  { path: '/supplier-dashboard/orders',    icon: Package,         label: 'Orders'    },
+  { path: '/supplier-dashboard/messages',  icon: MessageSquare,   label: 'Messages'   },
+  { path: '/categories',                  icon: Grid3X3,         label: 'Categories' },
+  { path: '/supplier-dashboard/catalog',  icon: ShoppingBag,     label: 'Catalog'    },
+  { path: '/edit-profile',                 icon: User,            label: 'Profile'   },
+];
+
+const adminLinks = [
+  { path: '/admin-dashboard',               icon: LayoutDashboard, label: 'Overview'      },
+  { path: '/admin-dashboard/users',         icon: Users,           label: 'Users'         },
+  { path: '/admin-dashboard/companies',     icon: Building2,       label: 'Companies'     },
+  { path: '/admin-dashboard/products',      icon: ShoppingBag,     label: 'Products'      },
+  { path: '/admin-dashboard/verifications', icon: ShieldCheck,     label: 'Verifications' },
+  { path: '/admin-dashboard/messages',      icon: MessageSquare,   label: 'Messages'      },
+  { path: '/admin-dashboard/reports',       icon: BarChart2,       label: 'Reports'       },
+  { path: '/admin-dashboard/settings',      icon: Settings,        label: 'Settings'      },
+  { path: '/edit-profile',                  icon: User,            label: 'Profile'       },
 ];
 
 /* ── Sidebar ────────────────────────────────────────────────────────────────── */
@@ -106,8 +131,8 @@ function Sidebar({ links, collapsed, onToggle }) {
     navigate('/');
   };
 
-  const accent   = userRole === 'supplier' ? '#059669' : '#FF6B00';
-  const accentBg = userRole === 'supplier' ? '#ECFDF5' : '#FFF7ED';
+  const accent   = userRole === 'supplier' ? '#1A7A4A' : userRole === 'admin' ? '#1B3175' : '#D9600A';
+  const accentBg = userRole === 'supplier' ? '#EAF5EF' : userRole === 'admin' ? '#EEF2FB' : '#FDF1E8';
 
   return (
     <aside
@@ -119,20 +144,27 @@ function Sidebar({ links, collapsed, onToggle }) {
         top:        0,
         display:    'flex',
         flexDirection: 'column',
-        background: '#FAFAFA',
-        borderRight: '1px solid #E5E7EB',
+        background: '#FAF7F1',
+        borderRight: '1px solid #E6DED0',
         transition: 'width 0.3s, min-width 0.3s',
         overflow:   'hidden',
       }}
     >
+      {/* ── Tricolor bar ──────────────────────────────────────────────────── */}
+      <div style={{ display: 'flex', height: 3, flexShrink: 0 }}>
+        <div style={{ flex: 1, background: '#D9600A' }} />
+        <div style={{ flex: 1, background: '#fff', borderTop: '0.5px solid #E6DED0', borderBottom: '0.5px solid #E6DED0' }} />
+        <div style={{ flex: 1, background: '#1A7A4A' }} />
+      </div>
+
       {/* ── Logo row ──────────────────────────────────────────────────────── */}
       <div style={{
-        height:      64,
+        height:      61,
         display:     'flex',
         alignItems:  'center',
         padding:     '0 16px',
         gap:         12,
-        borderBottom: '1px solid #E5E7EB',
+        borderBottom: '1px solid #E6DED0',
         flexShrink:  0,
       }}>
         <div style={{
@@ -156,7 +188,7 @@ function Sidebar({ links, collapsed, onToggle }) {
             color:         '#111827',
             flex:          1,
           }}>
-            GLOBRIX
+            Globrixa
           </span>
         )}
 
@@ -267,7 +299,7 @@ function Sidebar({ links, collapsed, onToggle }) {
       {/* ── Logout ────────────────────────────────────────────────────────── */}
       <div style={{
         padding:     12,
-        borderTop:   '1px solid #E5E7EB',
+        borderTop:   '1px solid #E6DED0',
         flexShrink:  0,
       }}>
         <button
@@ -289,10 +321,10 @@ export default function DashboardLayout({ children }) {
   const { userRole }             = useSelector((s) => s.auth);
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const links = userRole === 'supplier' ? supplierLinks : buyerLinks;
+  const links = userRole === 'supplier' ? supplierLinks : userRole === 'admin' ? adminLinks : buyerLinks;
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: '#F9FAFB' }}>
+    <div style={{ display: 'flex', minHeight: '100vh', background: '#FAF7F1' }}>
 
       {/* Desktop sidebar */}
       <div style={{ display: 'none' }} className="md-sidebar-wrapper">
@@ -330,8 +362,8 @@ export default function DashboardLayout({ children }) {
           alignItems:  'center',
           justifyContent: 'space-between',
           padding:     '0 16px',
-          background:  '#fff',
-          borderBottom: '1px solid #E5E7EB',
+          background:  '#FAF7F1',
+          borderBottom: '1px solid #E6DED0',
           flexShrink:  0,
         }}>
           <button
@@ -345,7 +377,7 @@ export default function DashboardLayout({ children }) {
           >
             <Menu size={18} />
           </button>
-          <span style={{ fontWeight: 900, fontSize: 16, color: '#111827' }}>GLOBRIX</span>
+          <span style={{ fontWeight: 900, fontSize: 16, color: '#111827' }}>Globrixa</span>
           <div style={{ width: 36 }} />
         </div>
 

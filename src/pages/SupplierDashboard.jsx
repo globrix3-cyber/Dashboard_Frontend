@@ -18,18 +18,22 @@ export default function SupplierDashboard() {
 
   /* ── Design tokens (hardcoded so they always work even without CSS vars) ── */
   const C = {
-    emerald:    '#059669',
-    emeraldLt:  '#ECFDF5',
-    saffron:    '#F59E0B',
-    saffronLt:  '#FFFBEB',
-    navy:       '#1E40AF',
-    navyLt:     '#EFF6FF',
-    gold:       '#D97706',
-    goldLt:     '#FEF3C7',
+    emerald:    '#1A7A4A',
+    emeraldLt:  '#EAF5EF',
+    saffron:    '#D9600A',
+    saffronLt:  '#FDF1E8',
+    saffronMid: '#F0B48A',
+    navy:       '#1B3175',
+    navyLt:     '#EEF2FB',
+    gold:       '#B8730A',
+    goldLt:     '#FDF5E2',
     ink:        '#1C1815',
-    muted:      '#6B7280',
-    border:     '#E5E7EB',
-    warmWhite:  '#F9FAFB',
+    inkSoft:    '#3D3731',
+    muted:      '#7A7068',
+    border:     '#E6DED0',
+    borderSoft: '#E6DED0',
+    warmWhite:  '#FAF7F1',
+    cream:      '#F4EFE4',
   };
 
   return (
@@ -79,10 +83,16 @@ export default function SupplierDashboard() {
               marginBottom: 10,
             }}>
               <div style={{ flex: 1, background: C.saffron }} />
-              <div style={{ flex: 1, background: 'rgba(255,255,255,0.85)' }} />
-              <div style={{ flex: 1, background: 'rgba(255,255,255,0.4)' }} />
+              <div style={{ flex: 1, background: 'rgba(255,255,255,0.9)' }} />
+              <div style={{ flex: 1, background: 'rgba(255,255,255,0.5)' }} />
             </div>
 
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+              <span style={{ fontSize: 18 }}>🇮🇳</span>
+              <span style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.65)', letterSpacing: '.12em', textTransform: 'uppercase' }}>
+                Supplier Hub
+              </span>
+            </div>
             <h1 style={{
               fontFamily:  "'Playfair Display', Georgia, serif",
               fontSize:    26,
@@ -91,14 +101,14 @@ export default function SupplierDashboard() {
               margin:      0,
               letterSpacing: -0.5,
             }}>
-              Supplier Hub, {userName} 🏭
+              Namaste, {userName}! 🙏
             </h1>
             <p style={{
-              color:     'rgba(255,255,255,0.78)',
+              color:     'rgba(255,255,255,0.75)',
               marginTop: 5,
               fontSize:  14,
             }}>
-              Respond to RFQs and grow your global business.
+              Apna vyapar badhaein — respond to RFQs and grow globally.
             </p>
           </div>
 
@@ -229,7 +239,7 @@ export default function SupplierDashboard() {
                     gap:            12,
                     transition:     'background 0.15s',
                   }}
-                  onMouseEnter={e => { e.currentTarget.style.background = C.warmWhite; }}
+                  onMouseEnter={e => { e.currentTarget.style.background = C.cream; }}
                   onMouseLeave={e => { e.currentTarget.style.background = '#fff'; }}
                 >
                   <div style={{ flex: 1, minWidth: 0 }}>

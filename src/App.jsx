@@ -74,6 +74,11 @@ export default function App() {
       return p === currentPath;
     });
 
+    const PUBLIC_PATHS = ['/about', '/blog', '/careers', '/contact', '/privacy', '/terms', '/help'];
+    const isPublic = PUBLIC_PATHS.some(p => currentPath === p || currentPath.startsWith(p + '/'));
+
+    if (isPublic) return; // always allow public pages regardless of role
+
     if (currentPath === "" || currentPath === "/") {
       navigate(dashboardPath, { replace: true });
     } else if (!isAllowed) {

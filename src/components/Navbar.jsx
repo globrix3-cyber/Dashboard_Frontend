@@ -38,8 +38,9 @@ export default function Navbar({ socket }) {
   const roleLabel = userRole ? userRole.charAt(0).toUpperCase() + userRole.slice(1) : '';
 
   const navLinks = [
-    { label: 'Products',  path: '/products' },
-    { label: 'Dashboard', path: DASHBOARD_ROUTES[userRole] },
+    { label: 'Categories', path: '/categories' },
+    { label: 'Products',   path: '/products'   },
+    { label: 'Dashboard',  path: DASHBOARD_ROUTES[userRole] },
   ];
 
   return (
@@ -60,7 +61,7 @@ export default function Navbar({ socket }) {
             style={{ background: 'linear-gradient(135deg,#FF6B00,#FF8C00)' }}>
             <Globe size={15} color="white" />
           </div>
-          <span className="text-lg font-black tracking-tight text-gray-900">GLOBRIX</span>
+          <span className="text-lg font-black tracking-tight text-gray-900">Globrixa</span>
           <span className="hidden sm:block text-xs font-semibold px-2 py-0.5 rounded-full"
             style={{ background: '#FFF7ED', color: '#FF6B00' }}>B2B</span>
         </button>

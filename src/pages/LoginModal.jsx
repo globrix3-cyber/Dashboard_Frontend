@@ -224,7 +224,7 @@ export default function LoginModal({ onSubmit }) {
               <Globe size={16} color="#fff" />
             </div>
             <span style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 20, fontWeight: 900, color: 'var(--ink)', letterSpacing: -.5 }}>
-              GLOBRIX
+              Globrixa
             </span>
             <span style={{
               fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 100,
@@ -267,30 +267,32 @@ export default function LoginModal({ onSubmit }) {
 
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
 
-            {/* Role selector */}
-            <div style={{ marginBottom: 18 }}>
-              <span style={{ display: 'block', fontSize: 11, fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '.1em', marginBottom: 9 }}>
-                I am a
-              </span>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-                {ROLES.map(({ value, label, desc, icon }) => (
-                  <button type="button" key={value} onClick={() => set('role', value)}
-                    style={{
-                      display: 'flex', flexDirection: 'column', alignItems: 'flex-start',
-                      padding: '12px 13px', borderRadius: 16, cursor: 'pointer', textAlign: 'left',
-                      fontFamily: "'DM Sans', sans-serif",
-                      transition: 'all .2s ease',
-                      ...(form.role === value
-                        ? { border: '2px solid var(--saffron)', background: 'var(--saffron-lt)' }
-                        : { border: '2px solid var(--border-soft)', background: '#fff' }),
-                    }}>
-                    <span style={{ fontSize: 20, marginBottom: 4, lineHeight: 1 }}>{icon}</span>
-                    <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--ink)' }}>{label}</span>
-                    <span style={{ fontSize: 11, color: 'var(--muted)', marginTop: 1 }}>{desc}</span>
-                  </button>
-                ))}
+            {/* Role selector — register only */}
+            {tab === 'register' && (
+              <div style={{ marginBottom: 18 }}>
+                <span style={{ display: 'block', fontSize: 11, fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '.1em', marginBottom: 9 }}>
+                  I am a
+                </span>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                  {ROLES.map(({ value, label, desc, icon }) => (
+                    <button type="button" key={value} onClick={() => set('role', value)}
+                      style={{
+                        display: 'flex', flexDirection: 'column', alignItems: 'flex-start',
+                        padding: '12px 13px', borderRadius: 16, cursor: 'pointer', textAlign: 'left',
+                        fontFamily: "'DM Sans', sans-serif",
+                        transition: 'all .2s ease',
+                        ...(form.role === value
+                          ? { border: '2px solid var(--saffron)', background: 'var(--saffron-lt)' }
+                          : { border: '2px solid var(--border-soft)', background: '#fff' }),
+                      }}>
+                      <span style={{ fontSize: 20, marginBottom: 4, lineHeight: 1 }}>{icon}</span>
+                      <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--ink)' }}>{label}</span>
+                      <span style={{ fontSize: 11, color: 'var(--muted)', marginTop: 1 }}>{desc}</span>
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Name — register only */}
             {tab === 'register' && (
@@ -365,7 +367,7 @@ export default function LoginModal({ onSubmit }) {
                 ? <span style={{ width: 16, height: 16, border: '2px solid rgba(255,255,255,.35)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 0.7s linear infinite', display: 'inline-block' }} />
                 : <ArrowRight size={15} />
               }
-              {loading ? 'Please wait…' : tab === 'login' ? 'Sign In to GLOBRIX' : 'Create Free Account'}
+              {loading ? 'Please wait…' : tab === 'login' ? 'Sign In' : 'Create Free Account'}
             </button>
           </form>
 

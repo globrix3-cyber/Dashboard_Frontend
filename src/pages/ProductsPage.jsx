@@ -1,175 +1,183 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { api } from '../services/api';
 import { useFetchData } from '../hooks/useFetchData';
-import EmptyState from '../components/EmptyState';
-// Removed Spinner from UI import since it doesn't exist there
+import { Spinner, EmptyState } from '../components/UI';
+import { ShoppingBag, Search, BadgeCheck, Filter, Grid3X3 } from 'lucide-react';
+import { toast } from 'react-toastify';
 
-import { ShoppingBag, Search, Star, BadgeCheck } from 'lucide-react';
-import { countryFlag } from '../utils/helpers';
-
-const CATEGORIES = ['All', 'Textiles', 'Electronics', 'Automotive', 'Machinery', 'Packaging', 'Homeware', 'Beauty', 'Sports'];
+const C = {
+  saffron: '#D9600A', saffronLt: '#FDF1E8',
+  emerald: '#1A7A4A', emeraldLt: '#EAF5EF',
+  navy: '#1B3175', navyLt: '#EEF2FB',
+  gold: '#B8730A', goldLt: '#FDF5E2',
+  ink: '#1C1815', inkSoft: '#3D3731',
+  muted: '#7A7068', borderSoft: '#E6DED0', cream: '#F4EFE4',
+};
 
 export default function ProductsPage() {
-  const navigate = useNavigate();
-  
-  const { data: products = [], loading, error } = useFetchData(() => api.getProducts());
-
+  const navigate  = useNavigate();
+  const { userRole } = useSelector(s => s.auth);
   const [search, setSearch] = useState('');
-  const [cat, setCat] = useState('All');
+  const [cat, setCat]       = useState('All');
 
-  const filtered = products.filter((p) => {
-    const matchCat = cat === 'All' || p.category === cat;
-    const matchSearch = 
-      p.name.toLowerCase().includes(search.toLowerCase()) ||
-      (p.supplier && p.supplier.toLowerCase().includes(search.toLowerCase()));
-    return matchCat && matchSearch;
+  const { data: raw = [],      loading, error } = useFetchData(() => api.getProducts());
+  const { data: catRaw = [] }                   = useFetchData(() => api.getCategories());
+
+  const products = Array.isArray(raw) ? raw : [];
+  const rootCats = (Array.isArray(catRaw) ? catRaw : []).filter(c => !c.parent_id);
+  const catPills = ['All', ...rootCats.map(c => c.name)];
+
+  const filtered = products.filter(p => {
+    const name    = p.name          || '';
+    const catName = p.category_name || '';
+    const matchCat = cat === 'All' || catName.toLowerCase().includes(cat.toLowerCase());
+    const matchQ   = !search ||
+      name.toLowerCase().includes(search.toLowerCase()) ||
+      catName.toLowerCase().includes(search.toLowerCase());
+    return matchCat && matchQ;
   });
 
-  if (error) {
-    return (
-      <div className="min-h-[60vh] flex items-center justify-center px-6">
-        <div className="text-center max-w-md">
-          <h2 className="text-2xl font-semibold text-red-600 mb-3">Failed to load products</h2>
-          <p className="text-gray-600 mb-8">
-            {error.message || 'Something went wrong while fetching products.'}
-          </p>
-          <button 
-            onClick={() => window.location.reload()} 
-            className="btn-primary px-8 py-3 rounded-2xl font-medium"
-          >
-            Retry
-          </button>
-        </div>
-      </div>
-    );
-  }
+  const handleGetQuote = async (e, product) => {
+    e.stopPropagation();
+    if (userRole === 'buyer') {
+      navigate('/buyer-dashboard/rfqs/new');
+    } else if (userRole === 'supplier') {
+      toast.info('Switch to a buyer account to request quotes.');
+    } else {
+      navigate('/');
+    }
+  };
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-8">
-      {/* Hero strip */}
-      <div className="rounded-3xl p-8 mb-10 relative overflow-hidden"
-        style={{ background: 'linear-gradient(135deg,#1E293B,#0F172A)' }}>
-        <div className="absolute inset-0 opacity-20"
-          style={{ backgroundImage: 'radial-gradient(circle at 80% 50%, rgba(255,107,0,0.4) 0%, transparent 60%)' }} />
-        <div className="relative z-10">
-          <h1 className="text-4xl font-black text-white mb-3">Global Product Catalog</h1>
-          <p style={{ color: 'rgba(255,255,255,0.75)' }} className="text-lg">
-            Browse 50,000+ products from verified suppliers worldwide
+    <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
+
+      {/* Hero */}
+      <div style={{
+        borderRadius: 20, padding: '32px 36px', marginBottom: 32,
+        background: C.navy, position: 'relative', overflow: 'hidden',
+        boxShadow: `0 8px 32px ${C.navy}44`,
+      }}>
+        <div style={{ position: 'absolute', inset: 0, opacity: 0.06, backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='50' cy='50' r='46' fill='none' stroke='%23fff' stroke-width='.5' stroke-dasharray='3 7'/%3E%3C/svg%3E")`, backgroundSize: '100px 100px', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', top: -80, right: -80, width: 300, height: 300, borderRadius: '50%', border: '1px solid rgba(255,255,255,0.08)', pointerEvents: 'none' }} />
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+            <span style={{ fontSize: 18 }}>🇮🇳</span>
+            <span style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.6)', letterSpacing: '.12em', textTransform: 'uppercase' }}>Global Catalog</span>
+          </div>
+          <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 28, fontWeight: 900, color: '#fff', margin: '0 0 8px', letterSpacing: '-0.5px' }}>
+            Product Marketplace
+          </h1>
+          <p style={{ color: 'rgba(255,255,255,0.72)', fontSize: 14, margin: 0 }}>
+            Browse verified products from GST-certified Indian manufacturers &amp; exporters
           </p>
         </div>
       </div>
 
-      {/* Search Bar */}
-      <div className="flex flex-col sm:flex-row gap-4 mb-8">
-        <div className="relative flex-1">
-          <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-          <input 
-            value={search} 
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search products or suppliers…" 
-            className="w-full pl-12 pr-5 py-3.5 rounded-2xl border border-gray-200 bg-white text-sm focus:outline-none focus:border-orange-400 transition-colors"
-            style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }} 
+      {/* Quick-access: browse by category */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20, padding: '12px 16px', background: '#fff', borderRadius: 14, border: `1.5px solid ${C.borderSoft}` }}>
+        <Grid3X3 size={16} color={C.navy} />
+        <span style={{ fontSize: 13, fontWeight: 600, color: C.inkSoft }}>Browse by category:</span>
+        <button onClick={() => navigate('/categories')} style={{
+          display: 'flex', alignItems: 'center', gap: 6, padding: '6px 14px', borderRadius: 100,
+          border: 'none', background: C.navy, color: '#fff', cursor: 'pointer',
+          fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 12,
+        }}>
+          Open Category Browser
+        </button>
+      </div>
+
+      {/* Search + filter row */}
+      <div style={{ display: 'flex', gap: 12, marginBottom: 20, flexWrap: 'wrap', alignItems: 'center' }}>
+        <div style={{ position: 'relative', flex: 1, minWidth: 240 }}>
+          <Search size={14} color={C.muted} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} />
+          <input
+            value={search} onChange={e => setSearch(e.target.value)}
+            placeholder="Search products…"
+            style={{ width: '100%', padding: '11px 14px 11px 38px', borderRadius: 12, border: `1.5px solid ${C.borderSoft}`, background: '#fff', fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: C.ink, outline: 'none', boxSizing: 'border-box', transition: 'border-color 0.15s' }}
+            onFocus={e => { e.currentTarget.style.borderColor = C.navy; }}
+            onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; }}
           />
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: C.muted, fontWeight: 500 }}>
+          <Filter size={13} /> {filtered.length} product{filtered.length !== 1 ? 's' : ''}
         </div>
       </div>
 
-      {/* Category Pills */}
-      <div className="flex gap-2 flex-wrap mb-10">
-        {CATEGORIES.map((c) => (
-          <button 
-            key={c} 
-            onClick={() => setCat(c)}
-            className="px-5 py-2.5 rounded-full text-sm font-semibold transition-all active:scale-95"
-            style={cat === c 
-              ? { 
-                  background: 'linear-gradient(135deg,#FF6B00,#FF8C00)', 
-                  color: 'white', 
-                  boxShadow: '0 4px 14px rgba(255,107,0,0.25)' 
-                }
-              : { 
-                  background: 'white', 
-                  color: '#6B7280', 
-                  border: '1px solid #E5E7EB' 
-                }
-            }
-          >
+      {/* Category pills — from real API */}
+      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 28 }}>
+        {catPills.map(c => (
+          <button key={c} onClick={() => setCat(c)} style={{
+            padding: '7px 16px', borderRadius: 100, border: `1.5px solid ${cat === c ? C.navy : C.borderSoft}`,
+            background: cat === c ? C.navy : '#fff', color: cat === c ? '#fff' : C.inkSoft,
+            fontSize: 12, fontWeight: 600, cursor: 'pointer',
+            transition: 'all 0.15s',
+          }}>
             {c}
           </button>
         ))}
       </div>
 
       {/* Content */}
-      {loading ? (
-        <div className="flex justify-center py-20">
-          <div className="w-10 h-10 border-4 border-gray-200 border-t-orange-500 rounded-full animate-spin"></div>
+      {loading ? <Spinner /> : error ? (
+        <div style={{ padding: 32, textAlign: 'center', color: C.muted }}>
+          <p style={{ marginBottom: 12 }}>Could not load products.</p>
+          <button onClick={() => window.location.reload()} style={{ padding: '8px 20px', borderRadius: 100, background: C.saffron, color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 700, fontFamily: "'DM Sans', sans-serif" }}>Retry</button>
         </div>
       ) : filtered.length === 0 ? (
-        <EmptyState 
-          icon={ShoppingBag}
-          title="No products found"
-          description="Try changing your search term or select a different category."
-        />
+        <EmptyState icon={ShoppingBag} title="No products found" desc="Try a different search or category filter." />
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filtered.map((p) => (
-            <div 
-              key={p.id}
-              className="bg-white rounded-3xl border border-gray-200 overflow-hidden cursor-pointer card-hover group"
-              style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}
-              onClick={() => navigate(`/products/${p.id}`)}
-            >
-              {/* Product Image */}
-              <div className="h-48 flex items-center justify-center relative bg-gradient-to-br from-gray-100 to-gray-50">
-                <ShoppingBag size={52} className="text-gray-300 group-hover:scale-110 transition-transform duration-300" />
-                
-                {p.verified && (
-                  <div className="absolute top-4 right-4 flex items-center gap-1 px-3 py-1 rounded-xl text-xs font-bold bg-emerald-100 text-emerald-700">
-                    <BadgeCheck size={13} /> Verified
-                  </div>
-                )}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 18 }}>
+          {filtered.map(p => (
+            <div key={p.id} onClick={() => navigate(`/products/${p.id}`)} style={{
+              background: '#fff', borderRadius: 18, border: `1.5px solid ${C.borderSoft}`,
+              overflow: 'hidden', cursor: 'pointer',
+              transition: 'transform 0.2s, box-shadow 0.2s, border-color 0.2s',
+              boxShadow: '0 1px 4px rgba(28,24,21,0.05)',
+            }}
+              onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 8px 28px rgba(27,49,117,0.12)'; e.currentTarget.style.borderColor = C.navy; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 1px 4px rgba(28,24,21,0.05)'; e.currentTarget.style.borderColor = C.borderSoft; }}>
 
-                {p.country && (
-                  <div className="absolute top-4 left-4 text-2xl">
-                    {countryFlag(p.country)}
-                  </div>
+              {/* Image placeholder */}
+              <div style={{ height: 160, background: `linear-gradient(135deg, ${C.cream}, #E8E2D6)`, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+                {p.images?.[0]?.image_url
+                  ? <img src={p.images[0].image_url} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  : <ShoppingBag size={44} color={C.borderSoft} />
+                }
+                {p.status === 'active' && (
+                  <span style={{ position: 'absolute', top: 10, right: 10, display: 'flex', alignItems: 'center', gap: 4, background: C.emeraldLt, color: C.emerald, fontSize: 10, fontWeight: 700, padding: '3px 9px', borderRadius: 100 }}>
+                    <BadgeCheck size={10} /> Verified
+                  </span>
                 )}
               </div>
 
-              {/* Product Info */}
-              <div className="p-6">
-                <div className="text-xs font-semibold mb-2 px-3 py-1 rounded-lg inline-block"
-                  style={{ background: '#FFF7ED', color: '#FF6B00' }}>
-                  {p.category}
+              <div style={{ padding: '16px 18px 18px' }}>
+                <div style={{ fontSize: 10, fontWeight: 700, color: C.navy, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>
+                  {p.category_name || '—'}
                 </div>
-
-                <h3 className="font-bold text-gray-900 mb-2 line-clamp-2 leading-tight text-base">
+                <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: 15, color: C.ink, marginBottom: 10, lineHeight: 1.3, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                   {p.name}
-                </h3>
-                
-                <p className="text-xs text-gray-500 mb-4 line-clamp-1">{p.supplier}</p>
-
-                <div className="flex items-center gap-1 mb-4">
-                  <Star size={14} fill="#FF6B00" style={{ color: '#FF6B00' }} />
-                  <span className="text-sm font-semibold text-gray-700">{p.rating}</span>
-                  <span className="text-xs text-gray-400">({p.reviews?.toLocaleString() || 0})</span>
                 </div>
 
-                <div className="flex items-end justify-between">
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 12 }}>
                   <div>
-                    <div className="text-2xl font-black text-gray-900">₹{p.price}</div>
-                    <div className="text-xs text-gray-500">
-                      per {p.unit} • MOQ: {p.moq}
+                    <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 900, fontSize: 20, color: C.ink, letterSpacing: '-0.5px' }}>
+                      {p.base_price ? `₹${Number(p.base_price).toLocaleString('en-IN')}` : 'On Request'}
                     </div>
+                    {p.moq_unit && (
+                      <div style={{ fontSize: 11, color: C.muted, marginTop: 2 }}>MOQ: {p.min_order_quantity} {p.moq_unit}</div>
+                    )}
                   </div>
-
-                  <button 
-                    className="btn-primary px-5 py-2.5 rounded-2xl text-sm font-semibold"
-                    onClick={(e) => { 
-                      e.stopPropagation(); 
-                      alert(`Quote requested for ${p.name}`);
-                    }}
-                  >
+                  <button onClick={e => handleGetQuote(e, p)} style={{
+                    padding: '8px 14px', borderRadius: 100, border: 'none', cursor: 'pointer',
+                    background: C.saffron, color: '#fff',
+                    fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 12,
+                    boxShadow: '0 3px 10px rgba(217,96,10,0.28)',
+                    transition: 'background 0.15s, transform 0.12s',
+                  }}
+                    onMouseEnter={e => { e.currentTarget.style.background = '#BF530A'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = C.saffron; e.currentTarget.style.transform = 'none'; }}>
                     Get Quote
                   </button>
                 </div>

@@ -149,37 +149,78 @@ async function unwrap(res) {
 }
 
 /* ── HTTP Methods ──────────────────────────────────────────────────────────── */
-const get  = (path) => request('GET', path);
-const post = (path, body) => request('POST', path, body);
-const put  = (path, body) => request('PUT', path, body);
-const del  = (path) => request('DELETE', path);
+const get   = (path)        => request('GET',    path);
+const post  = (path, body)  => request('POST',   path, body);
+const put   = (path, body)  => request('PUT',    path, body);
+const patch = (path, body)  => request('PATCH',  path, body);
+const del   = (path)        => request('DELETE', path);
 
-/* ── Main API (compatible with all your components) ────────────────────────── */
+/* ── Main API ───────────────────────────────────────────────────────────────── */
 export const api = {
-  get,
-  post,
-  put,
-  delete: del,
+  get, post, put, patch, delete: del,
 
-  // Auth
+  // ── Auth ─────────────────────────────────────────────────────────────────
   register: (body) => post('/api/auth/register', body),
-  login:    (body) => post('/api/auth/login', body),
-  logout:   () => post('/api/auth/logout'),
+  login:    (body) => post('/api/auth/login',    body),
+  logout:   ()     => post('/api/auth/logout'),
 
-  // Dashboard
-  getStats:   (role = 'supplier') => get(`/api/stats?role=${role}`),
-  getRFQs:    () => get('/api/rfqs'),
-  getQuotes:  () => get('/api/quotes'),
+  // ── Profile ──────────────────────────────────────────────────────────────
+  getMe:        ()     => get('/api/users/me'),
+  updateMe:     (body) => patch('/api/users/me', body),
 
-  // Products (used in ListProduct.jsx)
-  getProducts: (params = {}) => get(`/api/products?${new URLSearchParams(params)}`),
-  getProduct:  (id) => get(`/api/products/${id}`),
+  // ── Stats ────────────────────────────────────────────────────────────────
+  getStats: (role = 'buyer') => get(`/api/stats?role=${role}`),
 
-  // Categories & Tags
+  // ── RFQs ─────────────────────────────────────────────────────────────────
+  getRFQs:    ()       => get('/api/rfqs'),
+  getRFQ:     (id)     => get(`/api/rfqs/${id}`),
+  createRFQ:  (body)   => post('/api/rfqs', body),
+  updateRFQ:  (id, body) => patch(`/api/rfqs/${id}`, body),
+
+  // ── Quotes (supplier submits / lists) ────────────────────────────────────
+  getQuotes:   ()            => get('/api/quotes'),
+  submitQuote: (rfqId, body) => post(`/api/rfqs/${rfqId}/quotes`, body),
+  updateQuote: (id, body)    => patch(`/api/quotes/${id}`, body),
+
+  // ── Orders ───────────────────────────────────────────────────────────────
+  getOrders:     ()       => get('/api/orders'),
+  getOrder:      (id)     => get(`/api/orders/${id}`),
+  updateOrderStatus: (id, status) => patch(`/api/orders/${id}/status`, { status }),
+
+  // ── Products ─────────────────────────────────────────────────────────────
+  getProducts:   (params = {}) => get(`/api/products?${new URLSearchParams(params)}`),
+  getProduct:    (id)          => get(`/api/products/${id}`),
+  createProduct: (body)        => post('/api/products', body),
+  updateProduct: (id, body)    => put(`/api/products/${id}`, body),
+  deleteProduct: (id)          => del(`/api/products/${id}`),
+
+  // ── Categories & Tags ────────────────────────────────────────────────────
   getCategories: () => get('/api/products/categories'),
   getTags:       () => get('/api/products/tags'),
 
-  getOrders: () => get('/api/orders'),
+  // ── Notifications ────────────────────────────────────────────────────────
+  getNotifications:  ()   => get('/api/notifications'),
+  markAllRead:       ()   => patch('/api/notifications/read-all'),
+  markRead:          (id) => patch(`/api/notifications/${id}/read`),
+  getUnreadCount:    ()   => get('/api/notifications/unread-count'),
+
+  // ── Messaging ────────────────────────────────────────────────────────────
+  getConversations:    ()              => get('/api/conversations'),
+  getConversation:     (id)           => get(`/api/conversations/${id}`),
+  startConversation:   (body)         => post('/api/conversations', body),
+  sendMessage:         (convId, body) => post(`/api/conversations/${convId}/messages`, { body }),
+  sendQuoteOffer:      (convId, data) => post(`/api/conversations/${convId}/quote-offer`, data),
+  acceptQuoteOffer:    (convId, msgId)=> patch(`/api/conversations/${convId}/quote-offer/${msgId}/accept`),
+
+  // ── Admin ────────────────────────────────────────────────────────────────
+  admin: {
+    getUsers:         (params = {}) => get(`/api/admin/users?${new URLSearchParams(params)}`),
+    suspendUser:      (id)          => patch(`/api/admin/users/${id}/suspend`),
+    getCompanies:     (params = {}) => get(`/api/admin/companies?${new URLSearchParams(params)}`),
+    getVerifications: ()            => get('/api/admin/verifications'),
+    verifyCompany:    (id, status, notes) => patch(`/api/admin/companies/${id}/verify`, { status, notes }),
+    getStats:         ()            => get('/api/admin/stats'),
+  },
 };
 
 export default api;

@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { toggleLogin } from '../features/auth/authSlice';
 import {
   Globe, Zap, ShieldCheck, TrendingUp,
@@ -188,7 +189,8 @@ function StatCard({ icon: Icon, label, target, color, suffix = '+' }) {
 
 /* ══════════════════════════════ MAIN ══════════════════════════════════════ */
 export default function LandingPage() {
-  const dispatch = useDispatch();
+  const dispatch  = useDispatch();
+  const navigate  = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -212,7 +214,7 @@ export default function LandingPage() {
   ];
 
   const testimonials = [
-    { name: 'Rajesh Kumar',     company: 'TechParts Pvt Ltd',  city: 'Pune, MH',     role: 'Procurement Head',  text: 'GLOBRIX slashed our sourcing time by 60%. The AI matching for auto components is unlike anything else in the market.',   rating: 5 },
+    { name: 'Rajesh Kumar',     company: 'TechParts Pvt Ltd',  city: 'Pune, MH',     role: 'Procurement Head',  text: 'Globrixa slashed our sourcing time by 60%. The AI matching for auto components is unlike anything else in the market.',   rating: 5 },
     { name: 'Priya Venkatesh', company: 'SilkRoute Exports',  city: 'Surat, GJ',    role: 'Export Manager',    text: 'International buyer reach tripled in three months. Best platform for Indian textile exporters, hands down.',            rating: 5 },
     { name: 'Amandeep Singh',  company: 'Punjab Agro Foods',  city: 'Ludhiana, PB', role: 'Founder & CEO',     text: 'Trade assurance gave us the confidence to go global. Payments are always on time. Bohot badhiya platform hai!',        rating: 5 },
   ];
@@ -242,7 +244,7 @@ export default function LandingPage() {
               <div style={{ width: 36, height: 36, borderRadius: 9, background: 'var(--saffron)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(217,96,10,.32)' }}>
                 <Globe size={16} color="#fff" />
               </div>
-              <span className="gx-serif" style={{ fontSize: 21, fontWeight: 900, color: 'var(--ink)', letterSpacing: -.5 }}>GLOBRIX</span>
+              <span className="gx-serif" style={{ fontSize: 21, fontWeight: 900, color: 'var(--ink)', letterSpacing: -.5 }}>Globrixa</span>
               <span style={{ fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 100, background: 'var(--saffron-lt)', color: 'var(--saffron)', letterSpacing: '.1em' }}>B2B</span>
             </div>
 
@@ -593,7 +595,7 @@ export default function LandingPage() {
                   <div style={{ width: 32, height: 32, borderRadius: 8, background: 'var(--saffron)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Globe size={14} color="#fff" />
                   </div>
-                  <span className="gx-serif" style={{ color: 'var(--cream)', fontWeight: 900, fontSize: 18, letterSpacing: -.5 }}>GLOBRIX</span>
+                  <span className="gx-serif" style={{ color: 'var(--cream)', fontWeight: 900, fontSize: 18, letterSpacing: -.5 }}>Globrixa</span>
                 </div>
                 <p style={{ fontSize: 12, lineHeight: 1.75, marginBottom: 12, maxWidth: 190 }}>
                   India's premier B2B trade platform — connecting MSMEs with buyers across 120+ countries.
@@ -605,20 +607,36 @@ export default function LandingPage() {
               </div>
 
               {[
-                { heading: 'Platform', links: ['Products', 'Suppliers', 'RFQs', 'Analytics'] },
-                { heading: 'Company',  links: ['About', 'Blog', 'Careers', 'Press'] },
-                { heading: 'Support',  links: ['Help Center', 'Contact', 'Privacy', 'Terms'] },
+                { heading: 'Platform', links: [
+                    { label: 'Products',   path: null, action: () => dispatch(toggleLogin(true)) },
+                    { label: 'Suppliers',  path: null, action: () => dispatch(toggleLogin(true)) },
+                    { label: 'RFQs',       path: null, action: () => dispatch(toggleLogin(true)) },
+                    { label: 'Analytics',  path: null, action: () => dispatch(toggleLogin(true)) },
+                  ]},
+                { heading: 'Company',  links: [
+                    { label: 'About',    path: '/about'   },
+                    { label: 'Blog',     path: '/blog'    },
+                    { label: 'Careers',  path: '/careers' },
+                    { label: 'Press',    path: '/about'   },
+                  ]},
+                { heading: 'Support',  links: [
+                    { label: 'Help Center', path: '/help'    },
+                    { label: 'Contact',     path: '/contact' },
+                    { label: 'Privacy',     path: '/privacy' },
+                    { label: 'Terms',       path: '/terms'   },
+                  ]},
               ].map(({ heading, links }) => (
                 <div key={heading}>
                   <div style={{ color: 'var(--cream)', fontWeight: 600, fontSize: 12, marginBottom: 14, letterSpacing: '.06em', textTransform: 'uppercase' }}>{heading}</div>
                   <ul style={{ padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 9 }}>
                     {links.map(l => (
-                      <li key={l}>
-                        <a href="#" style={{ fontSize: 13, color: '#A09890', textDecoration: 'none', transition: 'color .15s' }}
+                      <li key={l.label}>
+                        <button onClick={l.action || (() => navigate(l.path))}
+                          style={{ fontSize: 13, color: '#A09890', textDecoration: 'none', background: 'none', border: 'none', cursor: 'pointer', padding: 0, transition: 'color .15s', fontFamily: 'inherit' }}
                           onMouseEnter={e => { e.currentTarget.style.color = 'var(--saffron)'; }}
                           onMouseLeave={e => { e.currentTarget.style.color = '#A09890'; }}>
-                          {l}
-                        </a>
+                          {l.label}
+                        </button>
                       </li>
                     ))}
                   </ul>
@@ -627,7 +645,7 @@ export default function LandingPage() {
             </div>
 
             <div style={{ borderTop: '1px solid #1E1A18', paddingTop: 22, display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
-              <p style={{ fontSize: 11, color: '#4A4240' }}>© 2025 Globrix Technologies Pvt. Ltd. · CIN: U74999MH2024PTC001234 · GST: 27AABCG1234F1Z5</p>
+              <p style={{ fontSize: 11, color: '#4A4240' }}>© 2025 Globrixa Technologies Pvt. Ltd. · CIN: U74999MH2024PTC001234 · GST: 27AABCG1234F1Z5</p>
               <div style={{ display: 'flex', gap: 18 }}>
                 {['Privacy', 'Terms', 'Refund Policy'].map(t => (
                   <a key={t} href="#" style={{ fontSize: 11, color: '#4A4240', textDecoration: 'none', transition: 'color .15s' }}
