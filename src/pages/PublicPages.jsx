@@ -32,12 +32,8 @@ function PublicLayout({ children }) {
         <div style={{ flex: 1, background: C.emerald }} />
       </div>
       <header style={{ background: '#fff', borderBottom: `1px solid ${C.borderSoft}`, padding: '0 48px', height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <button onClick={() => navigate('/')} style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'none', border: 'none', cursor: 'pointer' }}>
-          <div style={{ width: 32, height: 32, borderRadius: 9, background: C.saffron, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Globe size={14} color="#fff" />
-          </div>
-          <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 19, fontWeight: 900, color: C.ink, letterSpacing: -0.5 }}>Globrixa</span>
-          <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 7px', borderRadius: 100, background: C.saffronLt, color: C.saffron }}>B2B</span>
+        <button onClick={() => navigate('/')} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
+          <img src="/logo.png" alt="Globrixa" style={{ height: 52, width: 'auto', objectFit: 'contain' }} />
         </button>
         <div style={{ display: 'flex', gap: 10 }}>
           <button onClick={() => dispatch(toggleLogin(true))} style={{ padding: '8px 18px', borderRadius: 100, border: `1.5px solid ${C.borderSoft}`, background: '#fff', color: C.inkSoft, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 13 }}>

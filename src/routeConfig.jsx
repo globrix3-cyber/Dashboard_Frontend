@@ -12,8 +12,11 @@ import BuyerDashboard    from "./pages/BuyerDashboard";
 import SupplierDashboard from "./pages/SupplierDashboard";
 
 import BuyerRFQsPage     from "./pages/BuyerRFQsPage";
+import BuyerRFQDetail    from "./pages/BuyerRFQDetail";
 import BuyerOrdersPage   from "./pages/BuyerOrdersPage";
 import CreateRFQForm     from "./pages/CreateRFQForm";
+import ContractsListPage from "./pages/ContractsListPage";
+import ContractPage      from "./pages/ContractPage";
 
 import SupplierPages     from "./pages/SupplierPages";
 import SupplierCatalog   from "./pages/SupplierCatalog";
@@ -81,8 +84,23 @@ export const routeConfig = [
     roles:   [ROLES.BUYER],
   },
   {
+    path:    "/buyer-dashboard/rfqs/:id",
+    element: withLayout(BuyerRFQDetail),
+    roles:   [ROLES.BUYER],
+  },
+  {
     path:    "/buyer-dashboard/orders",
     element: withLayout(BuyerOrdersPage),
+    roles:   [ROLES.BUYER],
+  },
+  {
+    path:    "/buyer-dashboard/contracts",
+    element: withLayout(ContractsListPage),
+    roles:   [ROLES.BUYER],
+  },
+  {
+    path:    "/buyer-dashboard/contracts/:id",
+    element: withLayout(ContractPage),
     roles:   [ROLES.BUYER],
   },
 
@@ -110,6 +128,16 @@ export const routeConfig = [
   {
     path:    "/supplier-dashboard/orders",
     element: withLayout(SupplierOrdersPage),
+    roles:   [ROLES.SUPPLIER],
+  },
+  {
+    path:    "/supplier-dashboard/contracts",
+    element: withLayout(ContractsListPage),
+    roles:   [ROLES.SUPPLIER],
+  },
+  {
+    path:    "/supplier-dashboard/contracts/:id",
+    element: withLayout(ContractPage),
     roles:   [ROLES.SUPPLIER],
   },
   {

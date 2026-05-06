@@ -4,9 +4,9 @@ import { logout, toggleLogin } from '../features/auth/authSlice';
 import { disconnectSocket } from '../services/socket';
 import {
   LayoutDashboard, FileText, Package, ShoppingBag,
-  Send, FileSearch, LogOut, User, Globe, ChevronRight,
+  Send, FileSearch, LogOut, User, ChevronRight,
   Menu, Users, Building2, ShieldCheck, BarChart2, Settings,
-  MessageSquare, Grid3X3,
+  MessageSquare, Grid3X3, ScrollText,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -84,24 +84,26 @@ if (!document.getElementById('globrix-vars')) {
 
 /* ── Nav link definitions ───────────────────────────────────────────────────── */
 const buyerLinks = [
-  { path: '/buyer-dashboard',          icon: LayoutDashboard, label: 'Overview'  },
-  { path: '/buyer-dashboard/rfqs',     icon: FileText,        label: 'My RFQs'   },
-  { path: '/buyer-dashboard/orders',   icon: Package,         label: 'My Orders' },
-  { path: '/buyer-dashboard/messages', icon: MessageSquare,   label: 'Messages'   },
-  { path: '/categories',              icon: Grid3X3,         label: 'Categories' },
-  { path: '/products',                icon: ShoppingBag,     label: 'Browse'     },
-  { path: '/edit-profile',            icon: User,            label: 'Profile'    },
+  { path: '/buyer-dashboard',              icon: LayoutDashboard, label: 'Overview'   },
+  { path: '/buyer-dashboard/rfqs',         icon: FileText,        label: 'My RFQs'    },
+  { path: '/buyer-dashboard/contracts',    icon: ScrollText,      label: 'Contracts'  },
+  { path: '/buyer-dashboard/orders',       icon: Package,         label: 'My Orders'  },
+  { path: '/buyer-dashboard/messages',     icon: MessageSquare,   label: 'Messages'   },
+  { path: '/categories',                   icon: Grid3X3,         label: 'Categories' },
+  { path: '/products',                     icon: ShoppingBag,     label: 'Browse'     },
+  { path: '/edit-profile',                 icon: User,            label: 'Profile'    },
 ];
 
 const supplierLinks = [
-  { path: '/supplier-dashboard',           icon: LayoutDashboard, label: 'Overview'  },
-  { path: '/supplier-dashboard/rfqs',      icon: FileSearch,      label: 'Open RFQs' },
-  { path: '/supplier-dashboard/quotes',    icon: Send,            label: 'My Quotes' },
-  { path: '/supplier-dashboard/orders',    icon: Package,         label: 'Orders'    },
-  { path: '/supplier-dashboard/messages',  icon: MessageSquare,   label: 'Messages'   },
-  { path: '/categories',                  icon: Grid3X3,         label: 'Categories' },
-  { path: '/supplier-dashboard/catalog',  icon: ShoppingBag,     label: 'Catalog'    },
-  { path: '/edit-profile',                 icon: User,            label: 'Profile'   },
+  { path: '/supplier-dashboard',              icon: LayoutDashboard, label: 'Overview'   },
+  { path: '/supplier-dashboard/rfqs',         icon: FileSearch,      label: 'Open RFQs'  },
+  { path: '/supplier-dashboard/quotes',       icon: Send,            label: 'My Quotes'  },
+  { path: '/supplier-dashboard/contracts',    icon: ScrollText,      label: 'Contracts'  },
+  { path: '/supplier-dashboard/orders',       icon: Package,         label: 'Orders'     },
+  { path: '/supplier-dashboard/messages',     icon: MessageSquare,   label: 'Messages'   },
+  { path: '/categories',                      icon: Grid3X3,         label: 'Categories' },
+  { path: '/supplier-dashboard/catalog',      icon: ShoppingBag,     label: 'Catalog'    },
+  { path: '/edit-profile',                    icon: User,            label: 'Profile'    },
 ];
 
 const adminLinks = [
@@ -167,29 +169,10 @@ function Sidebar({ links, collapsed, onToggle }) {
         borderBottom: '1px solid #E6DED0',
         flexShrink:  0,
       }}>
-        <div style={{
-          width:           32,
-          height:          32,
-          borderRadius:    10,
-          display:         'flex',
-          alignItems:      'center',
-          justifyContent:  'center',
-          flexShrink:      0,
-          background:      `linear-gradient(135deg, ${accent}, ${accent}cc)`,
-        }}>
-          <Globe size={14} color="white" />
-        </div>
-
-        {!collapsed && (
-          <span style={{
-            fontWeight:    900,
-            fontSize:      17,
-            letterSpacing: '-0.5px',
-            color:         '#111827',
-            flex:          1,
-          }}>
-            Globrixa
-          </span>
+        {collapsed ? (
+          <img src="/logo-icon.png" alt="Globrixa" style={{ width: 32, height: 32, objectFit: 'contain', flexShrink: 0 }} />
+        ) : (
+          <img src="/logo.png" alt="Globrixa" style={{ height: 36, width: 'auto', objectFit: 'contain', flex: 1, minWidth: 0 }} />
         )}
 
         <button
@@ -377,7 +360,7 @@ export default function DashboardLayout({ children }) {
           >
             <Menu size={18} />
           </button>
-          <span style={{ fontWeight: 900, fontSize: 16, color: '#111827' }}>Globrixa</span>
+          <img src="/logo.png" alt="Globrixa" style={{ height: 32, width: 'auto', objectFit: 'contain' }} />
           <div style={{ width: 36 }} />
         </div>
 

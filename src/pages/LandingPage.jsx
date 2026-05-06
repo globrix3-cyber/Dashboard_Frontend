@@ -240,21 +240,22 @@ export default function LandingPage() {
         }}>
           <div style={{ ...W, height: 66, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <div style={{ width: 36, height: 36, borderRadius: 9, background: 'var(--saffron)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(217,96,10,.32)' }}>
-                <Globe size={16} color="#fff" />
-              </div>
-              <span className="gx-serif" style={{ fontSize: 21, fontWeight: 900, color: 'var(--ink)', letterSpacing: -.5 }}>Globrixa</span>
-              <span style={{ fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 100, background: 'var(--saffron-lt)', color: 'var(--saffron)', letterSpacing: '.1em' }}>B2B</span>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <img src="/logo.png" alt="Globrixa" style={{ height: 56, width: 'auto', objectFit: 'contain' }} />
             </div>
 
             <nav style={{ display: 'flex', gap: 2 }}>
-              {['Products', 'Suppliers', 'Pricing', 'About'].map(item => (
-                <a key={item} href="#" style={{ padding: '7px 15px', borderRadius: 9, fontSize: 14, fontWeight: 500, color: 'var(--ink-soft)', textDecoration: 'none', transition: 'all .15s' }}
+              {[
+                { label: 'Products',   action: () => document.getElementById('section-products')?.scrollIntoView({ behavior: 'smooth' }) },
+                { label: 'Suppliers',  action: () => document.getElementById('section-suppliers')?.scrollIntoView({ behavior: 'smooth' }) },
+                { label: 'Pricing',    action: () => document.getElementById('section-pricing')?.scrollIntoView({ behavior: 'smooth' }) },
+                { label: 'About',      action: () => navigate('/about') },
+              ].map(({ label, action }) => (
+                <button key={label} onClick={action} style={{ padding: '7px 15px', borderRadius: 9, fontSize: 14, fontWeight: 500, color: 'var(--ink-soft)', background: 'transparent', border: 'none', cursor: 'pointer', transition: 'all .15s' }}
                   onMouseEnter={e => { e.currentTarget.style.background = 'var(--cream)'; e.currentTarget.style.color = 'var(--ink)'; }}
                   onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--ink-soft)'; }}>
-                  {item}
-                </a>
+                  {label}
+                </button>
               ))}
             </nav>
 
@@ -356,7 +357,7 @@ export default function LandingPage() {
         <div className="gx-divider" />
 
         {/* ══ FEATURES ══════════════════════════════════════════════════════ */}
-        <section style={{ padding: '90px 28px', background: 'var(--warm-white)', position: 'relative', overflow: 'hidden' }}>
+        <section id="section-products" style={{ padding: '90px 28px', background: 'var(--warm-white)', position: 'relative', overflow: 'hidden' }}>
           <div className="gx-dots" style={{ position: 'absolute', inset: 0, opacity: .55, pointerEvents: 'none' }} />
           <div style={{ ...W, position: 'relative', zIndex: 1 }}>
             <div style={{ textAlign: 'center', marginBottom: 56 }}>
@@ -451,7 +452,7 @@ export default function LandingPage() {
         <div className="gx-divider" />
 
         {/* ══ TESTIMONIALS ══════════════════════════════════════════════════ */}
-        <section style={{ padding: '90px 28px', background: 'var(--cream-mid)', position: 'relative', overflow: 'hidden' }}>
+        <section id="section-suppliers" style={{ padding: '90px 28px', background: 'var(--cream-mid)', position: 'relative', overflow: 'hidden' }}>
           <div className="gx-mandala" style={{ position: 'absolute', inset: 0, opacity: .22, pointerEvents: 'none' }} />
           <div style={{ ...W, position: 'relative', zIndex: 1 }}>
             <div style={{ textAlign: 'center', marginBottom: 50 }}>
@@ -492,7 +493,7 @@ export default function LandingPage() {
         <div className="gx-divider" />
 
         {/* ══ PRICING ═══════════════════════════════════════════════════════ */}
-        <section style={{ padding: '90px 28px', background: 'var(--warm-white)' }}>
+        <section id="section-pricing" style={{ padding: '90px 28px', background: 'var(--warm-white)' }}>
           <div style={{ maxWidth: 780, margin: '0 auto', textAlign: 'center' }}>
             <Pill text="Pricing" color="var(--navy)" bg="var(--navy-lt)" />
             <OrnaDiv color="var(--navy)" />

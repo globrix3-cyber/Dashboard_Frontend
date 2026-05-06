@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { setAuth, toggleLogin } from '../features/auth/authSlice';
 import { toast } from 'react-toastify';
 import {
-  Globe, X, Eye, EyeOff, ShieldCheck,
+  X, Eye, EyeOff, ShieldCheck,
   Building2, ArrowRight,
 } from 'lucide-react';
 
@@ -96,10 +96,6 @@ export default function LoginModal({ onSubmit }) {
         });
       }
 
-      // ── Robust response parsing (supports token or access_token) ─────────────
-      console.log('[LoginModal] raw auth response:', response);
-
-      // Handle both direct response and possible { data: {...} } wrapper
       const payload = response?.data || response;
 
       const token         = payload.token || payload.access_token;
@@ -107,19 +103,13 @@ export default function LoginModal({ onSubmit }) {
       const user          = payload.user;
 
       if (!token) {
-        console.error('[LoginModal] token missing from response. Full payload:', payload);
         toast.error('Login failed: Server did not return authentication token.');
         return;
       }
 
       if (!refresh_token) {
-        console.error('[LoginModal] refresh_token missing from response. Full payload:', payload);
         toast.error('Login failed: Server did not return refresh token.');
         return;
-      }
-
-      if (!user) {
-        console.warn('[LoginModal] user data missing from response');
       }
 
       const userName = user?.name || user?.email?.split('@')[0] || 'Trader';
@@ -140,7 +130,6 @@ export default function LoginModal({ onSubmit }) {
       toast.success(`Welcome, ${userName}! 🇮🇳`);
 
     } catch (err) {
-      console.error('Auth error:', err);
       toast.error(err.message || 'Authentication failed. Please try again.');
     } finally {
       setLoading(false);
@@ -215,21 +204,8 @@ export default function LoginModal({ onSubmit }) {
         <div style={{ padding: '28px 32px 32px', position: 'relative', zIndex: 1 }}>
 
           {/* Logo row */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 22 }}>
-            <div style={{
-              width: 36, height: 36, borderRadius: 10, background: 'var(--saffron)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: '0 4px 14px rgba(217,96,10,.32)', flexShrink: 0,
-            }}>
-              <Globe size={16} color="#fff" />
-            </div>
-            <span style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 20, fontWeight: 900, color: 'var(--ink)', letterSpacing: -.5 }}>
-              Globrixa
-            </span>
-            <span style={{
-              fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 100,
-              background: 'var(--saffron-lt)', color: 'var(--saffron)', letterSpacing: '.1em',
-            }}>B2B</span>
+          <div style={{ marginBottom: 22 }}>
+            <img src="/logo.png" alt="Globrixa" style={{ height: 48, width: 'auto', objectFit: 'contain' }} />
           </div>
 
           {/* Headline */}

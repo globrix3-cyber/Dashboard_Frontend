@@ -8,8 +8,6 @@ import { toast } from 'react-toastify';
 // ================== BACKEND URL (Updated for your setup) ==================
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
-console.log(`[API] Using backend → ${BASE_URL}`);
-
 /* ── Token Helpers ─────────────────────────────────────────────────────────── */
 const isValidToken = (t) =>
   t && typeof t === 'string' && t !== 'undefined' && t !== 'null' && t.trim() !== '';
@@ -26,7 +24,6 @@ const getRefreshToken = () => {
 
 const saveTokens = (token, refresh_token) => {
   if (!isValidToken(token) || !isValidToken(refresh_token)) {
-    console.error('[api] Invalid tokens received');
     throw new Error('Invalid tokens from server');
   }
   localStorage.setItem('token', token);
@@ -90,9 +87,8 @@ async function request(method, path, body) {
       body: body ? JSON.stringify(body) : undefined,
     });
   } catch (err) {
-    console.error(`[API] Connection failed to ${url}`);
-    toast.error("Cannot connect to backend. Make sure server is running on port 8000.");
-    throw new Error("Backend connection failed. Is the server running?");
+    toast.error("Cannot connect to server. Please check your connection.");
+    throw new Error("Backend connection failed.");
   }
 
   // Auto refresh on 401
@@ -211,6 +207,15 @@ export const api = {
   sendMessage:         (convId, body) => post(`/api/conversations/${convId}/messages`, { body }),
   sendQuoteOffer:      (convId, data) => post(`/api/conversations/${convId}/quote-offer`, data),
   acceptQuoteOffer:    (convId, msgId)=> patch(`/api/conversations/${convId}/quote-offer/${msgId}/accept`),
+
+  // ── Contracts ────────────────────────────────────────────────────────────
+  getContracts:     ()       => get('/api/contracts'),
+  getContract:      (id)     => get(`/api/contracts/${id}`),
+  createContract:   (body)   => post('/api/contracts', body),
+  updateContract:   (id, body) => patch(`/api/contracts/${id}`, body),
+  signContract:     (id)     => post(`/api/contracts/${id}/sign`),
+  cancelContract:   (id)     => post(`/api/contracts/${id}/cancel`),
+  placeOrderFromContract: (id) => post(`/api/contracts/${id}/order`),
 
   // ── Admin ────────────────────────────────────────────────────────────────
   admin: {

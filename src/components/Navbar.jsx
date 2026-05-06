@@ -5,8 +5,8 @@ import { logout, toggleLogin } from '../features/auth/authSlice';
 import { disconnectSocket } from '../../services/socket';
 import { DASHBOARD_ROUTES } from '../../constants';
 import {
-  Globe, Bell, ChevronDown, LogOut, User,
-  LayoutDashboard, Menu, X, Zap
+  Bell, ChevronDown, LogOut, User,
+  LayoutDashboard, Menu, X
 } from 'lucide-react';
 
 export default function Navbar({ socket }) {
@@ -56,14 +56,8 @@ export default function Navbar({ socket }) {
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
 
         {/* Logo */}
-        <button onClick={() => navigate('/')} className="flex items-center gap-2.5 group">
-          <div className="w-8 h-8 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110"
-            style={{ background: 'linear-gradient(135deg,#FF6B00,#FF8C00)' }}>
-            <Globe size={15} color="white" />
-          </div>
-          <span className="text-lg font-black tracking-tight text-gray-900">Globrixa</span>
-          <span className="hidden sm:block text-xs font-semibold px-2 py-0.5 rounded-full"
-            style={{ background: '#FFF7ED', color: '#FF6B00' }}>B2B</span>
+        <button onClick={() => navigate('/')} className="flex items-center group">
+          <img src="/logo.png" alt="Globrixa" style={{ height: 38, width: 'auto', objectFit: 'contain' }} />
         </button>
 
         {/* Desktop nav */}
