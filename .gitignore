@@ -1,3 +1,7 @@
+# Dev-only tool artifacts
+.superpowers/
+docs/
+
 # Logs
 logs
 *.log
