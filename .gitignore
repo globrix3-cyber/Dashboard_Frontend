@@ -2,6 +2,12 @@
 .superpowers/
 docs/
 
+# Environment variables — NEVER commit real values
+.env
+.env.local
+.env.production
+.env.*.local
+
 # Logs
 logs
 *.log
