@@ -3,8 +3,8 @@ export default function AnnouncementBar() {
     <div style={{
       background: 'linear-gradient(90deg,#1C1915 0%,#2A2320 50%,#1C1915 100%)',
       color: 'rgba(255,255,255,.82)', fontSize: 12, fontWeight: 500,
-      textAlign: 'center', padding: '10px 20px',
-      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12,
+      textAlign: 'center', padding: '10px 18px',
+      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, flexWrap: 'wrap',
     }}>
       <span style={{
         background: 'linear-gradient(135deg,#C4773A,#A8622E)',
