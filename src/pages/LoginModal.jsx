@@ -157,7 +157,7 @@ export default function LoginModal({ onSubmit }) {
   return (
     <div
       style={{
-        position: 'fixed', inset: 0, zIndex: 50,
+        position: 'fixed', inset: 0, zIndex: 1000,
         display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20,
         background: 'rgba(28,24,21,0.55)', backdropFilter: 'blur(10px)',
       }}

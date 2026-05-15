@@ -1,17 +1,89 @@
 import { useState } from 'react';
 import { T, shadow, W, eyebrow, sectionTitle, viewAll } from './tokens';
 import { CAT_HERO, CAT_SUB } from './data';
+import { IMG } from './images';
+
+const CAT_IMAGES = {
+  Textiles:    IMG.jaipurTextiles,
+  Handicrafts: IMG.wovenBaskets,
+  Agriculture: IMG.spicesMarket,
+  Engineering: IMG.steelBolts,
+};
 
 function CatHeroCard({ item }) {
   const [hov, setHov] = useState(false);
+  const photo = CAT_IMAGES[item.name];
+
   return (
-    <div onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)} style={{ borderRadius: 16, overflow: 'hidden', position: 'relative', cursor: 'pointer', aspectRatio: '3/4', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', transform: hov ? 'translateY(-5px)' : 'none', boxShadow: hov ? shadow.lg : 'none', transition: '.25s' }}>
-      <div style={{ position: 'absolute', inset: 0, background: item.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 80, transform: hov ? 'scale(1.04)' : 'scale(1)', transition: '.4s' }} />
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top,rgba(18,14,10,.82) 0%,rgba(18,14,10,.18) 55%,transparent 100%)' }} />
+    <div
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        borderRadius: 18, overflow: 'hidden', position: 'relative', cursor: 'pointer',
+        aspectRatio: '3/4', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
+        transform: hov ? 'translateY(-6px)' : 'none',
+        boxShadow: hov ? shadow.lg : shadow.sm,
+        transition: '.28s cubic-bezier(.22,.68,0,1.2)',
+      }}
+    >
+      {/* Background — photo or gradient */}
+      {photo ? (
+        <img
+          src={photo}
+          alt={`${item.name} category — Indian B2B marketplace`}
+          loading="lazy"
+          decoding="async"
+          style={{
+            position: 'absolute', inset: 0, width: '100%', height: '100%',
+            objectFit: 'cover', objectPosition: 'center',
+            transform: hov ? 'scale(1.07)' : 'scale(1)',
+            transition: 'transform .55s ease',
+          }}
+        />
+      ) : (
+        <div style={{
+          position: 'absolute', inset: 0, background: item.bg,
+          display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 80,
+          transform: hov ? 'scale(1.04)' : 'scale(1)', transition: '.4s',
+        }}>
+          {item.emoji}
+        </div>
+      )}
+
+      {/* Gradient overlay */}
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(18,14,10,.88) 0%, rgba(18,14,10,.22) 50%, rgba(18,14,10,.04) 100%)' }} />
+
+      {/* Hover shimmer */}
+      {hov && (
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(196,119,58,.12) 0%, transparent 60%)', pointerEvents: 'none' }} />
+      )}
+
+      {/* Content */}
       <div style={{ position: 'relative', zIndex: 2, padding: '22px 20px' }}>
-        <div style={{ fontFamily: "'Playfair Display',serif", fontSize: 21, fontWeight: 700, color: '#fff', marginBottom: 5, lineHeight: 1.15 }}>{item.name}</div>
-        <div style={{ fontSize: 12, color: 'rgba(255,255,255,.68)', marginBottom: 10 }}>{item.count}</div>
-        <div style={{ display: 'inline-block', background: 'rgba(255,255,255,.12)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,.18)', color: '#fff', fontSize: 10, fontWeight: 600, padding: '4px 12px', borderRadius: 5 }}>{item.chip}</div>
+        {/* Category badge */}
+        <div style={{ marginBottom: 10 }}>
+          <span style={{
+            display: 'inline-block',
+            background: hov ? `rgba(196,119,58,.9)` : 'rgba(255,255,255,.12)',
+            backdropFilter: 'blur(8px)',
+            border: hov ? '1px solid rgba(196,119,58,.5)' : '1px solid rgba(255,255,255,.18)',
+            color: '#fff', fontSize: 9, fontWeight: 800, padding: '4px 12px', borderRadius: 20,
+            letterSpacing: '.1em', textTransform: 'uppercase', transition: '.22s',
+          }}>{item.chip}</span>
+        </div>
+
+        <div style={{ fontFamily: "'Playfair Display',serif", fontSize: 22, fontWeight: 700, color: '#fff', marginBottom: 5, lineHeight: 1.15 }}>{item.name}</div>
+        <div style={{ fontSize: 11, color: 'rgba(255,255,255,.6)', marginBottom: 12 }}>{item.count}</div>
+
+        {/* Arrow CTA on hover */}
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 6,
+          color: hov ? T.tm : 'rgba(255,255,255,.45)',
+          fontSize: 12, fontWeight: 600, transition: '.22s',
+          transform: hov ? 'translateX(4px)' : 'none',
+        }}>
+          Browse {item.name} <span style={{ fontSize: 14 }}>→</span>
+        </div>
       </div>
     </div>
   );
