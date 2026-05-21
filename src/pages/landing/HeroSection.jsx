@@ -6,7 +6,7 @@ import { IMG } from './images';
 import { useBreakpoint, rW } from '../../hooks/useBreakpoint';
 
 const STATS = [
-  { n: '₹250Cr', l: 'Monthly Volume' },
+  { n: '$30M+',  l: 'Monthly Volume' },
   { n: '50K+',   l: 'Products' },
   { n: '5,000+', l: 'Suppliers' },
 ];
@@ -155,38 +155,26 @@ export default function HeroSection() {
         }}>
           {/* Left — text */}
           <div>
-            <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '.16em', textTransform: 'uppercase', color: T.t, marginBottom: 14, display: 'flex', alignItems: 'center', gap: 10 }}>
-              <span style={{ width: 6, height: 6, borderRadius: '50%', background: T.t, flexShrink: 0 }} />
-              <span style={{ width: 24, height: 1.5, background: `linear-gradient(90deg,${T.t},transparent)`, display: 'inline-block' }} />
-              India's B2B Wholesale Marketplace
-            </div>
-
-            <h1 style={{ fontFamily: "'Playfair Display',serif", fontSize: bp.isMobile ? '36px' : bp.isTablet ? '48px' : 'clamp(42px,5vw,68px)', fontWeight: 900, lineHeight: 1.04, letterSpacing: -2, color: T.ink, marginBottom: 18 }}>
-              Where brands<br/>meet{' '}
-              <em style={{ fontStyle: 'italic', background: `linear-gradient(135deg,${T.t} 0%,#E8A060 100%)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>buyers</em>
+            <h1 style={{ fontFamily: "'Playfair Display',serif", fontSize: bp.isMobile ? '32px' : bp.isTablet ? '46px' : 'clamp(40px,4.5vw,62px)', fontWeight: 900, lineHeight: 1.06, letterSpacing: -1.8, color: T.ink, marginBottom: 20 }}>
+              India's next-generation<br/>
+              <em style={{ fontStyle: 'italic', background: `linear-gradient(135deg,${T.t} 0%,#E8A060 100%)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>wholesale marketplace</em>
             </h1>
 
-            <p style={{ fontSize: bp.isMobile ? 15 : 17, color: T.is, lineHeight: 1.78, marginBottom: 30, maxWidth: 430 }}>
-              Discover 50,000+ products from 5,000+ verified Indian suppliers. Order wholesale, pay on terms, and grow faster.
+            <p style={{ fontSize: bp.isMobile ? 15 : 17, color: T.is, lineHeight: 1.82, marginBottom: 32, maxWidth: 460 }}>
+              Discover fresh products from Indian manufacturers and growing brands. Built for modern B2B trade — simple, fast, and transparent.
             </p>
 
-            <div style={{ display: 'flex', gap: 10, marginBottom: 28, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: 10, marginBottom: 28 }}>
               <button
                 onClick={() => dispatch(toggleLogin(true))}
                 onMouseEnter={() => setHovMain(true)} onMouseLeave={() => setHovMain(false)}
-                style={{ padding: bp.isMobile ? '13px 26px' : '15px 34px', borderRadius: 10, background: hovMain ? `linear-gradient(135deg,${T.td},#8A5226)` : `linear-gradient(135deg,${T.t},${T.td})`, color: '#fff', fontSize: bp.isMobile ? 14 : 15, fontWeight: 700, border: 'none', cursor: 'pointer', fontFamily: 'inherit', boxShadow: '0 8px 28px rgba(196,119,58,.38)', transform: hovMain ? 'translateY(-2px)' : 'none', transition: '.2s', flex: bp.isMobile ? '1 1 auto' : 'none' }}>
-                Start sourcing free
-              </button>
-              <button
-                onClick={() => dispatch(toggleLogin(true))}
-                onMouseEnter={() => setHovSec(true)} onMouseLeave={() => setHovSec(false)}
-                style={{ padding: bp.isMobile ? '12px 22px' : '14px 28px', borderRadius: 10, background: hovSec ? T.tl : T.w, color: T.ink, fontSize: bp.isMobile ? 14 : 15, fontWeight: 600, border: `1.5px solid ${hovSec ? T.t : T.b}`, cursor: 'pointer', fontFamily: 'inherit', boxShadow: shadow.sm, transition: '.18s', flex: bp.isMobile ? '1 1 auto' : 'none' }}>
-                List your brand →
+                style={{ padding: bp.isMobile ? '13px 28px' : '15px 36px', borderRadius: 10, background: hovMain ? `linear-gradient(135deg,${T.td},#8A5226)` : `linear-gradient(135deg,${T.t},${T.td})`, color: '#fff', fontSize: bp.isMobile ? 14 : 15, fontWeight: 700, border: 'none', cursor: 'pointer', fontFamily: 'inherit', boxShadow: '0 8px 28px rgba(196,119,58,.38)', transform: hovMain ? 'translateY(-2px)' : 'none', transition: '.2s' }}>
+                Explore products
               </button>
             </div>
 
             <div style={{ display: 'flex', gap: bp.isMobile ? 14 : 22, flexWrap: 'wrap' }}>
-              {['GST Verified', 'Trade Assured', 'Net 30 Terms'].map(txt => (
+              {['Verified businesses', 'Easy sourcing', 'Export support'].map(txt => (
                 <div key={txt} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: T.mu, fontWeight: 500 }}>
                   <span style={{ width: 18, height: 18, borderRadius: '50%', background: T.gl, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 9, color: T.g, fontWeight: 700, flexShrink: 0 }}>✓</span>
                   {txt}

@@ -48,7 +48,7 @@ function PublicLayout({ children }) {
         {children}
       </main>
       <footer style={{ textAlign: 'center', padding: '28px', borderTop: `1px solid ${C.borderSoft}`, color: C.muted, fontSize: 12 }}>
-        © 2025 Globrixa Technologies Pvt. Ltd. · <button onClick={() => navigate('/')} style={{ background: 'none', border: 'none', color: C.saffron, cursor: 'pointer', fontSize: 12, fontWeight: 600 }}>Back to Home</button>
+        © 2026 Globrixa Technologies Pvt. Ltd. · <button onClick={() => navigate('/')} style={{ background: 'none', border: 'none', color: C.saffron, cursor: 'pointer', fontSize: 12, fontWeight: 600 }}>Back to Home</button>
       </footer>
     </div>
   );

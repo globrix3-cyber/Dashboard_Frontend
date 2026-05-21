@@ -1,57 +1,101 @@
 import { useNavigate } from 'react-router-dom';
-import { T } from './tokens';
 import { FOOTER_COLS } from './data';
 import { useBreakpoint } from '../../hooks/useBreakpoint';
 
 const NAV_MAP = {
-  'About': '/about', 'Blog': '/blog', 'Careers': '/careers', 'Press': '/about',
-  'Help Center': '/help', 'Contact': '/contact', 'Privacy': '/privacy',
-  'Terms': '/terms', 'Refund Policy': '/terms',
+  'About':        '/about',
+  'Our Story':    '/our-story',
+  'Blog':         '/blog',
+  'Careers':      '/careers',
+  'Press':        '/about',
+  'Help Center':  '/help',
+  'Contact':      '/contact',
+  'Privacy':      '/privacy',
+  'Terms':        '/terms',
+  'Refund Policy':'/terms',
 };
 
 export default function LandingFooter() {
   const navigate = useNavigate();
   const bp       = useBreakpoint();
+  const pad      = bp.isMobile ? '36px 18px 22px' : bp.isTablet ? '44px 28px 24px' : '52px 56px 28px';
 
-  const pad  = bp.isMobile ? '48px 18px 28px' : bp.isTablet ? '56px 32px 28px' : '64px 56px 36px';
-  const cols = bp.isMobile ? '1fr 1fr' : bp.isTablet ? '1fr 1fr 1fr' : '2fr 1fr 1fr 1fr 1fr';
+  const COLS = [
+    {
+      heading: 'Support',
+      links: ['Help Center', 'Contact', 'Privacy Policy', 'Terms of Service'],
+      map: { 'Help Center': '/help', 'Contact': '/contact', 'Privacy Policy': '/privacy', 'Terms of Service': '/terms' },
+    },
+    {
+      heading: 'Company',
+      links: ['Our Story', 'Blog', 'Careers', 'Press'],
+      map: { 'Our Story': '/our-story', 'Blog': '/blog', 'Careers': '/careers', 'Press': '/about' },
+    },
+    {
+      heading: 'Categories',
+      links: ['Wall Décor', 'Soft Furnishings', 'Handicrafts', 'Textiles', 'View all 24'],
+      map: {},
+    },
+  ];
 
   return (
     <footer style={{ background: '#0F0E0D', padding: pad }}>
-      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: cols, gap: bp.isMobile ? 28 : 40, paddingBottom: bp.isMobile ? 36 : 52, borderBottom: '1px solid #1A1816' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
 
-          {/* Brand col — full width on mobile */}
+        {/* Main grid */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: bp.isMobile ? '1fr 1fr' : bp.isTablet ? '1fr 1fr' : '1.8fr 1fr 1fr 1fr',
+          gap: bp.isMobile ? 28 : 40,
+          paddingBottom: bp.isMobile ? 28 : 40,
+          borderBottom: '1px solid rgba(255,255,255,.08)',
+        }}>
+
+          {/* Brand — full width on mobile */}
           <div style={{ gridColumn: bp.isMobile ? '1 / -1' : 'auto' }}>
-            <button onClick={() => navigate('/')} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, marginBottom: 12 }}>
-              <div style={{ fontFamily: "'Playfair Display',serif", fontSize: 22, fontWeight: 900, color: '#fff', letterSpacing: '-.5px' }}>Globrixa</div>
+            <button onClick={() => navigate('/')} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, marginBottom: 14, display: 'block' }}>
+              <img src="/logo.png" alt="Globrixa" style={{ height: 44, objectFit: 'contain' }} />
             </button>
-            <p style={{ fontSize: 13, color: '#555', lineHeight: 1.78, maxWidth: 220, marginBottom: 18 }}>India's premier B2B wholesale marketplace — connecting verified suppliers with global buyers across 120+ countries.</p>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, background: 'rgba(255,255,255,.04)', border: '1px solid #222', borderRadius: 7, padding: '7px 13px', fontSize: 11, color: '#555' }}>🇮🇳 Proudly Made in India</div>
+            <p style={{ fontSize: 12, color: 'rgba(255,255,255,.6)', lineHeight: 1.75, maxWidth: 210 }}>
+              India's B2B wholesale marketplace — connecting verified manufacturers with global buyers across 120+ countries.
+            </p>
+            <div style={{ marginTop: 14, display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 10, color: 'rgba(255,255,255,.5)', border: '1px solid rgba(255,255,255,.2)', borderRadius: 5, padding: '5px 10px' }}>
+              🇮🇳 Proudly Made in India
+            </div>
           </div>
 
-          {FOOTER_COLS.map(col => (
+          {/* Support + Company + Address */}
+          {COLS.map(col => (
             <div key={col.heading}>
-              <h5 style={{ fontSize: 10, fontWeight: 700, letterSpacing: '.12em', textTransform: 'uppercase', color: '#555', marginBottom: 16 }}>{col.heading}</h5>
-              {col.links.map(link => (
+              <h5 style={{ fontSize: 11, fontWeight: 700, letterSpacing: '.12em', textTransform: 'uppercase', color: '#C4773A', marginBottom: 16 }}>
+                {col.heading}
+              </h5>
+              {col.links ? col.links.map(link => (
                 <div key={link}
-                  onClick={() => NAV_MAP[link] && navigate(NAV_MAP[link])}
-                  onMouseEnter={e => { if (NAV_MAP[link]) e.currentTarget.style.color = T.t; }}
-                  onMouseLeave={e => { e.currentTarget.style.color = '#444'; }}
-                  style={{ display: 'block', fontSize: 13, color: '#444', marginBottom: 9, cursor: NAV_MAP[link] ? 'pointer' : 'default', transition: '.15s' }}
-                >{link}</div>
+                  onClick={() => col.map[link] && navigate(col.map[link])}
+                  onMouseEnter={e => { if (col.map[link]) e.currentTarget.style.color = '#fff'; }}
+                  onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,.72)'; }}
+                  style={{ fontSize: 13, color: 'rgba(255,255,255,.72)', marginBottom: 10, cursor: col.map[link] ? 'pointer' : 'default', transition: '.15s' }}
+                >
+                  {link}
+                </div>
+              )) : col.address.map((line, i) => (
+                <div key={i} style={{ fontSize: 13, color: 'rgba(255,255,255,.4)', lineHeight: 1.7 }}>{line}</div>
               ))}
             </div>
           ))}
         </div>
 
-        <div style={{ paddingTop: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
-          <span style={{ fontSize: 12, color: '#2A2724' }}>© 2025 Globrixa Technologies Pvt. Ltd. All rights reserved.</span>
-          <div style={{ display: 'flex', gap: 18, flexWrap: 'wrap' }}>
+        {/* Bottom bar */}
+        <div style={{ paddingTop: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
+          <span style={{ fontSize: 11, color: 'rgba(255,255,255,.45)' }}>
+            Copyright © 2026 Globrixa Technologies Pvt. Ltd.
+          </span>
+          <div style={{ display: 'flex', gap: 16 }}>
             {['Privacy', 'Terms', 'Refund Policy'].map(l => (
-              <span key={l} onClick={() => navigate('/terms')} style={{ fontSize: 12, color: '#2A2724', cursor: 'pointer', transition: '.15s' }}
-                onMouseEnter={e => { e.currentTarget.style.color = T.t; }}
-                onMouseLeave={e => { e.currentTarget.style.color = '#2A2724'; }}
+              <span key={l} onClick={() => navigate('/terms')} style={{ fontSize: 11, color: 'rgba(255,255,255,.5)', cursor: 'pointer', transition: '.15s' }}
+                onMouseEnter={e => { e.currentTarget.style.color = '#fff'; }}
+                onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,.5)'; }}
               >{l}</span>
             ))}
           </div>

@@ -2,166 +2,208 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toggleLogin } from '../../features/auth/authSlice';
-import { T, btnPrimary, btnGhost } from './tokens';
 import { useBreakpoint } from '../../hooks/useBreakpoint';
 
-const NAV_LINKS = ['Discover', 'Suppliers', 'Pricing'];
-
 export default function LandingNavbar() {
-  const dispatch   = useDispatch();
-  const navigate   = useNavigate();
-  const bp         = useBreakpoint();
+  const dispatch  = useDispatch();
+  const navigate  = useNavigate();
+  const bp        = useBreakpoint();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [query,    setQuery]    = useState('');
+  const [query, setQuery]       = useState('');
 
-  const openLogin = () => { dispatch(toggleLogin(true)); setMenuOpen(false); };
+  const openLogin  = () => { dispatch(toggleLogin(true)); setMenuOpen(false); };
+  const handleSearch = (e) => { e.preventDefault(); dispatch(toggleLogin(true)); };
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    dispatch(toggleLogin(true));
-  };
+  /* ── Desktop / Tablet ───────────────────────────────────────────────── */
+  if (!bp.isMobile) return (
+    <nav style={{
+      background: '#fff',
+      borderBottom: '1px solid #E8E2D8',
+      height: bp.isTablet ? 58 : 64,
+      display: 'flex',
+      alignItems: 'center',
+      padding: bp.isTablet ? '0 24px' : '0 48px',
+      position: 'sticky', top: 0, zIndex: 1000,
+      gap: 0,
+    }}>
 
+      {/* Logo — far left */}
+      <button
+        onClick={() => navigate('/')}
+        style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, flexShrink: 0 }}
+      >
+        <span style={{
+          fontFamily: "'DM Sans',sans-serif",
+          fontSize: bp.isTablet ? 13 : 15,
+          fontWeight: 800,
+          color: '#1C1815',
+          letterSpacing: '0.22em',
+          textTransform: 'uppercase',
+          whiteSpace: 'nowrap',
+        }}>
+          G L O B R I X A
+        </span>
+      </button>
+
+      {/* All categories — desktop only */}
+      {!bp.isTablet && (
+        <button
+          onClick={openLogin}
+          style={{
+            display: 'flex', alignItems: 'center', gap: 5,
+            padding: '7px 14px',
+            marginLeft: 24,
+            borderRadius: 6,
+            border: '1.5px solid #E0DAD0',
+            background: '#fff',
+            fontSize: 13, fontWeight: 500, color: '#1C1815',
+            cursor: 'pointer', fontFamily: 'inherit',
+            flexShrink: 0, whiteSpace: 'nowrap',
+            transition: 'border-color .15s',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = '#C4773A'; }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = '#E0DAD0'; }}
+        >
+          All categories
+          <svg width="10" height="10" viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0 }}>
+            <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </button>
+      )}
+
+      {/* Search — grows to fill all remaining center space */}
+      <form
+        onSubmit={handleSearch}
+        style={{ flex: 1, margin: bp.isTablet ? '0 16px' : '0 28px', position: 'relative' }}
+      >
+        <div
+          style={{
+            display: 'flex', alignItems: 'center',
+            border: '1.5px solid #E0DAD0',
+            borderRadius: 100,
+            height: bp.isTablet ? 38 : 42,
+            padding: '0 16px', gap: 10,
+            background: '#FAFAF8',
+            transition: 'border-color .15s',
+          }}
+          onFocusCapture={e => { e.currentTarget.style.borderColor = '#C4773A'; }}
+          onBlurCapture={e => { e.currentTarget.style.borderColor = '#E0DAD0'; }}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9A9088" strokeWidth="2" style={{ flexShrink: 0 }}>
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+          <input
+            type="text"
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            onFocus={() => dispatch(toggleLogin(true))}
+            placeholder="Search wholesale products or brands"
+            style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontSize: 13, color: '#1C1815', fontFamily: 'inherit' }}
+          />
+        </div>
+      </form>
+
+      {/* Right nav — pushed to far right by the flex-1 search */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 0, flexShrink: 0 }}>
+        {!bp.isTablet && (
+          <>
+            <NavLink onClick={() => navigate('/blog')}>Blog</NavLink>
+            <NavLink onClick={openLogin}>Sign up to sell</NavLink>
+          </>
+        )}
+        <NavLink onClick={openLogin}>Sign in</NavLink>
+        <button
+          onClick={openLogin}
+          style={{
+            marginLeft: 10,
+            padding: bp.isTablet ? '8px 18px' : '9px 22px',
+            borderRadius: 100,
+            background: '#1C1815', color: '#fff',
+            fontSize: 13, fontWeight: 600,
+            border: 'none', cursor: 'pointer',
+            fontFamily: 'inherit', whiteSpace: 'nowrap',
+            transition: 'background .15s',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.background = '#3D3730'; }}
+          onMouseLeave={e => { e.currentTarget.style.background = '#1C1815'; }}
+        >
+          Join free
+        </button>
+      </div>
+    </nav>
+  );
+
+  /* ── Mobile ─────────────────────────────────────────────────────────── */
   return (
     <>
       <nav style={{
-        background: 'rgba(247,241,232,.97)', backdropFilter: 'blur(20px)',
-        borderBottom: `1px solid ${T.bs}`,
-        padding: bp.isMobile ? '0 16px' : bp.isTablet ? '0 28px' : '0 56px',
-        height: bp.isMobile ? 58 : 68,
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        position: 'sticky', top: 0, zIndex: 1000, gap: 16,
+        background: '#fff', borderBottom: '1px solid #E8E2D8',
+        height: 54, display: 'flex', alignItems: 'center',
+        justifyContent: 'space-between', padding: '0 16px',
+        position: 'sticky', top: 0, zIndex: 1000,
       }}>
-
-        {/* Logo */}
-        <button
-          onClick={() => navigate('/')}
-          style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, flexShrink: 0 }}
-        >
-          <span style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: bp.isMobile ? 19 : 23, fontWeight: 900, color: T.ink, letterSpacing: '-.5px' }}>
-            Globri<span style={{ color: T.t }}>xa</span>
+        <button onClick={() => navigate('/')} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
+          <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 12, fontWeight: 800, color: '#1C1815', letterSpacing: '0.2em', textTransform: 'uppercase' }}>
+            G L O B R I X A
           </span>
         </button>
-
-        {/* Search bar — hidden on mobile */}
-        {!bp.isMobile && (
-          <form onSubmit={handleSearch} style={{
-            flex: 1, maxWidth: 500, background: T.w,
-            border: `1.5px solid ${T.b}`, borderRadius: 10,
-            height: bp.isTablet ? 40 : 44,
-            display: 'flex', alignItems: 'center', padding: '0 6px 0 14px', gap: 8,
-            boxShadow: '0 2px 8px rgba(28,25,21,.07)',
-          }}>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke={T.mu} strokeWidth="2" style={{ flexShrink: 0 }}>
-              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-            </svg>
-            <input
-              type="text"
-              value={query}
-              onChange={e => setQuery(e.target.value)}
-              onFocus={() => dispatch(toggleLogin(true))}
-              placeholder="Search products, suppliers, categories…"
-              style={{ border: 'none', outline: 'none', background: 'transparent', fontSize: 13, color: T.ink, fontFamily: 'inherit', width: '100%' }}
-            />
-            <button type="submit" style={{ background: T.t, border: 'none', borderRadius: 7, width: 30, height: 30, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#fff', fontSize: 13, flexShrink: 0 }}>→</button>
-          </form>
-        )}
-
-        {/* Nav links — desktop only */}
-        {bp.isDesktop && (
-          <div style={{ display: 'flex', gap: 2 }}>
-            {NAV_LINKS.map(l => (
-              <button key={l} onClick={openLogin} style={{ padding: '7px 13px', borderRadius: 7, fontSize: 13, color: T.is, cursor: 'pointer', fontWeight: 500, background: 'none', border: 'none', fontFamily: 'inherit', transition: 'background .15s, color .15s' }}
-                onMouseEnter={e => { e.currentTarget.style.background = T.tl; e.currentTarget.style.color = T.t; }}
-                onMouseLeave={e => { e.currentTarget.style.background = 'none'; e.currentTarget.style.color = T.is; }}
-              >{l}</button>
-            ))}
-          </div>
-        )}
-
-        {/* Auth buttons — desktop/tablet */}
-        {!bp.isMobile ? (
-          <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexShrink: 0 }}>
-            <button onClick={openLogin} style={{ ...btnGhost, padding: bp.isTablet ? '7px 14px' : '8px 18px', fontSize: 13 }}>
-              Sign in
-            </button>
-            <button onClick={openLogin} style={{ ...btnPrimary, padding: bp.isTablet ? '8px 16px' : '9px 20px', fontSize: 13 }}>
-              Join free
-            </button>
-          </div>
-        ) : (
-          /* Hamburger — mobile only */
-          <button
-            onClick={() => setMenuOpen(o => !o)}
-            aria-label="Toggle menu"
-            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 6, display: 'flex', flexDirection: 'column', gap: 5 }}
-          >
-            {[0, 1, 2].map(i => (
-              <span key={i} style={{
-                display: 'block', width: 22, height: 2, borderRadius: 2, background: T.ink,
-                transition: 'transform .22s, opacity .22s',
-                transform: menuOpen
-                  ? i === 0 ? 'translateY(7px) rotate(45deg)'
-                    : i === 2 ? 'translateY(-7px) rotate(-45deg)'
-                    : 'scaleX(0)'
-                  : 'none',
-                opacity: menuOpen && i === 1 ? 0 : 1,
-              }} />
-            ))}
-          </button>
-        )}
+        <button
+          onClick={() => setMenuOpen(o => !o)}
+          aria-label="Menu"
+          style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 6, display: 'flex', flexDirection: 'column', gap: 5 }}
+        >
+          {[0, 1, 2].map(i => (
+            <span key={i} style={{
+              display: 'block', width: 22, height: 2, borderRadius: 2, background: '#1C1815',
+              transition: 'transform .22s, opacity .22s',
+              transform: menuOpen
+                ? (i === 0 ? 'translateY(7px) rotate(45deg)' : i === 2 ? 'translateY(-7px) rotate(-45deg)' : 'scaleX(0)')
+                : 'none',
+              opacity: menuOpen && i === 1 ? 0 : 1,
+            }} />
+          ))}
+        </button>
       </nav>
 
-      {/* Mobile drawer */}
-      {bp.isMobile && (
-        <div style={{
-          position: 'fixed', top: 58, left: 0, right: 0, bottom: 0,
-          background: 'rgba(15,14,13,.6)', backdropFilter: 'blur(4px)',
-          zIndex: 999, opacity: menuOpen ? 1 : 0, pointerEvents: menuOpen ? 'auto' : 'none',
-          transition: 'opacity .22s',
-        }} onClick={() => setMenuOpen(false)}>
-          <div
-            onClick={e => e.stopPropagation()}
-            style={{
-              background: T.c, borderBottom: `1px solid ${T.bs}`,
-              padding: '20px 20px 28px',
-              transform: menuOpen ? 'translateY(0)' : 'translateY(-12px)',
-              transition: 'transform .22s ease',
-            }}
-          >
-            {/* Mobile search */}
-            <form onSubmit={handleSearch} style={{ display: 'flex', gap: 8, marginBottom: 20, background: T.w, border: `1.5px solid ${T.b}`, borderRadius: 10, padding: '0 8px 0 14px', height: 44, alignItems: 'center' }}>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke={T.mu} strokeWidth="2" style={{ flexShrink: 0 }}>
-                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-              </svg>
-              <input
-                type="text"
-                value={query}
-                onChange={e => setQuery(e.target.value)}
-                placeholder="Search products, suppliers…"
-                style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontSize: 14, fontFamily: 'inherit', color: T.ink }}
-              />
-              <button type="submit" style={{ background: T.t, border: 'none', borderRadius: 7, width: 30, height: 30, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#fff' }}>→</button>
+      {menuOpen && (
+        <div
+          style={{ position: 'fixed', top: 54, left: 0, right: 0, bottom: 0, background: 'rgba(15,14,13,.55)', backdropFilter: 'blur(4px)', zIndex: 999 }}
+          onClick={() => setMenuOpen(false)}
+        >
+          <div onClick={e => e.stopPropagation()} style={{ background: '#fff', padding: '20px 18px 28px', borderBottom: '1px solid #E8E2D8' }}>
+            <form onSubmit={handleSearch} style={{ display: 'flex', alignItems: 'center', gap: 8, border: '1.5px solid #E0DAD0', borderRadius: 100, height: 44, padding: '0 14px', marginBottom: 18, background: '#FAFAF8' }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9A9088" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              <input type="text" value={query} onChange={e => setQuery(e.target.value)} placeholder="Search products or brands…" style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontSize: 14, fontFamily: 'inherit', color: '#1C1815' }} />
             </form>
-
-            {/* Nav links */}
-            {NAV_LINKS.map(l => (
-              <button key={l} onClick={openLogin} style={{ display: 'block', width: '100%', textAlign: 'left', padding: '13px 4px', fontSize: 15, fontWeight: 600, color: T.ink, background: 'none', border: 'none', borderBottom: `1px solid ${T.bs}`, cursor: 'pointer', fontFamily: 'inherit' }}>
-                {l}
+            {[
+              ['Blog', () => { navigate('/blog'); setMenuOpen(false); }],
+              ['Our Story', () => { navigate('/our-story'); setMenuOpen(false); }],
+              ['Sign up to sell', openLogin],
+            ].map(([label, fn]) => (
+              <button key={label} onClick={fn} style={{ display: 'block', width: '100%', textAlign: 'left', padding: '13px 4px', fontSize: 15, fontWeight: 500, color: '#1C1815', background: 'none', border: 'none', borderBottom: '1px solid #F0EBE4', cursor: 'pointer', fontFamily: 'inherit' }}>
+                {label}
               </button>
             ))}
-
-            {/* Auth */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 20 }}>
-              <button onClick={openLogin} style={{ ...btnPrimary, width: '100%', justifyContent: 'center', padding: '13px 0', fontSize: 14 }}>
-                Join free — it's free
-              </button>
-              <button onClick={openLogin} style={{ ...btnGhost, width: '100%', justifyContent: 'center', padding: '12px 0', fontSize: 14, border: `1.5px solid ${T.b}`, borderRadius: 8 }}>
-                Sign in
-              </button>
+              <button onClick={openLogin} style={{ width: '100%', padding: '13px', borderRadius: 100, background: '#1C1815', color: '#fff', fontSize: 14, fontWeight: 700, border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}>Join free</button>
+              <button onClick={openLogin} style={{ width: '100%', padding: '12px', borderRadius: 100, background: 'none', color: '#1C1815', fontSize: 14, fontWeight: 500, border: '1.5px solid #E0DAD0', cursor: 'pointer', fontFamily: 'inherit' }}>Sign in</button>
             </div>
           </div>
         </div>
       )}
     </>
+  );
+}
+
+function NavLink({ onClick, children }) {
+  return (
+    <button
+      onClick={onClick}
+      style={{ padding: '6px 14px', fontSize: 13, fontWeight: 500, color: '#5A5248', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit', borderRadius: 6, transition: 'color .15s', whiteSpace: 'nowrap' }}
+      onMouseEnter={e => { e.currentTarget.style.color = '#1C1815'; }}
+      onMouseLeave={e => { e.currentTarget.style.color = '#5A5248'; }}
+    >
+      {children}
+    </button>
   );
 }

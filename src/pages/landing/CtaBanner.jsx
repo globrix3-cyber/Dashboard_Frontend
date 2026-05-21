@@ -9,7 +9,6 @@ export default function CtaBanner() {
   const dispatch  = useDispatch();
   const bp        = useBreakpoint();
   const [hovW, setHovW] = useState(false);
-  const [hovO, setHovO] = useState(false);
   const openLogin = () => dispatch(toggleLogin(true));
 
   const pad = bp.isMobile ? '72px 18px' : bp.isTablet ? '88px 32px' : '104px 56px';
@@ -37,9 +36,6 @@ export default function CtaBanner() {
         <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
           <button onClick={openLogin} onMouseEnter={() => setHovW(true)} onMouseLeave={() => setHovW(false)} style={{ padding: bp.isMobile ? '13px 28px' : '16px 42px', borderRadius: 9, background: hovW ? 'rgba(255,255,255,.95)' : '#fff', color: T.td, fontSize: bp.isMobile ? 14 : 15, fontWeight: 800, border: 'none', cursor: 'pointer', fontFamily: 'inherit', boxShadow: '0 8px 30px rgba(0,0,0,.25)', transform: hovW ? 'translateY(-3px) scale(1.02)' : 'none', transition: '.2s' }}>
             Start sourcing — it's free
-          </button>
-          <button onClick={openLogin} onMouseEnter={() => setHovO(true)} onMouseLeave={() => setHovO(false)} style={{ padding: bp.isMobile ? '12px 24px' : '15px 40px', borderRadius: 9, background: hovO ? 'rgba(255,255,255,.12)' : 'transparent', color: 'rgba(255,255,255,.9)', border: '1.5px solid rgba(255,255,255,.38)', fontSize: bp.isMobile ? 14 : 15, cursor: 'pointer', fontFamily: 'inherit', transition: '.18s', transform: hovO ? 'translateY(-2px)' : 'none' }}>
-            List your brand →
           </button>
         </div>
       </div>

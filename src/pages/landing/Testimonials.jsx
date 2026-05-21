@@ -5,9 +5,9 @@ import { IMG } from './images';
 import { useBreakpoint, rPad, rW } from '../../hooks/useBreakpoint';
 
 const TESTI_PHOTOS = {
-  'Priya Venkatesh': IMG.womanArtisanMarket,
-  'Rajesh Kumar':    IMG.artisanPainting,
-  'Amandeep Singh':  IMG.businessmanPortrait,
+  'Sarah Mitchell': IMG.sarahMitchell,
+  'Pierre Dubois':  IMG.pierreDubois,
+  'Aiko Tanaka':    IMG.aikoTanaka,
 };
 
 function TestiCard({ t, featured }) {
@@ -46,7 +46,7 @@ export default function Testimonials() {
         <div style={{ marginBottom: 36, display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
           <div>
             <div style={eyebrow}>Customer Stories</div>
-            <h2 style={sectionTitle}>Trusted by Indian businesses</h2>
+            <h2 style={sectionTitle}>Trusted by global buyers</h2>
           </div>
           <div style={{ textAlign: 'right' }}>
             <div style={{ fontFamily: "'Playfair Display',serif", fontSize: 26, fontWeight: 800, color: T.ink, lineHeight: 1 }}>4.9 / 5</div>

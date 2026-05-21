@@ -7,12 +7,12 @@ import { IMG } from './images';
 import { useBreakpoint, rPad, rW } from '../../hooks/useBreakpoint';
 
 const ITEM_PHOTOS = {
-  'Linen Kurta Fabric 58"':   IMG.fabricRolls,
-  'Turmeric — Lakadong':      IMG.turmericPowder,
-  'Precision Drill Bit Set':  IMG.metalParts,
-  'Blue Pottery Vase':        IMG.blueCeramicVases,
-  'Ashwagandha Root Powder':  IMG.herbalPowder,
-  'Rose Attar Essential Oil': IMG.floralHerbs,
+  'Ikat Print Throw Blanket':  IMG.fabricRolls,
+  'Hand-painted Ceramic Bowl': IMG.blueCeramicVases,
+  'Rattan Storage Basket':     IMG.wovenBaskets,
+  'Block Print Tablecloth':    IMG.jaipurTextiles,
+  'Macramé Wall Hanging':      IMG.rajasthaniEmbroidery,
+  'Brass Incense Holder Set':  IMG.mosaicLamps,
 };
 
 function MiniCard({ item, onAction }) {

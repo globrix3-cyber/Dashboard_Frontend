@@ -67,4 +67,7 @@ export const IMG = {
   // ── People ───────────────────────────────────────────────────────────────
   womanArtisanMarket:  '/images/people/woman-artisan-market.jpg',
   businessmanPortrait: '/images/people/businessman-portrait.jpg',
+  sarahMitchell:       '/images/people/sarah-mitchell.jpg',
+  pierreDubois:        '/images/people/pierre-dubois.jpg',
+  aikoTanaka:          '/images/people/aiko-tanaka.jpg',
 };

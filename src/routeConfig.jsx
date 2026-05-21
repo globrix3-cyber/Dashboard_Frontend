@@ -27,6 +27,7 @@ import AdminPages        from "./pages/AdminPages";
 import MessagesPage      from "./pages/MessagesPage";
 import CategoriesPage   from "./pages/CategoriesPage";
 import PublicPages       from "./pages/PublicPages";
+import OurStoryPage     from "./pages/OurStoryPage";
 
 const { AboutPage, BlogPage, CareersPage, ContactPage, PrivacyPage, TermsPage, HelpCenterPage } = PublicPages;
 
@@ -164,6 +165,7 @@ export const routeConfig = [
   },
 
   // ── Public pages (no auth) ────────────────────────────────────────────────
+  { path: '/our-story',    element: <OurStoryPage />,    public: true },
   { path: '/about',        element: <AboutPage />,       public: true },
   { path: '/blog',         element: <BlogPage />,        public: true },
   { path: '/careers',      element: <CareersPage />,     public: true },
