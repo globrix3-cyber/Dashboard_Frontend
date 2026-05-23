@@ -14,10 +14,10 @@ export default function BuyerStory() {
         <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '.14em', textTransform: 'uppercase', color: ACC, marginBottom: 16 }}>About Globrixa</div>
 
         {/* Headline */}
-        <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: '32px', fontWeight: 900, color: ACC, lineHeight: 1.08, marginBottom: 8 }}>
+        <h2 style={{ fontFamily: "'Cormorant Garamond','Playfair Display',Georgia,serif", fontSize: '32px', fontWeight: 900, color: ACC, lineHeight: 1.08, marginBottom: 8 }}>
           We're Globrixa.
         </h2>
-        <div style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: '20px', fontWeight: 600, color: 'rgba(255,255,255,.75)', lineHeight: 1.25, marginBottom: 20 }}>
+        <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',Georgia,serif", fontSize: '20px', fontWeight: 600, color: 'rgba(255,255,255,.75)', lineHeight: 1.25, marginBottom: 20 }}>
           The platform for global buyers.
         </div>
         <p style={{ fontSize: 15, color: 'rgba(255,255,255,.5)', lineHeight: 1.85, marginBottom: 32 }}>
@@ -48,7 +48,7 @@ export default function BuyerStory() {
           </div>
 
           <h2 style={{
-            fontFamily: "'Playfair Display',Georgia,serif",
+            fontFamily: "'Cormorant Garamond','Playfair Display',Georgia,serif",
             fontSize: bp.isTablet ? '36px' : '52px',
             fontWeight: 900, color: ACC,
             lineHeight: 1.05, letterSpacing: -1,
@@ -58,7 +58,7 @@ export default function BuyerStory() {
           </h2>
 
           <div style={{
-            fontFamily: "'Playfair Display',Georgia,serif",
+            fontFamily: "'Cormorant Garamond','Playfair Display',Georgia,serif",
             fontSize: bp.isTablet ? '20px' : '26px',
             fontWeight: 600,
             color: 'rgba(255,255,255,.7)',
@@ -75,7 +75,7 @@ export default function BuyerStory() {
           <div style={{ display: 'flex', gap: 32 }}>
             {[['5,000+', 'Verified suppliers'], ['120+', 'Countries sourcing'], ['50K+', 'Products listed']].map(([num, label]) => (
               <div key={label}>
-                <div style={{ fontFamily: "'Playfair Display',serif", fontSize: bp.isTablet ? 22 : 28, fontWeight: 900, color: '#fff', letterSpacing: -0.5 }}>{num}</div>
+                <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: bp.isTablet ? 22 : 28, fontWeight: 900, color: '#fff', letterSpacing: -0.5 }}>{num}</div>
                 <div style={{ fontSize: 11, color: 'rgba(255,255,255,.4)', fontWeight: 500, marginTop: 2 }}>{label}</div>
               </div>
             ))}

@@ -31,7 +31,7 @@ export default function StatsSection() {
         <div style={{ display: 'grid', gridTemplateColumns: cols, gap: 1, background: 'rgba(255,255,255,.07)', borderRadius: 18, overflow: 'hidden', backdropFilter: 'blur(6px)' }}>
           {STATS.map(s => (
             <div key={s.label} style={{ padding: bp.isMobile ? '32px 16px' : '48px 36px', background: 'rgba(255,255,255,.03)', textAlign: 'center' }}>
-              <div style={{ fontFamily: "'Playfair Display',serif", fontSize: num, fontWeight: 900, color: '#fff', letterSpacing: -1.5, lineHeight: 1, marginBottom: 8 }}>
+              <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: num, fontWeight: 900, color: '#fff', letterSpacing: -1.5, lineHeight: 1, marginBottom: 8 }}>
                 {s.num}<span style={{ color: T.t }}>{s.suf}</span>
               </div>
               <div style={{ fontSize: bp.isMobile ? 11 : 13, color: 'rgba(255,255,255,.45)', fontWeight: 500 }}>{s.label}</div>

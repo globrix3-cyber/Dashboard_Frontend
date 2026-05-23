@@ -21,7 +21,7 @@ export default function HowItWorks() {
       <div style={{ ...rW }}>
         <div style={{ textAlign: 'center', marginBottom: bp.isMobile ? 32 : 48 }}>
           <div style={{ ...eyebrow, display: 'inline-block', marginBottom: 10 }}>Simple Process</div>
-          <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: bp.isMobile ? '26px' : 'clamp(26px,3vw,40px)', fontWeight: 700, color: T.ink, letterSpacing: -1, lineHeight: 1.1, textAlign: 'center' }}>Up and running in minutes</h2>
+          <h2 style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: bp.isMobile ? '26px' : 'clamp(26px,3vw,40px)', fontWeight: 700, color: T.ink, letterSpacing: -1, lineHeight: 1.1, textAlign: 'center' }}>Up and running in minutes</h2>
           <p style={{ fontSize: 15, color: T.mu, marginTop: 10, maxWidth: 440, marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.7 }}>No lengthy onboarding. Discover, connect, and transact — all in one place.</p>
         </div>
 
@@ -35,7 +35,7 @@ export default function HowItWorks() {
               borderLeft: !bp.isMobile && i > 0 ? `1px solid ${T.bs}` : 'none',
               borderTop: bp.isMobile && i > 0 ? `1px solid ${T.bs}` : 'none',
             }}>
-              <div style={{ fontFamily: "'Playfair Display',serif", fontSize: bp.isMobile ? 38 : 48, fontWeight: 900, WebkitTextStroke: `2px ${T.t}`, color: 'transparent', lineHeight: 1, marginBottom: 16 }}>{s.n}</div>
+              <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: bp.isMobile ? 38 : 48, fontWeight: 900, WebkitTextStroke: `2px ${T.t}`, color: 'transparent', lineHeight: 1, marginBottom: 16 }}>{s.n}</div>
               <div style={{ fontSize: 26, marginBottom: 14 }}>{s.icon}</div>
               <div style={{ fontSize: 17, fontWeight: 700, color: T.ink, marginBottom: 9 }}>{s.title}</div>
               <p style={{ fontSize: 14, color: T.mu, lineHeight: 1.75 }}>{s.desc}</p>

@@ -41,7 +41,7 @@ function PillarCard({ p, bp }) {
       </div>
       {/* Text */}
       <div style={{ padding: bp.isMobile ? '20px 18px' : '24px 24px' }}>
-        <div style={{ fontSize: 16, fontWeight: 700, color: T.ink, marginBottom: 10, fontFamily: "'Playfair Display',serif" }}>{p.title}</div>
+        <div style={{ fontSize: 16, fontWeight: 700, color: T.ink, marginBottom: 10, fontFamily: "'Cormorant Garamond','Playfair Display',serif" }}>{p.title}</div>
         <p style={{ fontSize: 14, color: T.mu, lineHeight: 1.75, margin: 0 }}>{p.desc}</p>
       </div>
     </div>

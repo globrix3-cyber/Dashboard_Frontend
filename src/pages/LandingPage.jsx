@@ -3,7 +3,6 @@ import LandingNavbar      from './landing/LandingNavbar';
 import HeroSection        from './landing/HeroSection';
 import SocialProofTicker  from './landing/SocialProofTicker';
 import CategoryNavBar     from './landing/CategoryNavBar';
-import PressStrip         from './landing/PressStrip';
 import ShopByCategory     from './landing/ShopByCategory';
 import FeaturedSuppliers  from './landing/FeaturedSuppliers';
 import NewThisWeek        from './landing/NewThisWeek';
@@ -29,12 +28,11 @@ export default function LandingPage() {
   };
 
   return (
-    <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: '#F7F1E8', minHeight: '100vh', overflowX: 'hidden' }}>
+    <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: '#FDF8F2', minHeight: '100vh', overflowX: 'hidden' }}>
       <LandingNavbar />
       <HeroSection />
       <SocialProofTicker />
       <CategoryNavBar activeCategory={activeCategory} onSelect={handleCategorySelect} />
-      <PressStrip />
       <ShopByCategory activeCategory={activeCategory} onCategoryChange={handleCategorySelect} />
       <FeaturedSuppliers />
       <NewThisWeek />
@@ -45,8 +43,8 @@ export default function LandingPage() {
       <FaqSection />
       <BuyerStory />
       <BuyerFeatures />
-      <NewsletterSection />
       <CtaBanner />
+      <NewsletterSection />
       <LandingFooter />
     </div>
   );

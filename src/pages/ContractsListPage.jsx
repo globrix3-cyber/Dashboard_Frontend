@@ -13,7 +13,7 @@ const C = {
   gold:       '#B8730A', goldLt:    '#FDF5E2',
   ink:        '#1C1815', inkSoft:   '#3D3731',
   muted:      '#7A7068',
-  borderSoft: '#E6DED0', cream:     '#F4EFE4',
+  borderSoft: '#E6DED0', cream:     '#F0E8DA',
 };
 
 const STATUS_META = {

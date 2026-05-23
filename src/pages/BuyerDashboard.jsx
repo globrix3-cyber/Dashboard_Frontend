@@ -16,7 +16,7 @@ const C = {
   navyLt:     '#EEF2FB',
   gold:       '#B8730A',
   goldLt:     '#FDF5E2',
-  cream:      '#F4EFE4',
+  cream:      '#F0E8DA',
   ink:        '#1C1815',
   inkSoft:    '#3D3731',
   muted:      '#7A7068',

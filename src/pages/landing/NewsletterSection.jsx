@@ -31,7 +31,7 @@ export default function NewsletterSection() {
       <div style={{ ...rW, maxWidth: 560, position: 'relative', zIndex: 1 }}>
         <div style={{ textAlign: 'center' }}>
           <div style={{ ...eyebrow, marginBottom: 12 }}>Stay informed</div>
-          <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: bp.isMobile ? '26px' : 32, fontWeight: 700, color: T.ink, letterSpacing: -1, marginBottom: 10 }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: bp.isMobile ? '26px' : 32, fontWeight: 700, color: T.ink, letterSpacing: -1, marginBottom: 10 }}>
             Stay ahead of the market
           </h2>
           <p style={{ fontSize: bp.isMobile ? 14 : 15, color: T.mu, lineHeight: 1.75, marginBottom: 24 }}>

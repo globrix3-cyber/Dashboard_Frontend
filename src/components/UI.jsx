@@ -8,7 +8,7 @@ const C = {
   gold:       '#B8730A', goldLt:    '#FDF5E2',
   ink:        '#1C1815', inkSoft:   '#3D3731',
   muted:      '#7A7068', borderSoft:'#E6DED0',
-  cream:      '#F4EFE4',
+  cream:      '#F0E8DA',
 };
 
 /* ── Spinner ─────────────────────────────────────────────────────────────── */
@@ -34,16 +34,16 @@ const BADGE_MAP = {
   shipped:       { bg: '#EEF2FB', color: '#1B3175' },
   quoted:        { bg: '#EEF2FB', color: '#1B3175' },
   under_review:  { bg: '#EEF2FB', color: '#1B3175' },
-  draft:         { bg: '#F4EFE4', color: '#7A7068' },
-  inactive:      { bg: '#F4EFE4', color: '#7A7068' },
-  closed:        { bg: '#F4EFE4', color: '#7A7068' },
+  draft:         { bg: '#F0E8DA', color: '#7A7068' },
+  inactive:      { bg: '#F0E8DA', color: '#7A7068' },
+  closed:        { bg: '#F0E8DA', color: '#7A7068' },
   rejected:      { bg: '#FEF2F2', color: '#DC2626' },
   cancelled:     { bg: '#FEF2F2', color: '#DC2626' },
   suspended:     { bg: '#FEF2F2', color: '#DC2626' },
 };
 
 export function Badge({ status, text }) {
-  const s = BADGE_MAP[status] || { bg: '#F4EFE4', color: '#7A7068' };
+  const s = BADGE_MAP[status] || { bg: '#F0E8DA', color: '#7A7068' };
   const label = text || statusLabel(status);
   return (
     <span style={{

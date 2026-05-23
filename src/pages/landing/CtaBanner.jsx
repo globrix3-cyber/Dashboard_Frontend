@@ -25,7 +25,7 @@ export default function CtaBanner() {
           <span style={{ color: 'rgba(255,255,255,.85)', fontSize: 10, fontWeight: 700, letterSpacing: '.12em', textTransform: 'uppercase' }}>Join 5,000+ suppliers today</span>
         </div>
 
-        <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: bp.isMobile ? '32px' : bp.isTablet ? '46px' : 'clamp(38px,5vw,66px)', fontWeight: 900, color: '#fff', letterSpacing: bp.isMobile ? -1.5 : -2.5, lineHeight: 1.04, marginBottom: 14, textShadow: '0 2px 20px rgba(0,0,0,.2)' }}>
+        <h2 style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: bp.isMobile ? '32px' : bp.isTablet ? '46px' : 'clamp(38px,5vw,66px)', fontWeight: 900, color: '#fff', letterSpacing: bp.isMobile ? -1.5 : -2.5, lineHeight: 1.04, marginBottom: 14, textShadow: '0 2px 20px rgba(0,0,0,.2)' }}>
           Ready to grow<br/>your business?
         </h2>
 

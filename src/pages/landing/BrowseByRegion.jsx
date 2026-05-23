@@ -33,7 +33,7 @@ function CityCard({ city, onAction }) {
       <div style={{ position: 'absolute', inset: 0, background: overlay, opacity: hov ? 0.9 : 0.8, transition: '.25s' }} />
       <div style={{ position: 'relative', zIndex: 2, padding: '26px 22px', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
         <div>
-          <div style={{ fontFamily: "'Playfair Display',serif", fontSize: 26, fontWeight: 800, color: '#fff', marginBottom: 4 }}>{city.name}</div>
+          <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: 26, fontWeight: 800, color: '#fff', marginBottom: 4 }}>{city.name}</div>
           <div style={{ fontSize: 11, color: 'rgba(255,255,255,.7)', marginBottom: 14, fontStyle: 'italic' }}>{city.tagline}</div>
           <div style={{ fontSize: 12, color: 'rgba(255,255,255,.8)', lineHeight: 1.7 }}>{city.desc}</div>
         </div>

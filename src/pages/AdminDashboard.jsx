@@ -30,8 +30,8 @@ const C = {
   muted:      '#7A7068',
   border:     '#D4C9B8',
   borderSoft: '#E6DED0',
-  cream:      '#F4EFE4',
-  warmWhite:  '#FAF7F1',
+  cream:      '#F0E8DA',
+  warmWhite:  '#FDF8F2',
 };
 
 function TriBar() {

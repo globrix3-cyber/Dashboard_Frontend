@@ -20,7 +20,7 @@ function PhotoMosaic({ bp }) {
           style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }} />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top,rgba(18,14,10,.7) 0%,rgba(18,14,10,.1) 60%,transparent)' }} />
         <div style={{ position: 'absolute', bottom: 16, left: 16, right: 16 }}>
-          <div style={{ fontFamily: "'Playfair Display',serif", color: '#fff', fontSize: 17, fontWeight: 700, marginBottom: 3 }}>5,000+ Verified Suppliers</div>
+          <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", color: '#fff', fontSize: 17, fontWeight: 700, marginBottom: 3 }}>5,000+ Verified Suppliers</div>
           <div style={{ color: 'rgba(255,255,255,.6)', fontSize: 11 }}>MSMEs · Artisans · Exporters</div>
         </div>
         <div style={{ position: 'absolute', top: 12, left: 14 }}>
@@ -60,7 +60,7 @@ function PhotoMosaic({ bp }) {
             </span>
           </div>
           <div style={{ position: 'absolute', bottom: 20, left: 20, right: 20 }}>
-            <div style={{ fontFamily: "'Playfair Display',serif", color: '#fff', fontSize: 20, fontWeight: 700, marginBottom: 4, lineHeight: 1.2 }}>5,000+ Verified<br/>Suppliers</div>
+            <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", color: '#fff', fontSize: 20, fontWeight: 700, marginBottom: 4, lineHeight: 1.2 }}>5,000+ Verified<br/>Suppliers</div>
             <div style={{ color: 'rgba(255,255,255,.6)', fontSize: 12, display: 'flex', alignItems: 'center', gap: 5 }}>
               <span style={{ width: 16, height: 1, background: 'rgba(255,255,255,.35)', display: 'inline-block' }} />
               MSMEs, Artisans & Exporters
@@ -120,7 +120,7 @@ function PhotoMosaic({ bp }) {
             <div key={l} style={{ display: 'flex', alignItems: 'center' }}>
               {i > 0 && <div style={{ width: 1, height: 22, background: 'rgba(28,25,21,.1)', marginRight: 20 }} />}
               <div style={{ textAlign: 'center' }}>
-                <div style={{ fontFamily: "'Playfair Display',serif", fontSize: 14, fontWeight: 900, color: T.ink }}>{n}</div>
+                <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: 14, fontWeight: 900, color: T.ink }}>{n}</div>
                 <div style={{ fontSize: 9, color: T.mu, fontWeight: 600, letterSpacing: '.04em' }}>{l}</div>
               </div>
             </div>
@@ -155,9 +155,9 @@ export default function HeroSection() {
         }}>
           {/* Left — text */}
           <div>
-            <h1 style={{ fontFamily: "'Playfair Display',serif", fontSize: bp.isMobile ? '32px' : bp.isTablet ? '46px' : 'clamp(40px,4.5vw,62px)', fontWeight: 900, lineHeight: 1.06, letterSpacing: -1.8, color: T.ink, marginBottom: 20 }}>
+            <h1 style={{ fontFamily: "'Cormorant Garamond','Cormorant Garamond','Playfair Display',serif", fontSize: bp.isMobile ? '40px' : bp.isTablet ? '56px' : 'clamp(52px,5vw,76px)', fontWeight: 700, lineHeight: 1.04, letterSpacing: -1, color: T.ink, marginBottom: 20 }}>
               India's next-generation<br/>
-              <em style={{ fontStyle: 'italic', background: `linear-gradient(135deg,${T.t} 0%,#E8A060 100%)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>wholesale marketplace</em>
+              <span style={{ fontStyle: 'normal', background: `linear-gradient(135deg,${T.t} 0%,#E8A060 100%)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>wholesale marketplace</span>
             </h1>
 
             <p style={{ fontSize: bp.isMobile ? 15 : 17, color: T.is, lineHeight: 1.82, marginBottom: 32, maxWidth: 460 }}>

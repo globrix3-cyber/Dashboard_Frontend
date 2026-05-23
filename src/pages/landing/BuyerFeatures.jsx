@@ -27,7 +27,7 @@ export default function BuyerFeatures() {
 
   if (bp.isMobile) {
     return (
-      <section style={{ background: '#F7F1E8', padding: '56px 20px 52px', borderTop: '1px solid #E8E2D8' }}>
+      <section style={{ background: '#FDF8F2', padding: '56px 20px 52px', borderTop: '1px solid #E8E2D8' }}>
         {/* Image strip */}
         <div style={{ borderRadius: 18, overflow: 'hidden', marginBottom: 36, position: 'relative', aspectRatio: '16/9' }}>
           <img src={IMG.womanArtisanMarket} alt="Indian artisan" loading="lazy" decoding="async"
@@ -36,7 +36,7 @@ export default function BuyerFeatures() {
         </div>
 
         <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '.14em', textTransform: 'uppercase', color: '#C4773A', marginBottom: 16 }}>For buyers</div>
-        <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: '28px', fontWeight: 900, color: '#1C1815', lineHeight: 1.15, letterSpacing: -0.5, marginBottom: 28 }}>
+        <h2 style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: '28px', fontWeight: 900, color: '#1C1815', lineHeight: 1.15, letterSpacing: -0.5, marginBottom: 28 }}>
           For any buyer, no matter what you source.
         </h2>
 
@@ -61,7 +61,7 @@ export default function BuyerFeatures() {
   }
 
   return (
-    <section style={{ background: '#F7F1E8', padding: bp.isTablet ? '72px 32px' : '96px 56px', borderTop: '1px solid #E8E2D8' }}>
+    <section style={{ background: '#FDF8F2', padding: bp.isTablet ? '72px 32px' : '96px 56px', borderTop: '1px solid #E8E2D8' }}>
       <div style={{ maxWidth: 1180, margin: '0 auto', display: 'grid', gridTemplateColumns: bp.isTablet ? '1fr 1fr' : '1fr 1fr', gap: bp.isTablet ? 48 : 80, alignItems: 'center' }}>
 
         {/* Left — contained image */}
@@ -95,7 +95,7 @@ export default function BuyerFeatures() {
           </div>
 
           <h2 style={{
-            fontFamily: "'Playfair Display',serif",
+            fontFamily: "'Cormorant Garamond','Playfair Display',serif",
             fontSize: bp.isTablet ? '28px' : '40px',
             fontWeight: 900, color: '#1C1815',
             lineHeight: 1.15, letterSpacing: -0.5,

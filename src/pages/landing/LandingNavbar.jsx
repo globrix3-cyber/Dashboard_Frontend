@@ -37,7 +37,7 @@ export default function LandingNavbar() {
           fontSize: bp.isTablet ? 13 : 15,
           fontWeight: 800,
           color: '#1C1815',
-          letterSpacing: '0.22em',
+          letterSpacing: '0.08em',
           textTransform: 'uppercase',
           whiteSpace: 'nowrap',
         }}>
@@ -83,7 +83,7 @@ export default function LandingNavbar() {
             borderRadius: 100,
             height: bp.isTablet ? 38 : 42,
             padding: '0 16px', gap: 10,
-            background: '#FAFAF8',
+            background: '#FDF8F2',
             transition: 'border-color .15s',
           }}
           onFocusCapture={e => { e.currentTarget.style.borderColor = '#C4773A'; }}
@@ -171,7 +171,7 @@ export default function LandingNavbar() {
           onClick={() => setMenuOpen(false)}
         >
           <div onClick={e => e.stopPropagation()} style={{ background: '#fff', padding: '20px 18px 28px', borderBottom: '1px solid #E8E2D8' }}>
-            <form onSubmit={handleSearch} style={{ display: 'flex', alignItems: 'center', gap: 8, border: '1.5px solid #E0DAD0', borderRadius: 100, height: 44, padding: '0 14px', marginBottom: 18, background: '#FAFAF8' }}>
+            <form onSubmit={handleSearch} style={{ display: 'flex', alignItems: 'center', gap: 8, border: '1.5px solid #E0DAD0', borderRadius: 100, height: 44, padding: '0 14px', marginBottom: 18, background: '#FDF8F2' }}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9A9088" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
               <input type="text" value={query} onChange={e => setQuery(e.target.value)} placeholder="Search products or brands…" style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontSize: 14, fontFamily: 'inherit', color: '#1C1815' }} />
             </form>

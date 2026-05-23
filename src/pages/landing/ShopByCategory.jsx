@@ -153,7 +153,7 @@ function CatHeroCard({ item, onAction }) {
         <div style={{ marginBottom: 8 }}>
           <span style={{ display: 'inline-block', background: hov ? 'rgba(196,119,58,.9)' : 'rgba(255,255,255,.12)', backdropFilter: 'blur(8px)', border: hov ? '1px solid rgba(196,119,58,.5)' : '1px solid rgba(255,255,255,.18)', color: '#fff', fontSize: 9, fontWeight: 800, padding: '4px 11px', borderRadius: 20, letterSpacing: '.1em', textTransform: 'uppercase', transition: '.22s' }}>{item.chip}</span>
         </div>
-        <div style={{ fontFamily: "'Playfair Display',serif", fontSize: 20, fontWeight: 700, color: '#fff', marginBottom: 4, lineHeight: 1.15 }}>{item.name}</div>
+        <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: 20, fontWeight: 700, color: '#fff', marginBottom: 4, lineHeight: 1.15 }}>{item.name}</div>
         <div style={{ fontSize: 11, color: 'rgba(255,255,255,.6)', marginBottom: 10 }}>{item.count}</div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 5, color: hov ? T.tm : 'rgba(255,255,255,.45)', fontSize: 11, fontWeight: 600, transition: '.22s', transform: hov ? 'translateX(4px)' : 'none' }}>
           Browse {item.name} <span style={{ fontSize: 13 }}>→</span>
@@ -192,7 +192,7 @@ function ProductCard({ p, onAction, bp }) {
       onClick={onAction}
     >
       {/* Image / emoji */}
-      <div style={{ height: bp.isMobile ? 140 : 160, position: 'relative', overflow: 'hidden', background: p.bg || '#F5F0E8' }}>
+      <div style={{ height: bp.isMobile ? 140 : 160, position: 'relative', overflow: 'hidden', background: p.bg || '#F0E8DA' }}>
         {p.img ? (
           <img src={p.img} alt={p.name} loading="lazy" decoding="async"
             style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block', transform: hov ? 'scale(1.05)' : 'scale(1)', transition: 'transform .4s ease' }}

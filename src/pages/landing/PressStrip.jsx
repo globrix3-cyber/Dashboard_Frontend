@@ -20,7 +20,7 @@ export default function PressStrip() {
           justifyContent: bp.isMobile ? 'center' : 'flex-start',
         }}>
           {PRESS_LOGOS.map(name => (
-            <div key={name} style={{ fontSize: bp.isMobile ? 11 : 13, fontWeight: 800, color: T.mu, opacity: .45, fontFamily: "'Playfair Display',serif", letterSpacing: '-.2px', whiteSpace: 'nowrap' }}>
+            <div key={name} style={{ fontSize: bp.isMobile ? 11 : 13, fontWeight: 800, color: T.mu, opacity: .45, fontFamily: "'Cormorant Garamond','Playfair Display',serif", letterSpacing: '-.2px', whiteSpace: 'nowrap' }}>
               {name}
             </div>
           ))}

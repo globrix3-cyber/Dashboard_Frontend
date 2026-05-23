@@ -1,7 +1,7 @@
 export const T = {
-  c:   '#F7F1E8',
-  cm:  '#EDE6D6',
-  cd:  '#E2D8C6',
+  c:   '#FDF8F2',
+  cm:  '#F2EBE0',
+  cd:  '#E8DFCF',
   w:   '#FFFFFF',
   t:   '#C4773A',
   td:  '#A8622E',
@@ -32,9 +32,9 @@ export const eyebrow = {
 };
 
 export const sectionTitle = {
-  fontFamily: "'Playfair Display', Georgia, serif",
-  fontSize: 'clamp(26px,3vw,40px)', fontWeight: 700,
-  color: '#1C1915', letterSpacing: -1, lineHeight: 1.1,
+  fontFamily: "'Cormorant Garamond', 'Playfair Display', Georgia, serif",
+  fontSize: 'clamp(28px,3vw,44px)', fontWeight: 700,
+  color: '#1C1915', letterSpacing: -0.5, lineHeight: 1.1,
 };
 
 export const tag = (variant = 't') => {

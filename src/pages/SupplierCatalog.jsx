@@ -10,7 +10,7 @@ const C = {
   navy: '#1B3175', navyLt: '#EEF2FB',
   gold: '#B8730A', goldLt: '#FDF5E2',
   ink: '#1C1815', inkSoft: '#3D3731',
-  muted: '#7A7068', borderSoft: '#E6DED0', cream: '#F4EFE4',
+  muted: '#7A7068', borderSoft: '#E6DED0', cream: '#F0E8DA',
   red: '#DC2626', redLt: '#FEF2F2',
 };
 

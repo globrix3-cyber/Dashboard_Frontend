@@ -15,10 +15,10 @@ const CSS_VARS = `
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap');
 
   :root {
-    --cream:        #F4EFE4;
-    --cream-mid:    #EDE5D4;
-    --cream-deep:   #E4D9C4;
-    --warm-white:   #FAF7F1;
+    --cream:        #F0E8DA;
+    --cream-mid:    #E8DFCF;
+    --cream-deep:   #DEDAD0;
+    --warm-white:   #FDF8F2;
     --saffron:      #D9600A;
     --saffron-lt:   #FDF1E8;
     --saffron-mid:  #F0B48A;
@@ -146,7 +146,7 @@ function Sidebar({ links, collapsed, onToggle }) {
         top:        0,
         display:    'flex',
         flexDirection: 'column',
-        background: '#FAF7F1',
+        background: '#FDF8F2',
         borderRight: '1px solid #E6DED0',
         transition: 'width 0.3s, min-width 0.3s',
         overflow:   'hidden',
@@ -307,7 +307,7 @@ export default function DashboardLayout({ children }) {
   const links = userRole === 'supplier' ? supplierLinks : userRole === 'admin' ? adminLinks : buyerLinks;
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: '#FAF7F1' }}>
+    <div style={{ display: 'flex', minHeight: '100vh', background: '#FDF8F2' }}>
 
       {/* Desktop sidebar */}
       <div style={{ display: 'none' }} className="md-sidebar-wrapper">
@@ -345,7 +345,7 @@ export default function DashboardLayout({ children }) {
           alignItems:  'center',
           justifyContent: 'space-between',
           padding:     '0 16px',
-          background:  '#FAF7F1',
+          background:  '#FDF8F2',
           borderBottom: '1px solid #E6DED0',
           flexShrink:  0,
         }}>

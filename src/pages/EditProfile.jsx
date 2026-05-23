@@ -9,7 +9,7 @@ const C = {
   saffron: '#D9600A', saffronLt: '#FDF1E8',
   emerald: '#1A7A4A', navy: '#1B3175',
   ink: '#1C1815', inkSoft: '#3D3731',
-  muted: '#7A7068', borderSoft: '#E6DED0', cream: '#F4EFE4',
+  muted: '#7A7068', borderSoft: '#E6DED0', cream: '#F0E8DA',
 };
 
 function Field({ label, icon: Icon, readOnly, ...props }) {

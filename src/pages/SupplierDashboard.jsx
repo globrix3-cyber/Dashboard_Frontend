@@ -32,8 +32,8 @@ export default function SupplierDashboard() {
     muted:      '#7A7068',
     border:     '#E6DED0',
     borderSoft: '#E6DED0',
-    warmWhite:  '#FAF7F1',
-    cream:      '#F4EFE4',
+    warmWhite:  '#FDF8F2',
+    cream:      '#F0E8DA',
   };
 
   return (

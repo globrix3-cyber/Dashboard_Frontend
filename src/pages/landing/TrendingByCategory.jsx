@@ -66,7 +66,7 @@ function CategoryRow({ row, onAction, bp }) {
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <div style={{ width: 42, height: 42, borderRadius: 11, background: row.iconBg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, border: `1.5px solid ${row.iconBorder}`, flexShrink: 0 }}>{row.icon}</div>
             <div>
-              <div style={{ fontFamily: "'Playfair Display',serif", fontSize: bp.isMobile ? 18 : 22, fontWeight: 700, color: T.ink, letterSpacing: '-.5px' }}>{row.title}</div>
+              <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: bp.isMobile ? 18 : 22, fontWeight: 700, color: T.ink, letterSpacing: '-.5px' }}>{row.title}</div>
               <div style={{ fontSize: 12, color: T.mu, marginTop: 2 }}>{row.count}</div>
             </div>
           </div>

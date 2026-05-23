@@ -22,7 +22,7 @@ export default function ForBrandsSplit() {
         {/* Left — text */}
         <div style={{ padding: bp.isMobile ? '0' : bp.isTablet ? '64px 0' : '80px 64px 80px 0', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           <div style={{ ...eyebrow, marginBottom: 12 }}>For Suppliers</div>
-          <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: bp.isMobile ? '28px' : 'clamp(28px,3vw,44px)', fontWeight: 700, color: T.ink, letterSpacing: -1.2, lineHeight: 1.1, marginBottom: 14 }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: bp.isMobile ? '28px' : 'clamp(28px,3vw,44px)', fontWeight: 700, color: T.ink, letterSpacing: -1.2, lineHeight: 1.1, marginBottom: 14 }}>
             Grow your brand.<br/>Reach new buyers.
           </h2>
           <p style={{ fontSize: 14, color: T.mu, lineHeight: 1.8, marginBottom: 28, maxWidth: 400 }}>
@@ -59,7 +59,7 @@ export default function ForBrandsSplit() {
                 >
                   <div style={{ width: 46, height: 46, background: 'rgba(196,119,58,.18)', borderRadius: 11, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0, border: '1px solid rgba(196,119,58,.25)' }}>{m.icon}</div>
                   <div>
-                    <div style={{ fontFamily: "'Playfair Display',serif", fontSize: 24, fontWeight: 700, color: '#fff', lineHeight: 1, marginBottom: 4 }}>{m.num}</div>
+                    <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: 24, fontWeight: 700, color: '#fff', lineHeight: 1, marginBottom: 4 }}>{m.num}</div>
                     <div style={{ fontSize: 11, color: 'rgba(255,255,255,.45)', lineHeight: 1.4 }}>{m.label}</div>
                   </div>
                 </div>

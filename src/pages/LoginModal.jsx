@@ -7,7 +7,7 @@ import { api } from '../services/api';
 
 const INPUT = {
   width: '100%', padding: '14px 16px', borderRadius: 10,
-  border: '1.5px solid #E0DAD0', background: '#FAFAF8',
+  border: '1.5px solid #E0DAD0', background: '#FDF8F2',
   fontSize: 15, color: '#1C1815', fontFamily: "'DM Sans', sans-serif",
   outline: 'none', boxSizing: 'border-box', transition: 'border-color .18s',
 };
@@ -81,7 +81,7 @@ export default function LoginModal({ onSubmit }) {
       <div style={{ width: '100%', maxWidth: 460, background: '#fff', borderRadius: 20, overflow: 'hidden', boxShadow: '0 32px 80px rgba(28,24,21,.22)', position: 'relative', animation: 'modalIn .38s cubic-bezier(.22,.68,0,1.2) both' }}>
 
         {/* Close */}
-        <button onClick={close} style={{ position: 'absolute', top: 14, right: 14, width: 30, height: 30, borderRadius: 8, border: '1.5px solid #E8E2D8', background: '#F5F0E8', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2 }}>
+        <button onClick={close} style={{ position: 'absolute', top: 14, right: 14, width: 30, height: 30, borderRadius: 8, border: '1.5px solid #E8E2D8', background: '#F0E8DA', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2 }}>
           <X size={14} color="#7A7068" />
         </button>
 
@@ -129,7 +129,7 @@ export default function LoginModal({ onSubmit }) {
                 <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#3D3830', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>Full Name</label>
                 <input value={form.name} onChange={e => set('name', e.target.value)} placeholder="Rajesh Kumar" style={INPUT}
                   onFocus={e => { e.currentTarget.style.borderColor = '#C4773A'; e.currentTarget.style.background = '#fff'; }}
-                  onBlur={e => { e.currentTarget.style.borderColor = '#E0DAD0'; e.currentTarget.style.background = '#FAFAF8'; }} />
+                  onBlur={e => { e.currentTarget.style.borderColor = '#E0DAD0'; e.currentTarget.style.background = '#FDF8F2'; }} />
               </div>
             )}
 
@@ -138,7 +138,7 @@ export default function LoginModal({ onSubmit }) {
               <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#3D3830', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>Business email</label>
               <input type="email" value={form.email} onChange={e => set('email', e.target.value)} placeholder="you@company.com" required style={INPUT}
                 onFocus={e => { e.currentTarget.style.borderColor = '#C4773A'; e.currentTarget.style.background = '#fff'; }}
-                onBlur={e => { e.currentTarget.style.borderColor = '#E0DAD0'; e.currentTarget.style.background = '#FAFAF8'; }} />
+                onBlur={e => { e.currentTarget.style.borderColor = '#E0DAD0'; e.currentTarget.style.background = '#FDF8F2'; }} />
             </div>
 
             {/* Password */}
@@ -147,7 +147,7 @@ export default function LoginModal({ onSubmit }) {
               <div style={{ position: 'relative' }}>
                 <input type={showPwd ? 'text' : 'password'} value={form.password} onChange={e => set('password', e.target.value)} placeholder="••••••••" required style={{ ...INPUT, paddingRight: 52 }}
                   onFocus={e => { e.currentTarget.style.borderColor = '#C4773A'; e.currentTarget.style.background = '#fff'; }}
-                  onBlur={e => { e.currentTarget.style.borderColor = '#E0DAD0'; e.currentTarget.style.background = '#FAFAF8'; }} />
+                  onBlur={e => { e.currentTarget.style.borderColor = '#E0DAD0'; e.currentTarget.style.background = '#FDF8F2'; }} />
                 <button type="button" onClick={() => setShowPwd(s => !s)} style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#8A8178', fontSize: 12, fontFamily: 'inherit', fontWeight: 600 }}>
                   {showPwd ? 'Hide' : 'Show'}
                 </button>
@@ -174,7 +174,7 @@ export default function LoginModal({ onSubmit }) {
         </div>
 
         {/* Footer toggle */}
-        <div style={{ background: '#F7F3EE', borderTop: '1px solid #EDE8DF', padding: '18px 32px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <div style={{ background: '#FBF6F0', borderTop: '1px solid #EDE8DF', padding: '18px 32px', display: 'flex', flexDirection: 'column', gap: 10 }}>
           {mode === 'login' ? (
             <>
               <p style={{ fontSize: 13, color: '#7A7068', textAlign: 'center', margin: 0 }}>

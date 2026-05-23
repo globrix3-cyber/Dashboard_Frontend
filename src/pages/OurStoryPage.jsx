@@ -5,7 +5,7 @@ import { toggleLogin } from '../features/auth/authSlice';
 const T = {
   t: '#C4773A', td: '#A8622E', tl: '#FDF3EB',
   ink: '#1C1815', is: '#3D3830', mu: '#7A7068',
-  b: '#DEDAD0', bs: '#EDE8DF', c: '#F7F1E8',
+  b: '#DEDAD0', bs: '#EDE8DF', c: '#FDF8F2',
   g: '#3D7A52', gl: '#EBF4EE',
 };
 

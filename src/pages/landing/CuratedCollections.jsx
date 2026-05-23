@@ -47,7 +47,7 @@ function CollectionCard({ item, onAction, bp }) {
             Editor's Pick
           </span>
         </div>
-        <div style={{ fontFamily: "'Playfair Display',serif", fontSize: !bp.isMobile && item.wide ? 22 : 18, fontWeight: 700, color: '#fff', marginBottom: 8, lineHeight: 1.2 }}>{item.name}</div>
+        <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: !bp.isMobile && item.wide ? 22 : 18, fontWeight: 700, color: '#fff', marginBottom: 8, lineHeight: 1.2 }}>{item.name}</div>
         <div style={{ fontSize: 13, color: 'rgba(255,255,255,.65)', lineHeight: 1.65, marginBottom: 16 }}>{item.desc}</div>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12, fontWeight: 700, color: hov ? '#fff' : 'rgba(255,255,255,.65)', transition: '.2s', transform: hov ? 'translateX(4px)' : 'none' }}>
           Explore collection <span style={{ fontSize: 14 }}>→</span>

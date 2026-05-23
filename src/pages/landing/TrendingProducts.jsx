@@ -57,7 +57,7 @@ function SpotlightBanner({ onAction, bp }) {
       <div style={{ position: 'relative', zIndex: 1, padding: bp.isMobile ? '24px 20px' : '30px 26px', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
         <div>
           <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,.45)', marginBottom: 10 }}>Spotlight Category</div>
-          <div style={{ fontFamily: "'Playfair Display',serif", fontSize: bp.isMobile ? 22 : 28, fontWeight: 700, color: '#fff', lineHeight: 1.12, marginBottom: 10 }}>India's finest<br/>Agricultural produce</div>
+          <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: bp.isMobile ? 22 : 28, fontWeight: 700, color: '#fff', lineHeight: 1.12, marginBottom: 10 }}>India's finest<br/>Agricultural produce</div>
           <div style={{ fontSize: 13, color: 'rgba(255,255,255,.58)', lineHeight: 1.65 }}>856 verified suppliers. Organic certified. Export-ready.</div>
         </div>
         <button onClick={e => { e.stopPropagation(); onAction(); }} style={{ display: 'inline-flex', alignItems: 'center', gap: 7, alignSelf: 'flex-start', background: hov ? 'rgba(255,255,255,.95)' : '#fff', color: '#1E3A28', fontSize: 12, fontWeight: 800, padding: '10px 20px', borderRadius: 8, fontFamily: 'inherit', border: 'none', cursor: 'pointer', boxShadow: '0 4px 14px rgba(0,0,0,.2)', transform: hov ? 'translateY(-1px)' : 'none', transition: '.18s' }}>Explore Agriculture →</button>
