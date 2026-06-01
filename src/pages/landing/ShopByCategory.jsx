@@ -7,7 +7,7 @@ import { IMG } from './images';
 import { useBreakpoint, rPad, rW } from '../../hooks/useBreakpoint';
 
 // ── Per-category product data ────────────────────────────────────────────────
-const CAT_DATA = {
+export const CAT_DATA = {
   'Wall Décor': {
     meta: '820 brands · 12,000+ products',
     products: [
