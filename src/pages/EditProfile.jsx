@@ -73,7 +73,7 @@ export default function EditProfile() {
   const initials = (form.full_name || userName || '?')[0].toUpperCase();
 
   return (
-    <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", maxWidth: 560, margin: '0 auto' }}>
+    <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", maxWidth: 560, margin: '0 auto', padding: '24px 32px' }}>
       <div style={{ marginBottom: 32, paddingBottom: 22, borderBottom: `1px solid ${C.borderSoft}` }}>
         <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 27, fontWeight: 900, color: C.ink, margin: 0, letterSpacing: '-0.4px' }}>Edit Profile</h1>
         <p style={{ fontSize: 13, color: C.muted, marginTop: 6 }}>Update your account information</p>

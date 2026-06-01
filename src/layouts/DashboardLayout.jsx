@@ -79,6 +79,12 @@ const adminLinks = [
   { path: '/edit-profile',                  icon: User,            label: 'Profile'       },
 ];
 
+/* ── Active-state matching: root dashboard paths use exact match ─────────────── */
+const EXACT_MATCH_PATHS = new Set([
+  '/buyer-dashboard', '/supplier-dashboard', '/admin-dashboard',
+  '/products', '/edit-profile', '/categories',
+]);
+
 /* ── Sidebar ────────────────────────────────────────────────────────────────── */
 function Sidebar({ links, onMobileClose }) {
   const navigate               = useNavigate();
@@ -129,8 +135,7 @@ function Sidebar({ links, onMobileClose }) {
         {links.map(({ path, icon: Icon, label }) => {
           const active =
             location.pathname === path ||
-            (path !== '/products' && path !== '/edit-profile' && path !== '/categories' &&
-             location.pathname.startsWith(path));
+            (!EXACT_MATCH_PATHS.has(path) && location.pathname.startsWith(path));
           return (
             <button
               key={path}

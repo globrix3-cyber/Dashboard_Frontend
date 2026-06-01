@@ -30,7 +30,7 @@ export default function BuyerOrdersPage() {
   const { data: orders, loading } = useFetchData(() => api.getOrders());
 
   return (
-    <div>
+    <div style={{ padding: '24px 32px' }}>
       <PageHeader title="My Orders" subtitle="Track all your trade orders" />
 
       {loading ? <Spinner /> : !orders?.length ? (

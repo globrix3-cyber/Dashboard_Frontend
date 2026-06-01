@@ -10,7 +10,7 @@ export default function BuyerRFQsPage() {
   const { data: rfqs, loading, refetch } = useFetchData(() => api.getRFQs());
 
   return (
-    <div>
+    <div style={{ padding: '24px 32px' }}>
       <PageHeader
         title="My RFQs"
         subtitle="Manage your requests for quotation"

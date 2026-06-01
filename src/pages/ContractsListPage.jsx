@@ -46,7 +46,7 @@ export default function ContractsListPage() {
   const base = userRole === 'supplier' ? '/supplier-dashboard' : '/buyer-dashboard';
 
   return (
-    <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
+    <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", padding: '24px 32px' }}>
       {/* Header */}
       <div style={{ marginBottom: 24 }}>
         <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 26, fontWeight: 900, color: C.ink, margin: 0 }}>

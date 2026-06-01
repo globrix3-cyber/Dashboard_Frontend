@@ -330,7 +330,7 @@ export default function MessagesPage() {
     : null;
 
   return (
-    <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", height: 'calc(100vh - 80px)', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", height: 'calc(100vh - 56px)', display: 'flex', flexDirection: 'column', padding: '24px 32px' }}>
 
       {/* Page header */}
       <div style={{ marginBottom: 16 }}>
