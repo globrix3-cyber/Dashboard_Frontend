@@ -330,10 +330,10 @@ export default function MessagesPage() {
     : null;
 
   return (
-    <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", height: 'calc(100vh - 56px)', display: 'flex', flexDirection: 'column', padding: '24px 32px' }}>
+    <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", height: 'calc(100vh - 56px)', display: 'flex', flexDirection: 'column' }}>
 
       {/* Page header */}
-      <div style={{ marginBottom: 16 }}>
+      <div style={{ marginBottom: 16, padding: '24px 32px 0' }}>
         <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, fontWeight: 900, color: C.ink, margin: 0 }}>
           {isAdmin ? 'All Conversations' : 'Messages'}
         </h1>
@@ -344,7 +344,7 @@ export default function MessagesPage() {
       </div>
 
       {/* Main layout */}
-      <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '300px 1fr', gap: 16, minHeight: 0 }}>
+      <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '300px 1fr', gap: 16, minHeight: 0, padding: '0 32px 24px' }}>
 
         {/* ── LEFT: Conversation list ─────────────────────────────────────── */}
         <div style={{ background: '#fff', borderRadius: 18, border: `1.5px solid ${C.borderSoft}`, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>

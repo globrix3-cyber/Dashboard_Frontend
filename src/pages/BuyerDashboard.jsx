@@ -31,15 +31,17 @@ const TABS = [
 
 /* ── Badge colours ─────────────────────────────────────────────────────────── */
 const BADGE_STYLE = {
-  'New':      { bg: '#C4773A',  color: '#fff' },
-  'Export':   { bg: '#1B3175',  color: '#fff' },
-  'Trending': { bg: '#1A7A4A',  color: '#fff' },
+  'New':      { bg: '#C4773A',        color: '#fff' },
+  'Export':   { bg: '#1B3175',        color: '#fff' },
+  'Trending': { bg: '#1A7A4A',        color: '#fff' },
+  'default':  { bg: 'rgba(0,0,0,.4)', color: '#fff' },
 };
 
 /* ── Derived product list ──────────────────────────────────────────────────── */
 function getProducts(activeKey) {
   if (!activeKey) {
-    return Object.values(CAT_DATA).slice(0, 4).flatMap(cat => cat.products.slice(0, 2));
+    // 2 products from each of the first 8 categories = 16 products total
+    return Object.values(CAT_DATA).slice(0, 8).flatMap(cat => cat.products.slice(0, 2));
   }
   return CAT_DATA[activeKey]?.products ?? [];
 }
@@ -47,7 +49,7 @@ function getProducts(activeKey) {
 /* ── Product card ──────────────────────────────────────────────────────────── */
 function ProductCard({ p, onAction }) {
   const [hov, setHov] = useState(false);
-  const badge = p.badge ? (BADGE_STYLE[p.badge] ?? null) : null;
+  const badge = p.badge ? (BADGE_STYLE[p.badge] ?? BADGE_STYLE.default) : null;
 
   return (
     <div
