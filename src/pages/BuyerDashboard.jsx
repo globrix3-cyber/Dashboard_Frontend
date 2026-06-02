@@ -1,239 +1,301 @@
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { api } from '../services/api';
-import { useFetchData } from '../hooks/useFetchData';
-import { StatCard, Spinner, Badge, EmptyState } from '../components/UI';
-import { ShoppingBag, FileText, DollarSign, Heart, Plus, ArrowRight, Package, Landmark, BadgeCheck } from 'lucide-react';
-import { formatCurrency, formatDate } from '../utils/helpers';
+import { useDispatch } from 'react-redux';
+import { toggleLogin } from '../features/auth/authSlice';
+import { Bell, Search } from 'lucide-react';
+import { CAT_DATA } from './landing/ShopByCategory';
 
-const C = {
-  saffron:    '#D9600A',
-  saffronLt:  '#FDF1E8',
-  saffronMid: '#F0B48A',
-  emerald:    '#1A7A4A',
-  emeraldLt:  '#EAF5EF',
-  navy:       '#1B3175',
-  navyLt:     '#EEF2FB',
-  gold:       '#B8730A',
-  goldLt:     '#FDF5E2',
-  cream:      '#F0E8DA',
-  ink:        '#1C1815',
-  inkSoft:    '#3D3731',
-  muted:      '#7A7068',
-  border:     '#D4C9B8',
-  borderSoft: '#E6DED0',
+/* ── Design tokens ─────────────────────────────────────────────────────────── */
+const T = {
+  ink:    '#1C1815',
+  muted:  '#7A7068',
+  border: '#F0EAE0',
+  cream:  '#FDF8F2',
+  saffron:'#C4773A',
+  emerald:'#1A7A4A',
+  navy:   '#1B3175',
 };
 
-function TriBar() {
+/* ── Category tabs config ──────────────────────────────────────────────────── */
+const TABS = [
+  { label: 'All',              key: null },
+  { label: 'Textiles',         key: 'Textiles' },
+  { label: 'Wall Décor',       key: 'Wall Décor' },
+  { label: 'Soft Furnishings', key: 'Soft Furnishings' },
+  { label: 'Handicrafts',      key: 'Handicrafts & Artisan' },
+  { label: 'Kitchen & Dining', key: 'Kitchen & Dining' },
+  { label: 'Jewelry',          key: 'Jewelry' },
+  { label: 'Sustainable',      key: 'Sustainable Décor' },
+];
+
+/* ── Badge colours ─────────────────────────────────────────────────────────── */
+const BADGE_STYLE = {
+  'New':      { bg: '#C4773A',  color: '#fff' },
+  'Export':   { bg: '#1B3175',  color: '#fff' },
+  'Trending': { bg: '#1A7A4A',  color: '#fff' },
+};
+
+/* ── Derived product list ──────────────────────────────────────────────────── */
+function getProducts(activeKey) {
+  if (!activeKey) {
+    return Object.values(CAT_DATA).slice(0, 4).flatMap(cat => cat.products.slice(0, 2));
+  }
+  return CAT_DATA[activeKey]?.products ?? [];
+}
+
+/* ── Product card ──────────────────────────────────────────────────────────── */
+function ProductCard({ p, onAction }) {
+  const [hov, setHov] = useState(false);
+  const badge = p.badge ? (BADGE_STYLE[p.badge] ?? null) : null;
+
   return (
-    <div style={{ display: 'flex', height: 3, borderRadius: '2px 2px 0 0', overflow: 'hidden' }}>
-      <div style={{ flex: 1, background: C.saffron }} />
-      <div style={{ flex: 1, background: '#fff' }} />
-      <div style={{ flex: 1, background: C.emerald }} />
+    <div
+      onClick={onAction}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        borderRadius: 14,
+        border: `1.5px solid ${hov ? T.saffron : '#EDE8DF'}`,
+        overflow: 'hidden', background: '#fff', cursor: 'pointer',
+        transition: 'border-color .18s, transform .18s, box-shadow .18s',
+        transform: hov ? 'translateY(-3px)' : 'none',
+        boxShadow: hov ? '0 8px 28px rgba(196,119,58,.13)' : 'none',
+      }}
+    >
+      {/* Image */}
+      <div style={{ height: 140, position: 'relative', overflow: 'hidden', background: '#F0E8DA' }}>
+        {p.img ? (
+          <img
+            src={p.img} alt={p.name} loading="lazy" decoding="async"
+            style={{
+              width: '100%', height: '100%', objectFit: 'cover', display: 'block',
+              transform: hov ? 'scale(1.05)' : 'scale(1)', transition: 'transform .4s ease',
+            }}
+          />
+        ) : (
+          <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 48 }}>
+            {p.emoji}
+          </div>
+        )}
+        {badge && (
+          <div style={{
+            position: 'absolute', top: 10, left: 10,
+            background: badge.bg, color: badge.color,
+            fontSize: 9, fontWeight: 700, padding: '3px 8px',
+            borderRadius: 100, letterSpacing: '.06em',
+          }}>{p.badge}</div>
+        )}
+        {p.rating && (
+          <div style={{
+            position: 'absolute', top: 10, right: 10,
+            background: 'rgba(0,0,0,.45)', backdropFilter: 'blur(6px)',
+            borderRadius: 20, padding: '2px 7px', fontSize: 10, color: '#fff', fontWeight: 600,
+          }}>{p.rating}</div>
+        )}
+      </div>
+
+      {/* Info */}
+      <div style={{ padding: '10px 12px 13px' }}>
+        <div style={{ fontSize: 9.5, fontWeight: 700, color: T.muted, textTransform: 'uppercase', letterSpacing: '.07em', marginBottom: 3 }}>
+          {p.brand}
+        </div>
+        <div style={{ fontSize: 13.5, fontWeight: 600, color: T.ink, lineHeight: 1.3, marginBottom: 8 }}>
+          {p.name}
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 16, fontWeight: 700, color: T.saffron }}>
+            {p.price}
+          </span>
+          <span style={{ fontSize: 10, color: T.muted, background: T.cream, borderRadius: 100, padding: '2px 8px', fontWeight: 600 }}>
+            {p.moq}
+          </span>
+        </div>
+      </div>
     </div>
   );
 }
 
+/* ── BuyerDashboard ────────────────────────────────────────────────────────── */
 export default function BuyerDashboard() {
-  const { userName } = useSelector((s) => s.auth);
-  const navigate = useNavigate();
-  const { data: stats,  loading: sl } = useFetchData(() => api.getStats('buyer'));
-  const { data: rfqs,   loading: rl } = useFetchData(() => api.getRFQs());
-  const { data: orders, loading: ol } = useFetchData(() => api.getOrders());
+  const { userName }  = useSelector((s) => s.auth);
+  const dispatch      = useDispatch();
+  const navigate      = useNavigate();
+  const [activeTab, setActiveTab]       = useState(null);
+  const [visibleCount, setVisibleCount] = useState(8);
 
   const greeting = () => {
     const h = new Date().getHours();
-    if (h < 12) return 'Suprabhat';
-    if (h < 17) return 'Namaste';
-    return 'Shubh Sandhya';
+    if (h < 12) return 'Good morning';
+    if (h < 17) return 'Good afternoon';
+    return 'Good evening';
   };
 
+  const allProducts = getProducts(activeTab);
+  const products    = allProducts.slice(0, visibleCount);
+  const hasMore     = allProducts.length > visibleCount;
+
   return (
-    <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", display: 'flex', flexDirection: 'column', gap: 24 }}>
+    <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", minHeight: '100vh', background: '#fff' }}>
 
-      {/* ── Welcome banner ──────────────────────────────────────────────────── */}
+      {/* ── Top bar ─────────────────────────────────────────────────────────── */}
       <div style={{
-        borderRadius: 20,
-        overflow: 'hidden',
-        position: 'relative',
-        background: C.saffron,
-        boxShadow: `0 8px 32px ${C.saffron}44`,
+        height: 58, display: 'flex', alignItems: 'center', gap: 16,
+        padding: '0 32px', borderBottom: `1px solid ${T.border}`,
+        background: '#fff', position: 'sticky', top: 0, zIndex: 100,
       }}>
-        <TriBar />
-        {/* Mandala watermark */}
         <div style={{
-          position: 'absolute', inset: 0, opacity: 0.07, pointerEvents: 'none',
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='50' cy='50' r='46' fill='none' stroke='%23fff' stroke-width='.5' stroke-dasharray='3 7'/%3E%3Ccircle cx='50' cy='50' r='30' fill='none' stroke='%23fff' stroke-width='.4' stroke-dasharray='2 5'/%3E%3Ccircle cx='50' cy='50' r='14' fill='none' stroke='%23fff' stroke-width='.35' stroke-dasharray='1 4'/%3E%3C/svg%3E")`,
-          backgroundSize: '100px 100px',
-        }} />
+          fontFamily: "'Cormorant Garamond', serif",
+          fontSize: 18, fontWeight: 700, color: T.ink, whiteSpace: 'nowrap', flexShrink: 0,
+        }}>
+          {greeting()}, {userName} 👋
+        </div>
 
-        <div style={{ position: 'relative', zIndex: 1, padding: '28px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
+        <div style={{ flex: 1, maxWidth: 400, position: 'relative' }}>
+          <Search size={13} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#B0A89E', pointerEvents: 'none' }} />
+          <input
+            readOnly
+            onClick={() => dispatch(toggleLogin(true))}
+            placeholder="Search products, suppliers…"
+            style={{
+              width: '100%', height: 34, borderRadius: 100,
+              border: `1.5px solid #E8E2D8`, background: T.cream,
+              padding: '0 14px 0 32px',
+              fontFamily: "'DM Sans', sans-serif", fontSize: 12.5,
+              color: T.ink, outline: 'none', cursor: 'pointer',
+            }}
+          />
+        </div>
+
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div style={{ position: 'relative' }}>
+            <button
+              onClick={() => navigate('/buyer-dashboard/messages')}
+              style={{
+                width: 34, height: 34, borderRadius: 9,
+                border: `1.5px solid #E8E2D8`, background: T.cream,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                cursor: 'pointer',
+              }}
+            >
+              <Bell size={14} color={T.muted} />
+            </button>
+            <div style={{
+              position: 'absolute', top: -2, right: -2,
+              width: 8, height: 8, borderRadius: '50%',
+              background: '#DC2626', border: '1.5px solid #fff',
+            }} />
+          </div>
+
+          <div
+            style={{ display: 'flex', alignItems: 'center', gap: 7, cursor: 'pointer' }}
+            onClick={() => navigate('/edit-profile')}
+          >
+            <span style={{ fontSize: 13, fontWeight: 600, color: T.ink }}>{userName}</span>
+            <div style={{
+              width: 30, height: 30, borderRadius: '50%',
+              background: `linear-gradient(135deg, ${T.saffron}, #A8622E)`,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: 11, fontWeight: 700, color: '#fff',
+            }}>{userName?.[0]?.toUpperCase()}</div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Content ─────────────────────────────────────────────────────────── */}
+      <div style={{ padding: '28px 32px' }}>
+
+        {/* Section heading + actions */}
+        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 20, flexWrap: 'wrap', gap: 12 }}>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-              <span style={{ fontSize: 20 }}>🇮🇳</span>
-              <span style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.7)', letterSpacing: '.12em', textTransform: 'uppercase' }}>
-                Buyer Dashboard
-              </span>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '.12em', textTransform: 'uppercase', color: T.saffron, marginBottom: 6 }}>
+              New for you
             </div>
-            <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 26, fontWeight: 900, color: '#fff', margin: 0, letterSpacing: -0.5 }}>
-              {greeting()}, {userName}! 🙏
-            </h1>
-            <p style={{ color: 'rgba(255,255,255,0.78)', marginTop: 5, fontSize: 14 }}>
-              Aaj ka vyapar sarvanam — your trading overview for today.
-            </p>
-          </div>
-          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-            <button onClick={() => navigate('/buyer-dashboard/rfqs/new')} style={{
-              display: 'flex', alignItems: 'center', gap: 7,
-              padding: '9px 18px', borderRadius: 100, border: 'none', cursor: 'pointer',
-              background: '#fff', color: C.saffron,
-              fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13,
-              boxShadow: '0 4px 14px rgba(0,0,0,0.14)',
-              transition: 'transform 0.15s',
-            }}
-              onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; }}
-              onMouseLeave={e => { e.currentTarget.style.transform = 'none'; }}>
-              <Plus size={14} /> New RFQ
-            </button>
-            <button onClick={() => navigate('/products')} style={{
-              display: 'flex', alignItems: 'center', gap: 7,
-              padding: '9px 18px', borderRadius: 100, cursor: 'pointer',
-              background: 'transparent', color: '#fff',
-              border: '1.5px solid rgba(255,255,255,0.5)',
-              fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 13,
-              transition: 'background 0.15s',
-            }}
-              onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.15)'; }}
-              onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}>
-              <ShoppingBag size={14} /> Browse Products
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* ── Trust signals ───────────────────────────────────────────────────── */}
-      <div style={{
-        display: 'flex', flexWrap: 'wrap', gap: 10,
-        padding: '14px 18px', borderRadius: 14,
-        background: '#fff', border: `1.5px solid ${C.borderSoft}`,
-      }}>
-        {[
-          { icon: Landmark,    text: 'GST Verified Network',  color: C.saffron },
-          { icon: BadgeCheck,  text: 'MSME Registered',        color: C.emerald },
-          { icon: ShoppingBag, text: '50,000+ Products',        color: C.navy    },
-        ].map(({ icon: Icon, text, color }) => (
-          <div key={text} style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
-            <div style={{ width: 26, height: 26, borderRadius: 7, background: `${color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Icon size={12} color={color} />
-            </div>
-            <span style={{ fontSize: 12, fontWeight: 500, color: C.inkSoft }}>{text}</span>
-            <span style={{ width: 1, height: 14, background: C.borderSoft, marginLeft: 4 }} />
-          </div>
-        ))}
-        <span style={{ fontSize: 12, fontStyle: 'italic', color: C.muted, fontFamily: "'Playfair Display', serif", alignSelf: 'center' }}>
-          भारत का व्यापार मंच
-        </span>
-      </div>
-
-      {/* ── Stats ───────────────────────────────────────────────────────────── */}
-      {sl ? <Spinner /> : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14 }}>
-          <StatCard icon={FileText}    label="Active RFQs"     value={stats?.activeRfqs     ?? 0}     color={C.saffron}  bg={C.saffronLt}  trend={12} />
-          <StatCard icon={Package}     label="Pending Orders"  value={stats?.pendingOrders  ?? 0}     color={C.navy}     bg={C.navyLt}     trend={5}  />
-          <StatCard icon={DollarSign}  label="Total Spend"     value={stats?.totalSpend     ?? '₹0'}  color={C.emerald}  bg={C.emeraldLt}  trend={8}  />
-          <StatCard icon={Heart}       label="Saved Suppliers" value={stats?.savedSuppliers ?? 0}     color={C.gold}     bg={C.goldLt}               />
-        </div>
-      )}
-
-      {/* ── Two-column panels ───────────────────────────────────────────────── */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
-
-        {/* Recent RFQs */}
-        <div style={{
-          background: '#fff', borderRadius: 20,
-          border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden',
-          boxShadow: '0 1px 4px rgba(28,24,21,0.04)',
-        }}>
-          <div style={{ borderTop: `3px solid ${C.saffron}` }} />
-          <div style={{ padding: '16px 20px', borderBottom: `1px solid ${C.borderSoft}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontWeight: 700, fontSize: 14, color: C.ink, fontFamily: "'Playfair Display', serif" }}>Recent RFQs</span>
-            <button onClick={() => navigate('/buyer-dashboard/rfqs')} style={{
-              display: 'flex', alignItems: 'center', gap: 4,
-              fontSize: 12, fontWeight: 600, color: C.saffron,
-              background: 'none', border: 'none', cursor: 'pointer', padding: 0,
+            <h2 style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: 28, fontWeight: 700, color: T.ink, lineHeight: 1.1,
             }}>
-              View all <ArrowRight size={12} />
-            </button>
+              5,000+ verified Indian suppliers
+            </h2>
           </div>
-          {rl ? <Spinner /> : !rfqs?.length ? (
-            <EmptyState icon={FileText} title="No RFQs yet" desc="Post your first request for quotation"
-              action={<button onClick={() => navigate('/buyer-dashboard/rfqs/new')}
-                style={{ padding: '8px 18px', borderRadius: 100, background: C.saffron, color: '#fff', border: 'none', cursor: 'pointer', fontSize: 13, fontWeight: 600 }}>New RFQ</button>} />
-          ) : (
-            <div>
-              {rfqs.slice(0, 4).map((r) => (
-                <div key={r.id} onClick={() => navigate(`/buyer-dashboard/rfqs/${r.id}`)} style={{
-                  padding: '12px 20px', cursor: 'pointer',
-                  borderBottom: `1px solid ${C.borderSoft}`,
-                  display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12,
-                  transition: 'background 0.15s',
-                }}
-                  onMouseEnter={e => { e.currentTarget.style.background = C.saffronLt; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = '#fff'; }}>
-                  <div>
-                    <div style={{ fontWeight: 600, fontSize: 13, color: C.ink }}>{r.title}</div>
-                    <div style={{ fontSize: 11, color: C.muted, marginTop: 2 }}>{r.quantity} {r.unit} · {formatDate(r.createdAt)}</div>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-                    <span style={{ fontSize: 11, fontWeight: 700, color: C.saffron }}>{r.responses} quotes</span>
-                    <Badge status={r.status} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button
+              onClick={() => navigate('/buyer-dashboard/rfqs/new')}
+              style={{
+                padding: '9px 18px', borderRadius: 8, border: 'none',
+                background: T.ink, color: '#fff',
+                fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600,
+                cursor: 'pointer',
+              }}
+            >+ New RFQ</button>
+            <button
+              onClick={() => navigate('/products')}
+              style={{
+                padding: '9px 18px', borderRadius: 8,
+                border: `1.5px solid #E8E2D8`, background: T.cream, color: T.ink,
+                fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600,
+                cursor: 'pointer',
+              }}
+            >Browse all</button>
+          </div>
         </div>
 
-        {/* Recent Orders */}
+        {/* Category tabs */}
         <div style={{
-          background: '#fff', borderRadius: 20,
-          border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden',
-          boxShadow: '0 1px 4px rgba(28,24,21,0.04)',
+          display: 'flex', gap: 7, marginBottom: 24,
+          overflowX: 'auto', scrollbarWidth: 'none', paddingBottom: 2,
         }}>
-          <div style={{ borderTop: `3px solid ${C.emerald}` }} />
-          <div style={{ padding: '16px 20px', borderBottom: `1px solid ${C.borderSoft}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontWeight: 700, fontSize: 14, color: C.ink, fontFamily: "'Playfair Display', serif" }}>Recent Orders</span>
-            <button onClick={() => navigate('/buyer-dashboard/orders')} style={{
-              display: 'flex', alignItems: 'center', gap: 4,
-              fontSize: 12, fontWeight: 600, color: C.emerald,
-              background: 'none', border: 'none', cursor: 'pointer', padding: 0,
-            }}>
-              View all <ArrowRight size={12} />
-            </button>
-          </div>
-          {ol ? <Spinner /> : !orders?.length ? (
-            <EmptyState icon={Package} title="No orders yet" desc="Your orders will appear here" />
-          ) : (
-            <div>
-              {orders.slice(0, 4).map((o) => (
-                <div key={o.id} onClick={() => navigate(`/buyer-dashboard/orders/${o.id}`)} style={{
-                  padding: '12px 20px', cursor: 'pointer',
-                  borderBottom: `1px solid ${C.borderSoft}`,
-                  display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12,
-                  transition: 'background 0.15s',
+          {TABS.map(tab => {
+            const isActive = activeTab === tab.key;
+            return (
+              <button
+                key={tab.label}
+                onClick={() => { setActiveTab(tab.key); setVisibleCount(8); }}
+                style={{
+                  padding: '7px 16px', borderRadius: 100,
+                  border: isActive ? 'none' : `1px solid #E8E2D8`,
+                  background: isActive ? T.ink : T.cream,
+                  color: isActive ? '#fff' : T.muted,
+                  fontFamily: "'DM Sans', sans-serif", fontSize: 12.5, fontWeight: 600,
+                  cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0,
+                  transition: 'background .15s, color .15s',
+                  outline: 'none',
                 }}
-                  onMouseEnter={e => { e.currentTarget.style.background = C.emeraldLt; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = '#fff'; }}>
-                  <div>
-                    <div style={{ fontWeight: 600, fontSize: 13, color: C.ink }}>{o.orderNo}</div>
-                    <div style={{ fontSize: 11, color: C.muted, marginTop: 2 }}>{o.product} · {formatCurrency(o.amount)}</div>
-                  </div>
-                  <Badge status={o.status} />
-                </div>
-              ))}
-            </div>
-          )}
+              >{tab.label}</button>
+            );
+          })}
         </div>
+
+        {/* Product grid */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+          gap: 16,
+          marginBottom: 32,
+        }}>
+          {products.map((p, i) => (
+            <ProductCard
+              key={`${p.name}-${i}`}
+              p={p}
+              onAction={() => dispatch(toggleLogin(true))}
+            />
+          ))}
+        </div>
+
+        {/* Load more */}
+        {hasMore && (
+          <div style={{ textAlign: 'center' }}>
+            <button
+              onClick={() => setVisibleCount(v => v + 8)}
+              style={{
+                padding: '10px 32px', borderRadius: 8,
+                border: `1.5px solid #E8E2D8`, background: '#fff', color: T.ink,
+                fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600,
+                cursor: 'pointer',
+              }}
+            >Load more products</button>
+          </div>
+        )}
       </div>
     </div>
   );
