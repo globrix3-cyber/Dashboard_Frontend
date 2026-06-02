@@ -107,26 +107,6 @@ function PhotoMosaic({ bp }) {
         )}
       </div>
 
-      {/* Floating stats pill — tablet/desktop */}
-      {!bp.isMobile && (
-        <div style={{
-          position: 'absolute', bottom: -22, left: '50%', transform: 'translateX(-50%)',
-          background: '#fff', borderRadius: 40, padding: '10px 24px',
-          boxShadow: '0 10px 40px rgba(28,25,21,.16)',
-          display: 'flex', gap: 20, alignItems: 'center',
-          border: '1px solid rgba(28,25,21,.06)', whiteSpace: 'nowrap', zIndex: 10,
-        }}>
-          {STATS.map(({ n, l }, i) => (
-            <div key={l} style={{ display: 'flex', alignItems: 'center' }}>
-              {i > 0 && <div style={{ width: 1, height: 22, background: 'rgba(28,25,21,.1)', marginRight: 20 }} />}
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: 14, fontWeight: 900, color: T.ink }}>{n}</div>
-                <div style={{ fontSize: 9, color: T.mu, fontWeight: 600, letterSpacing: '.04em' }}>{l}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
 
       <style>{`@keyframes heroPulse{0%,100%{opacity:1}50%{opacity:.3}}`}</style>
     </div>

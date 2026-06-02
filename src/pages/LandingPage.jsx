@@ -31,8 +31,7 @@ export default function LandingPage() {
     <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: '#FDF8F2', minHeight: '100vh', overflowX: 'hidden' }}>
       <LandingNavbar />
       <HeroSection />
-      <SocialProofTicker />
-      <CategoryNavBar activeCategory={activeCategory} onSelect={handleCategorySelect} />
+<CategoryNavBar activeCategory={activeCategory} onSelect={handleCategorySelect} />
       <ShopByCategory activeCategory={activeCategory} onCategoryChange={handleCategorySelect} />
       <FeaturedSuppliers />
       <NewThisWeek />
