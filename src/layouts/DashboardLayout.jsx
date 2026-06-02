@@ -5,10 +5,9 @@ import { disconnectSocket } from '../services/socket';
 import {
   LayoutDashboard, FileText, Package, ShoppingBag,
   Send, FileSearch, LogOut, User,
-  Menu, Users, Building2, ShieldCheck, BarChart2, Settings,
+  Users, Building2, ShieldCheck, BarChart2, Settings,
   MessageSquare, Grid3X3, ScrollText,
 } from 'lucide-react';
-import { useState } from 'react';
 
 /* ── CSS variables injected once into :root ────────────────────────────────── */
 const CSS_VARS = `
@@ -195,48 +194,19 @@ function Sidebar({ links, onMobileClose }) {
 
 /* ── DashboardLayout ────────────────────────────────────────────────────────── */
 export default function DashboardLayout({ children }) {
-  const { userRole }                = useSelector((s) => s.auth);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const { userRole } = useSelector((s) => s.auth);
   const links = userRole === 'supplier' ? supplierLinks : userRole === 'admin' ? adminLinks : buyerLinks;
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', background: '#fff' }}>
 
-      {/* Desktop sidebar */}
-      <div className="hidden md:block" style={{ flexShrink: 0 }}>
-        <Sidebar links={links} />
-      </div>
-
-      {/* Mobile overlay */}
-      {mobileOpen && (
-        <div style={{ position: 'fixed', inset: 0, zIndex: 40, display: 'flex' }} className="md:hidden">
-          <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,.5)' }} onClick={() => setMobileOpen(false)} />
-          <div style={{ position: 'relative', zIndex: 50, height: '100%' }}>
-            <Sidebar links={links} onMobileClose={() => setMobileOpen(false)} />
-          </div>
-        </div>
-      )}
+      {/* Sidebar */}
+      <Sidebar links={links} />
 
       {/* Main content */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
 
-        {/* Mobile top bar */}
-        <div className="md:hidden" style={{
-          height: 56, display: 'flex', alignItems: 'center',
-          justifyContent: 'space-between', padding: '0 16px',
-          background: '#fff', borderBottom: '1px solid #F0EAE0', flexShrink: 0,
-        }}>
-          <button
-            onClick={() => setMobileOpen(true)}
-            style={{ width: 36, height: 36, borderRadius: 10, border: 'none', background: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
-          >
-            <Menu size={18} />
-          </button>
-          <img src="/logo.png" alt="Globrixa" style={{ height: 32, width: 'auto', objectFit: 'contain' }} />
-          <div style={{ width: 36 }} />
-        </div>
-
-        <main style={{ flex: 1, overflowY: 'auto' }}>
+<main style={{ flex: 1, overflowY: 'auto' }}>
           {children}
         </main>
       </div>
