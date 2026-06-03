@@ -105,8 +105,8 @@ function Sidebar({ links, onMobileClose }) {
     <aside style={{
       width: 64, minWidth: 64,
       height: '100vh',
-      position: 'sticky', top: 0,
       display: 'flex', flexDirection: 'column', alignItems: 'center',
+      flexShrink: 0,
       background: '#1C1815',
       borderRight: '1px solid rgba(255,255,255,.06)',
       paddingBottom: 12,
@@ -198,7 +198,7 @@ export default function DashboardLayout({ children }) {
   const links = userRole === 'supplier' ? supplierLinks : userRole === 'admin' ? adminLinks : buyerLinks;
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: '#fff' }}>
+    <div style={{ display: 'flex', height: '100vh', background: '#fff', overflow: 'hidden' }}>
 
       {/* Sidebar */}
       <Sidebar links={links} />

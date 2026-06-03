@@ -6,6 +6,7 @@ import { toggleLogin } from '../features/auth/authSlice';
 import { Bell, Search, Heart, Plus } from 'lucide-react';
 import { CAT_DATA } from './landing/ShopByCategory';
 import { IMG } from './landing/images';
+import { useBreakpoint } from '../hooks/useBreakpoint';
 
 /* ── Design tokens ─────────────────────────────────────────────────────────── */
 const T = {
@@ -60,8 +61,8 @@ function CategoryCard({ cat, onClick }) {
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
       style={{
-        display: 'flex', alignItems: 'center', gap: 14,
-        padding: '12px 16px', borderRadius: 12,
+        display: 'flex', alignItems: 'center', gap: 10,
+        padding: '10px 12px', borderRadius: 12,
         border: `1.5px solid ${hov ? T.saffron : '#EDE8DF'}`,
         background: hov ? T.cream : '#fff',
         cursor: 'pointer', transition: 'all .15s',
@@ -205,6 +206,7 @@ export default function BuyerDashboard() {
   const { userName }  = useSelector((s) => s.auth);
   const dispatch      = useDispatch();
   const navigate      = useNavigate();
+  const bp            = useBreakpoint();
   const [favs, toggleFav] = useFavourites();
   const [visibleCount, setVisibleCount] = useState(12);
 
@@ -223,19 +225,21 @@ export default function BuyerDashboard() {
 
       {/* ── Top bar ─────────────────────────────────────────────────────────── */}
       <div style={{
-        height: 58, display: 'flex', alignItems: 'center', gap: 16,
-        padding: '0 32px', borderBottom: `1px solid ${T.border}`,
-        background: '#fff', position: 'sticky', top: 0, zIndex: 100,
+        height: 56, display: 'flex', alignItems: 'center', gap: bp.isMobile ? 10 : 16,
+        padding: bp.isMobile ? '0 14px' : '0 32px', borderBottom: `1px solid ${T.border}`,
+        background: '#fff', position: 'sticky', top: 0, zIndex: 100, flexShrink: 0,
       }}>
-        <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 700, color: T.ink, whiteSpace: 'nowrap', flexShrink: 0 }}>
-          {greeting()}, {userName} 👋
-        </div>
-        <div style={{ flex: 1, maxWidth: 440, position: 'relative' }}>
+        {!bp.isMobile && (
+          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 700, color: T.ink, whiteSpace: 'nowrap', flexShrink: 0 }}>
+            {greeting()}, {userName} 👋
+          </div>
+        )}
+        <div style={{ flex: 1, position: 'relative', maxWidth: bp.isMobile ? '100%' : 440 }}>
           <Search size={13} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#B0A89E', pointerEvents: 'none' }} />
           <input readOnly onClick={() => dispatch(toggleLogin(true))} placeholder="Search products, suppliers…"
             style={{ width: '100%', height: 34, borderRadius: 100, border: `1.5px solid #E8E2D8`, background: T.cream, padding: '0 14px 0 32px', fontFamily: "'DM Sans', sans-serif", fontSize: 12.5, color: T.ink, outline: 'none', cursor: 'pointer' }} />
         </div>
-        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
           <div style={{ position: 'relative' }}>
             <button onClick={() => navigate('/buyer-dashboard/messages')}
               style={{ width: 34, height: 34, borderRadius: 9, border: `1.5px solid #E8E2D8`, background: T.cream, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
@@ -244,7 +248,7 @@ export default function BuyerDashboard() {
             <div style={{ position: 'absolute', top: -2, right: -2, width: 8, height: 8, borderRadius: '50%', background: '#DC2626', border: '1.5px solid #fff' }} />
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 7, cursor: 'pointer' }} onClick={() => navigate('/edit-profile')}>
-            <span style={{ fontSize: 13, fontWeight: 600, color: T.ink }}>{userName}</span>
+            {!bp.isMobile && <span style={{ fontSize: 13, fontWeight: 600, color: T.ink }}>{userName}</span>}
             <div style={{ width: 30, height: 30, borderRadius: '50%', background: `linear-gradient(135deg, ${T.saffron}, #A8622E)`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, color: '#fff' }}>
               {userName?.[0]?.toUpperCase()}
             </div>
@@ -253,22 +257,22 @@ export default function BuyerDashboard() {
       </div>
 
       {/* ── Content ─────────────────────────────────────────────────────────── */}
-      <div style={{ padding: '28px 32px', maxWidth: 1400, margin: '0 auto' }}>
+      <div style={{ padding: bp.isMobile ? '18px 14px' : bp.isTablet ? '22px 24px' : '28px 32px', maxWidth: 1400, margin: '0 auto' }}>
 
         {/* Welcome */}
-        <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 26, fontWeight: 700, color: T.ink, marginBottom: 20 }}>
+        <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: bp.isMobile ? 22 : 26, fontWeight: 700, color: T.ink, marginBottom: 16 }}>
           Welcome back, {userName}
         </h2>
 
-        {/* Category cards — 4 col */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginBottom: 28 }}>
+        {/* Category cards */}
+        <div style={{ display: 'grid', gridTemplateColumns: bp.isMobile ? 'repeat(2, 1fr)' : bp.isTablet ? 'repeat(3, 1fr)' : 'repeat(4, 1fr)', gap: 8, marginBottom: 20 }}>
           {CATEGORIES.map(cat => (
             <CategoryCard key={cat.key} cat={cat} onClick={() => dispatch(toggleLogin(true))} />
           ))}
         </div>
 
-        {/* Promo banners — 3 col */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14, marginBottom: 36 }}>
+        {/* Promo banners */}
+        <div style={{ display: 'grid', gridTemplateColumns: bp.isMobile ? '1fr' : bp.isTablet ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)', gap: 12, marginBottom: 32 }}>
           {BANNERS.map(b => (
             <PromoBanner key={b.title} b={b} onClick={() => dispatch(toggleLogin(true))} />
           ))}
@@ -276,10 +280,10 @@ export default function BuyerDashboard() {
 
         {/* Ideas for you */}
         <div style={{ marginBottom: 20 }}>
-          <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 700, color: T.ink, marginBottom: 18 }}>
+          <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: bp.isMobile ? 19 : 22, fontWeight: 700, color: T.ink, marginBottom: 16 }}>
             Ideas for you
           </h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(175px, 1fr))', gap: 20 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: `repeat(auto-fill, minmax(${bp.isMobile ? '140px' : '175px'}, 1fr))`, gap: bp.isMobile ? 12 : 20 }}>
             {products.map((p, i) => (
               <ProductCard
                 key={`${p.name}-${i}`}

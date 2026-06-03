@@ -6,6 +6,7 @@ import { api } from '../services/api';
 import { useFetchData } from '../hooks/useFetchData';
 import { Spinner, EmptyState } from '../components/UI';
 import { Bell, Search, FileSearch, Send, DollarSign, Star, Plus, ArrowRight, TrendingUp } from 'lucide-react';
+import { useBreakpoint } from '../hooks/useBreakpoint';
 import { formatCurrency, formatDate } from '../utils/helpers';
 
 /* ── Design tokens ─────────────────────────────────────────────────────────── */
@@ -153,6 +154,7 @@ export default function SupplierDashboard() {
   const { userName } = useSelector((s) => s.auth);
   const navigate     = useNavigate();
   const dispatch     = useDispatch();
+  const bp           = useBreakpoint();
 
   const { data: stats,  loading: sl } = useFetchData(() => api.getStats('supplier'));
   const { data: rfqs,   loading: rl } = useFetchData(() => api.getRFQs());
@@ -172,19 +174,21 @@ export default function SupplierDashboard() {
 
       {/* ── Top bar ─────────────────────────────────────────────────────────── */}
       <div style={{
-        height: 58, display: 'flex', alignItems: 'center', gap: 16,
-        padding: '0 32px', borderBottom: `1px solid ${T.border}`,
-        background: '#fff', position: 'sticky', top: 0, zIndex: 100,
+        height: 56, display: 'flex', alignItems: 'center', gap: bp.isMobile ? 10 : 16,
+        padding: bp.isMobile ? '0 14px' : '0 32px', borderBottom: `1px solid ${T.border}`,
+        background: '#fff', position: 'sticky', top: 0, zIndex: 100, flexShrink: 0,
       }}>
-        <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 700, color: T.ink, whiteSpace: 'nowrap', flexShrink: 0 }}>
-          {greeting()}, {userName} 👋
-        </div>
-        <div style={{ flex: 1, maxWidth: 440, position: 'relative' }}>
+        {!bp.isMobile && (
+          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 700, color: T.ink, whiteSpace: 'nowrap', flexShrink: 0 }}>
+            {greeting()}, {userName} 👋
+          </div>
+        )}
+        <div style={{ flex: 1, position: 'relative', maxWidth: bp.isMobile ? '100%' : 440 }}>
           <Search size={13} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#B0A89E', pointerEvents: 'none' }} />
           <input readOnly onClick={() => dispatch(toggleLogin(true))} placeholder="Search RFQs, buyers, orders…"
             style={{ width: '100%', height: 34, borderRadius: 100, border: `1.5px solid #E8E2D8`, background: T.cream, padding: '0 14px 0 32px', fontFamily: "'DM Sans', sans-serif", fontSize: 12.5, color: T.ink, outline: 'none', cursor: 'pointer' }} />
         </div>
-        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
           <div style={{ position: 'relative' }}>
             <button onClick={() => navigate('/supplier-dashboard/messages')}
               style={{ width: 34, height: 34, borderRadius: 9, border: `1.5px solid #E8E2D8`, background: T.cream, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
@@ -193,7 +197,7 @@ export default function SupplierDashboard() {
             <div style={{ position: 'absolute', top: -2, right: -2, width: 8, height: 8, borderRadius: '50%', background: '#DC2626', border: '1.5px solid #fff' }} />
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 7, cursor: 'pointer' }} onClick={() => navigate('/edit-profile')}>
-            <span style={{ fontSize: 13, fontWeight: 600, color: T.ink }}>{userName}</span>
+            {!bp.isMobile && <span style={{ fontSize: 13, fontWeight: 600, color: T.ink }}>{userName}</span>}
             <div style={{ width: 30, height: 30, borderRadius: '50%', background: `linear-gradient(135deg, ${T.emerald}, #0F5C38)`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, color: '#fff' }}>
               {userName?.[0]?.toUpperCase()}
             </div>
@@ -202,31 +206,33 @@ export default function SupplierDashboard() {
       </div>
 
       {/* ── Content ─────────────────────────────────────────────────────────── */}
-      <div style={{ padding: '28px 32px', maxWidth: 1400, margin: '0 auto' }}>
+      <div style={{ padding: bp.isMobile ? '18px 14px' : bp.isTablet ? '22px 24px' : '28px 32px', maxWidth: 1400, margin: '0 auto' }}>
 
         {/* Welcome + actions */}
-        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
+        <div style={{ display: 'flex', alignItems: bp.isMobile ? 'flex-start' : 'flex-end', justifyContent: 'space-between', marginBottom: 20, flexWrap: 'wrap', gap: 12 }}>
           <div>
-            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 26, fontWeight: 700, color: T.ink, marginBottom: 4 }}>
+            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: bp.isMobile ? 22 : 26, fontWeight: 700, color: T.ink, marginBottom: 4 }}>
               Welcome back, {userName}
             </h2>
-            <p style={{ fontSize: 13, color: T.muted }}>Your supplier hub — respond to RFQs and manage your catalog.</p>
+            {!bp.isMobile && <p style={{ fontSize: 13, color: T.muted }}>Your supplier hub — respond to RFQs and manage your catalog.</p>}
           </div>
           <div style={{ display: 'flex', gap: 8 }}>
-            <button onClick={() => navigate('/supplier-dashboard/catalog/new')}
-              style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', borderRadius: 8, border: `1.5px solid #E8E2D8`, background: T.cream, color: T.ink, fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
-              <Plus size={13} /> List product
-            </button>
+            {!bp.isMobile && (
+              <button onClick={() => navigate('/supplier-dashboard/catalog/new')}
+                style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', borderRadius: 8, border: `1.5px solid #E8E2D8`, background: T.cream, color: T.ink, fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
+                <Plus size={13} /> List product
+              </button>
+            )}
             <button onClick={() => navigate('/supplier-dashboard/rfqs')}
               style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', borderRadius: 8, border: 'none', background: T.emerald, color: '#fff', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
-              <FileSearch size={13} /> Browse RFQs
+              <FileSearch size={13} /> {bp.isMobile ? 'RFQs' : 'Browse RFQs'}
             </button>
           </div>
         </div>
 
         {/* Stats row */}
         {sl ? <Spinner /> : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 28 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: bp.isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: bp.isMobile ? 8 : 12, marginBottom: 24 }}>
             <StatCard icon={FileSearch}  label="Open RFQs"     value={stats?.openRfqs    ?? 0}    accent={T.saffron} bg="#FDF1E8" trend={18} />
             <StatCard icon={Send}        label="Active Quotes" value={stats?.activeQuotes ?? 0}    accent={T.navy}    bg={T.navyLt}  trend={7}  />
             <StatCard icon={DollarSign}  label="Revenue"       value={stats?.revenue      ?? '$0'} accent={T.emerald} bg={T.emeraldLt} trend={22} />
@@ -235,7 +241,7 @@ export default function SupplierDashboard() {
         )}
 
         {/* Two-column panels */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 20, marginBottom: 28 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: bp.isMobile || bp.isTablet ? '1fr' : '1.2fr 1fr', gap: 16, marginBottom: 24 }}>
 
           {/* Open RFQs */}
           <Panel
@@ -269,7 +275,7 @@ export default function SupplierDashboard() {
           <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 700, color: T.ink, marginBottom: 14 }}>
             Quick actions
           </h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: bp.isMobile ? '1fr' : bp.isTablet ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)', gap: 12 }}>
             <QuickAction icon={Plus}        label="List a new product"  sub="Add to your catalog"          accent={T.emerald} onClick={() => navigate('/supplier-dashboard/catalog/new')} />
             <QuickAction icon={FileSearch}  label="Browse all RFQs"     sub="Find buyers looking for you"  accent={T.saffron} onClick={() => navigate('/supplier-dashboard/rfqs')} />
             <QuickAction icon={TrendingUp}  label="View performance"    sub="Revenue, ratings & analytics" accent={T.navy}    onClick={() => navigate('/supplier-dashboard')} />
