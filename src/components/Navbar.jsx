@@ -57,7 +57,7 @@ export default function Navbar({ socket }) {
 
         {/* Logo */}
         <button onClick={() => navigate('/')} className="flex items-center group">
-          <img src="/logo.png" alt="Globrixa" style={{ height: 38, width: 'auto', objectFit: 'contain' }} />
+          <img src="/logo.png" alt="Globrixa" style={{ height: 44, width: 'auto', objectFit: 'contain' }} />
         </button>
 
         {/* Desktop nav */}

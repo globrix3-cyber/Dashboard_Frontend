@@ -120,11 +120,11 @@ function Sidebar({ links, onMobileClose }) {
         marginBottom: 8,
       }}>
         <div style={{
-          width: 32, height: 32, borderRadius: 8,
+          width: 38, height: 38, borderRadius: 9,
           background: accent,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontFamily: "'Cormorant Garamond', serif",
-          fontSize: 16, fontWeight: 700, color: '#fff',
+          fontSize: 19, fontWeight: 700, color: '#fff',
           letterSpacing: '-.5px',
         }}>G</div>
       </div>
@@ -206,7 +206,7 @@ export default function DashboardLayout({ children }) {
       {/* Main content */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
 
-<main style={{ flex: 1, overflowY: 'auto' }}>
+        <main style={{ flex: 1, overflowY: 'auto' }}>
           {children}
         </main>
       </div>

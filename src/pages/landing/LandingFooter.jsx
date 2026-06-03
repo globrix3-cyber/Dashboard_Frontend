@@ -54,7 +54,7 @@ export default function LandingFooter() {
           {/* Brand — full width on mobile */}
           <div style={{ gridColumn: bp.isMobile ? '1 / -1' : 'auto' }}>
             <button onClick={() => navigate('/')} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, marginBottom: 14, display: 'block' }}>
-              <img src="/logo.png" alt="Globrixa" style={{ height: 44, objectFit: 'contain' }} />
+              <img src="/logo.png" alt="Globrixa" style={{ height: 52, objectFit: 'contain' }} />
             </button>
             <p style={{ fontSize: 12, color: 'rgba(255,255,255,.6)', lineHeight: 1.75, maxWidth: 210 }}>
               India's B2B wholesale marketplace — connecting verified manufacturers with global buyers across 120+ countries.
