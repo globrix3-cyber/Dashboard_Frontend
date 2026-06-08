@@ -6,6 +6,7 @@ import DashboardLayout from "./layouts/DashboardLayout";
 // Pages
 import LandingPage       from "./pages/LandingPage";
 import ProductsPage      from "./pages/ProductsPage";
+import ProductDetailPage from "./pages/ProductDetailPage";
 import EditProfile       from "./pages/EditProfile";
 
 import BuyerDashboard    from "./pages/BuyerDashboard";
@@ -60,6 +61,11 @@ export const routeConfig = [
   {
     path:    "/products",
     element: withLayout(ProductsPage),
+    roles:   [ROLES.BUYER, ROLES.SUPPLIER],
+  },
+  {
+    path:    "/products/:id",
+    element: withLayout(ProductDetailPage),
     roles:   [ROLES.BUYER, ROLES.SUPPLIER],
   },
   {

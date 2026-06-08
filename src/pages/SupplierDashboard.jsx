@@ -1,11 +1,9 @@
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { toggleLogin } from '../features/auth/authSlice';
 import { api } from '../services/api';
 import { useFetchData } from '../hooks/useFetchData';
 import { Spinner, EmptyState } from '../components/UI';
-import { Bell, Search, FileSearch, Send, DollarSign, Star, Plus, ArrowRight, TrendingUp } from 'lucide-react';
+import { FileSearch, Send, DollarSign, Star, Plus, ArrowRight, TrendingUp } from 'lucide-react';
 import { useBreakpoint } from '../hooks/useBreakpoint';
 import { formatCurrency, formatDate } from '../utils/helpers';
 
@@ -153,7 +151,6 @@ function QuickAction({ icon: Icon, label, sub, accent, onClick }) {
 export default function SupplierDashboard() {
   const { userName } = useSelector((s) => s.auth);
   const navigate     = useNavigate();
-  const dispatch     = useDispatch();
   const bp           = useBreakpoint();
 
   const { data: stats,  loading: sl } = useFetchData(() => api.getStats('supplier'));
@@ -162,48 +159,8 @@ export default function SupplierDashboard() {
 
   const openRFQs = rfqs?.filter(r => r.status === 'active') ?? [];
 
-  const greeting = () => {
-    const h = new Date().getHours();
-    if (h < 12) return 'Good morning';
-    if (h < 17) return 'Good afternoon';
-    return 'Good evening';
-  };
-
   return (
-    <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", minHeight: '100vh', background: '#fff' }}>
-
-      {/* ── Top bar ─────────────────────────────────────────────────────────── */}
-      <div style={{
-        height: 56, display: 'flex', alignItems: 'center', gap: bp.isMobile ? 10 : 16,
-        padding: bp.isMobile ? '0 14px' : '0 32px', borderBottom: `1px solid ${T.border}`,
-        background: '#fff', position: 'sticky', top: 0, zIndex: 100, flexShrink: 0,
-      }}>
-        {!bp.isMobile && (
-          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 700, color: T.ink, whiteSpace: 'nowrap', flexShrink: 0 }}>
-            {greeting()}, {userName} 👋
-          </div>
-        )}
-        <div style={{ flex: 1, position: 'relative', maxWidth: bp.isMobile ? '100%' : 440 }}>
-          <Search size={13} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#B0A89E', pointerEvents: 'none' }} />
-          <input readOnly onClick={() => dispatch(toggleLogin(true))} placeholder="Search RFQs, buyers, orders…"
-            style={{ width: '100%', height: 34, borderRadius: 100, border: `1.5px solid #E8E2D8`, background: T.cream, padding: '0 14px 0 32px', fontFamily: "'DM Sans', sans-serif", fontSize: 12.5, color: T.ink, outline: 'none', cursor: 'pointer' }} />
-        </div>
-        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-          <div style={{ position: 'relative' }}>
-            <button onClick={() => navigate('/supplier-dashboard/messages')}
-              style={{ width: 34, height: 34, borderRadius: 9, border: `1.5px solid #E8E2D8`, background: T.cream, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-              <Bell size={14} color={T.muted} />
-            </button>
-            <div style={{ position: 'absolute', top: -2, right: -2, width: 8, height: 8, borderRadius: '50%', background: '#DC2626', border: '1.5px solid #fff' }} />
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 7, cursor: 'pointer' }} onClick={() => navigate('/edit-profile')}>
-            {!bp.isMobile && <span style={{ fontSize: 13, fontWeight: 600, color: T.ink }}>{userName}</span>}
-            <div style={{ width: 30, height: 30, borderRadius: '50%', background: `linear-gradient(135deg, ${T.emerald}, #0F5C38)`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, color: '#fff' }}>
-              {userName?.[0]?.toUpperCase()}
-            </div>
-          </div>
-        </div>
-      </div>
+    <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: '#fff' }}>
 
       {/* ── Content ─────────────────────────────────────────────────────────── */}
       <div style={{ padding: bp.isMobile ? '18px 14px' : bp.isTablet ? '22px 24px' : '28px 32px', maxWidth: 1400, margin: '0 auto' }}>

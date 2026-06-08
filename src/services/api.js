@@ -156,9 +156,11 @@ export const api = {
   get, post, put, patch, delete: del,
 
   // ── Auth ─────────────────────────────────────────────────────────────────
-  register: (body) => post('/api/auth/register', body),
-  login:    (body) => post('/api/auth/login',    body),
-  logout:   ()     => post('/api/auth/logout'),
+  register:       (body) => post('/api/auth/register',        body),
+  login:          (body) => post('/api/auth/login',           body),
+  logout:         ()     => post('/api/auth/logout'),
+  forgotPassword: (body) => post('/api/auth/forgot-password', body),
+  resetPassword:  (body) => post('/api/auth/reset-password',  body),
 
   // ── Profile ──────────────────────────────────────────────────────────────
   getMe:        ()     => get('/api/users/me'),
