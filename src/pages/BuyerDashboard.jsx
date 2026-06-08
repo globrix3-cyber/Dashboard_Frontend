@@ -1,11 +1,12 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { toggleLogin } from '../features/auth/authSlice';
-import { Heart, Plus } from 'lucide-react';
-import { CAT_DATA } from './landing/ShopByCategory';
+import { Heart, Plus, ArrowRight, ShoppingBag } from 'lucide-react';
 import { IMG } from './landing/images';
+import { api } from '../services/api';
+import { useFetchData } from '../hooks/useFetchData';
 import { useBreakpoint } from '../hooks/useBreakpoint';
+import { Spinner, EmptyState } from '../components/UI';
 
 /* ── Design tokens ─────────────────────────────────────────────────────────── */
 const T = {
@@ -18,16 +19,10 @@ const T = {
   navy:   '#1B3175',
 };
 
-/* ── Category card data ────────────────────────────────────────────────────── */
-const CATEGORIES = [
-  { label: 'Textiles',         img: IMG.jaipurTextiles,     key: 'Textiles' },
-  { label: 'Wall Décor',       img: IMG.blueCeramicVases,   key: 'Wall Décor' },
-  { label: 'Handicrafts',      img: IMG.wovenBaskets,       key: 'Handicrafts & Artisan' },
-  { label: 'Kitchen & Dining', img: IMG.ceramicKitchenware, key: 'Kitchen & Dining' },
-  { label: 'Soft Furnishings', img: IMG.fabricRolls,        key: 'Soft Furnishings' },
-  { label: 'Jewelry',          img: IMG.indianJewelry,      key: 'Jewelry' },
-  { label: 'Garden & Outdoor', img: IMG.vadodaraPottery,    key: 'Garden & Outdoor' },
-  { label: 'Sustainable',      img: IMG.chennaBaskets,      key: 'Sustainable Décor' },
+/* ── Category card imagery — paired with real categories at render time ───── */
+const CATEGORY_IMAGES = [
+  IMG.jaipurTextiles, IMG.blueCeramicVases, IMG.wovenBaskets, IMG.ceramicKitchenware,
+  IMG.fabricRolls, IMG.indianJewelry, IMG.vadodaraPottery, IMG.chennaBaskets,
 ];
 
 /* ── Promo banners ─────────────────────────────────────────────────────────── */
@@ -37,19 +32,27 @@ const BANNERS = [
   { title: 'Export-ready products',  sub: 'GST invoices, quality certs, fast dispatch', cta: 'Explore', bg: '#1A4A2E', img: IMG.indiaFactoryWorkers },
 ];
 
-/* ── All products flat list ────────────────────────────────────────────────── */
-const ALL_PRODUCTS = Object.values(CAT_DATA).flatMap(cat => cat.products);
-
 /* ── Favourite state (local only) ─────────────────────────────────────────── */
 const useFavourites = () => {
   const [favs, setFavs] = useState(new Set());
-  const toggle = (name) => setFavs(prev => {
+  const toggle = (id) => setFavs(prev => {
     const next = new Set(prev);
-    next.has(name) ? next.delete(name) : next.add(name);
+    next.has(id) ? next.delete(id) : next.add(id);
     return next;
   });
   return [favs, toggle];
 };
+
+/* ── Map a real product record onto the card's display shape ──────────────── */
+const toCardProduct = (p) => ({
+  id:    p.id,
+  name:  p.name,
+  price: p.base_price ? `₹${Number(p.base_price).toLocaleString('en-IN')}` : 'Price on request',
+  moq:   `MOQ ${Number(p.min_order_quantity || 1).toLocaleString('en-IN')}${p.moq_unit ? ` ${p.moq_unit}` : ''}`,
+  brand: p.category_name || '',
+  img:   p.images?.[0]?.image_url || null,
+  badge: p.status === 'active' ? 'Verified' : null,
+});
 
 /* ── Category card ─────────────────────────────────────────────────────────── */
 function CategoryCard({ cat, onClick }) {
@@ -113,11 +116,37 @@ function PromoBanner({ b, onClick }) {
   );
 }
 
+/* ── Section heading with a "see all" CTA ─────────────────────────────────── */
+function SectionHeading({ title, cta, onCta, bp }) {
+  const [hov, setHov] = useState(false);
+  return (
+    <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 16, gap: 12 }}>
+      <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: bp.isMobile ? 19 : 22, fontWeight: 700, color: T.ink, margin: 0 }}>
+        {title}
+      </h3>
+      <button
+        onClick={onCta}
+        onMouseEnter={() => setHov(true)}
+        onMouseLeave={() => setHov(false)}
+        style={{
+          display: 'flex', alignItems: 'center', gap: 5,
+          background: 'none', border: 'none', cursor: 'pointer', padding: 0,
+          fontFamily: "'DM Sans', sans-serif", fontSize: 12.5, fontWeight: 700,
+          color: hov ? T.saffron : T.muted, transition: 'color .15s', whiteSpace: 'nowrap',
+        }}
+      >
+        {cta} <ArrowRight size={13} />
+      </button>
+    </div>
+  );
+}
+
 /* ── Faire-style product card ──────────────────────────────────────────────── */
 function ProductCard({ p, isFav, onFav, onAction }) {
   const [hov, setHov] = useState(false);
   const badgeColor = p.badge === 'Trending' ? { bg: '#F3F0EB', color: '#1C1815' }
-    : p.badge === 'Export' ? { bg: '#EEF2FB', color: '#1B3175' }
+    : p.badge === 'Export'   ? { bg: '#EEF2FB', color: '#1B3175' }
+    : p.badge === 'Verified' ? { bg: '#EAF5EF', color: T.emerald }
     : { bg: '#F3F0EB', color: '#1C1815' };
 
   return (
@@ -203,13 +232,24 @@ function ProductCard({ p, isFav, onFav, onAction }) {
 /* ── BuyerDashboard ────────────────────────────────────────────────────────── */
 export default function BuyerDashboard() {
   const { userName }  = useSelector((s) => s.auth);
-  const dispatch      = useDispatch();
+  const navigate      = useNavigate();
   const bp            = useBreakpoint();
   const [favs, toggleFav] = useFavourites();
   const [visibleCount, setVisibleCount] = useState(12);
 
-  const products = ALL_PRODUCTS.slice(0, visibleCount);
-  const hasMore  = ALL_PRODUCTS.length > visibleCount;
+  const { data: rawProducts = [], loading: productsLoading, error: productsError } = useFetchData(() => api.getProducts());
+  const { data: rawCategories = [] } = useFetchData(() => api.getCategories());
+
+  const allProducts  = Array.isArray(rawProducts) ? rawProducts : [];
+  const rootCats     = (Array.isArray(rawCategories) ? rawCategories : []).filter(c => !c.parent_id);
+  const categoryCards = rootCats.slice(0, 8).map((c, i) => ({
+    key: c.id, label: c.name, img: CATEGORY_IMAGES[i % CATEGORY_IMAGES.length],
+  }));
+
+  const products = allProducts.slice(0, visibleCount).map(toCardProduct);
+  const hasMore  = allProducts.length > visibleCount;
+
+  const goToCategory = (id) => navigate(`/categories?id=${encodeURIComponent(id)}`);
 
   return (
     <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: '#fff' }}>
@@ -218,51 +258,71 @@ export default function BuyerDashboard() {
       <div style={{ padding: bp.isMobile ? '18px 14px' : bp.isTablet ? '22px 24px' : '28px 32px', maxWidth: 1400, margin: '0 auto' }}>
 
         {/* Welcome */}
-        <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: bp.isMobile ? 22 : 26, fontWeight: 700, color: T.ink, marginBottom: 16 }}>
+        <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: bp.isMobile ? 22 : 26, fontWeight: 700, color: T.ink, marginBottom: 4 }}>
           Welcome back, {userName}
         </h2>
+        <p style={{ fontSize: 13, color: T.muted, marginBottom: 24 }}>
+          Fresh picks from GST-verified Indian suppliers, curated for your business.
+        </p>
 
         {/* Category cards */}
-        <div style={{ display: 'grid', gridTemplateColumns: bp.isMobile ? 'repeat(2, 1fr)' : bp.isTablet ? 'repeat(3, 1fr)' : 'repeat(4, 1fr)', gap: 8, marginBottom: 20 }}>
-          {CATEGORIES.map(cat => (
-            <CategoryCard key={cat.key} cat={cat} onClick={() => dispatch(toggleLogin(true))} />
-          ))}
-        </div>
+        {categoryCards.length > 0 && (
+          <>
+            <SectionHeading title="Shop by category" cta="Browse all" onCta={() => navigate('/categories')} bp={bp} />
+            <div style={{ display: 'grid', gridTemplateColumns: bp.isMobile ? 'repeat(2, 1fr)' : bp.isTablet ? 'repeat(3, 1fr)' : 'repeat(4, 1fr)', gap: 8, marginBottom: 32 }}>
+              {categoryCards.map(cat => (
+                <CategoryCard key={cat.key} cat={cat} onClick={() => goToCategory(cat.key)} />
+              ))}
+            </div>
+          </>
+        )}
 
         {/* Promo banners */}
         <div style={{ display: 'grid', gridTemplateColumns: bp.isMobile ? '1fr' : bp.isTablet ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)', gap: 12, marginBottom: 32 }}>
           {BANNERS.map(b => (
-            <PromoBanner key={b.title} b={b} onClick={() => dispatch(toggleLogin(true))} />
+            <PromoBanner key={b.title} b={b} onClick={() => navigate('/products')} />
           ))}
         </div>
 
         {/* Ideas for you */}
         <div style={{ marginBottom: 20 }}>
-          <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: bp.isMobile ? 19 : 22, fontWeight: 700, color: T.ink, marginBottom: 16 }}>
-            Ideas for you
-          </h3>
-          <div style={{ display: 'grid', gridTemplateColumns: `repeat(auto-fill, minmax(${bp.isMobile ? '140px' : '175px'}, 1fr))`, gap: bp.isMobile ? 12 : 20 }}>
-            {products.map((p, i) => (
-              <ProductCard
-                key={`${p.name}-${i}`}
-                p={p}
-                isFav={favs.has(p.name)}
-                onFav={() => toggleFav(p.name)}
-                onAction={() => dispatch(toggleLogin(true))}
-              />
-            ))}
-          </div>
-        </div>
+          <SectionHeading title="Ideas for you" cta="View all products" onCta={() => navigate('/products')} bp={bp} />
 
-        {/* Load more */}
-        {hasMore && (
-          <div style={{ textAlign: 'center', paddingTop: 8, paddingBottom: 16 }}>
-            <button onClick={() => setVisibleCount(v => v + 12)}
-              style={{ padding: '10px 32px', borderRadius: 8, border: `1.5px solid #E8E2D8`, background: '#fff', color: T.ink, fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
-              Load more
-            </button>
-          </div>
-        )}
+          {productsLoading ? (
+            <Spinner />
+          ) : productsError ? (
+            <div style={{ padding: 32, textAlign: 'center', color: T.muted }}>
+              <p style={{ marginBottom: 12 }}>Could not load product ideas.</p>
+              <button onClick={() => window.location.reload()} style={{ padding: '8px 20px', borderRadius: 100, background: T.saffron, color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 700, fontFamily: "'DM Sans', sans-serif" }}>Retry</button>
+            </div>
+          ) : products.length === 0 ? (
+            <EmptyState icon={ShoppingBag} title="No products yet" desc="Check back soon — new supplier listings are added regularly." />
+          ) : (
+            <>
+              <div style={{ display: 'grid', gridTemplateColumns: `repeat(auto-fill, minmax(${bp.isMobile ? '140px' : '175px'}, 1fr))`, gap: bp.isMobile ? 12 : 20 }}>
+                {products.map((p) => (
+                  <ProductCard
+                    key={p.id}
+                    p={p}
+                    isFav={favs.has(p.id)}
+                    onFav={() => toggleFav(p.id)}
+                    onAction={() => navigate(`/products/${p.id}`)}
+                  />
+                ))}
+              </div>
+
+              {/* Load more */}
+              {hasMore && (
+                <div style={{ textAlign: 'center', paddingTop: 24, paddingBottom: 16 }}>
+                  <button onClick={() => setVisibleCount(v => v + 12)}
+                    style={{ padding: '10px 32px', borderRadius: 8, border: `1.5px solid #E8E2D8`, background: '#fff', color: T.ink, fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
+                    Load more
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

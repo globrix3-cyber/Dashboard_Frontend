@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { toggleLogin } from '../features/auth/authSlice';
 import { api } from '../services/api';
@@ -52,8 +52,9 @@ function getMeta(slug) {
 export default function CategoriesPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [searchParams] = useSearchParams();
   const [search, setSearch] = useState('');
-  const [selected, setSelected] = useState(null); // selected root category id
+  const [selected, setSelected] = useState(searchParams.get('id') || null); // selected root category id
 
   const { data: raw = [], loading } = useFetchData(() => api.getCategories());
   const allCats = Array.isArray(raw) ? raw : [];
