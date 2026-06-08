@@ -133,6 +133,11 @@ export default function ProductDetailPage() {
   const unitPrice = basePrice + Number(selectedVariant?.price_modifier || 0);
   const totalPrice = unitPrice * qty;
 
+  const brandName          = product.supplier_brand_name || product.supplier_legal_name || 'Verified supplier';
+  const isVerifiedSupplier = product.supplier_verified_status === 'verified';
+  const supplierLocation   = [product.supplier_city, product.supplier_state, countryName(product.supplier_country)]
+    .filter(Boolean).join(', ');
+
   const moreFromSupplier = (Array.isArray(allRaw) ? allRaw : [])
     .filter(p => p.supplier_company_id === product.supplier_company_id && p.id !== product.id)
     .slice(0, 4);
@@ -212,18 +217,37 @@ export default function ProductDetailPage() {
 
           {/* Buy box */}
           <div>
-            {/* Supplier / category badge */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
-              <span style={{
-                display: 'inline-flex', alignItems: 'center', gap: 5,
-                background: '#EAF5EF', color: C.emerald, fontSize: 11, fontWeight: 700,
-                padding: '4px 10px', borderRadius: 100, letterSpacing: '.02em',
+            {/* Brand strip — Faire-style "Sold by [brand]" */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
+              <div style={{
+                width: 38, height: 38, borderRadius: '50%', overflow: 'hidden', flexShrink: 0,
+                background: C.cream, border: `1px solid ${C.border}`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>
-                <BadgeCheck size={11} /> Verified Indian supplier
-              </span>
-              <span style={{ fontSize: 11.5, color: C.muted, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '.05em' }}>
-                {product.category_name}
-              </span>
+                {product.supplier_logo_url
+                  ? <img src={product.supplier_logo_url} alt={brandName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  : <ShoppingBag size={16} color={C.muted} />
+                }
+              </div>
+              <div>
+                <div style={{ fontSize: 10.5, color: C.muted, fontWeight: 700, letterSpacing: '.06em', textTransform: 'uppercase', marginBottom: 1 }}>
+                  Sold by
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                  <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 17, fontWeight: 700, color: C.ink, lineHeight: 1.1 }}>
+                    {brandName}
+                  </span>
+                  {isVerifiedSupplier && <BadgeCheck size={15} color={C.emerald} />}
+                </div>
+                {supplierLocation && (
+                  <div style={{ fontSize: 12, color: C.muted, marginTop: 1 }}>{supplierLocation}</div>
+                )}
+              </div>
+            </div>
+
+            {/* Category */}
+            <div style={{ fontSize: 11.5, color: C.muted, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '.05em', marginBottom: 10 }}>
+              {product.category_name}
             </div>
 
             {/* Name */}
@@ -325,7 +349,7 @@ export default function ProductDetailPage() {
                 <MapPin size={16} color={C.muted} style={{ flexShrink: 0, marginTop: 1 }} />
                 <div>
                   <div style={{ fontSize: 13, fontWeight: 600, color: C.ink }}>Ships from</div>
-                  <div style={{ fontSize: 12.5, color: C.muted, marginTop: 1 }}>{countryName(product.country_of_origin)}</div>
+                  <div style={{ fontSize: 12.5, color: C.muted, marginTop: 1 }}>{supplierLocation || countryName(product.country_of_origin)}</div>
                 </div>
               </div>
               <div style={{ display: 'flex', gap: 12 }}>
@@ -376,9 +400,9 @@ export default function ProductDetailPage() {
             <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 18, flexWrap: 'wrap', gap: 12 }}>
               <div>
                 <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: bp.isMobile ? 20 : 23, fontWeight: 700, color: C.ink, marginBottom: 3 }}>
-                  More from this supplier
+                  More from {brandName}
                 </h3>
-                <p style={{ fontSize: 12.5, color: C.muted, margin: 0 }}>Other active listings from the same verified manufacturer</p>
+                <p style={{ fontSize: 12.5, color: C.muted, margin: 0 }}>Other active listings from the same {isVerifiedSupplier ? 'verified ' : ''}supplier</p>
               </div>
               <div style={{ display: 'flex', gap: 8 }}>
                 <button onClick={() => navigate('/products')} style={{

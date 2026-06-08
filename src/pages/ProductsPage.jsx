@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { api } from '../services/api';
 import { useFetchData } from '../hooks/useFetchData';
@@ -18,9 +18,15 @@ const C = {
 
 export default function ProductsPage() {
   const navigate  = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { userRole } = useSelector(s => s.auth);
   const [search, setSearch] = useState('');
-  const [cat, setCat]       = useState('All');
+  const [cat, setCat]       = useState(searchParams.get('category') || 'All');
+
+  const selectCat = (c) => {
+    setCat(c);
+    setSearchParams(c === 'All' ? {} : { category: c }, { replace: true });
+  };
 
   const { data: raw = [],      loading, error } = useFetchData(() => api.getProducts());
   const { data: catRaw = [] }                   = useFetchData(() => api.getCategories());
@@ -108,7 +114,7 @@ export default function ProductsPage() {
       {/* Category pills — from real API */}
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 28 }}>
         {catPills.map(c => (
-          <button key={c} onClick={() => setCat(c)} style={{
+          <button key={c} onClick={() => selectCat(c)} style={{
             padding: '7px 16px', borderRadius: 100, border: `1.5px solid ${cat === c ? C.navy : C.borderSoft}`,
             background: cat === c ? C.navy : '#fff', color: cat === c ? '#fff' : C.inkSoft,
             fontSize: 12, fontWeight: 600, cursor: 'pointer',

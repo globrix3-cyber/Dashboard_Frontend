@@ -13,6 +13,15 @@ import LoginModal from "./pages/LoginModal";
 
 import "./index.css";
 
+// Pages anyone can browse without an account (Faire-style open browsing) —
+// the initial-load guard below must not slap a login modal over these.
+const GUEST_BROWSABLE_PREFIXES = [
+  '/products', '/categories', '/about', '/blog', '/careers',
+  '/contact', '/privacy', '/terms', '/help', '/our-story',
+];
+const isGuestBrowsable = (path) =>
+  path === '/' || GUEST_BROWSABLE_PREFIXES.some(p => path === p || path.startsWith(p + '/'));
+
 export default function App() {
   const dispatch  = useDispatch();
   const navigate  = useNavigate();
@@ -34,7 +43,7 @@ export default function App() {
           userName: storedName || "",
         })
       );
-    } else if (location.pathname !== "/") {
+    } else if (!isGuestBrowsable(location.pathname)) {
       dispatch(toggleLogin(true));
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
