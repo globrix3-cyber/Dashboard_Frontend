@@ -115,7 +115,7 @@ function AccountMenu({ userName, items, onNavigate, onLogout, onClose }) {
         boxShadow: '0 16px 48px rgba(28,24,21,.16)', overflow: 'hidden', zIndex: 200,
       }}>
         <div style={{ padding: '16px 18px', borderBottom: '1px solid #F2EDE4' }}>
-          <div style={{ fontSize: 16, fontWeight: 700, color: '#1C1815', fontFamily: "'Cormorant Garamond', serif" }}>Hi, {userName}</div>
+          <div style={{ fontSize: 16, fontWeight: 700, color: '#1C1815', fontFamily: "'Cormorant Garamond', serif" }}>Hi, {userName?.split(' ')[0] || userName}</div>
         </div>
         <div style={{ padding: 6, maxHeight: 320, overflowY: 'auto' }}>
           {items.map(({ path, label }) => (
@@ -225,7 +225,7 @@ function TopBar({ role }) {
           </div>
         )}
 
-        <div style={{ flex: 1, position: 'relative', maxWidth: 560 }}>
+        <div style={{ flex: 1, position: 'relative' }}>
           <Search size={14} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: '#B0A89E', pointerEvents: 'none' }} />
           <input
             readOnly onClick={() => dispatch(toggleLogin(true))}

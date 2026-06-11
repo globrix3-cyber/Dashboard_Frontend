@@ -259,7 +259,7 @@ export default function BuyerDashboard() {
 
         {/* Welcome */}
         <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: bp.isMobile ? 22 : 26, fontWeight: 700, color: T.ink, marginBottom: 4 }}>
-          Welcome back, {userName}
+          Hi, {userName?.split(' ')[0] || userName}
         </h2>
         <p style={{ fontSize: 13, color: T.muted, marginBottom: 24 }}>
           Fresh picks from GST-verified Indian suppliers, curated for your business.
