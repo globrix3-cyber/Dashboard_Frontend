@@ -132,7 +132,7 @@ export default function LoginModal({ onSubmit }) {
         finalizeAuth(response, form.role);
       } catch (err) {
         if (err.message?.includes('No account found')) {
-          toast.info('No account with that email — let's create one!');
+          toast.info("No account with that email — let's create one!");
           setMode('register');
         } else {
           toast.error(err.message || 'Authentication failed. Please try again.');
