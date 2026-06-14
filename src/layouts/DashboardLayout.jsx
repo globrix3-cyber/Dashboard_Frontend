@@ -411,23 +411,25 @@ function TopBar({ role }) {
 }
 
 /* ── DashboardLayout ────────────────────────────────────────────────────────── */
-export default function DashboardLayout({ children }) {
+export default function DashboardLayout({ children, fullBleed = false }) {
   const { userRole } = useSelector((s) => s.auth);
+  const bp = useBreakpoint();
   const role = userRole === 'supplier' ? 'supplier'
              : userRole === 'admin'    ? 'admin'
              : userRole === 'buyer'    ? 'buyer'
              : 'guest';
 
-  /* Every role — including signed-out guests browsing /products & /categories —
-     gets the same Faire-style top bar (logo · search · account, then a category
-     row); guests see "Log in / Sign up" instead of the account/cart cluster.
-     Clipped-viewport model: bar stays put, <main> scrolls internally, so pages
-     with their own internally-scrolling panels (e.g. Messages) keep working. */
+  const hPad = bp.isMobile ? 16 : 32;
+
   return (
-    <div style={{ height: '100vh', overflow: 'hidden', display: 'flex', flexDirection: 'column', background: '#fff' }}>
+    <div style={{ height: '100vh', overflow: 'hidden', display: 'flex', flexDirection: 'column', background: '#FAFAF9' }}>
       <TopBar role={role} />
       <main style={{ flex: 1, overflowY: 'auto' }}>
-        {children}
+        {fullBleed ? children : (
+          <div style={{ maxWidth: 1440, margin: '0 auto', padding: `28px ${hPad}px 48px` }}>
+            {children}
+          </div>
+        )}
       </main>
     </div>
   );

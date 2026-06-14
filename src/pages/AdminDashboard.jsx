@@ -35,22 +35,25 @@ const C = {
 /* ── Stat card ──────────────────────────────────────────────────────────── */
 function StatCard({ icon: Icon, label, value, color, trend, badge }) {
   return (
-    <div style={{ background: C.white, borderRadius: 12, padding: '18px 20px', border: `1px solid ${C.border}` }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
-        <div style={{ width: 36, height: 36, borderRadius: 9, background: C.bg, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Icon size={16} color={color} />
+    <div style={{ background: C.white, borderRadius: 14, padding: '20px 22px 18px', border: `1px solid ${C.border}`, borderTop: `3px solid ${color}`, boxShadow: '0 1px 4px rgba(28,24,21,.04)', transition: 'box-shadow .15s, transform .15s' }}
+      onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 6px 20px rgba(28,24,21,.09)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+      onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 1px 4px rgba(28,24,21,.04)'; e.currentTarget.style.transform = 'none'; }}
+    >
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 16 }}>
+        <div style={{ width: 40, height: 40, borderRadius: 10, background: `${color}14`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Icon size={18} color={color} />
         </div>
         {trend != null && (
-          <span style={{ fontSize: 12, fontWeight: 600, color: C.emerald, display: 'flex', alignItems: 'center', gap: 3 }}>
-            <TrendingUp size={11} /> +{trend}%
+          <span style={{ fontSize: 11, fontWeight: 700, color: C.emerald, display: 'flex', alignItems: 'center', gap: 3, background: C.emeraldLt, padding: '3px 8px', borderRadius: 100 }}>
+            <TrendingUp size={10} /> +{trend}%
           </span>
         )}
       </div>
-      <div style={{ fontSize: 28, fontWeight: 700, letterSpacing: '-0.5px', color: C.ink, marginBottom: 3 }}>{value}</div>
-      <div style={{ fontSize: 12, color: C.muted }}>{label}</div>
+      <div style={{ fontSize: 32, fontWeight: 700, letterSpacing: '-1px', color: C.ink, lineHeight: 1, marginBottom: 6 }}>{value}</div>
+      <div style={{ fontSize: 12.5, color: C.muted, fontWeight: 500 }}>{label}</div>
       {badge && (
-        <span style={{ display: 'inline-block', marginTop: 8, fontSize: 10, fontWeight: 700, padding: '2px 9px', borderRadius: 100, background: `${color}18`, color }}>
-          {badge}
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, marginTop: 10, fontSize: 10, fontWeight: 700, padding: '3px 9px', borderRadius: 100, background: `${color}14`, color }}>
+          <span style={{ width: 5, height: 5, borderRadius: '50%', background: color }} />{badge}
         </span>
       )}
     </div>
@@ -137,23 +140,27 @@ export default function AdminDashboard() {
     <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", color: C.ink, display: 'flex', flexDirection: 'column', gap: 24 }}>
 
       {/* ── Page heading ─────────────────────────────────────────────────── */}
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
+      <div style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: 16, padding: '24px 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap', marginBottom: 8 }}>
         <div>
-          <p style={{ fontSize: 11, fontWeight: 700, color: '#B0A89E', letterSpacing: '.1em', textTransform: 'uppercase', margin: '0 0 4px' }}>
-            Globrixa · Admin
+          <p style={{ fontSize: 11, fontWeight: 700, color: '#B0A89E', letterSpacing: '.1em', textTransform: 'uppercase', margin: '0 0 6px' }}>
+            Globrixa · Admin Control
           </p>
-          <h1 style={{ fontSize: 24, fontWeight: 700, margin: '0 0 4px', letterSpacing: '-0.4px' }}>
-            Welcome back, {firstName}
+          <h1 style={{ fontSize: 26, fontWeight: 700, margin: '0 0 5px', letterSpacing: '-0.5px', color: C.ink }}>
+            Welcome back, {firstName} 👋
           </h1>
-          <p style={{ fontSize: 13, color: C.muted, margin: 0 }}>{today}</p>
+          <p style={{ fontSize: 13, color: C.muted, margin: 0 }}>{today} · Platform oversight dashboard</p>
         </div>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
           <button onClick={() => navigate('/admin-dashboard/verifications')}
-            style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 16px', borderRadius: 8, background: C.ink, color: '#fff', border: 'none', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
+            style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', borderRadius: 9, background: C.ink, color: '#fff', border: 'none', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13, boxShadow: '0 2px 8px rgba(28,24,21,.2)', transition: 'transform .12s' }}
+            onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-1px)'}
+            onMouseLeave={e => e.currentTarget.style.transform = 'none'}>
             <ShieldCheck size={14} /> Review KYC
           </button>
           <button onClick={() => navigate('/admin-dashboard/users')}
-            style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 16px', borderRadius: 8, background: C.white, color: C.ink, border: `1.5px solid ${C.border}`, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 13 }}>
+            style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', borderRadius: 9, background: C.white, color: C.ink, border: `1.5px solid ${C.border}`, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 13, transition: 'border-color .12s, background .12s' }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = '#C8C0B8'; e.currentTarget.style.background = C.bg; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.background = C.white; }}>
             <Users size={14} /> Manage Users
           </button>
         </div>
