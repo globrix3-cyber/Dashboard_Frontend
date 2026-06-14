@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toggleLogin } from '../features/auth/authSlice';
 import {
@@ -23,6 +23,8 @@ const C = {
 function PublicLayout({ children }) {
   const navigate  = useNavigate();
   const dispatch  = useDispatch();
+  const userRole  = useSelector(s => s.auth.userRole);
+  const dashPath  = userRole === 'supplier' ? '/supplier' : userRole === 'admin' ? '/admin' : '/buyer';
   return (
     <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: C.warmWhite, minHeight: '100vh' }}>
       {/* Mini nav */}
@@ -36,12 +38,20 @@ function PublicLayout({ children }) {
           <img src="/logo.png" alt="Globrixa" style={{ height: 52, width: 'auto', objectFit: 'contain' }} />
         </button>
         <div style={{ display: 'flex', gap: 10 }}>
-          <button onClick={() => dispatch(toggleLogin(true))} style={{ padding: '8px 18px', borderRadius: 100, border: `1.5px solid ${C.borderSoft}`, background: '#fff', color: C.inkSoft, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 13 }}>
-            Sign In
-          </button>
-          <button onClick={() => dispatch(toggleLogin(true))} style={{ padding: '8px 18px', borderRadius: 100, border: 'none', background: C.saffron, color: '#fff', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
-            Join Free
-          </button>
+          {userRole ? (
+            <button onClick={() => navigate(dashPath)} style={{ padding: '8px 18px', borderRadius: 100, border: 'none', background: C.saffron, color: '#fff', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
+              Go to Dashboard
+            </button>
+          ) : (
+            <>
+              <button onClick={() => dispatch(toggleLogin(true))} style={{ padding: '8px 18px', borderRadius: 100, border: `1.5px solid ${C.borderSoft}`, background: '#fff', color: C.inkSoft, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 13 }}>
+                Sign In
+              </button>
+              <button onClick={() => dispatch(toggleLogin(true))} style={{ padding: '8px 18px', borderRadius: 100, border: 'none', background: C.saffron, color: '#fff', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
+                Join Free
+              </button>
+            </>
+          )}
         </div>
       </header>
       <main style={{ maxWidth: 900, margin: '0 auto', padding: '56px 28px' }}>
@@ -64,7 +74,11 @@ function SectionTag({ text, color = C.saffron, bg = C.saffronLt }) {
 
 /* ════════════════════════ ABOUT PAGE ══════════════════════════════════════ */
 export function AboutPage() {
-  const dispatch = useDispatch();
+  const dispatch  = useDispatch();
+  const navigate  = useNavigate();
+  const userRole  = useSelector(s => s.auth.userRole);
+  const dashPath  = userRole === 'supplier' ? '/supplier' : userRole === 'admin' ? '/admin' : '/buyer';
+  const handleCta = () => userRole ? navigate(dashPath) : dispatch(toggleLogin(true));
   return (
     <PublicLayout>
       <div style={{ textAlign: 'center', marginBottom: 56 }}>
@@ -99,7 +113,7 @@ export function AboutPage() {
         <div style={{ position: 'absolute', inset: 0, opacity: 0.05, backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='50' cy='50' r='46' fill='none' stroke='%23fff' stroke-width='.5' stroke-dasharray='3 7'/%3E%3C/svg%3E")`, backgroundSize: '100px 100px', pointerEvents: 'none' }} />
         <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 900, color: '#fff', margin: '0 0 12px' }}>Join the Globrixa Movement</h2>
         <p style={{ color: 'rgba(255,255,255,0.7)', marginBottom: 28, fontSize: 14 }}>Be part of India's most trusted B2B trade platform.</p>
-        <button onClick={() => dispatch(toggleLogin(true))} style={{ padding: '12px 32px', borderRadius: 100, border: 'none', background: C.saffron, color: '#fff', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 14, boxShadow: '0 4px 16px rgba(217,96,10,0.4)' }}>
+        <button onClick={handleCta} style={{ padding: '12px 32px', borderRadius: 100, border: 'none', background: C.saffron, color: '#fff', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 14, boxShadow: '0 4px 16px rgba(217,96,10,0.4)' }}>
           Get Started Free
         </button>
       </div>

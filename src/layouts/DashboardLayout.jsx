@@ -228,7 +228,7 @@ function TopBar({ role }) {
         <div style={{ flex: 1, position: 'relative' }}>
           <Search size={14} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: '#B0A89E', pointerEvents: 'none' }} />
           <input
-            readOnly onClick={() => dispatch(toggleLogin(true))}
+            readOnly onClick={() => isGuest ? dispatch(toggleLogin(true)) : navigate('/products')}
             placeholder={bp.isMobile ? 'Search…' : searchPlaceholder}
             style={{ width: '100%', height: 38, borderRadius: 100, border: '1.5px solid #E8E2D8', background: '#FDF8F2', padding: '0 38px', fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: '#1C1815', outline: 'none', cursor: 'pointer', boxSizing: 'border-box' }}
           />

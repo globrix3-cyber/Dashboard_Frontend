@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toggleLogin } from '../features/auth/authSlice';
 
@@ -24,6 +24,9 @@ const TEAM = [
 export default function OurStoryPage() {
   const dispatch  = useDispatch();
   const navigate  = useNavigate();
+  const userRole  = useSelector(s => s.auth.userRole);
+  const dashPath  = userRole === 'supplier' ? '/supplier' : userRole === 'admin' ? '/admin' : '/buyer';
+  const handleCta = () => userRole ? navigate(dashPath) : dispatch(toggleLogin(true));
 
   return (
     <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: T.c, minHeight: '100vh', color: T.ink }}>
@@ -31,7 +34,7 @@ export default function OurStoryPage() {
       {/* Minimal nav */}
       <nav style={{ background: T.c, borderBottom: `1px solid ${T.bs}`, padding: '0 40px', height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 100 }}>
         <button onClick={() => navigate('/')} style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: "'DM Sans',sans-serif", fontSize: 15, fontWeight: 800, color: T.ink, letterSpacing: '0.18em', textTransform: 'uppercase' }}>GLOBRIXA</button>
-        <button onClick={() => dispatch(toggleLogin(true))} style={{ padding: '9px 22px', borderRadius: 100, border: 'none', background: T.t, color: '#fff', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13, fontWeight: 700 }}>Start sourcing</button>
+        <button onClick={handleCta} style={{ padding: '9px 22px', borderRadius: 100, border: 'none', background: T.t, color: '#fff', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13, fontWeight: 700 }}>Start sourcing</button>
       </nav>
 
       {/* Hero */}
@@ -114,7 +117,7 @@ export default function OurStoryPage() {
       <div style={{ background: T.ink, padding: '72px 28px', textAlign: 'center' }}>
         <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: 'clamp(28px,4vw,48px)', fontWeight: 900, color: '#fff', letterSpacing: -1.5, marginBottom: 16 }}>Ready to start sourcing?</h2>
         <p style={{ fontSize: 16, color: 'rgba(255,255,255,.6)', marginBottom: 36, maxWidth: 420, margin: '0 auto 36px' }}>Join thousands of global buyers already sourcing from India's best manufacturers.</p>
-        <button onClick={() => dispatch(toggleLogin(true))} style={{ padding: '15px 40px', borderRadius: 100, border: 'none', background: T.t, color: '#fff', fontSize: 15, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', boxShadow: '0 8px 28px rgba(196,119,58,.4)' }}>
+        <button onClick={handleCta} style={{ padding: '15px 40px', borderRadius: 100, border: 'none', background: T.t, color: '#fff', fontSize: 15, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', boxShadow: '0 8px 28px rgba(196,119,58,.4)' }}>
           Explore products →
         </button>
       </div>
