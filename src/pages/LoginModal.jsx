@@ -158,7 +158,7 @@ export default function LoginModal({ onSubmit }) {
 
           {/* Logo — centered */}
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: 22 }}>
-            <img src="/logo.png" alt="Globrixa" style={{ height: 72, objectFit: 'contain', display: 'block' }} />
+            <img src="/logo-icon.png" alt="Globrixa" style={{ height: 56, objectFit: 'contain', display: 'block' }} />
           </div>
 
           {mode === 'onboarding' ? (
