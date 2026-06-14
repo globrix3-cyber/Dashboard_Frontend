@@ -37,7 +37,7 @@ export default function LandingNavbar() {
           fontSize: bp.isTablet ? 13 : 15,
           fontWeight: 800,
           color: '#1C1815',
-          letterSpacing: '0.08em',
+          letterSpacing: '0.04em',
           textTransform: 'uppercase',
           whiteSpace: 'nowrap',
         }}>
@@ -143,7 +143,7 @@ export default function LandingNavbar() {
         position: 'sticky', top: 0, zIndex: 1000,
       }}>
         <button onClick={() => navigate('/')} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
-          <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 12, fontWeight: 800, color: '#1C1815', letterSpacing: '0.2em', textTransform: 'uppercase' }}>
+          <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 12, fontWeight: 800, color: '#1C1815', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
             G L O B R I X A
           </span>
         </button>
