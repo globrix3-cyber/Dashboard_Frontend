@@ -54,8 +54,8 @@ export default function LoginModal({ onSubmit }) {
       await api.forgotPassword({ email: form.email });
       toast.success('If that email is registered, a reset PIN has been sent to it.');
       setResetStep('confirm');
-    } catch (err) {
-      toast.error(err.message || 'Could not send reset PIN. Please try again.');
+    } catch {
+      toast.error('Could not send reset PIN. Please try again later.');
     } finally {
       setLoading(false);
     }
