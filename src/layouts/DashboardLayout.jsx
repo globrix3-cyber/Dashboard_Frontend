@@ -244,10 +244,12 @@ function TopBar({ role }) {
 
       {/* Row 1 — logo · all categories · search · language · setup guide · bell/account/cart */}
       <div style={{ height: 64, display: 'flex', alignItems: 'center', gap: bp.isMobile ? 10 : 16, padding: bp.isMobile ? '0 16px' : '0 32px' }}>
-        <img
-          src="/logo.png" alt="Globrixa" onClick={() => navigate(homePath)}
-          style={{ height: bp.isMobile ? 32 : 40, objectFit: 'contain', cursor: 'pointer', flexShrink: 0, display: 'block' }}
-        />
+        <span
+          onClick={() => navigate(homePath)}
+          style={{ fontFamily: "'DM Sans', sans-serif", fontSize: bp.isMobile ? 13 : 15, fontWeight: 800, color: '#1C1815', letterSpacing: '0.05em', textTransform: 'uppercase', cursor: 'pointer', flexShrink: 0, userSelect: 'none' }}
+        >
+          GLOBRIXA
+        </span>
 
         {!bp.isMobile && (
           <div style={{ position: 'relative', flexShrink: 0 }}>
