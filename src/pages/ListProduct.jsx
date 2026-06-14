@@ -162,7 +162,7 @@ export default function ListProduct() {
     hs_code:            '',
     country_of_origin:  'IN',
     lead_time_days:     '',
-    status:             'draft',
+    status:             'active',
   });
 
   // Pricing tiers: base price + per-quantity variants
@@ -182,6 +182,7 @@ export default function ListProduct() {
 
   // Images: array of { image_url, alt_text }
   const [images, setImages]     = useState([{ image_url: '', alt_text: '' }]);
+  const [imgErrors, setImgErrors] = useState({});
   const [tagIds, setTagIds]     = useState([]);
   const [newTag, setNewTag]     = useState('');
 
@@ -216,9 +217,10 @@ export default function ListProduct() {
   const addTier    = () => setPriceTiers(t => [...t, { min_qty: '', max_qty: '', price: '' }]);
   const removeTier = (i) => setPriceTiers(t => t.filter((_, idx) => idx !== i));
 
-  const updateImage = (i, k, v) => setImages(imgs =>
-    imgs.map((img, idx) => idx === i ? { ...img, [k]: v } : img)
-  );
+  const updateImage = (i, k, v) => {
+    setImages(imgs => imgs.map((img, idx) => idx === i ? { ...img, [k]: v } : img));
+    if (k === 'image_url') setImgErrors(e => { const next = { ...e }; delete next[i]; return next; });
+  };
   const addImage    = () => setImages(i => [...i, { image_url: '', alt_text: '' }]);
   const removeImage = (i) => setImages(imgs => imgs.filter((_, idx) => idx !== i));
 
@@ -385,9 +387,14 @@ export default function ListProduct() {
 
             <Field label="Listing Status">
               <Select value={basic.status} onChange={e => setB('status', e.target.value)}>
+                <option value="active">Active — visible to all buyers immediately</option>
                 <option value="draft">Draft — save and publish later</option>
-                <option value="active">Active — publish immediately</option>
               </Select>
+              {basic.status === 'active' && (
+                <p style={{ margin: '6px 0 0', fontSize: 11.5, color: '#1A7A4A', display: 'flex', alignItems: 'center', gap: 5 }}>
+                  ✓ Buyers on Globrixa will be able to discover and contact you for this product.
+                </p>
+              )}
             </Field>
           </div>
         )}
@@ -528,22 +535,37 @@ export default function ListProduct() {
             </div>
 
             {images.map((img, i) => (
-              <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 32px', gap: 10, alignItems: 'flex-end' }}>
-                <Field label={i === 0 ? 'Image URL (Main)' : `Image URL ${i + 1}`} required={i === 0}>
-                  <Input value={img.image_url} onChange={e => updateImage(i, 'image_url', e.target.value)} placeholder="https://…" type="url" />
-                </Field>
-                <Field label="Alt Text">
-                  <Input value={img.alt_text} onChange={e => updateImage(i, 'alt_text', e.target.value)} placeholder="Describe the image…" />
-                </Field>
-                <button type="button" onClick={() => removeImage(i)} disabled={images.length === 1}
-                  style={{
-                    width: 32, height: 38, borderRadius: 8, border: 'none', marginBottom: 0,
-                    cursor: images.length === 1 ? 'not-allowed' : 'pointer',
-                    background: images.length === 1 ? '#f3f4f6' : '#FEE2E2',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-                  }}>
-                  <Trash2 size={13} color={images.length === 1 ? '#d1d5db' : '#EF4444'} />
-                </button>
+              <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: 10, padding: '14px', borderRadius: 12, border: '1.5px solid var(--border-soft)', background: img.image_url ? '#fff' : 'var(--warm-white)' }}>
+                <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                  {/* Preview thumbnail */}
+                  <div style={{ width: 72, height: 72, borderRadius: 8, overflow: 'hidden', background: 'var(--warm-white)', border: '1.5px solid var(--border-soft)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    {img.image_url && !imgErrors[i] ? (
+                      <img src={img.image_url} alt="preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        onError={() => setImgErrors(e => ({ ...e, [i]: true }))} />
+                    ) : img.image_url && imgErrors[i] ? (
+                      <span style={{ fontSize: 10, color: '#B0A898', textAlign: 'center', padding: 4 }}>Invalid URL</span>
+                    ) : (
+                      <Image size={22} color="var(--muted)" />
+                    )}
+                  </div>
+                  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    <Field label={i === 0 ? 'Image URL (Main) *' : `Image URL ${i + 1}`} required={i === 0}>
+                      <Input value={img.image_url} onChange={e => updateImage(i, 'image_url', e.target.value)} placeholder="https://example.com/product.jpg" type="url" />
+                    </Field>
+                    <Field label="Alt Text">
+                      <Input value={img.alt_text} onChange={e => updateImage(i, 'alt_text', e.target.value)} placeholder="e.g. Front view of the product" />
+                    </Field>
+                  </div>
+                  <button type="button" onClick={() => removeImage(i)} disabled={images.length === 1}
+                    style={{
+                      width: 32, height: 32, borderRadius: 8, border: 'none', marginTop: 2,
+                      cursor: images.length === 1 ? 'not-allowed' : 'pointer',
+                      background: images.length === 1 ? '#f3f4f6' : '#FEE2E2',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                    }}>
+                    <Trash2 size={13} color={images.length === 1 ? '#d1d5db' : '#EF4444'} />
+                  </button>
+                </div>
               </div>
             ))}
 

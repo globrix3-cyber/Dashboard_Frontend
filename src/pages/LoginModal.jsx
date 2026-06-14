@@ -52,10 +52,10 @@ export default function LoginModal({ onSubmit }) {
     setLoading(true);
     try {
       await api.forgotPassword({ email: form.email });
-      toast.success('If that email is registered, a reset PIN has been sent to it.');
+      toast.success('Reset PIN sent. Check your inbox.');
       setResetStep('confirm');
-    } catch {
-      toast.error('Could not send reset PIN. Please try again later.');
+    } catch (err) {
+      toast.error(err.message || 'Could not send reset PIN. Please try again later.');
     } finally {
       setLoading(false);
     }
@@ -131,7 +131,12 @@ export default function LoginModal({ onSubmit }) {
         const response = await api.login({ email: form.email, password: form.password });
         finalizeAuth(response, form.role);
       } catch (err) {
-        toast.error(err.message || 'Authentication failed. Please try again.');
+        if (err.message?.includes('No account found')) {
+          toast.info('No account with that email — let's create one!');
+          setMode('register');
+        } else {
+          toast.error(err.message || 'Authentication failed. Please try again.');
+        }
       } finally {
         setLoading(false);
       }
@@ -207,14 +212,28 @@ export default function LoginModal({ onSubmit }) {
               </div>
             )}
 
-            {/* Name — register only */}
+            {/* Name + Company — register only */}
             {mode === 'register' && (
-              <div>
-                <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#3D3830', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>Full Name</label>
-                <input value={form.name} onChange={e => set('name', e.target.value)} placeholder="Rajesh Kumar" style={INPUT}
-                  onFocus={e => { e.currentTarget.style.borderColor = '#C4773A'; e.currentTarget.style.background = '#fff'; }}
-                  onBlur={e => { e.currentTarget.style.borderColor = '#E0DAD0'; e.currentTarget.style.background = '#FDF8F2'; }} />
-              </div>
+              <>
+                <div>
+                  <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#3D3830', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>Full Name</label>
+                  <input value={form.name} onChange={e => set('name', e.target.value)} placeholder="Rajesh Kumar" style={INPUT}
+                    onFocus={e => { e.currentTarget.style.borderColor = '#C4773A'; e.currentTarget.style.background = '#fff'; }}
+                    onBlur={e => { e.currentTarget.style.borderColor = '#E0DAD0'; e.currentTarget.style.background = '#FDF8F2'; }} />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#3D3830', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>
+                    {form.role === 'supplier' ? 'Brand / Business Name' : 'Company Name'}
+                  </label>
+                  <input
+                    value={form.company}
+                    onChange={e => set('company', e.target.value)}
+                    placeholder={form.role === 'supplier' ? 'e.g. Jaipur Crafts Pvt Ltd' : 'e.g. Reliance Retail Ltd'}
+                    style={INPUT}
+                    onFocus={e => { e.currentTarget.style.borderColor = '#C4773A'; e.currentTarget.style.background = '#fff'; }}
+                    onBlur={e => { e.currentTarget.style.borderColor = '#E0DAD0'; e.currentTarget.style.background = '#FDF8F2'; }} />
+                </div>
+              </>
             )}
 
             {/* Business email — login & register */}

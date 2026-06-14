@@ -68,11 +68,10 @@ const adminLinks = [
   { path: '/admin-dashboard',               label: 'Overview'      },
   { path: '/admin-dashboard/users',         label: 'Users'         },
   { path: '/admin-dashboard/companies',     label: 'Companies'     },
-  { path: '/admin-dashboard/products',      label: 'Products'      },
   { path: '/admin-dashboard/verifications', label: 'Verifications' },
   { path: '/admin-dashboard/messages',      label: 'Messages'      },
   { path: '/admin-dashboard/reports',       label: 'Reports'       },
-  { path: '/admin-dashboard/settings',      label: 'Settings'      },
+  { path: '/products',                      label: 'Browse Products'},
   { path: '/edit-profile',                  label: 'Profile'       },
 ];
 
@@ -88,7 +87,7 @@ const ROLE_CONFIG = {
   },
   admin: {
     links: adminLinks, accent: '#1B3175', homePath: '/admin-dashboard',
-    searchPlaceholder: 'Search users, companies, orders…', cartPath: '/admin-dashboard/products',
+    searchPlaceholder: 'Search users, companies, orders…', cartPath: '/products',
   },
   guest: {
     links: [], accent: '#C4773A', homePath: '/',
