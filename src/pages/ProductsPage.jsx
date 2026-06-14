@@ -4,40 +4,55 @@ import { useSelector } from 'react-redux';
 import { api } from '../services/api';
 import { useFetchData } from '../hooks/useFetchData';
 import { Spinner, EmptyState } from '../components/UI';
-import { ShoppingBag, Search, BadgeCheck, Filter, Grid3X3 } from 'lucide-react';
+import { ShoppingBag, BadgeCheck, Heart, ChevronDown } from 'lucide-react';
 import { toast } from 'react-toastify';
+import { IMG } from './landing/images';
 
-const C = {
-  saffron: '#D9600A', saffronLt: '#FDF1E8',
-  emerald: '#1A7A4A', emeraldLt: '#EAF5EF',
-  navy: '#1B3175', navyLt: '#EEF2FB',
-  gold: '#B8730A', goldLt: '#FDF5E2',
-  ink: '#1C1815', inkSoft: '#3D3731',
-  muted: '#7A7068', borderSoft: '#E6DED0', cream: '#F0E8DA',
-};
+const CATEGORY_IMAGES = [
+  IMG.jaipurTextiles, IMG.blueCeramicVases, IMG.wovenBaskets, IMG.ceramicKitchenware,
+  IMG.fabricRolls, IMG.indianJewelry, IMG.vadodaraPottery, IMG.chennaBaskets,
+];
+
+const SORT_OPTIONS = [
+  { label: 'Featured',          value: 'featured'   },
+  { label: 'Newest first',      value: 'newest'     },
+  { label: 'Price: low → high', value: 'price_asc'  },
+  { label: 'Price: high → low', value: 'price_desc' },
+];
 
 export default function ProductsPage() {
-  const navigate  = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const { userRole } = useSelector(s => s.auth);
-  const [search, setSearch] = useState(searchParams.get('search') || '');
-  const [cat, setCat]       = useState(searchParams.get('category') || 'All');
+  const navigate                         = useNavigate();
+  const [searchParams, setSearchParams]  = useSearchParams();
+  const { userRole }                     = useSelector(s => s.auth);
+  const [search, setSearch]              = useState(searchParams.get('search') || '');
+  const [cat, setCat]                    = useState(searchParams.get('category') || 'All');
+  const [sort, setSort]                  = useState('featured');
+  const [showSort, setShowSort]          = useState(false);
+  const [favs, setFavs]                  = useState(new Set());
 
   useEffect(() => { setSearch(searchParams.get('search') || ''); }, [searchParams]);
+  useEffect(() => { setCat(searchParams.get('category') || 'All'); }, [searchParams]);
 
   const selectCat = (c) => {
     setCat(c);
-    setSearchParams(c === 'All' ? {} : { category: c }, { replace: true });
+    const p = c === 'All' ? {} : { category: c };
+    if (search) p.search = search;
+    setSearchParams(p, { replace: true });
   };
 
-  const { data: raw = [],      loading, error } = useFetchData(() => api.getProducts());
-  const { data: catRaw = [] }                   = useFetchData(() => api.getCategories());
+  const toggleFav = (e, id) => {
+    e.stopPropagation();
+    setFavs(prev => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n; });
+  };
 
-  const products = Array.isArray(raw) ? raw : [];
-  const rootCats = (Array.isArray(catRaw) ? catRaw : []).filter(c => !c.parent_id);
-  const catPills = ['All', ...rootCats.map(c => c.name)];
+  const { data: raw = [], loading, error } = useFetchData(() => api.getProducts());
+  const { data: catRaw = [] }              = useFetchData(() => api.getCategories());
 
-  const filtered = products.filter(p => {
+  const products  = Array.isArray(raw)    ? raw    : [];
+  const rootCats  = (Array.isArray(catRaw) ? catRaw : []).filter(c => !c.parent_id);
+  const sideItems = ['All', ...rootCats.map(c => c.name)];
+
+  let filtered = products.filter(p => {
     const name    = p.name          || '';
     const catName = p.category_name || '';
     const matchCat = cat === 'All' || catName.toLowerCase().includes(cat.toLowerCase());
@@ -46,145 +61,166 @@ export default function ProductsPage() {
       catName.toLowerCase().includes(search.toLowerCase());
     return matchCat && matchQ;
   });
+  if (sort === 'price_asc')  filtered = [...filtered].sort((a, b) => (Number(a.base_price) || 0) - (Number(b.base_price) || 0));
+  if (sort === 'price_desc') filtered = [...filtered].sort((a, b) => (Number(b.base_price) || 0) - (Number(a.base_price) || 0));
+  if (sort === 'newest')     filtered = [...filtered].sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
 
-  const handleGetQuote = async (e, product) => {
+  const handleGetQuote = (e, p) => {
     e.stopPropagation();
-    if (userRole === 'buyer') {
-      navigate('/buyer-dashboard/rfqs/new');
-    } else if (userRole === 'supplier') {
-      toast.info('Switch to a buyer account to request quotes.');
-    } else {
-      navigate('/');
-    }
+    if (userRole === 'buyer') navigate('/buyer-dashboard/rfqs/new');
+    else if (userRole === 'supplier') toast.info('Switch to a buyer account to request quotes.');
+    else navigate('/');
   };
 
+  const showCategoryTiles = cat === 'All' && !search && rootCats.length > 0;
+
   return (
-    <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
+    <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", color: '#1C1815' }}
+      onClick={() => showSort && setShowSort(false)}>
 
-      {/* Page header */}
-      <div style={{ marginBottom: 20 }}>
-        <p style={{ fontSize: 11, fontWeight: 700, color: '#B0A89E', letterSpacing: '.1em', textTransform: 'uppercase', margin: '0 0 4px' }}>
-          Globrixa · Global Catalog
-        </p>
-        <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 24, fontWeight: 900, color: '#1C1815', margin: '0 0 4px', letterSpacing: '-0.5px' }}>
-          Product Marketplace
-        </h1>
-        <p style={{ color: '#7A7068', fontSize: 13, margin: 0 }}>
-          Verified products from GST-certified Indian manufacturers &amp; exporters
-        </p>
-      </div>
-
-      {/* Quick-access: browse by category */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20, padding: '12px 16px', background: '#fff', borderRadius: 14, border: `1.5px solid ${C.borderSoft}` }}>
-        <Grid3X3 size={16} color={C.navy} />
-        <span style={{ fontSize: 13, fontWeight: 600, color: C.inkSoft }}>Browse by category:</span>
-        <button onClick={() => navigate('/categories')} style={{
-          display: 'flex', alignItems: 'center', gap: 6, padding: '6px 14px', borderRadius: 100,
-          border: 'none', background: C.navy, color: '#fff', cursor: 'pointer',
-          fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 12,
-        }}>
-          Open Category Browser
-        </button>
-      </div>
-
-      {/* Search + filter row */}
-      <div style={{ display: 'flex', gap: 12, marginBottom: 20, flexWrap: 'wrap', alignItems: 'center' }}>
-        <div style={{ position: 'relative', flex: 1, minWidth: 240 }}>
-          <Search size={14} color={C.muted} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} />
-          <input
-            value={search} onChange={e => setSearch(e.target.value)}
-            placeholder="Search products…"
-            style={{ width: '100%', padding: '11px 14px 11px 38px', borderRadius: 12, border: `1.5px solid ${C.borderSoft}`, background: '#fff', fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: C.ink, outline: 'none', boxSizing: 'border-box', transition: 'border-color 0.15s' }}
-            onFocus={e => { e.currentTarget.style.borderColor = C.navy; }}
-            onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; }}
-          />
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: C.muted, fontWeight: 500 }}>
-          <Filter size={13} /> {filtered.length} product{filtered.length !== 1 ? 's' : ''}
-        </div>
-      </div>
-
-      {/* Category pills — from real API */}
-      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 28 }}>
-        {catPills.map(c => (
-          <button key={c} onClick={() => selectCat(c)} style={{
-            padding: '7px 16px', borderRadius: 100, border: `1.5px solid ${cat === c ? C.navy : C.borderSoft}`,
-            background: cat === c ? C.navy : '#fff', color: cat === c ? '#fff' : C.inkSoft,
-            fontSize: 12, fontWeight: 600, cursor: 'pointer',
-            transition: 'all 0.15s',
-          }}>
-            {c}
-          </button>
-        ))}
-      </div>
-
-      {/* Content */}
-      {loading ? <Spinner /> : error ? (
-        <div style={{ padding: 32, textAlign: 'center', color: C.muted }}>
-          <p style={{ marginBottom: 12 }}>Could not load products.</p>
-          <button onClick={() => window.location.reload()} style={{ padding: '8px 20px', borderRadius: 100, background: C.saffron, color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 700, fontFamily: "'DM Sans', sans-serif" }}>Retry</button>
-        </div>
-      ) : filtered.length === 0 ? (
-        <EmptyState icon={ShoppingBag} title="No products found" desc="Try a different search or category filter." />
-      ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 18 }}>
-          {filtered.map(p => (
-            <div key={p.id} onClick={() => navigate(`/products/${p.id}`)} style={{
-              background: '#fff', borderRadius: 18, border: `1.5px solid ${C.borderSoft}`,
-              overflow: 'hidden', cursor: 'pointer',
-              transition: 'transform 0.2s, box-shadow 0.2s, border-color 0.2s',
-              boxShadow: '0 1px 4px rgba(28,24,21,0.05)',
-            }}
-              onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 8px 28px rgba(27,49,117,0.12)'; e.currentTarget.style.borderColor = C.navy; }}
-              onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 1px 4px rgba(28,24,21,0.05)'; e.currentTarget.style.borderColor = C.borderSoft; }}>
-
-              {/* Image placeholder */}
-              <div style={{ height: 160, background: `linear-gradient(135deg, ${C.cream}, #E8E2D6)`, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-                {p.images?.[0]?.image_url
-                  ? <img src={p.images[0].image_url} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  : <ShoppingBag size={44} color={C.borderSoft} />
-                }
-                {p.status === 'active' && (
-                  <span style={{ position: 'absolute', top: 10, right: 10, display: 'flex', alignItems: 'center', gap: 4, background: C.emeraldLt, color: C.emerald, fontSize: 10, fontWeight: 700, padding: '3px 9px', borderRadius: 100 }}>
-                    <BadgeCheck size={10} /> Verified
-                  </span>
-                )}
+      {/* ── Category tiles (Faire-style top grid, only on "All" + no search) ── */}
+      {showCategoryTiles && (
+        <div style={{ marginBottom: 36 }}>
+          <h2 style={{ fontSize: 20, fontWeight: 700, margin: '0 0 14px', letterSpacing: '-0.3px' }}>
+            Browse by category
+          </h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10 }}>
+            {rootCats.slice(0, 8).map((c, i) => (
+              <div key={c.id} onClick={() => selectCat(c.name)}
+                style={{ display: 'flex', alignItems: 'center', background: '#F5F2EE', borderRadius: 10, overflow: 'hidden', cursor: 'pointer', border: '1px solid #EDE8E0', transition: 'box-shadow .15s, transform .15s' }}
+                onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 4px 16px rgba(28,24,21,.1)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+                onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'none'; }}
+              >
+                <div style={{ width: 70, height: 70, flexShrink: 0, overflow: 'hidden' }}>
+                  <img src={CATEGORY_IMAGES[i % CATEGORY_IMAGES.length]} alt={c.name}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </div>
+                <span style={{ padding: '0 14px', fontSize: 13, fontWeight: 600, lineHeight: 1.3 }}>{c.name}</span>
               </div>
-
-              <div style={{ padding: '16px 18px 18px' }}>
-                <div style={{ fontSize: 10, fontWeight: 700, color: C.navy, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>
-                  {p.category_name || '—'}
-                </div>
-                <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: 15, color: C.ink, marginBottom: 10, lineHeight: 1.3, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                  {p.name}
-                </div>
-
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 12 }}>
-                  <div>
-                    <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 900, fontSize: 20, color: C.ink, letterSpacing: '-0.5px' }}>
-                      {p.base_price ? `₹${Number(p.base_price).toLocaleString('en-IN')}` : 'On Request'}
-                    </div>
-                    {p.moq_unit && (
-                      <div style={{ fontSize: 11, color: C.muted, marginTop: 2 }}>MOQ: {p.min_order_quantity} {p.moq_unit}</div>
-                    )}
-                  </div>
-                  <button onClick={e => handleGetQuote(e, p)} style={{
-                    padding: '8px 14px', borderRadius: 100, border: 'none', cursor: 'pointer',
-                    background: C.saffron, color: '#fff',
-                    fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 12,
-                    boxShadow: '0 3px 10px rgba(217,96,10,0.28)',
-                    transition: 'background 0.15s, transform 0.12s',
-                  }}
-                    onMouseEnter={e => { e.currentTarget.style.background = '#BF530A'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
-                    onMouseLeave={e => { e.currentTarget.style.background = C.saffron; e.currentTarget.style.transform = 'none'; }}>
-                    Get Quote
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       )}
+
+      {/* ── Main area: sidebar + grid ───────────────────────────────────────── */}
+      <div style={{ display: 'flex', gap: 28, alignItems: 'flex-start' }}>
+
+        {/* Sidebar */}
+        <div style={{ width: 196, flexShrink: 0 }}>
+          <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 12, paddingBottom: 10, borderBottom: '1px solid #EDE8E0' }}>
+            {search ? `"${search}"` : 'All products'}
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+            {sideItems.map(c => (
+              <button key={c} onClick={() => selectCat(c)} style={{
+                display: 'block', width: '100%', textAlign: 'left',
+                padding: '7px 10px', borderRadius: 7, border: 'none',
+                fontFamily: "'DM Sans', sans-serif", fontSize: 13,
+                fontWeight: cat === c ? 700 : 400,
+                color: cat === c ? '#1C1815' : '#7A7068',
+                background: cat === c ? '#EDE8E0' : 'transparent',
+                cursor: 'pointer', transition: 'background .1s, color .1s',
+              }}
+                onMouseEnter={e => { if (cat !== c) { e.currentTarget.style.background = '#F5F2EE'; e.currentTarget.style.color = '#1C1815'; } }}
+                onMouseLeave={e => { if (cat !== c) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#7A7068'; } }}
+              >
+                {c}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Content */}
+        <div style={{ flex: 1, minWidth: 0 }}>
+
+          {/* Sort / count bar */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 }}>
+            <span style={{ fontSize: 13, color: '#7A7068' }}>
+              <strong style={{ color: '#1C1815' }}>{filtered.length}</strong> product{filtered.length !== 1 ? 's' : ''}
+            </span>
+            <div style={{ position: 'relative' }} onClick={e => e.stopPropagation()}>
+              <button onClick={() => setShowSort(o => !o)}
+                style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 14px', borderRadius: 8, border: '1.5px solid #EDE8E0', background: '#fff', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 500, color: '#1C1815' }}>
+                Sort by {SORT_OPTIONS.find(o => o.value === sort)?.label} <ChevronDown size={13} />
+              </button>
+              {showSort && (
+                <div style={{ position: 'absolute', right: 0, top: 'calc(100% + 4px)', background: '#fff', border: '1.5px solid #EDE8E0', borderRadius: 10, overflow: 'hidden', zIndex: 50, minWidth: 190, boxShadow: '0 6px 24px rgba(28,24,21,.1)' }}>
+                  {SORT_OPTIONS.map(o => (
+                    <button key={o.value} onClick={() => { setSort(o.value); setShowSort(false); }}
+                      style={{ display: 'block', width: '100%', textAlign: 'left', padding: '10px 14px', border: 'none', background: sort === o.value ? '#F5F2EE' : '#fff', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: sort === o.value ? 700 : 400, color: '#1C1815' }}>
+                      {o.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Product grid */}
+          {loading ? <Spinner /> : error ? (
+            <div style={{ padding: 32, textAlign: 'center', color: '#7A7068' }}>
+              <p style={{ marginBottom: 12 }}>Could not load products.</p>
+              <button onClick={() => window.location.reload()} style={{ padding: '8px 20px', borderRadius: 100, background: '#D9600A', color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 700, fontFamily: "'DM Sans', sans-serif" }}>Retry</button>
+            </div>
+          ) : filtered.length === 0 ? (
+            <EmptyState icon={ShoppingBag} title="No products found" desc="Try a different search or category." />
+          ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(210px, 1fr))', gap: 14 }}>
+              {filtered.map(p => (
+                <div key={p.id} onClick={() => navigate(`/products/${p.id}`)}
+                  style={{ background: '#fff', borderRadius: 12, border: '1px solid #EDE8E0', overflow: 'hidden', cursor: 'pointer', transition: 'box-shadow .18s, transform .18s' }}
+                  onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 6px 24px rgba(28,24,21,.1)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'none'; }}
+                >
+                  {/* Image */}
+                  <div style={{ height: 195, background: '#F5F2EE', position: 'relative', overflow: 'hidden' }}>
+                    {p.images?.[0]?.image_url
+                      ? <img src={p.images[0].image_url} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><ShoppingBag size={40} color="#C8C0B8" /></div>
+                    }
+                    {/* Top overlay: verified + heart */}
+                    <div style={{ position: 'absolute', top: 10, left: 10, right: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                      {p.status === 'active' && (
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, background: 'rgba(255,255,255,.92)', color: '#1A7A4A', fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 100, backdropFilter: 'blur(4px)' }}>
+                          <BadgeCheck size={9} /> Verified
+                        </span>
+                      )}
+                      <button onClick={e => toggleFav(e, p.id)}
+                        style={{ marginLeft: 'auto', width: 30, height: 30, borderRadius: '50%', border: 'none', background: 'rgba(255,255,255,.92)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', backdropFilter: 'blur(4px)' }}>
+                        <Heart size={14} fill={favs.has(p.id) ? '#D9600A' : 'none'} color={favs.has(p.id) ? '#D9600A' : '#7A7068'} />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Text */}
+                  <div style={{ padding: '12px 14px 14px' }}>
+                    <div style={{ fontSize: 10, color: '#9A9088', textTransform: 'uppercase', letterSpacing: '.07em', marginBottom: 3 }}>
+                      {p.category_name || '—'}
+                    </div>
+                    <div style={{ fontSize: 13.5, fontWeight: 500, color: '#1C1815', lineHeight: 1.35, marginBottom: 10, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                      {p.name}
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 6 }}>
+                      <div>
+                        <div style={{ fontSize: 15, fontWeight: 700, letterSpacing: '-.3px' }}>
+                          {p.base_price ? `₹${Number(p.base_price).toLocaleString('en-IN')}` : 'On Request'}
+                        </div>
+                        {p.moq_unit && <div style={{ fontSize: 11, color: '#9A9088', marginTop: 1 }}>MOQ {p.min_order_quantity} {p.moq_unit}</div>}
+                      </div>
+                      <button onClick={e => handleGetQuote(e, p)}
+                        style={{ flexShrink: 0, padding: '6px 12px', borderRadius: 7, border: '1.5px solid #1C1815', background: '#fff', color: '#1C1815', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 12, transition: 'background .12s, color .12s' }}
+                        onMouseEnter={e => { e.currentTarget.style.background = '#1C1815'; e.currentTarget.style.color = '#fff'; }}
+                        onMouseLeave={e => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.color = '#1C1815'; }}>
+                        Quote
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
