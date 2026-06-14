@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, toggleLogin } from '../features/auth/authSlice';
 import { disconnectSocket } from '../services/socket';
 import { useBreakpoint } from '../hooks/useBreakpoint';
-import { LogOut, Search, Bell, ChevronDown, Camera, Globe, User, ShoppingBag } from 'lucide-react';
+import { api } from '../services/api';
+import { LogOut, Search, Bell, ChevronDown, Globe, User, ShoppingBag, Tag } from 'lucide-react';
 
 /* ── CSS variables injected once into :root ────────────────────────────────── */
 const CSS_VARS = `
@@ -173,6 +174,12 @@ function CategoryMenu({ onNavigate, onClose }) {
   );
 }
 
+function highlightMatch(text, q) {
+  const idx = text.toLowerCase().indexOf(q.toLowerCase());
+  if (idx < 0) return text;
+  return <>{text.slice(0, idx)}<strong style={{ color: '#1C1815', fontWeight: 700 }}>{text.slice(idx, idx + q.length)}</strong>{text.slice(idx + q.length)}</>;
+}
+
 /* ── Top bar — Faire-style header + category browsing row, shared by every role ── */
 function TopBar({ role }) {
   const navigate                      = useNavigate();
@@ -181,6 +188,11 @@ function TopBar({ role }) {
   const { userName }                  = useSelector((s) => s.auth);
   const [menuOpen, setMenuOpen]       = useState(false);
   const [catMenuOpen, setCatMenuOpen] = useState(false);
+  const [query, setQuery]             = useState('');
+  const [showDrop, setShowDrop]       = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
+  const [catalog, setCatalog]         = useState(null);
+  const loadingRef                    = useRef(false);
 
   const isGuest = role === 'guest';
   const { links, accent, homePath, searchPlaceholder, cartPath } = ROLE_CONFIG[role];
@@ -196,6 +208,35 @@ function TopBar({ role }) {
     disconnectSocket();
     dispatch(toggleLogin(true));
     navigate('/');
+  };
+
+  const loadCatalog = async () => {
+    if (catalog || loadingRef.current) return;
+    loadingRef.current = true;
+    try {
+      const [prods, cats] = await Promise.all([api.getProducts(), api.getCategories()]);
+      setCatalog({ products: Array.isArray(prods) ? prods : [], categories: Array.isArray(cats) ? cats : [] });
+    } catch { setCatalog({ products: [], categories: [] }); }
+  };
+
+  useEffect(() => {
+    if (!catalog || query.length < 2) { setSuggestions([]); return; }
+    const q = query.toLowerCase();
+    const ps = catalog.products.filter(p => p.name?.toLowerCase().includes(q)).slice(0, 5).map(p => ({ type: 'product', label: p.name, id: p.id }));
+    const cs = catalog.categories.filter(c => c.name?.toLowerCase().includes(q)).slice(0, 2).map(c => ({ type: 'category', label: c.name }));
+    setSuggestions([...ps, ...cs]);
+  }, [query, catalog]);
+
+  const submitSearch = () => {
+    if (!query.trim()) return;
+    setShowDrop(false);
+    navigate(`/products?search=${encodeURIComponent(query.trim())}`);
+  };
+
+  const pickSuggestion = (s) => {
+    setQuery(''); setShowDrop(false);
+    if (s.type === 'product') navigate(`/products/${s.id}`);
+    else navigate(`/products?category=${encodeURIComponent(s.label)}`);
   };
 
   return (
@@ -226,13 +267,47 @@ function TopBar({ role }) {
         )}
 
         <div style={{ flex: 1, position: 'relative' }}>
-          <Search size={14} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: '#B0A89E', pointerEvents: 'none' }} />
+          <Search size={14} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: '#B0A89E', pointerEvents: 'none', zIndex: 1 }} />
           <input
-            readOnly onClick={() => isGuest ? dispatch(toggleLogin(true)) : navigate('/products')}
+            value={query}
+            onChange={e => { setQuery(e.target.value); setShowDrop(true); }}
+            onFocus={() => {
+              if (isGuest) { dispatch(toggleLogin(true)); return; }
+              loadCatalog();
+              if (query.length >= 2) setShowDrop(true);
+            }}
+            onBlur={() => setTimeout(() => setShowDrop(false), 150)}
+            onKeyDown={e => { if (e.key === 'Enter') submitSearch(); if (e.key === 'Escape') { setShowDrop(false); setQuery(''); } }}
             placeholder={bp.isMobile ? 'Search…' : searchPlaceholder}
-            style={{ width: '100%', height: 38, borderRadius: 100, border: '1.5px solid #E8E2D8', background: '#FDF8F2', padding: '0 38px', fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: '#1C1815', outline: 'none', cursor: 'pointer', boxSizing: 'border-box' }}
+            style={{ width: '100%', height: 38, borderRadius: 100, border: `1.5px solid ${showDrop && query ? '#C4773A' : '#E8E2D8'}`, background: '#FDF8F2', padding: '0 16px 0 38px', fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: '#1C1815', outline: 'none', cursor: 'text', boxSizing: 'border-box', transition: 'border-color .15s' }}
           />
-          <Camera size={15} style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', color: '#B0A89E', pointerEvents: 'none' }} />
+
+          {/* Autocomplete dropdown */}
+          {showDrop && query.length >= 2 && (
+            <div style={{ position: 'absolute', top: 'calc(100% + 6px)', left: 0, right: 0, background: '#fff', border: '1.5px solid #E8E2D8', borderRadius: 14, overflow: 'hidden', boxShadow: '0 8px 32px rgba(28,24,21,0.13)', zIndex: 1000 }}>
+              {suggestions.map((s, i) => (
+                <div key={i} onMouseDown={() => pickSuggestion(s)}
+                  style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', cursor: 'pointer', fontSize: 13, color: '#1C1815', borderBottom: '1px solid #F5F0EA', background: '#fff' }}
+                  onMouseEnter={e => e.currentTarget.style.background = '#FDF8F2'}
+                  onMouseLeave={e => e.currentTarget.style.background = '#fff'}
+                >
+                  {s.type === 'product'
+                    ? <Search size={13} color="#9A9088" style={{ flexShrink: 0 }} />
+                    : <Tag size={13} color="#C4773A" style={{ flexShrink: 0 }} />}
+                  <span style={{ flex: 1 }}>{highlightMatch(s.label, query)}</span>
+                  {s.type === 'category' && <span style={{ fontSize: 11, color: '#9A9088', background: '#F5F0EA', padding: '2px 8px', borderRadius: 100, flexShrink: 0 }}>Category</span>}
+                </div>
+              ))}
+              <div onMouseDown={submitSearch}
+                style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 14px', cursor: 'pointer', fontSize: 12, fontWeight: 700, color: '#C4773A', background: '#FDF8F2' }}
+                onMouseEnter={e => e.currentTarget.style.background = '#FDF1E8'}
+                onMouseLeave={e => e.currentTarget.style.background = '#FDF8F2'}
+              >
+                <Search size={13} />
+                Search all results for "{query}"
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Right-anchored cluster — language · setup guide · bell/account/cart */}

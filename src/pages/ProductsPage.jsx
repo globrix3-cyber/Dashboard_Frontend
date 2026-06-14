@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { api } from '../services/api';
@@ -20,8 +20,10 @@ export default function ProductsPage() {
   const navigate  = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const { userRole } = useSelector(s => s.auth);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState(searchParams.get('search') || '');
   const [cat, setCat]       = useState(searchParams.get('category') || 'All');
+
+  useEffect(() => { setSearch(searchParams.get('search') || ''); }, [searchParams]);
 
   const selectCat = (c) => {
     setCat(c);
@@ -59,26 +61,17 @@ export default function ProductsPage() {
   return (
     <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
 
-      {/* Hero */}
-      <div style={{
-        borderRadius: 20, padding: '32px 36px', marginBottom: 32,
-        background: C.navy, position: 'relative', overflow: 'hidden',
-        boxShadow: `0 8px 32px ${C.navy}44`,
-      }}>
-        <div style={{ position: 'absolute', inset: 0, opacity: 0.06, backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='50' cy='50' r='46' fill='none' stroke='%23fff' stroke-width='.5' stroke-dasharray='3 7'/%3E%3C/svg%3E")`, backgroundSize: '100px 100px', pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', top: -80, right: -80, width: 300, height: 300, borderRadius: '50%', border: '1px solid rgba(255,255,255,0.08)', pointerEvents: 'none' }} />
-        <div style={{ position: 'relative', zIndex: 1 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-            <span style={{ fontSize: 18 }}>🇮🇳</span>
-            <span style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.6)', letterSpacing: '.12em', textTransform: 'uppercase' }}>Global Catalog</span>
-          </div>
-          <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 28, fontWeight: 900, color: '#fff', margin: '0 0 8px', letterSpacing: '-0.5px' }}>
-            Product Marketplace
-          </h1>
-          <p style={{ color: 'rgba(255,255,255,0.72)', fontSize: 14, margin: 0 }}>
-            Browse verified products from GST-certified Indian manufacturers &amp; exporters
-          </p>
-        </div>
+      {/* Page header */}
+      <div style={{ marginBottom: 20 }}>
+        <p style={{ fontSize: 11, fontWeight: 700, color: '#B0A89E', letterSpacing: '.1em', textTransform: 'uppercase', margin: '0 0 4px' }}>
+          Globrixa · Global Catalog
+        </p>
+        <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 24, fontWeight: 900, color: '#1C1815', margin: '0 0 4px', letterSpacing: '-0.5px' }}>
+          Product Marketplace
+        </h1>
+        <p style={{ color: '#7A7068', fontSize: 13, margin: 0 }}>
+          Verified products from GST-certified Indian manufacturers &amp; exporters
+        </p>
       </div>
 
       {/* Quick-access: browse by category */}
