@@ -31,11 +31,14 @@ export default function App() {
   const { userRole, token, showLogin } = useSelector((s) => s.auth);
 
   // ── 0. Fetch live INR→USD rate once on startup ──────────────────────────
+  // jsdelivr CDN mirrors @fawazahmed0/currency-api and sets CORS: * — safe
+  // from any origin. Falls back to ≈₹83/$1 if the CDN is unreachable so
+  // the currency toggle always works even offline.
   useEffect(() => {
-    fetch('https://api.frankfurter.app/latest?from=INR&to=USD')
+    fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/inr.json')
       .then(r => r.json())
-      .then(data => { if (data.rates?.USD) dispatch(setUsdRate(data.rates.USD)); })
-      .catch(() => {}); // fail silently — prices stay in INR
+      .then(data => dispatch(setUsdRate(data.inr?.usd || 0.012)))
+      .catch(() => dispatch(setUsdRate(0.012)));
   }, [dispatch]);
 
   // ── 1. Restore auth from localStorage on first load ─────────────────────
