@@ -7,6 +7,7 @@ import { api } from '../services/api';
 import { useFetchData } from '../hooks/useFetchData';
 import { useBreakpoint } from '../hooks/useBreakpoint';
 import { Spinner, EmptyState } from '../components/UI';
+import { resolveImageUrl } from '../utils/helpers';
 
 /* ── Design tokens ─────────────────────────────────────────────────────────── */
 const T = {
@@ -50,7 +51,7 @@ const toCardProduct = (p) => ({
   price: p.base_price ? `₹${Number(p.base_price).toLocaleString('en-IN')}` : 'Price on request',
   moq:   `MOQ ${Number(p.min_order_quantity || 1).toLocaleString('en-IN')}${p.moq_unit ? ` ${p.moq_unit}` : ''}`,
   brand: p.category_name || '',
-  img:   p.images?.[0]?.image_url || null,
+  img:   resolveImageUrl(p.images?.[0]?.image_url) || null,
   badge: p.status === 'active' ? 'Verified' : null,
 });
 
