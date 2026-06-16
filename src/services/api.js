@@ -118,9 +118,18 @@ async function request(method, path, body) {
     } catch (err) {
       processQueue(err);
       isRefreshing = false;
-      clearTokens();
-      window.dispatchEvent(new CustomEvent('auth:expired'));
-      throw new Error('Session expired. Please login again.');
+
+      // Cross-tab race: if another tab already refreshed, localStorage has a newer token.
+      // Use it and retry rather than forcing a logout that would boot the other tab too.
+      const freshToken = getToken();
+      if (freshToken && freshToken !== token) {
+        headers.Authorization = `Bearer ${freshToken}`;
+        res = await fetch(url, { method, headers, body: body ? JSON.stringify(body) : undefined });
+      } else {
+        clearTokens();
+        window.dispatchEvent(new CustomEvent('auth:expired'));
+        throw new Error('Session expired. Please login again.');
+      }
     }
   }
 
@@ -158,7 +167,7 @@ export const api = {
   // ── Auth ─────────────────────────────────────────────────────────────────
   register:       (body) => post('/api/auth/register',        body),
   login:          (body) => post('/api/auth/login',           body),
-  logout:         ()     => post('/api/auth/logout'),
+  logout:         ()     => post('/api/auth/logout', { refresh_token: getRefreshToken() }),
   forgotPassword: (body) => post('/api/auth/forgot-password', body),
   resetPassword:  (body) => post('/api/auth/reset-password',  body),
 
