@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout, toggleLogin } from '../features/auth/authSlice';
 import { disconnectSocket } from '../services/socket';
 import { useBreakpoint } from '../hooks/useBreakpoint';
+import { useCurrency } from '../hooks/useCurrency';
 import { api } from '../services/api';
 import { LogOut, Search, Bell, ChevronDown, Globe, User, ShoppingBag, Tag } from 'lucide-react';
 
@@ -197,6 +198,7 @@ function TopBar({ role }) {
   const { links, accent, homePath, searchPlaceholder, cartPath } = ROLE_CONFIG[role];
   const messagesPath = `${homePath}/messages`;
   const openLogin = () => dispatch(toggleLogin(true));
+  const { currency, symbol, toggle: toggleCurrencyDisplay, loading: currencyLoading } = useCurrency();
   // Jump straight to the filtered product grid — Faire-style — instead of an
   // intermediate "pick a category" menu page.
   const goToCategory = (label) => navigate(`/products?category=${encodeURIComponent(label)}`);
@@ -318,6 +320,27 @@ function TopBar({ role }) {
               style={{ display: 'flex', alignItems: 'center', gap: 5, background: 'transparent', border: 'none', cursor: 'pointer', padding: '6px 4px', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 500, color: '#3D3731', flexShrink: 0 }}
             >
               <Globe size={15} /> EN-IN
+            </button>
+          )}
+
+          {!bp.isMobile && (
+            <button
+              onClick={toggleCurrencyDisplay}
+              title={currency === 'INR' ? 'Switch to USD' : 'Switch to INR'}
+              disabled={currencyLoading}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 4,
+                height: 30, padding: '0 10px', borderRadius: 8,
+                border: '1.5px solid #E8E2D8',
+                background: currency === 'USD' ? '#1C1815' : '#fff',
+                color:      currency === 'USD' ? '#fff'     : '#3D3731',
+                cursor: currencyLoading ? 'not-allowed' : 'pointer',
+                fontFamily: "'DM Sans', sans-serif", fontSize: 12, fontWeight: 700,
+                flexShrink: 0, transition: 'background .15s, color .15s',
+                opacity: currencyLoading ? 0.5 : 1,
+              }}
+            >
+              {symbol} {currency}
             </button>
           )}
 

@@ -7,6 +7,7 @@ import { useFetchData } from '../hooks/useFetchData';
 import { Spinner, EmptyState } from '../components/UI';
 import { useBreakpoint } from '../hooks/useBreakpoint';
 import { resolveImageUrl } from '../utils/helpers';
+import { useCurrency } from '../hooks/useCurrency';
 import {
   ChevronLeft, ChevronDown, ShoppingBag, Truck, MapPin, RotateCcw,
   MessageSquare, Minus, Plus, BadgeCheck,
@@ -54,6 +55,7 @@ function Accordion({ title, defaultOpen = false, children }) {
 /* ── Compact product card for the "More from this supplier" rail ──────────── */
 function MiniProductCard({ p, onClick }) {
   const [hov, setHov] = useState(false);
+  const { fmt } = useCurrency();
   const img = resolveImageUrl(p.images?.[0]?.image_url);
   return (
     <div
@@ -74,7 +76,7 @@ function MiniProductCard({ p, onClick }) {
         }
       </div>
       <div style={{ fontSize: 13, fontWeight: 700, color: C.ink, marginBottom: 1 }}>
-        {p.base_price ? `₹${Number(p.base_price).toLocaleString('en-IN')}` : 'On request'}
+        {p.base_price ? fmt(p.base_price) : 'On request'}
       </div>
       <div style={{ fontSize: 12, color: C.muted, lineHeight: 1.35, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
         {p.name}
@@ -89,6 +91,8 @@ export default function ProductDetailPage() {
   const navigate     = useNavigate();
   const bp           = useBreakpoint();
   const { userRole } = useSelector(s => s.auth);
+
+  const { fmt } = useCurrency();
 
   const { data: product, loading, error } = useFetchData(() => api.getProduct(id), [id]);
   const { data: allRaw }                  = useFetchData(() => api.getProducts());
@@ -259,7 +263,7 @@ export default function ProductDetailPage() {
             {/* Price */}
             <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 4 }}>
               <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 26, fontWeight: 700, color: C.ink }}>
-                ₹{unitPrice.toLocaleString('en-IN')}
+                {fmt(unitPrice)}
               </span>
               <span style={{ fontSize: 13, color: C.muted }}>per {unit.replace(/s$/, '')}</span>
             </div>
@@ -318,7 +322,7 @@ export default function ProductDetailPage() {
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 10,
               boxShadow: '0 4px 16px rgba(196,119,58,.28)',
             }}>
-              Add to cart · ₹{totalPrice.toLocaleString('en-IN')}
+              Add to cart · {fmt(totalPrice)}
             </button>
 
             {userRole === 'buyer' && (

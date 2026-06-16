@@ -8,6 +8,7 @@ import { useFetchData } from '../hooks/useFetchData';
 import { useBreakpoint } from '../hooks/useBreakpoint';
 import { Spinner, EmptyState } from '../components/UI';
 import { resolveImageUrl } from '../utils/helpers';
+import { useCurrency } from '../hooks/useCurrency';
 
 /* ── Design tokens ─────────────────────────────────────────────────────────── */
 const T = {
@@ -48,7 +49,7 @@ const useFavourites = () => {
 const toCardProduct = (p) => ({
   id:    p.id,
   name:  p.name,
-  price: p.base_price ? `₹${Number(p.base_price).toLocaleString('en-IN')}` : 'Price on request',
+  rawPrice: Number(p.base_price) || 0,
   moq:   `MOQ ${Number(p.min_order_quantity || 1).toLocaleString('en-IN')}${p.moq_unit ? ` ${p.moq_unit}` : ''}`,
   brand: p.category_name || '',
   img:   resolveImageUrl(p.images?.[0]?.image_url) || null,
@@ -145,6 +146,7 @@ function SectionHeading({ title, cta, onCta, bp }) {
 /* ── Faire-style product card ──────────────────────────────────────────────── */
 function ProductCard({ p, isFav, onFav, onAction }) {
   const [hov, setHov] = useState(false);
+  const { fmt } = useCurrency();
   const badgeColor = p.badge === 'Trending' ? { bg: '#F3F0EB', color: '#1C1815' }
     : p.badge === 'Export'   ? { bg: '#EEF2FB', color: '#1B3175' }
     : p.badge === 'Verified' ? { bg: '#EAF5EF', color: T.emerald }
@@ -217,7 +219,7 @@ function ProductCard({ p, isFav, onFav, onAction }) {
       {/* Info */}
       <div onClick={onAction}>
         <div style={{ fontSize: 14, fontWeight: 700, color: T.ink, marginBottom: 1 }}>
-          {p.price}
+          {p.rawPrice ? fmt(p.rawPrice) : 'Price on request'}
           <span style={{ fontSize: 11, fontWeight: 400, color: T.muted, marginLeft: 6 }}>{p.moq}</span>
         </div>
         <div style={{ fontSize: 12.5, color: T.ink, lineHeight: 1.35, marginBottom: 3 }}>{p.name}</div>

@@ -5,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { setAuth, toggleLogin } from "./features/auth/authSlice";
+import { setUsdRate } from "./features/currency/currencySlice";
 import { connectSocket, disconnectSocket } from "./services/socket";
 import { DASHBOARD_ROUTES, allowedPathsByRole } from "./constants";
 import { routeConfig } from "./routeConfig";
@@ -28,6 +29,14 @@ export default function App() {
   const location  = useLocation();
 
   const { userRole, token, showLogin } = useSelector((s) => s.auth);
+
+  // ── 0. Fetch live INR→USD rate once on startup ──────────────────────────
+  useEffect(() => {
+    fetch('https://api.frankfurter.app/latest?from=INR&to=USD')
+      .then(r => r.json())
+      .then(data => { if (data.rates?.USD) dispatch(setUsdRate(data.rates.USD)); })
+      .catch(() => {}); // fail silently — prices stay in INR
+  }, [dispatch]);
 
   // ── 1. Restore auth from localStorage on first load ─────────────────────
   useEffect(() => {

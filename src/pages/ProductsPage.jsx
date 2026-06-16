@@ -8,6 +8,7 @@ import { ShoppingBag, BadgeCheck, Heart, ChevronDown } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { IMG } from './landing/images';
 import { resolveImageUrl } from '../utils/helpers';
+import { useCurrency } from '../hooks/useCurrency';
 
 const CATEGORY_IMAGES = [
   IMG.jaipurTextiles, IMG.blueCeramicVases, IMG.wovenBaskets, IMG.ceramicKitchenware,
@@ -25,6 +26,7 @@ export default function ProductsPage() {
   const navigate                         = useNavigate();
   const [searchParams, setSearchParams]  = useSearchParams();
   const { userRole }                     = useSelector(s => s.auth);
+  const { fmt }                          = useCurrency();
   const [search, setSearch]              = useState(searchParams.get('search') || '');
   const [cat, setCat]                    = useState(searchParams.get('category') || 'All');
   const [sort, setSort]                  = useState('featured');
@@ -204,7 +206,7 @@ export default function ProductsPage() {
                     <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 6 }}>
                       <div>
                         <div style={{ fontSize: 15, fontWeight: 700, letterSpacing: '-.3px' }}>
-                          {p.base_price ? `₹${Number(p.base_price).toLocaleString('en-IN')}` : 'On Request'}
+                          {p.base_price ? fmt(p.base_price) : 'On Request'}
                         </div>
                         {p.moq_unit && <div style={{ fontSize: 11, color: '#9A9088', marginTop: 1 }}>MOQ {p.min_order_quantity} {p.moq_unit}</div>}
                       </div>
