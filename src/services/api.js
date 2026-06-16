@@ -68,6 +68,8 @@ async function attemptTokenRefresh() {
   if (!newToken || !newRefresh) throw new Error('Refresh failed');
 
   saveTokens(newToken, newRefresh);
+  // Let App.jsx know so it can update Redux (which keeps the socket effect in sync).
+  window.dispatchEvent(new CustomEvent('auth:token-refreshed', { detail: { token: newToken } }));
   return newToken;
 }
 

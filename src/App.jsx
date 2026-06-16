@@ -59,6 +59,22 @@ export default function App() {
     return () => window.removeEventListener("auth:expired", onExpired);
   }, [dispatch, navigate]);
 
+  // ── 2b. Keep Redux token in sync after silent refresh ────────────────────
+  // api.js silently rotates tokens in localStorage every 15 min. Without this,
+  // Redux keeps the original expired token, and the socket never reconnects
+  // with a fresh credential after a network drop.
+  useEffect(() => {
+    const onRefreshed = (e) => {
+      dispatch(setAuth({
+        token:    e.detail.token,
+        userRole: localStorage.getItem("role"),
+        userName: localStorage.getItem("name") || "",
+      }));
+    };
+    window.addEventListener("auth:token-refreshed", onRefreshed);
+    return () => window.removeEventListener("auth:token-refreshed", onRefreshed);
+  }, [dispatch]);
+
   // ── 3. Socket lifecycle — connect when token is available ────────────────
   useEffect(() => {
     if (token) {

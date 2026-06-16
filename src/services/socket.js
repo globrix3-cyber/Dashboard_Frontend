@@ -14,6 +14,14 @@ export const connectSocket = (token) => {
     reconnectionDelay: 2000,
     transports: ['websocket', 'polling'],
   });
+
+  // Before each reconnect attempt, pull the freshest token from localStorage.
+  // Without this, socket.io retries with the original token from connectSocket(),
+  // which may have expired 15+ minutes ago, causing reconnects to be rejected.
+  socket.io.on('reconnect_attempt', () => {
+    const freshToken = localStorage.getItem('token');
+    if (freshToken) socket.auth = { token: freshToken };
+  });
 };
 
 export const disconnectSocket = () => {
