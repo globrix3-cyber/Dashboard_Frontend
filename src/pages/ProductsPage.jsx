@@ -7,6 +7,7 @@ import { Spinner, EmptyState } from '../components/UI';
 import { ShoppingBag, BadgeCheck, Heart, ChevronDown } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { IMG } from './landing/images';
+import { resolveImageUrl } from '../utils/helpers';
 
 const CATEGORY_IMAGES = [
   IMG.jaipurTextiles, IMG.blueCeramicVases, IMG.wovenBaskets, IMG.ceramicKitchenware,
@@ -175,7 +176,7 @@ export default function ProductsPage() {
                   {/* Image */}
                   <div style={{ height: 195, background: '#F5F2EE', position: 'relative', overflow: 'hidden' }}>
                     {p.images?.[0]?.image_url
-                      ? <img src={p.images[0].image_url} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      ? <img src={resolveImageUrl(p.images[0].image_url)} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                       : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><ShoppingBag size={40} color="#C8C0B8" /></div>
                     }
                     {/* Top overlay: verified + heart */}

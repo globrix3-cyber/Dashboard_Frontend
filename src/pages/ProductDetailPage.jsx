@@ -6,6 +6,7 @@ import { api } from '../services/api';
 import { useFetchData } from '../hooks/useFetchData';
 import { Spinner, EmptyState } from '../components/UI';
 import { useBreakpoint } from '../hooks/useBreakpoint';
+import { resolveImageUrl } from '../utils/helpers';
 import {
   ChevronLeft, ChevronDown, ShoppingBag, Truck, MapPin, RotateCcw,
   MessageSquare, Minus, Plus, BadgeCheck,
@@ -53,7 +54,7 @@ function Accordion({ title, defaultOpen = false, children }) {
 /* ── Compact product card for the "More from this supplier" rail ──────────── */
 function MiniProductCard({ p, onClick }) {
   const [hov, setHov] = useState(false);
-  const img = p.images?.[0]?.image_url;
+  const img = resolveImageUrl(p.images?.[0]?.image_url);
   return (
     <div
       onClick={onClick}
@@ -194,7 +195,7 @@ export default function ProductDetailPage() {
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
               {images[activeImg]?.image_url
-                ? <img src={images[activeImg].image_url} alt={images[activeImg].alt_text || product.name}
+                ? <img src={resolveImageUrl(images[activeImg].image_url)} alt={images[activeImg].alt_text || product.name}
                     style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                 : <ShoppingBag size={64} color="#D8CFC1" />
               }
@@ -207,7 +208,7 @@ export default function ProductDetailPage() {
                     border: `1.5px solid ${i === activeImg ? C.saffron : C.border}`,
                     background: C.cream,
                   }}>
-                    <img src={img.image_url} alt={img.alt_text || `${product.name} ${i + 1}`}
+                    <img src={resolveImageUrl(img.image_url)} alt={img.alt_text || `${product.name} ${i + 1}`}
                       style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                   </button>
                 ))}
@@ -225,7 +226,7 @@ export default function ProductDetailPage() {
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>
                 {product.supplier_logo_url
-                  ? <img src={product.supplier_logo_url} alt={brandName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  ? <img src={resolveImageUrl(product.supplier_logo_url)} alt={brandName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   : <ShoppingBag size={16} color={C.muted} />
                 }
               </div>

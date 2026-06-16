@@ -16,6 +16,16 @@ export const statusColor = (status) => {
 export const statusLabel = (status) =>
   status?.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()) || '';
 
+// Converts Google Drive share links to a direct-embed URL that <img> can load.
+// Input:  https://drive.google.com/file/d/FILE_ID/view?usp=sharing
+// Output: https://drive.google.com/uc?export=view&id=FILE_ID
+export const resolveImageUrl = (url) => {
+  if (!url) return url;
+  const m = url.match(/drive\.google\.com\/file\/d\/([^/?#]+)/);
+  if (m) return `https://drive.google.com/uc?export=view&id=${m[1]}`;
+  return url;
+};
+
 export const countryFlag = (code) => {
   if (!code) return '';
   return code.toUpperCase().replace(/./g, (c) =>
