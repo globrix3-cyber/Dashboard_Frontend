@@ -16,13 +16,16 @@ export const statusColor = (status) => {
 export const statusLabel = (status) =>
   status?.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()) || '';
 
-// Converts Google Drive share links to a direct-embed URL that <img> can load.
+// Converts Google Drive share links to Google's image-serving thumbnail URL.
+// drive.google.com/uc?export=view no longer works reliably in <img> tags
+// (Google redirects to a consent page). The thumbnail endpoint serves raw
+// image bytes and works for publicly-shared files.
 // Input:  https://drive.google.com/file/d/FILE_ID/view?usp=sharing
-// Output: https://drive.google.com/uc?export=view&id=FILE_ID
+// Output: https://lh3.googleusercontent.com/d/FILE_ID
 export const resolveImageUrl = (url) => {
   if (!url) return url;
   const m = url.match(/drive\.google\.com\/file\/d\/([^/?#]+)/);
-  if (m) return `https://drive.google.com/uc?export=view&id=${m[1]}`;
+  if (m) return `https://lh3.googleusercontent.com/d/${m[1]}`;
   return url;
 };
 
