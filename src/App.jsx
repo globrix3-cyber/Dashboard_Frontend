@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { setAuth, toggleLogin } from "./features/auth/authSlice";
 import { setUsdRate } from "./features/currency/currencySlice";
 import { connectSocket, disconnectSocket } from "./services/socket";
+import { scheduleProactiveRefresh } from "./services/api";
 import { DASHBOARD_ROUTES, allowedPathsByRole } from "./constants";
 import { routeConfig } from "./routeConfig";
 
@@ -60,6 +61,9 @@ export default function App() {
           userName: storedName || "",
         })
       );
+      // Start the proactive refresh cycle immediately so the access token is
+      // silently rotated before it expires — the user never sees a 401.
+      scheduleProactiveRefresh();
     } else if (!isGuestBrowsable(location.pathname)) {
       dispatch(toggleLogin(true));
     }

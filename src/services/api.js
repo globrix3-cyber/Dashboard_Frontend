@@ -37,12 +37,46 @@ const clearTokens = () => {
   localStorage.removeItem('name');
 };
 
+/* ── Proactive Refresh ─────────────────────────────────────────────────────── */
+// Schedule a silent token refresh 2 minutes before the access token expires so
+// a 401 is never triggered in the first place. Called on startup, after every
+// login, and after every refresh cycle.
+let proactiveRefreshTimer = null;
+
+export function scheduleProactiveRefresh() {
+  clearTimeout(proactiveRefreshTimer);
+  const token = getToken();
+  if (!token || !getRefreshToken()) return;
+
+  try {
+    // JWT payload is the second segment, base64url-encoded JSON.
+    const raw     = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    const payload = JSON.parse(atob(raw));
+    const msLeft  = payload.exp * 1000 - Date.now();
+    // Refresh 2 min before expiry; if already within that window fire immediately.
+    const delay   = Math.max(0, msLeft - 2 * 60 * 1000);
+
+    proactiveRefreshTimer = setTimeout(async () => {
+      if (!getRefreshToken()) return;
+      try {
+        await attemptTokenRefresh();
+        // attemptTokenRefresh calls scheduleProactiveRefresh, so the cycle
+        // continues automatically for as long as the refresh token is valid.
+      } catch {
+        // Proactive refresh failed — the reactive 401 interceptor is the fallback.
+      }
+    }, delay);
+  } catch {
+    // JWT decode failed (malformed token) — skip, reactive path will handle it.
+  }
+}
+
 /* ── Refresh Logic ─────────────────────────────────────────────────────────── */
 let isRefreshing = false;
 let refreshQueue = [];
 
 function processQueue(error, newToken = null) {
-  refreshQueue.forEach(({ resolve, reject }) => 
+  refreshQueue.forEach(({ resolve, reject }) =>
     error ? reject(error) : resolve(newToken)
   );
   refreshQueue = [];
@@ -68,6 +102,8 @@ async function attemptTokenRefresh() {
   if (!newToken || !newRefresh) throw new Error('Refresh failed');
 
   saveTokens(newToken, newRefresh);
+  // Schedule the NEXT proactive refresh based on the new token's expiry.
+  scheduleProactiveRefresh();
   // Let App.jsx know so it can update Redux (which keeps the socket effect in sync).
   window.dispatchEvent(new CustomEvent('auth:token-refreshed', { detail: { token: newToken } }));
   return newToken;

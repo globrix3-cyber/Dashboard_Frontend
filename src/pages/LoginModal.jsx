@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { setAuth, toggleLogin } from '../features/auth/authSlice';
 import { toast } from 'react-toastify';
 import { X } from 'lucide-react';
-import { api } from '../services/api';
+import { api, scheduleProactiveRefresh } from '../services/api';
 import OnboardingQuiz from './OnboardingQuiz';
 
 const INPUT = {
@@ -91,6 +91,9 @@ export default function LoginModal({ onSubmit }) {
     localStorage.setItem('role',          userRole);
     localStorage.setItem('name',          userName);
     dispatch(setAuth({ token, userRole, userName }));
+    // Kick off the proactive refresh cycle so the access token is silently
+    // rotated before it expires — the user will never hit a 401.
+    scheduleProactiveRefresh();
     dispatch(toggleLogin(false));
     onSubmit?.(userRole, userName, token);
     toast.success(`Welcome, ${userName}! 🇮🇳`);
