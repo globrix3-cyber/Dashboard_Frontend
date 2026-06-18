@@ -7,7 +7,7 @@ import {
   FileSearch, Send, DollarSign, Plus, ArrowRight, Package, Pencil,
 } from 'lucide-react';
 import { useBreakpoint } from '../hooks/useBreakpoint';
-import { formatCurrency } from '../utils/helpers';
+import { formatCurrency, resolveImageUrl } from '../utils/helpers';
 
 /* ── Design tokens ─────────────────────────────────────────────────────────── */
 const T = {
@@ -122,7 +122,7 @@ function QuoteRow({ q }) {
 /* ── Catalog product row ───────────────────────────────────────────────────── */
 function CatalogRow({ p, onEdit }) {
   const st = PRODUCT_STATUS[p.status] || PRODUCT_STATUS.draft;
-  const imgUrl = p.images?.[0]?.image_url;
+  const imgUrl = resolveImageUrl(p.images?.[0]?.image_url);
   return (
     <div
       onMouseEnter={e => { e.currentTarget.style.background = T.cream; }}
