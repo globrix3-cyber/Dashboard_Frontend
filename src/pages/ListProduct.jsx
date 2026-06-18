@@ -2,8 +2,8 @@
 // Multi-step product listing form — mirrors Alibaba-style detail pages
 // Steps: 1. Basic Info → 2. Pricing & MOQ → 3. Specifications → 4. Images & Tags → 5. Review
 
-import { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { api } from '../services/api';
 import { resolveImageUrl } from '../utils/helpers';
@@ -147,13 +147,22 @@ function flatOptions(tree, depth = 0) {
 
 /* ─── Main component ─────────────────────────────────────────────────────── */
 export default function ListProduct() {
-  const navigate = useNavigate();
-  const [step,        setStep]        = useState(0);
-  const [submitting,  setSubmitting]  = useState(false);
-  const [categories,  setCategories]  = useState([]);
-  const [catAttrs,    setCatAttrs]    = useState([]);   // attributes for chosen category
-  const [allTags,     setAllTags]     = useState([]);
-  const [loadingAttrs, setLoadingAttrs] = useState(false);
+  const navigate    = useNavigate();
+  const { id }      = useParams();
+  const isEditMode  = Boolean(id);
+
+  const [step,           setStep]          = useState(0);
+  const [submitting,     setSubmitting]    = useState(false);
+  const [loadingProduct, setLoadingProduct] = useState(isEditMode);
+  const [categories,     setCategories]    = useState([]);
+  const [catAttrs,       setCatAttrs]      = useState([]);
+  const [allTags,        setAllTags]       = useState([]);
+  const [loadingAttrs,   setLoadingAttrs]  = useState(false);
+
+  // When loading an existing product the category-attributes effect fires and
+  // would reset specValues. This ref holds specs from the fetched product so
+  // the attributes effect can apply them instead of wiping them.
+  const pendingSpecValues = useRef(null);
 
   // ── Form state ────────────────────────────────────────────────────────────
   const [basic, setBasic] = useState({
@@ -166,26 +175,21 @@ export default function ListProduct() {
     status:             'active',
   });
 
-  // Pricing tiers: base price + per-quantity variants
   const [pricing, setPricing] = useState({
     base_price:         '',
     moq_unit:           'pieces',
     min_order_quantity: '1',
   });
 
-  // Price tiers stored as product_variants with attributes: { min_qty, max_qty, price }
   const [priceTiers, setPriceTiers] = useState([
     { min_qty: '1', max_qty: '99', price: '' },
   ]);
 
-  // Spec values keyed by category_attribute_id
   const [specValues, setSpecValues] = useState({});
-
-  // Images: array of { image_url, alt_text }
-  const [images, setImages]     = useState([{ image_url: '', alt_text: '' }]);
-  const [imgErrors, setImgErrors] = useState({});
-  const [tagIds, setTagIds]     = useState([]);
-  const [newTag, setNewTag]     = useState('');
+  const [images,     setImages]     = useState([{ image_url: '', alt_text: '' }]);
+  const [imgErrors,  setImgErrors]  = useState({});
+  const [tagIds,     setTagIds]     = useState([]);
+  const [newTag,     setNewTag]     = useState('');
 
   /* ── Load categories + tags on mount ──────────────────────────────────── */
   useEffect(() => {
@@ -198,12 +202,77 @@ export default function ListProduct() {
       .catch(() => {});
   }, []);
 
+  /* ── Pre-populate form when editing an existing product ────────────────── */
+  useEffect(() => {
+    if (!isEditMode) return;
+    setLoadingProduct(true);
+    api.getProduct(id)
+      .then(p => {
+        setBasic({
+          name:               p.name               || '',
+          category_id:        p.category_id        || '',
+          description:        p.description        || '',
+          hs_code:            p.hs_code            || '',
+          country_of_origin:  p.country_of_origin  || 'IN',
+          lead_time_days:     p.lead_time_days != null ? String(p.lead_time_days) : '',
+          status:             p.status             || 'active',
+        });
+
+        setPricing({
+          base_price:         p.base_price         != null ? String(p.base_price)         : '',
+          moq_unit:           p.moq_unit           || 'pieces',
+          min_order_quantity: p.min_order_quantity != null ? String(p.min_order_quantity) : '1',
+        });
+
+        // Reconstruct price tiers from saved variants
+        const tiers = (p.variants || [])
+          .filter(v => v.attributes?.price)
+          .map(v => ({
+            min_qty: v.attributes.min_qty != null ? String(v.attributes.min_qty) : '',
+            max_qty: v.attributes.max_qty != null ? String(v.attributes.max_qty) : '',
+            price:   String(v.attributes.price),
+          }));
+        setPriceTiers(tiers.length ? tiers : [{ min_qty: '1', max_qty: '99', price: '' }]);
+
+        // Specs — apply after the category-attributes effect fires (see below)
+        const specMap = {};
+        (p.specs || []).forEach(s => {
+          specMap[s.category_attribute_id] = s.value_text ?? s.value_numeric ?? '';
+        });
+        pendingSpecValues.current = specMap;
+
+        // Images
+        const imgs = (p.images || [])
+          .map(img => ({ image_url: img.image_url || '', alt_text: img.alt_text || '' }))
+          .filter(img => img.image_url);
+        setImages(imgs.length ? imgs : [{ image_url: '', alt_text: '' }]);
+
+        // Tags
+        setTagIds((p.tags || []).map(t => t.id));
+      })
+      .catch(() => {
+        toast.error('Could not load product — please try again');
+        navigate('/supplier-dashboard/catalog');
+      })
+      .finally(() => setLoadingProduct(false));
+  }, [id, isEditMode]); // eslint-disable-line react-hooks/exhaustive-deps
+
   /* ── Load category attributes when category changes ────────────────────── */
   useEffect(() => {
     if (!basic.category_id) { setCatAttrs([]); return; }
     setLoadingAttrs(true);
     api.get(`/api/products/categories/${basic.category_id}/attributes`)
-      .then(data => { setCatAttrs(data); setSpecValues({}); })
+      .then(data => {
+        setCatAttrs(data);
+        // In edit mode the pending ref holds pre-existing spec values — apply
+        // them here instead of resetting so the user's data is not wiped.
+        if (pendingSpecValues.current !== null) {
+          setSpecValues(pendingSpecValues.current);
+          pendingSpecValues.current = null;
+        } else {
+          setSpecValues({});
+        }
+      })
       .catch(() => toast.error('Failed to load category attributes'))
       .finally(() => setLoadingAttrs(false));
   }, [basic.category_id]);
@@ -271,7 +340,6 @@ export default function ListProduct() {
   const handleSubmit = async (publish = false) => {
     setSubmitting(true);
     try {
-      // Build variants from price tiers
       const variants = priceTiers
         .filter(t => t.price)
         .map(t => ({
@@ -284,7 +352,6 @@ export default function ListProduct() {
           },
         }));
 
-      // Build specs
       const specs = Object.entries(specValues)
         .filter(([, v]) => v !== '' && v !== undefined)
         .map(([attrId, val]) => {
@@ -310,11 +377,16 @@ export default function ListProduct() {
         tag_ids: tagIds,
       };
 
-      await api.post('/api/products', payload);
-      toast.success(publish ? 'Product published! 🎉' : 'Product saved as draft');
+      if (isEditMode) {
+        await api.updateProduct(id, payload);
+        toast.success('Product updated successfully!');
+      } else {
+        await api.post('/api/products', payload);
+        toast.success(publish ? 'Product published! 🎉' : 'Product saved as draft');
+      }
       navigate('/supplier-dashboard/catalog');
     } catch (err) {
-      toast.error(err.message || 'Failed to create product');
+      toast.error(err.message || (isEditMode ? 'Failed to update product' : 'Failed to create product'));
     } finally {
       setSubmitting(false);
     }
@@ -324,16 +396,28 @@ export default function ListProduct() {
   const catOptions = flatOptions(buildTree(categories));
 
   /* ─── Render ─────────────────────────────────────────────────────────────── */
+  if (loadingProduct) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, height: 260, fontFamily: "'DM Sans', sans-serif", color: 'var(--muted)', fontSize: 14 }}>
+        <Loader2 size={20} style={{ animation: 'spin .7s linear infinite' }} />
+        Loading product…
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      </div>
+    );
+  }
+
   return (
     <div style={{ maxWidth: 780, margin: '0 auto', fontFamily: "'DM Sans', system-ui, sans-serif" }}>
 
       {/* Header */}
       <div style={{ marginBottom: 28 }}>
         <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 26, fontWeight: 900, color: 'var(--ink)', margin: 0, letterSpacing: -.5 }}>
-          List a Product
+          {isEditMode ? 'Edit Product' : 'List a Product'}
         </h1>
         <p style={{ color: 'var(--muted)', fontSize: 14, marginTop: 5 }}>
-          Fill in the details below to add your product to the marketplace.
+          {isEditMode
+            ? 'Update the details below. Only changed fields will be saved.'
+            : 'Fill in the details below to add your product to the marketplace.'}
         </p>
       </div>
 
@@ -706,16 +790,19 @@ export default function ListProduct() {
         <div style={{ display: 'flex', gap: 10 }}>
           {step === STEPS.length - 1 ? (
             <>
-              <button type="button" onClick={() => handleSubmit(false)} disabled={submitting}
-                style={{
-                  padding: '10px 22px', borderRadius: 10,
-                  border: '1.5px solid var(--border-soft)', background: '#fff',
-                  fontSize: 14, fontWeight: 600, color: 'var(--ink)', cursor: submitting ? 'not-allowed' : 'pointer',
-                  opacity: submitting ? 0.6 : 1,
-                }}>
-                Save as Draft
-              </button>
-              <button type="button" onClick={() => handleSubmit(true)} disabled={submitting}
+              {/* In edit mode "Save as Draft" still lets them set status=draft */}
+              {!isEditMode && (
+                <button type="button" onClick={() => handleSubmit(false)} disabled={submitting}
+                  style={{
+                    padding: '10px 22px', borderRadius: 10,
+                    border: '1.5px solid var(--border-soft)', background: '#fff',
+                    fontSize: 14, fontWeight: 600, color: 'var(--ink)', cursor: submitting ? 'not-allowed' : 'pointer',
+                    opacity: submitting ? 0.6 : 1,
+                  }}>
+                  Save as Draft
+                </button>
+              )}
+              <button type="button" onClick={() => handleSubmit(!isEditMode)} disabled={submitting}
                 style={{
                   display: 'flex', alignItems: 'center', gap: 7, padding: '10px 22px', borderRadius: 10,
                   border: 'none', background: 'var(--emerald)', color: '#fff',
@@ -727,7 +814,10 @@ export default function ListProduct() {
                   ? <Loader2 size={15} style={{ animation: 'spin .7s linear infinite' }} />
                   : <Check size={15} />
                 }
-                {submitting ? 'Publishing…' : 'Publish Listing'}
+                {submitting
+                  ? (isEditMode ? 'Saving…' : 'Publishing…')
+                  : (isEditMode ? 'Save Changes' : 'Publish Listing')
+                }
               </button>
             </>
           ) : (
