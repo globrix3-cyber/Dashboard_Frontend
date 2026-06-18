@@ -182,7 +182,7 @@ export default function ContractPage() {
   async function handlePlaceOrder() {
     setBusy('order');
     try {
-      const res = await api.placeOrderFromContract(id);
+      await api.placeOrderFromContract(id);
       toast.success('Order placed successfully!');
       navigate(`${base}/orders`);
     } catch (err) {

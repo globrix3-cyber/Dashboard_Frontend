@@ -27,6 +27,8 @@ const UNITS = [
   { value: 'boxes', label: 'Boxes' },
 ];
 
+const TODAY = new Date().toISOString().split('T')[0];
+
 export default function CreateRFQForm() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -97,7 +99,7 @@ export default function CreateRFQForm() {
               onChange={(e) => set('budget', e.target.value)}
               placeholder="e.g. ₹5,00,000" />
             <InputField label="Deadline *" type="date" value={form.deadline}
-              onChange={(e) => set('deadline', e.target.value)} />
+              onChange={(e) => set('deadline', e.target.value)} min={TODAY} />
           </div>
 
           <InputField label="Destination Country" value={form.destination}

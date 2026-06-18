@@ -187,6 +187,7 @@ function ProductCard({ p, isFav, onFav, onAction }) {
 
         {/* Heart */}
         <button
+          aria-label={isFav ? 'Remove from wishlist' : 'Add to wishlist'}
           onClick={e => { e.stopPropagation(); onFav(); }}
           style={{
             position: 'absolute', top: 8, right: 8,
@@ -202,6 +203,7 @@ function ProductCard({ p, isFav, onFav, onAction }) {
 
         {/* Quick add */}
         <button
+          aria-label="Quick add to cart"
           onClick={e => { e.stopPropagation(); onAction(); }}
           style={{
             position: 'absolute', bottom: 8, right: 8,

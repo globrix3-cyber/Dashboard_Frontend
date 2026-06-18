@@ -189,6 +189,7 @@ export default function ProductsPage() {
                         </span>
                       )}
                       <button onClick={e => toggleFav(e, p.id)}
+                        aria-label={favs.has(p.id) ? 'Remove from wishlist' : 'Add to wishlist'}
                         style={{ marginLeft: 'auto', width: 30, height: 30, borderRadius: '50%', border: 'none', background: 'rgba(255,255,255,.92)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', backdropFilter: 'blur(4px)' }}>
                         <Heart size={14} fill={favs.has(p.id) ? '#D9600A' : 'none'} color={favs.has(p.id) ? '#D9600A' : '#7A7068'} />
                       </button>

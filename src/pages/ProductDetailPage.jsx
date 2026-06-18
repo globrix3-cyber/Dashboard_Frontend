@@ -165,7 +165,7 @@ export default function ProductDetailPage() {
         subject: `Inquiry: ${product.name}`,
         initial_message: `Hi, I'm interested in "${product.name}". Could you share more details and pricing for bulk orders?`,
       });
-      navigate(`/buyer-dashboard/messages${conv?.id ? `?conversation=${conv.id}` : ''}`);
+      navigate(`/buyer-dashboard/messages${conv?.id ? `?conv=${conv.id}` : ''}`);
     } catch (err) {
       toast.error(err.message || 'Could not start conversation');
     } finally {

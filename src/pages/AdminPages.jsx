@@ -134,7 +134,7 @@ export function AdminUsersPage() {
         accentColor={C.navy}
         onBack={() => navigate('/admin-dashboard')}
         action={
-          <button style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '10px 20px', borderRadius: 100, background: C.navy, color: '#fff', border: 'none', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
+          <button onClick={() => toast.info('CSV export coming soon')} style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '10px 20px', borderRadius: 100, background: C.navy, color: '#fff', border: 'none', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
             <Download size={13} /> Export
           </button>
         }
@@ -193,7 +193,7 @@ export function AdminUsersPage() {
                 <span style={{ fontSize: 10, fontWeight: 700, padding: '3px 10px', borderRadius: 100, background: u.role === 'supplier' ? C.emeraldLt : C.navyLt, color: u.role === 'supplier' ? C.emerald : C.navy, textTransform: 'capitalize' }}>{u.role || '—'}</span>
                 <StatusBadge status={status} />
                 <div style={{ display: 'flex', gap: 6 }}>
-                  <button title="View" style={{ width: 30, height: 30, borderRadius: 8, border: `1px solid ${C.borderSoft}`, background: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <button title="View user" onClick={() => toast.info(`User: ${u.email || name}`)} style={{ width: 30, height: 30, borderRadius: 8, border: `1px solid ${C.borderSoft}`, background: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Eye size={13} color={C.navy} />
                   </button>
                   <button title={isSusp ? 'Reactivate' : 'Suspend'} disabled={suspending === u.id}
@@ -234,7 +234,7 @@ export function AdminCompaniesPage() {
         accentColor={C.emerald}
         onBack={() => navigate('/admin-dashboard')}
         action={
-          <button style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '10px 20px', borderRadius: 100, background: C.emerald, color: '#fff', border: 'none', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
+          <button onClick={() => toast.info('CSV export coming soon')} style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '10px 20px', borderRadius: 100, background: C.emerald, color: '#fff', border: 'none', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
             <Download size={13} /> Export
           </button>
         }
@@ -451,7 +451,7 @@ export function AdminReportsPage() {
         accentColor={C.navy}
         onBack={() => navigate('/admin-dashboard')}
         action={
-          <button style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '10px 20px', borderRadius: 100, background: C.navy, color: '#fff', border: 'none', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
+          <button onClick={() => toast.info('Report download coming soon')} style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '10px 20px', borderRadius: 100, background: C.navy, color: '#fff', border: 'none', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
             <Download size={13} /> Download Report
           </button>
         }

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
 import { Plus, Edit2, Trash2, Eye, Package, Search, Loader2, AlertCircle } from 'lucide-react';
 import { toast } from 'react-toastify';
+import { useCurrency } from '../hooks/useCurrency';
 
 const C = {
   saffron: '#D9600A', saffronLt: '#FDF1E8',
@@ -47,6 +48,7 @@ function ActionBtn({ icon, title, onClick, color, bg, disabled }) {
 
 export default function SupplierCatalog() {
   const navigate = useNavigate();
+  const { fmt } = useCurrency();
   const [products, setProducts] = useState([]);
   const [loading, setLoading]   = useState(true);
   const [error, setError]       = useState(null);
@@ -181,7 +183,7 @@ export default function SupplierCatalog() {
               </div>
               <div style={{ fontSize: 13, color: C.muted }}>{p.category_name || '—'}</div>
               <div style={{ fontSize: 14, fontWeight: 600, color: C.ink }}>
-                {p.base_price ? `₹${Number(p.base_price).toLocaleString('en-IN')}` : '—'}
+                {p.base_price ? fmt(p.base_price) : '—'}
                 {p.moq_unit && <span style={{ fontSize: 11, color: C.muted, fontWeight: 400 }}>/{p.moq_unit}</span>}
               </div>
               <StatusBadge status={p.status} />

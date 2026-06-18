@@ -54,7 +54,7 @@ export default function BuyerRFQsPage() {
                 <div className="flex items-center gap-4">
                   <div className="text-center">
                     <div className="flex items-center gap-1.5 text-sm font-bold" style={{ color: '#FF6B00' }}>
-                      <MessageSquare size={14} /> {r.responses}
+                      <MessageSquare size={14} /> {r.responses ?? 0}
                     </div>
                     <div className="text-xs text-gray-400">quotes</div>
                   </div>
