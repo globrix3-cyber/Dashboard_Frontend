@@ -96,42 +96,70 @@ async function request(method, path, body) {
   // Auto refresh on 401
   if (res.status === 401) {
     if (isRefreshing) {
+      // Queue this request until the in-flight refresh completes, then retry.
+      // If the retry itself returns 401 (edge case: token already expired again),
+      // force a clean logout instead of surfacing the raw backend error.
       return new Promise((resolve, reject) => {
         refreshQueue.push({ resolve, reject });
       }).then((newToken) => {
         headers.Authorization = `Bearer ${newToken}`;
         return fetch(url, { method, headers, body: body ? JSON.stringify(body) : undefined })
-          .then(unwrap);
+          .then(r => {
+            if (r.status === 401) {
+              clearTokens();
+              window.dispatchEvent(new CustomEvent('auth:expired'));
+              throw new Error('Session expired. Please login again.');
+            }
+            return unwrap(r);
+          });
       });
     }
 
+    // Separate the refresh attempt from the retry so a 401 on the retry never
+    // accidentally falls into the catch and double-fires auth:expired.
     isRefreshing = true;
+    let refreshedToken = null;
+    let refreshError   = null;
     try {
-      const newToken = await attemptTokenRefresh();
-      processQueue(null, newToken);
+      refreshedToken = await attemptTokenRefresh();
+      processQueue(null, refreshedToken);
+    } catch (err) {
+      refreshError = err;
+    } finally {
       isRefreshing = false;
+    }
 
-      headers.Authorization = `Bearer ${newToken}`;
+    if (refreshError) {
+      // Refresh failed — check for a cross-tab token BEFORE rejecting the queue.
+      // If another tab already refreshed, use its token for both the queue and
+      // our own retry so nothing shows a toast.
+      const freshToken = getToken();
+      if (freshToken && freshToken !== token) {
+        processQueue(null, freshToken);
+        headers.Authorization = `Bearer ${freshToken}`;
+        res = await fetch(url, { method, headers, body: body ? JSON.stringify(body) : undefined });
+      } else {
+        processQueue(refreshError);
+        clearTokens();
+        window.dispatchEvent(new CustomEvent('auth:expired'));
+        throw new Error('Session expired. Please login again.');
+      }
+    } else {
+      // Refresh succeeded — retry original request with the new token.
+      headers.Authorization = `Bearer ${refreshedToken}`;
       res = await fetch(url, {
         method,
         headers,
         body: body ? JSON.stringify(body) : undefined,
       });
-    } catch (err) {
-      processQueue(err);
-      isRefreshing = false;
+    }
 
-      // Cross-tab race: if another tab already refreshed, localStorage has a newer token.
-      // Use it and retry rather than forcing a logout that would boot the other tab too.
-      const freshToken = getToken();
-      if (freshToken && freshToken !== token) {
-        headers.Authorization = `Bearer ${freshToken}`;
-        res = await fetch(url, { method, headers, body: body ? JSON.stringify(body) : undefined });
-      } else {
-        clearTokens();
-        window.dispatchEvent(new CustomEvent('auth:expired'));
-        throw new Error('Session expired. Please login again.');
-      }
+    // If the retry after refresh still returns 401 (rare: backend redeployed
+    // with a new JWT secret mid-flight), force a clean logout — one fire only.
+    if (res.status === 401) {
+      clearTokens();
+      window.dispatchEvent(new CustomEvent('auth:expired'));
+      throw new Error('Session expired. Please login again.');
     }
   }
 
@@ -148,6 +176,13 @@ async function unwrap(res) {
   }
 
   if (!res.ok) {
+    // Last-resort guard: a 401 that escaped every interceptor above must never
+    // surface as a raw "Invalid token" toast — force a clean logout instead.
+    if (res.status === 401) {
+      clearTokens();
+      window.dispatchEvent(new CustomEvent('auth:expired'));
+      throw new Error('Session expired. Please login again.');
+    }
     const msg = json.error || json.message || `Request failed (${res.status})`;
     throw new Error(msg);
   }

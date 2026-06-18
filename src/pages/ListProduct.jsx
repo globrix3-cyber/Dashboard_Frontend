@@ -6,6 +6,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { api } from '../services/api';
+import { resolveImageUrl } from '../utils/helpers';
 import {
   ChevronRight, ChevronLeft, Check, Package, DollarSign,
   Tag, Image, Eye, Plus, Trash2, Loader2, AlertCircle,
@@ -537,13 +538,14 @@ export default function ListProduct() {
             {images.map((img, i) => (
               <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: 10, padding: '14px', borderRadius: 12, border: '1.5px solid var(--border-soft)', background: img.image_url ? '#fff' : 'var(--warm-white)' }}>
                 <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-                  {/* Preview thumbnail */}
+                  {/* Preview thumbnail — resolveImageUrl converts Google Drive share
+                      links to lh3.googleusercontent.com so the browser can render them */}
                   <div style={{ width: 72, height: 72, borderRadius: 8, overflow: 'hidden', background: 'var(--warm-white)', border: '1.5px solid var(--border-soft)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     {img.image_url && !imgErrors[i] ? (
-                      <img src={img.image_url} alt="preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      <img src={resolveImageUrl(img.image_url)} alt="preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         onError={() => setImgErrors(e => ({ ...e, [i]: true }))} />
                     ) : img.image_url && imgErrors[i] ? (
-                      <span style={{ fontSize: 10, color: '#B0A898', textAlign: 'center', padding: 4 }}>Invalid URL</span>
+                      <span style={{ fontSize: 10, color: '#B0A898', textAlign: 'center', padding: 4 }}>Preview unavailable</span>
                     ) : (
                       <Image size={22} color="var(--muted)" />
                     )}

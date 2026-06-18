@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
@@ -29,6 +29,11 @@ export default function App() {
   const location  = useLocation();
 
   const { userRole, token, showLogin } = useSelector((s) => s.auth);
+
+  // When a session expires mid-task (e.g. filling a form), remember where the
+  // user was so we can return them there after re-login instead of sending them
+  // to the generic dashboard and losing their in-progress work.
+  const returnPathRef = useRef(null);
 
   // ── 0. Fetch live INR→USD rate once on startup ──────────────────────────
   // jsdelivr CDN mirrors @fawazahmed0/currency-api and sets CORS: * — safe
@@ -61,15 +66,18 @@ export default function App() {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── 2. Handle token expiry fired by api.js (401 + refresh failed) ───────
+  // Do NOT navigate away — that would destroy any in-progress form the user is
+  // filling. Instead, show the login modal over the current page. returnPathRef
+  // saves the current path so handleAuthSuccess can bring the user right back.
   useEffect(() => {
     const onExpired = () => {
+      returnPathRef.current = location.pathname;
       dispatch(setAuth({ token: null, userRole: null, userName: null }));
       dispatch(toggleLogin(true));
-      navigate("/", { replace: true });
     };
     window.addEventListener("auth:expired", onExpired);
     return () => window.removeEventListener("auth:expired", onExpired);
-  }, [dispatch, navigate]);
+  }, [dispatch, location.pathname]);
 
   // ── 2b. Keep Redux token in sync after silent refresh ────────────────────
   // api.js silently rotates tokens in localStorage every 15 min. Without this,
@@ -124,8 +132,12 @@ export default function App() {
   }, [userRole, location.pathname, navigate]);
 
   // ── 5. Called by LoginModal after successful login / register ────────────
+  // If the session expired mid-task, return to the saved path (preserving the
+  // form the user was filling). Otherwise send them to their role dashboard.
   const handleAuthSuccess = (role) => {
-    navigate(DASHBOARD_ROUTES[role], { replace: true });
+    const returnTo = returnPathRef.current;
+    returnPathRef.current = null;
+    navigate(returnTo || DASHBOARD_ROUTES[role], { replace: true });
   };
 
   return (
