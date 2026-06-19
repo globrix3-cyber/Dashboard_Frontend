@@ -144,12 +144,20 @@ export default function ProductDetailPage() {
 
   // Quantity must start at the supplier's MOQ, not 1 — otherwise "Add to cart"
   // can submit an order below the minimum without the buyer touching the stepper.
+  // Recomputes tier bounds locally (rather than depending on the derived `maxQty`
+  // variable) so the effect's dependency array stays a stable single reference.
   useEffect(() => {
-    if (product?.min_order_quantity) {
-      const moqValue = Number(product.min_order_quantity) || 1;
-      setQty(Math.min(maxQty, moqValue));
-    }
-  }, [product?.min_order_quantity, maxQty]);
+    if (!product?.min_order_quantity) return;
+    const moqValue = Number(product.min_order_quantity) || 1;
+    const tierMaxes = (product.variants || [])
+      .filter(v => {
+        const keys = Object.keys(v.attributes || {});
+        return keys.length > 0 && keys.every(k => ['min_qty', 'max_qty', 'price'].includes(k));
+      })
+      .map(v => (v.attributes.max_qty != null ? Number(v.attributes.max_qty) : Infinity));
+    const cap = tierMaxes.length ? Math.max(...tierMaxes) : Infinity;
+    setQty(Math.min(cap, moqValue));
+  }, [product]);
 
   if (loading) return <div style={{ padding: 32 }}><Spinner /></div>;
   if (error || !product) {
@@ -340,10 +348,10 @@ export default function ProductDetailPage() {
                   <Minus size={14} />
                 </button>
                 <input
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   value={qty}
-                  min={moq}
-                  max={Number.isFinite(maxQty) ? maxQty : undefined}
                   onChange={e => setExactQty(e.target.value)}
                   onBlur={e => setExactQty(e.target.value || moq)}
                   style={{
