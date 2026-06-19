@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -102,10 +102,30 @@ export default function ProductDetailPage() {
   const [variantChoice, setVariant] = useState({});
   const [messaging, setMessaging]   = useState(false);
 
-  /* Derive variant dropdown groups (e.g. Size / Color) from product_variants.attributes */
+  /* Tiered-pricing variants (created by the "price tiers" listing feature) carry
+     {min_qty, max_qty, price} instead of real selectable options like Size/Color —
+     they drive the per-quantity price and the order cap, not a dropdown. */
+  const isTierVariant = (v) => {
+    const keys = Object.keys(v.attributes || {});
+    return keys.length > 0 && keys.every(k => ['min_qty', 'max_qty', 'price'].includes(k));
+  };
+
+  const priceTiers = useMemo(() => (product?.variants || [])
+    .filter(isTierVariant)
+    .map(v => ({
+      minQty: Number(v.attributes.min_qty) || 0,
+      maxQty: v.attributes.max_qty != null ? Number(v.attributes.max_qty) : Infinity,
+      price:  Number(v.attributes.price) || 0,
+    }))
+    .sort((a, b) => a.minQty - b.minQty), [product]);
+
+  const maxQty = priceTiers.length ? Math.max(...priceTiers.map(t => t.maxQty)) : Infinity;
+
+  /* Derive variant dropdown groups (e.g. Size / Color) from product_variants.attributes,
+     excluding tiered-pricing variants. */
   const variantGroups = useMemo(() => {
     const groups = {};
-    (product?.variants || []).forEach(v => {
+    (product?.variants || []).filter(v => !isTierVariant(v)).forEach(v => {
       Object.entries(v.attributes || {}).forEach(([key, val]) => {
         if (!groups[key]) groups[key] = [];
         if (!groups[key].includes(val)) groups[key].push(val);
@@ -117,10 +137,19 @@ export default function ProductDetailPage() {
 
   const selectedVariant = useMemo(() => {
     if (!variantKeys.length) return null;
-    return (product?.variants || []).find(v =>
+    return (product?.variants || []).filter(v => !isTierVariant(v)).find(v =>
       variantKeys.every(k => (variantChoice[k] ?? variantGroups[k][0]) === v.attributes?.[k])
     ) || null;
   }, [product, variantChoice, variantGroups, variantKeys]);
+
+  // Quantity must start at the supplier's MOQ, not 1 — otherwise "Add to cart"
+  // can submit an order below the minimum without the buyer touching the stepper.
+  useEffect(() => {
+    if (product?.min_order_quantity) {
+      const moqValue = Number(product.min_order_quantity) || 1;
+      setQty(Math.min(maxQty, moqValue));
+    }
+  }, [product?.min_order_quantity, maxQty]);
 
   if (loading) return <div style={{ padding: 32 }}><Spinner /></div>;
   if (error || !product) {
@@ -132,10 +161,12 @@ export default function ProductDetailPage() {
   }
 
   const images   = product.images?.length ? product.images : [];
-  const moq      = product.min_order_quantity || 1;
+  const moq      = Number(product.min_order_quantity) || 1;
   const unit     = product.moq_unit || 'pieces';
   const basePrice = Number(product.base_price) || 0;
-  const unitPrice = basePrice + Number(selectedVariant?.price_modifier || 0);
+  const tierPrice = priceTiers.find(t => qty >= t.minQty && qty <= t.maxQty)?.price
+    ?? priceTiers[priceTiers.length - 1]?.price;
+  const unitPrice = (tierPrice ?? basePrice) + Number(selectedVariant?.price_modifier || 0);
   const totalPrice = unitPrice * qty;
 
   const brandName          = product.supplier_brand_name || product.supplier_legal_name || 'Verified supplier';
@@ -173,7 +204,12 @@ export default function ProductDetailPage() {
     }
   };
 
-  const stepQty = (delta) => setQty(q => Math.max(moq, q + delta));
+  const clampQty = (n) => Math.min(maxQty, Math.max(moq, n));
+  const stepQty  = (delta) => setQty(q => clampQty(q + delta));
+  const setExactQty = (raw) => {
+    const n = Math.trunc(Number(raw));
+    if (Number.isFinite(n)) setQty(clampQty(n));
+  };
 
   return (
     <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: '#fff' }}>
@@ -297,21 +333,33 @@ export default function ProductDetailPage() {
             <div style={{ marginBottom: 18 }}>
               <label style={{ display: 'block', fontSize: 12.5, fontWeight: 700, color: C.ink, marginBottom: 6 }}>Quantity</label>
               <div style={{ display: 'inline-flex', alignItems: 'center', border: `1.5px solid ${C.border}`, borderRadius: 10, overflow: 'hidden' }}>
-                <button onClick={() => stepQty(-moq)} disabled={qty <= moq} style={{
+                <button onClick={() => stepQty(-1)} disabled={qty <= moq} style={{
                   width: 38, height: 40, border: 'none', background: '#fff', cursor: qty <= moq ? 'default' : 'pointer',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', color: qty <= moq ? '#D8CFC1' : C.ink,
                 }}>
                   <Minus size={14} />
                 </button>
-                <div style={{ minWidth: 56, textAlign: 'center', fontSize: 14, fontWeight: 700, color: C.ink, fontFamily: "'DM Sans', sans-serif" }}>
-                  {qty.toLocaleString('en-IN')}
-                </div>
-                <button onClick={() => stepQty(moq)} style={{
-                  width: 38, height: 40, border: 'none', background: '#fff', cursor: 'pointer',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', color: C.ink,
+                <input
+                  type="number"
+                  value={qty}
+                  min={moq}
+                  max={Number.isFinite(maxQty) ? maxQty : undefined}
+                  onChange={e => setExactQty(e.target.value)}
+                  onBlur={e => setExactQty(e.target.value || moq)}
+                  style={{
+                    width: 64, textAlign: 'center', fontSize: 14, fontWeight: 700, color: C.ink,
+                    fontFamily: "'DM Sans', sans-serif", border: 'none', outline: 'none', background: 'transparent',
+                  }}
+                />
+                <button onClick={() => stepQty(1)} disabled={qty >= maxQty} style={{
+                  width: 38, height: 40, border: 'none', background: '#fff', cursor: qty >= maxQty ? 'default' : 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', color: qty >= maxQty ? '#D8CFC1' : C.ink,
                 }}>
                   <Plus size={14} />
                 </button>
+              </div>
+              <div style={{ fontSize: 11.5, color: C.muted, marginTop: 6 }}>
+                {moq.toLocaleString('en-IN')}{Number.isFinite(maxQty) ? `–${maxQty.toLocaleString('en-IN')}` : '+'} {unit}
               </div>
             </div>
 
