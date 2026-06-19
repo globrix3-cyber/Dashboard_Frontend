@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { api } from '../services/api';
@@ -52,13 +52,31 @@ export default function ProductsPage() {
   const { data: catRaw = [] }              = useFetchData(() => api.getCategories());
 
   const products  = Array.isArray(raw)    ? raw    : [];
-  const rootCats  = (Array.isArray(catRaw) ? catRaw : []).filter(c => !c.parent_id);
+  const categories = useMemo(() => (Array.isArray(catRaw) ? catRaw : []), [catRaw]);
+  const rootCats  = categories.filter(c => !c.parent_id);
   const sideItems = ['All', ...rootCats.map(c => c.name)];
+
+  // A product's own category_name is often a leaf subcategory (e.g. "Women's
+  // Clothing"), which never string-matches its root ("Apparel & Textiles").
+  // Walk category_id up the parent chain to resolve the root category name
+  // so filtering by a top-level tab includes all of its subcategories.
+  const rootNameById = useMemo(() => {
+    const byId = {};
+    categories.forEach(c => { byId[c.id] = c; });
+    const map = {};
+    categories.forEach(c => {
+      let cur = c;
+      while (cur?.parent_id && byId[cur.parent_id]) cur = byId[cur.parent_id];
+      map[c.id] = cur?.name;
+    });
+    return map;
+  }, [categories]);
 
   let filtered = products.filter(p => {
     const name    = p.name          || '';
     const catName = p.category_name || '';
-    const matchCat = cat === 'All' || catName.toLowerCase().includes(cat.toLowerCase());
+    const rootName = rootNameById[p.category_id] || catName;
+    const matchCat = cat === 'All' || rootName.toLowerCase() === cat.toLowerCase() || catName.toLowerCase() === cat.toLowerCase();
     const matchQ   = !search ||
       name.toLowerCase().includes(search.toLowerCase()) ||
       catName.toLowerCase().includes(search.toLowerCase());
