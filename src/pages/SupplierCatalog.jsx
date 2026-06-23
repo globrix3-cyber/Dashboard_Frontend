@@ -4,6 +4,7 @@ import { api } from '../services/api';
 import { Plus, Edit2, Trash2, Eye, Package, Search, Loader2, AlertCircle } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { useCurrency } from '../hooks/useCurrency';
+import { resolveImageUrl } from '../utils/helpers';
 
 const C = {
   saffron: '#D9600A', saffronLt: '#FDF1E8',
@@ -164,19 +165,27 @@ export default function SupplierCatalog() {
         <div style={{ background: '#fff', borderRadius: 18, border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden' }}>
           <div style={{ borderTop: `3px solid ${C.emerald}` }} />
           {/* Header row */}
-          <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr 110px', gap: 12, padding: '12px 22px', borderBottom: `1px solid ${C.borderSoft}`, background: C.cream }}>
-            {['Product', 'Category', 'Base Price', 'Status', 'Actions'].map(h => (
-              <span key={h} style={{ fontSize: 10, fontWeight: 700, color: C.muted, textTransform: 'uppercase', letterSpacing: '0.07em' }}>{h}</span>
+          <div style={{ display: 'grid', gridTemplateColumns: '56px 2fr 1fr 1fr 1fr 110px', gap: 12, padding: '12px 22px', borderBottom: `1px solid ${C.borderSoft}`, background: C.cream }}>
+            {['', 'Product', 'Category', 'Base Price', 'Status', 'Actions'].map((h, i) => (
+              <span key={h || i} style={{ fontSize: 10, fontWeight: 700, color: C.muted, textTransform: 'uppercase', letterSpacing: '0.07em' }}>{h}</span>
             ))}
           </div>
-          {visible.map((p, i) => (
-            <div key={p.id} style={{
-              display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr 110px', gap: 12,
+          {visible.map((p, i) => {
+            const thumb = resolveImageUrl(p.images?.[0]?.image_url);
+            return (
+            <div key={p.id} onClick={() => navigate(`/products/${p.id}`)} style={{
+              display: 'grid', gridTemplateColumns: '56px 2fr 1fr 1fr 1fr 110px', gap: 12,
               padding: '15px 22px', borderBottom: i < visible.length - 1 ? `1px solid ${C.borderSoft}` : 'none',
-              alignItems: 'center', transition: 'background 0.12s',
+              alignItems: 'center', transition: 'background 0.12s', cursor: 'pointer',
             }}
               onMouseEnter={e => { e.currentTarget.style.background = C.cream; }}
               onMouseLeave={e => { e.currentTarget.style.background = '#fff'; }}>
+              <div style={{ width: 44, height: 44, borderRadius: 8, overflow: 'hidden', background: C.cream, border: `1px solid ${C.borderSoft}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                {thumb
+                  ? <img src={thumb} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  : <Package size={16} color={C.muted} />
+                }
+              </div>
               <div style={{ minWidth: 0 }}>
                 <div style={{ fontWeight: 600, fontSize: 14, color: C.ink, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.name}</div>
                 {p.hs_code && <div style={{ fontSize: 11, color: C.muted, marginTop: 2 }}>HS {p.hs_code}</div>}
@@ -187,13 +196,14 @@ export default function SupplierCatalog() {
                 {p.moq_unit && <span style={{ fontSize: 11, color: C.muted, fontWeight: 400 }}>/{p.moq_unit}</span>}
               </div>
               <StatusBadge status={p.status} />
-              <div style={{ display: 'flex', gap: 6 }}>
+              <div style={{ display: 'flex', gap: 6 }} onClick={e => e.stopPropagation()}>
                 <ActionBtn icon={<Edit2 size={13} />} title="Edit" onClick={() => navigate(`/supplier-dashboard/catalog/${p.id}/edit`)} color={C.navy} bg={C.navyLt} />
                 <ActionBtn icon={deleting === p.id ? <Loader2 size={13} style={{ animation: 'spin 0.7s linear infinite' }} /> : <Trash2 size={13} />} title="Delete" onClick={() => handleDelete(p.id)} color={C.red} bg={C.redLt} disabled={deleting === p.id} />
                 <ActionBtn icon={<Eye size={13} />} title="View" onClick={() => navigate(`/products/${p.id}`)} color={C.emerald} bg={C.emeraldLt} />
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       )}
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
