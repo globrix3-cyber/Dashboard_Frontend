@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { X } from 'lucide-react';
 import { api, scheduleProactiveRefresh } from '../services/api';
 import OnboardingQuiz from './OnboardingQuiz';
+import { PHONE_COUNTRIES, DEFAULT_PHONE_COUNTRY, combinePhone } from '../utils/phoneCountries';
 
 const INPUT = {
   width: '100%', padding: '14px 16px', borderRadius: 10,
@@ -23,7 +24,7 @@ export default function LoginModal({ onSubmit }) {
   const [mode, setMode]       = useState('login');
   const [loading, setLoading] = useState(false);
   const [showPwd, setShowPwd] = useState(false);
-  const [form, setForm] = useState({ email: '', password: '', name: '', company: '', role: 'buyer' });
+  const [form, setForm] = useState({ email: '', password: '', name: '', company: '', role: 'buyer', phoneDial: DEFAULT_PHONE_COUNTRY.dial, phoneNumber: '' });
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
   // Forgot-password flow: 'request' (enter email) → 'confirm' (enter PIN + new password)
@@ -43,6 +44,7 @@ export default function LoginModal({ onSubmit }) {
     if (mode === 'register') {
       if (form.password.length < 8) { toast.error('Password must be at least 8 characters'); return false; }
       if (!form.name.trim())        { toast.error('Full name is required');                  return false; }
+      if (form.phoneNumber.replace(/\D/g, '').length < 7) { toast.error('A valid phone number is required'); return false; }
     }
     return true;
   };
@@ -108,6 +110,7 @@ export default function LoginModal({ onSubmit }) {
         role: form.role,
         name: form.name.trim(),
         company: form.company.trim(),
+        phone_number: combinePhone(form.phoneDial, form.phoneNumber),
         onboarding_answers: onboardingAnswers && Object.keys(onboardingAnswers).length ? onboardingAnswers : undefined,
       });
       toast.success('Account created! Signing you in…');
@@ -235,6 +238,22 @@ export default function LoginModal({ onSubmit }) {
                     style={INPUT}
                     onFocus={e => { e.currentTarget.style.borderColor = '#C4773A'; e.currentTarget.style.background = '#fff'; }}
                     onBlur={e => { e.currentTarget.style.borderColor = '#E0DAD0'; e.currentTarget.style.background = '#FDF8F2'; }} />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#3D3830', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>Phone Number</label>
+                  <div style={{ display: 'flex', gap: 8 }}>
+                    <select value={form.phoneDial} onChange={e => set('phoneDial', e.target.value)} style={{ ...INPUT, width: 110, cursor: 'pointer' }}>
+                      {PHONE_COUNTRIES.map(c => (
+                        <option key={c.iso} value={c.dial}>{c.iso} {c.dial}</option>
+                      ))}
+                    </select>
+                    <input
+                      type="tel" inputMode="numeric" value={form.phoneNumber}
+                      onChange={e => set('phoneNumber', e.target.value.replace(/[^\d\s]/g, ''))}
+                      placeholder="98765 43210" style={{ ...INPUT, flex: 1 }}
+                      onFocus={e => { e.currentTarget.style.borderColor = '#C4773A'; e.currentTarget.style.background = '#fff'; }}
+                      onBlur={e => { e.currentTarget.style.borderColor = '#E0DAD0'; e.currentTarget.style.background = '#FDF8F2'; }} />
+                  </div>
                 </div>
               </>
             )}

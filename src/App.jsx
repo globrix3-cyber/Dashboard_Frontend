@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
@@ -7,11 +7,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { setAuth, toggleLogin } from "./features/auth/authSlice";
 import { setUsdRate } from "./features/currency/currencySlice";
 import { connectSocket, disconnectSocket } from "./services/socket";
-import { scheduleProactiveRefresh } from "./services/api";
+import { api, scheduleProactiveRefresh } from "./services/api";
 import { DASHBOARD_ROUTES, allowedPathsByRole } from "./constants";
 import { routeConfig } from "./routeConfig";
 
 import LoginModal from "./pages/LoginModal";
+import AddPhoneModal from "./pages/AddPhoneModal";
 
 import "./index.css";
 
@@ -107,6 +108,21 @@ export default function App() {
     return () => disconnectSocket();
   }, [token]);
 
+  // ── 3b. Prompt buyers/suppliers without a phone on file to add one ───────
+  // Admin accounts are excluded — they're created by other admins, not via
+  // this public signup form, and don't need contact-for-orders follow-up.
+  // Checked once per browser session (not on every nav) so it doesn't nag.
+  const [showAddPhone, setShowAddPhone] = useState(false);
+  useEffect(() => {
+    if (!token || !userRole || userRole === 'admin') return;
+    if (sessionStorage.getItem('phoneCheckDone') === '1') return;
+
+    api.getMe()
+      .then(me => { if (!me?.phone_number) setShowAddPhone(true); })
+      .catch(() => {})
+      .finally(() => sessionStorage.setItem('phoneCheckDone', '1'));
+  }, [token, userRole]);
+
   // ── 4. Role-based redirect guard ────────────────────────────────────────
   useEffect(() => {
     if (!userRole) return;
@@ -173,6 +189,8 @@ export default function App() {
 
       {/* Login Modal — onSubmit triggers post-auth navigation */}
       {showLogin && <LoginModal onSubmit={handleAuthSuccess} />}
+
+      {showAddPhone && <AddPhoneModal onDone={() => setShowAddPhone(false)} />}
 
       <ToastContainer
         position="top-right"

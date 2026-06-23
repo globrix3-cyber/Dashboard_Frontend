@@ -4,6 +4,7 @@ import { setAuth } from '../features/auth/authSlice';
 import { api } from '../services/api';
 import { toast } from 'react-toastify';
 import { Save, User, Mail, Phone } from 'lucide-react';
+import { PHONE_COUNTRIES, DEFAULT_PHONE_COUNTRY, combinePhone, splitPhone } from '../utils/phoneCountries';
 
 const C = {
   saffron: '#D9600A', saffronLt: '#FDF1E8',
@@ -42,11 +43,14 @@ export default function EditProfile() {
   const { userName, userRole, token } = useSelector(s => s.auth);
   const [fetching, setFetching] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [form, setForm] = useState({ full_name: '', email: '', phone_number: '' });
+  const [form, setForm] = useState({ full_name: '', email: '', phone_dial: DEFAULT_PHONE_COUNTRY.dial, phone_number: '' });
 
   useEffect(() => {
     api.getMe()
-      .then(p => setForm({ full_name: p.full_name || userName || '', email: p.email || '', phone_number: p.phone_number || '' }))
+      .then(p => {
+        const { dial, number } = splitPhone(p.phone_number);
+        setForm({ full_name: p.full_name || userName || '', email: p.email || '', phone_dial: dial, phone_number: number });
+      })
       .catch(() => setForm(f => ({ ...f, full_name: userName || '' })))
       .finally(() => setFetching(false));
   }, [userName]);
@@ -58,7 +62,7 @@ export default function EditProfile() {
     if (!form.full_name.trim()) { toast.error('Full name is required'); return; }
     setSaving(true);
     try {
-      await api.updateMe({ full_name: form.full_name.trim(), phone_number: form.phone_number || null });
+      await api.updateMe({ full_name: form.full_name.trim(), phone_number: combinePhone(form.phone_dial, form.phone_number) || null });
       dispatch(setAuth({ userRole, userName: form.full_name.trim(), token }));
       localStorage.setItem('name', form.full_name.trim());
       toast.success('Profile updated!');
@@ -107,7 +111,37 @@ export default function EditProfile() {
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
             <Field label="Full Name *"  icon={User}  value={form.full_name}    onChange={e => set('full_name', e.target.value)}    placeholder="Rajesh Kumar" />
             <Field label="Email"        icon={Mail}  value={form.email}        readOnly placeholder="you@company.com" />
-            <Field label="Phone Number" icon={Phone} value={form.phone_number} onChange={e => set('phone_number', e.target.value)} placeholder="+91 98765 43210" />
+            <div>
+              <label style={{ display: 'block', fontSize: 11, fontWeight: 700, color: C.inkSoft, textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 7 }}>
+                Phone Number
+              </label>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <select value={form.phone_dial} onChange={e => set('phone_dial', e.target.value)} style={{
+                  width: 110, padding: '12px 10px', borderRadius: 12, border: `1.5px solid ${C.borderSoft}`,
+                  background: C.cream, fontFamily: "'DM Sans', sans-serif", fontSize: 13.5, color: C.ink,
+                  outline: 'none', cursor: 'pointer', boxSizing: 'border-box',
+                }}>
+                  {PHONE_COUNTRIES.map(c => (
+                    <option key={c.iso} value={c.dial}>{c.iso} {c.dial}</option>
+                  ))}
+                </select>
+                <div style={{ position: 'relative', flex: 1 }}>
+                  <Phone size={14} color={C.muted} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} />
+                  <input
+                    type="tel" inputMode="numeric" value={form.phone_number}
+                    onChange={e => set('phone_number', e.target.value.replace(/[^\d\s]/g, ''))}
+                    placeholder="98765 43210"
+                    style={{
+                      width: '100%', padding: '12px 14px 12px 40px', borderRadius: 12, border: `1.5px solid ${C.borderSoft}`,
+                      background: C.cream, fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: C.ink,
+                      outline: 'none', boxSizing: 'border-box', transition: 'border-color 0.15s, background 0.15s',
+                    }}
+                    onFocus={e => { e.currentTarget.style.borderColor = C.saffron; e.currentTarget.style.background = '#fff'; }}
+                    onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = C.cream; }}
+                  />
+                </div>
+              </div>
+            </div>
             <div style={{ height: 1, background: `linear-gradient(90deg, transparent, ${C.borderSoft}, transparent)`, margin: '2px 0' }} />
             <button type="submit" disabled={saving || fetching} style={{
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 9,
