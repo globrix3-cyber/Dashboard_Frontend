@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { api } from '../services/api';
 import { useFetchData } from '../hooks/useFetchData';
@@ -8,6 +8,7 @@ import { Spinner, EmptyState } from '../components/UI';
 import { useBreakpoint } from '../hooks/useBreakpoint';
 import { resolveImageUrl } from '../utils/helpers';
 import { useCurrency } from '../hooks/useCurrency';
+import { toggleLogin } from '../features/auth/authSlice';
 import {
   ChevronLeft, ChevronDown, ShoppingBag, Truck, MapPin, RotateCcw,
   MessageSquare, Minus, Plus, BadgeCheck,
@@ -89,6 +90,7 @@ function MiniProductCard({ p, onClick }) {
 export default function ProductDetailPage() {
   const { id }       = useParams();
   const navigate     = useNavigate();
+  const dispatch     = useDispatch();
   const bp           = useBreakpoint();
   const { userRole } = useSelector(s => s.auth);
 
@@ -97,10 +99,11 @@ export default function ProductDetailPage() {
   const { data: product, loading, error } = useFetchData(() => api.getProduct(id), [id]);
   const { data: allRaw }                  = useFetchData(() => api.getProducts());
 
-  const [activeImg, setActiveImg]   = useState(0);
-  const [qty, setQty]               = useState(1);
-  const [variantChoice, setVariant] = useState({});
-  const [messaging, setMessaging]   = useState(false);
+  const [activeImg, setActiveImg]     = useState(0);
+  const [qty, setQty]                 = useState(1);
+  const [variantChoice, setVariant]   = useState({});
+  const [messaging, setMessaging]     = useState(false);
+  const [addingToCart, setAddingToCart] = useState(false);
 
   /* Tiered-pricing variants (created by the "price tiers" listing feature) carry
      {min_qty, max_qty, price} instead of real selectable options like Size/Color —
@@ -188,11 +191,23 @@ export default function ProductDetailPage() {
 
   const handleVariantChange = (key, val) => setVariant(prev => ({ ...prev, [key]: val }));
 
-  const handleAddToCart = () => {
-    const label = variantKeys.length
-      ? variantKeys.map(k => variantChoice[k] ?? variantGroups[k][0]).join(' / ') + ' · '
-      : '';
-    toast.success(`Added to cart — ${label}${qty} × ${product.name}`);
+  const handleAddToCart = async () => {
+    if (!userRole) { dispatch(toggleLogin(true)); return; }
+    if (userRole !== 'buyer') { toast.info('Switch to a buyer account to add items to cart.'); return; }
+
+    setAddingToCart(true);
+    try {
+      await api.addToCart({ product_id: product.id, variant_id: selectedVariant?.id || null, quantity: qty });
+      const label = variantKeys.length
+        ? variantKeys.map(k => variantChoice[k] ?? variantGroups[k][0]).join(' / ') + ' · '
+        : '';
+      toast.success(`Added to cart — ${label}${qty} × ${product.name}`);
+      window.dispatchEvent(new CustomEvent('cart:updated'));
+    } catch (err) {
+      toast.error(err.message || 'Could not add to cart');
+    } finally {
+      setAddingToCart(false);
+    }
   };
 
   const handleMessageSupplier = async () => {
@@ -372,13 +387,13 @@ export default function ProductDetailPage() {
             </div>
 
             {/* Add to cart */}
-            <button onClick={handleAddToCart} style={{
-              width: '100%', padding: '14px 20px', borderRadius: 10, border: 'none', cursor: 'pointer',
+            <button onClick={handleAddToCart} disabled={addingToCart} style={{
+              width: '100%', padding: '14px 20px', borderRadius: 10, border: 'none', cursor: addingToCart ? 'default' : 'pointer',
               background: C.saffron, color: '#fff', fontFamily: "'DM Sans', sans-serif", fontSize: 14.5, fontWeight: 700,
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 10,
-              boxShadow: '0 4px 16px rgba(196,119,58,.28)',
+              boxShadow: '0 4px 16px rgba(196,119,58,.28)', opacity: addingToCart ? 0.7 : 1,
             }}>
-              Add to cart · {fmt(totalPrice)}
+              {addingToCart ? 'Adding…' : `Add to cart · ${fmt(totalPrice)}`}
             </button>
 
             {userRole === 'buyer' && (

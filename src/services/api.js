@@ -301,6 +301,13 @@ export const api = {
   cancelContract:   (id)     => post(`/api/contracts/${id}/cancel`),
   placeOrderFromContract: (id) => post(`/api/contracts/${id}/order`),
 
+  // ── Cart ─────────────────────────────────────────────────────────────────
+  getCart:        ()              => get('/api/cart'),
+  addToCart:      (body)          => post('/api/cart', body),
+  updateCartItem: (id, quantity)  => patch(`/api/cart/${id}`, { quantity }),
+  removeCartItem: (id)            => del(`/api/cart/${id}`),
+  clearCart:      ()              => del('/api/cart'),
+
   // ── Admin ────────────────────────────────────────────────────────────────
   admin: {
     getUsers:         (params = {}) => get(`/api/admin/users?${new URLSearchParams(params)}`),

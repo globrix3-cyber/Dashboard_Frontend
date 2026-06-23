@@ -47,6 +47,7 @@ const buyerLinks = [
   { path: '/buyer-dashboard/rfqs',       label: 'My RFQs'    },
   { path: '/buyer-dashboard/contracts',  label: 'Contracts'  },
   { path: '/buyer-dashboard/orders',     label: 'My Orders'  },
+  { path: '/buyer-dashboard/cart',       label: 'My Cart'    },
   { path: '/buyer-dashboard/messages',   label: 'Messages'   },
   { path: '/categories',                 label: 'Categories' },
   { path: '/products',                   label: 'Browse'     },
@@ -80,7 +81,7 @@ const adminLinks = [
 const ROLE_CONFIG = {
   buyer: {
     links: buyerLinks, accent: '#C4773A', homePath: '/buyer-dashboard',
-    searchPlaceholder: 'Search products or suppliers', cartPath: '/buyer-dashboard/orders',
+    searchPlaceholder: 'Search products or suppliers', cartPath: '/buyer-dashboard/cart',
   },
   supplier: {
     links: supplierLinks, accent: '#1A7A4A', homePath: '/supplier-dashboard',
@@ -192,6 +193,7 @@ function TopBar({ role }) {
   const [showDrop, setShowDrop]       = useState(false);
   const [suggestions, setSuggestions] = useState([]);
   const [catalog, setCatalog]         = useState(null);
+  const [cartCount, setCartCount]     = useState(0);
   const loadingRef                    = useRef(false);
 
   const isGuest = role === 'guest';
@@ -227,6 +229,21 @@ function TopBar({ role }) {
     const cs = catalog.categories.filter(c => c.name?.toLowerCase().includes(q)).slice(0, 2).map(c => ({ type: 'category', label: c.name }));
     setSuggestions([...ps, ...cs]);
   }, [query, catalog]);
+
+  // Cart badge — refreshed on mount and whenever ProductDetailPage adds an item
+  // (it dispatches "cart:updated" after a successful add, since there's no
+  // global cart store to subscribe to).
+  useEffect(() => {
+    if (role !== 'buyer') return;
+    const loadCount = () => {
+      api.getCart()
+        .then(items => setCartCount(Array.isArray(items) ? items.length : 0))
+        .catch(() => {});
+    };
+    loadCount();
+    window.addEventListener('cart:updated', loadCount);
+    return () => window.removeEventListener('cart:updated', loadCount);
+  }, [role]);
 
   const submitSearch = () => {
     if (!query.trim()) return;
@@ -399,10 +416,17 @@ function TopBar({ role }) {
               </div>
 
               <button
-                onClick={() => navigate(cartPath)} title="Orders"
-                style={{ width: 38, height: 38, borderRadius: 10, border: '1.5px solid #E8E2D8', background: '#FDF8F2', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+                onClick={() => navigate(cartPath)} title={role === 'buyer' ? 'Cart' : 'Orders'}
+                style={{ position: 'relative', width: 38, height: 38, borderRadius: 10, border: '1.5px solid #E8E2D8', background: '#FDF8F2', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
               >
                 <ShoppingBag size={16} color="#7A7068" />
+                {role === 'buyer' && cartCount > 0 && (
+                  <span style={{
+                    position: 'absolute', top: -5, right: -5, minWidth: 17, height: 17, padding: '0 4px',
+                    borderRadius: 100, background: accent, color: '#fff', fontSize: 10, fontWeight: 700,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1.5px solid #fff',
+                  }}>{cartCount > 99 ? '99+' : cartCount}</span>
+                )}
               </button>
             </div>
           )}
