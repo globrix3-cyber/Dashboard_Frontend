@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { toggleLogin } from '../features/auth/authSlice';
 import { api } from '../services/api';
@@ -303,6 +303,7 @@ function CategoryProducts({ category, meta, navigate, dispatch }) {
   });
 
   const handleGetQuote = (e, p) => {
+    e.preventDefault();
     e.stopPropagation();
     navigate('/buyer-dashboard/rfqs/new');
   };
@@ -359,9 +360,9 @@ function CategoryProducts({ category, meta, navigate, dispatch }) {
           <p style={{ fontSize: 12, color: C.muted, marginBottom: 14 }}>{filtered.length} products found</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))', gap: 16 }}>
             {filtered.map(p => (
-              <div key={p.id} onClick={() => navigate(`/products/${p.id}`)} style={{
-                background: '#fff', borderRadius: 16, border: `1.5px solid ${C.borderSoft}`,
-                overflow: 'hidden', cursor: 'pointer',
+              <Link key={p.id} to={`/products/${p.id}`} style={{
+                display: 'block', background: '#fff', borderRadius: 16, border: `1.5px solid ${C.borderSoft}`,
+                overflow: 'hidden', cursor: 'pointer', textDecoration: 'none', color: 'inherit',
                 transition: 'transform 0.18s, box-shadow 0.18s, border-color 0.18s',
               }}
                 onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = `0 8px 24px ${meta?.color || C.navy}1A`; e.currentTarget.style.borderColor = meta?.color || C.navy; }}
@@ -399,7 +400,7 @@ function CategoryProducts({ category, meta, navigate, dispatch }) {
                     </button>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </>

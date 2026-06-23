@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { api } from '../services/api';
@@ -59,11 +59,12 @@ function MiniProductCard({ p, onClick }) {
   const { fmt } = useCurrency();
   const img = resolveImageUrl(p.images?.[0]?.image_url);
   return (
-    <div
+    <Link
+      to={`/products/${p.id}`}
       onClick={onClick}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
-      style={{ cursor: 'pointer', fontFamily: "'DM Sans', sans-serif" }}
+      style={{ display: 'block', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", textDecoration: 'none', color: 'inherit' }}
     >
       <div style={{
         position: 'relative', borderRadius: 12, overflow: 'hidden', aspectRatio: '1 / 1',
@@ -82,7 +83,7 @@ function MiniProductCard({ p, onClick }) {
       <div style={{ fontSize: 12, color: C.muted, lineHeight: 1.35, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
         {p.name}
       </div>
-    </div>
+    </Link>
   );
 }
 
@@ -500,7 +501,7 @@ export default function ProductDetailPage() {
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: `repeat(auto-fill, minmax(${bp.isMobile ? '130px' : '170px'}, 1fr))`, gap: bp.isMobile ? 12 : 18 }}>
               {moreFromSupplier.map(p => (
-                <MiniProductCard key={p.id} p={p} onClick={() => { navigate(`/products/${p.id}`); window.scrollTo(0, 0); }} />
+                <MiniProductCard key={p.id} p={p} onClick={() => window.scrollTo(0, 0)} />
               ))}
             </div>
           </div>

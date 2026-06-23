@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Heart, Plus, ArrowRight, ShoppingBag } from 'lucide-react';
 import { IMG } from './landing/images';
@@ -153,14 +153,14 @@ function ProductCard({ p, isFav, onFav, onAction }) {
     : { bg: '#F3F0EB', color: '#1C1815' };
 
   return (
-    <div
+    <Link
+      to={`/products/${p.id}`}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
-      style={{ cursor: 'pointer', fontFamily: "'DM Sans', sans-serif" }}
+      style={{ display: 'block', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", textDecoration: 'none', color: 'inherit' }}
     >
       {/* Square image */}
       <div
-        onClick={onAction}
         style={{
           position: 'relative', borderRadius: 12, overflow: 'hidden',
           aspectRatio: '1 / 1', background: '#F5F0E8', marginBottom: 10,
@@ -188,7 +188,7 @@ function ProductCard({ p, isFav, onFav, onAction }) {
         {/* Heart */}
         <button
           aria-label={isFav ? 'Remove from wishlist' : 'Add to wishlist'}
-          onClick={e => { e.stopPropagation(); onFav(); }}
+          onClick={e => { e.preventDefault(); e.stopPropagation(); onFav(); }}
           style={{
             position: 'absolute', top: 8, right: 8,
             width: 28, height: 28, borderRadius: '50%',
@@ -204,7 +204,7 @@ function ProductCard({ p, isFav, onFav, onAction }) {
         {/* Quick add */}
         <button
           aria-label="Quick add to cart"
-          onClick={e => { e.stopPropagation(); onAction(); }}
+          onClick={e => { e.preventDefault(); e.stopPropagation(); onAction(); }}
           style={{
             position: 'absolute', bottom: 8, right: 8,
             width: 28, height: 28, borderRadius: '50%',
@@ -219,7 +219,7 @@ function ProductCard({ p, isFav, onFav, onAction }) {
       </div>
 
       {/* Info */}
-      <div onClick={onAction}>
+      <div>
         <div style={{ fontSize: 14, fontWeight: 700, color: T.ink, marginBottom: 1 }}>
           {p.rawPrice ? fmt(p.rawPrice) : 'Price on request'}
           <span style={{ fontSize: 11, fontWeight: 400, color: T.muted, marginLeft: 6 }}>{p.moq}</span>
@@ -230,7 +230,7 @@ function ProductCard({ p, isFav, onFav, onAction }) {
           <div style={{ fontSize: 11, color: T.muted, marginTop: 2 }}>⭐ {p.rating}</div>
         )}
       </div>
-    </div>
+    </Link>
   );
 }
 

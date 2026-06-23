@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { api } from '../services/api';
 import { useFetchData } from '../hooks/useFetchData';
@@ -44,6 +44,7 @@ export default function ProductsPage() {
   };
 
   const toggleFav = (e, id) => {
+    e.preventDefault();
     e.stopPropagation();
     setFavs(prev => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n; });
   };
@@ -87,6 +88,7 @@ export default function ProductsPage() {
   if (sort === 'newest')     filtered = [...filtered].sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
 
   const handleGetQuote = (e, p) => {
+    e.preventDefault();
     e.stopPropagation();
     if (userRole === 'buyer') navigate('/buyer-dashboard/rfqs/new');
     else if (userRole === 'supplier') toast.info('Switch to a buyer account to request quotes.');
@@ -188,8 +190,8 @@ export default function ProductsPage() {
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(210px, 1fr))', gap: 14 }}>
               {filtered.map(p => (
-                <div key={p.id} onClick={() => navigate(`/products/${p.id}`)}
-                  style={{ background: '#fff', borderRadius: 12, border: '1px solid #EDE8E0', overflow: 'hidden', cursor: 'pointer', transition: 'box-shadow .18s, transform .18s' }}
+                <Link key={p.id} to={`/products/${p.id}`}
+                  style={{ display: 'block', background: '#fff', borderRadius: 12, border: '1px solid #EDE8E0', overflow: 'hidden', cursor: 'pointer', transition: 'box-shadow .18s, transform .18s', textDecoration: 'none', color: 'inherit' }}
                   onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 6px 24px rgba(28,24,21,.1)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
                   onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'none'; }}
                 >
@@ -237,7 +239,7 @@ export default function ProductsPage() {
                       </button>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           )}

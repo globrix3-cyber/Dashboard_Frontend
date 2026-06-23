@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { api } from '../services/api';
 import { Plus, Edit2, Trash2, Eye, Package, Search, Loader2, AlertCircle } from 'lucide-react';
 import { toast } from 'react-toastify';
@@ -173,10 +173,11 @@ export default function SupplierCatalog() {
           {visible.map((p, i) => {
             const thumb = resolveImageUrl(p.images?.[0]?.image_url);
             return (
-            <div key={p.id} onClick={() => navigate(`/products/${p.id}`)} style={{
+            <Link key={p.id} to={`/products/${p.id}`} style={{
               display: 'grid', gridTemplateColumns: '56px 2fr 1fr 1fr 1fr 110px', gap: 12,
               padding: '15px 22px', borderBottom: i < visible.length - 1 ? `1px solid ${C.borderSoft}` : 'none',
               alignItems: 'center', transition: 'background 0.12s', cursor: 'pointer',
+              textDecoration: 'none', color: 'inherit',
             }}
               onMouseEnter={e => { e.currentTarget.style.background = C.cream; }}
               onMouseLeave={e => { e.currentTarget.style.background = '#fff'; }}>
@@ -196,12 +197,12 @@ export default function SupplierCatalog() {
                 {p.moq_unit && <span style={{ fontSize: 11, color: C.muted, fontWeight: 400 }}>/{p.moq_unit}</span>}
               </div>
               <StatusBadge status={p.status} />
-              <div style={{ display: 'flex', gap: 6 }} onClick={e => e.stopPropagation()}>
+              <div style={{ display: 'flex', gap: 6 }} onClick={e => { e.preventDefault(); e.stopPropagation(); }}>
                 <ActionBtn icon={<Edit2 size={13} />} title="Edit" onClick={() => navigate(`/supplier-dashboard/catalog/${p.id}/edit`)} color={C.navy} bg={C.navyLt} />
                 <ActionBtn icon={deleting === p.id ? <Loader2 size={13} style={{ animation: 'spin 0.7s linear infinite' }} /> : <Trash2 size={13} />} title="Delete" onClick={() => handleDelete(p.id)} color={C.red} bg={C.redLt} disabled={deleting === p.id} />
                 <ActionBtn icon={<Eye size={13} />} title="View" onClick={() => navigate(`/products/${p.id}`)} color={C.emerald} bg={C.emeraldLt} />
               </div>
-            </div>
+            </Link>
             );
           })}
         </div>
