@@ -33,8 +33,13 @@ export default function LoginModal({ onSubmit }) {
   const [newPassword, setNewPassword] = useState('');
   const [showNewPwd, setShowNewPwd]   = useState(false);
 
-  const goToForgot = () => { setMode('forgot'); setResetStep('request'); setPin(''); setNewPassword(''); };
-  const backToLogin = () => { setMode('login'); setResetStep('request'); setPin(''); setNewPassword(''); };
+  // Email-OTP verification flow (register step 2)
+  const [otpInput, setOtpInput] = useState('');
+  const [savedOtp, setSavedOtp] = useState('');
+
+  const goToForgot    = () => { setMode('forgot'); setResetStep('request'); setPin(''); setNewPassword(''); };
+  const backToLogin   = () => { setMode('login'); setResetStep('request'); setPin(''); setNewPassword(''); };
+  const backToRegister = () => { setMode('register'); setOtpInput(''); setSavedOtp(''); };
 
   const close = () => dispatch(toggleLogin(false));
 
@@ -101,6 +106,18 @@ export default function LoginModal({ onSubmit }) {
     toast.success(`Welcome, ${userName}! 🇮🇳`);
   };
 
+  const handleResendOtp = async () => {
+    setLoading(true);
+    try {
+      await api.sendOtp({ email: form.email });
+      toast.success('New code sent!');
+    } catch (err) {
+      toast.error(err.message || 'Could not resend code. Try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const registerAndLogin = async (onboardingAnswers) => {
     setLoading(true);
     try {
@@ -111,6 +128,7 @@ export default function LoginModal({ onSubmit }) {
         name: form.name.trim(),
         company: form.company.trim(),
         phone_number: combinePhone(form.phoneDial, form.phoneNumber),
+        otp: savedOtp,
         onboarding_answers: onboardingAnswers && Object.keys(onboardingAnswers).length ? onboardingAnswers : undefined,
       });
       toast.success('Account created! Signing you in…');
@@ -129,6 +147,16 @@ export default function LoginModal({ onSubmit }) {
     if (mode === 'forgot') {
       return resetStep === 'request' ? handleRequestPin() : handleConfirmReset();
     }
+
+    // OTP verification step
+    if (mode === 'verify-email') {
+      const digits = otpInput.replace(/\D/g, '');
+      if (digits.length !== 6) { toast.error('Enter the 6-digit code from your email'); return; }
+      setSavedOtp(digits);
+      setMode('onboarding');
+      return;
+    }
+
     if (!validate()) return;
 
     if (mode === 'login') {
@@ -149,8 +177,18 @@ export default function LoginModal({ onSubmit }) {
       return;
     }
 
-    // Register: collect a short MCQ questionnaire (Faire-style) — buyers and suppliers each get a tailored set
-    setMode('onboarding');
+    // Register: send OTP first, then onboarding, then account creation
+    setLoading(true);
+    try {
+      await api.sendOtp({ email: form.email });
+      toast.success(`Verification code sent to ${form.email}`);
+      setOtpInput('');
+      setMode('verify-email');
+    } catch (err) {
+      toast.error(err.message || 'Could not send verification code. Try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -188,7 +226,9 @@ export default function LoginModal({ onSubmit }) {
                 ? <>Source <span style={{ color: '#C4773A' }}>better,</span><br/>grow together.</>
                 : mode === 'register'
                   ? <>Join <span style={{ color: '#C4773A' }}>Globrixa</span> free.</>
-                  : <>Reset your <span style={{ color: '#C4773A' }}>password.</span></>}
+                  : mode === 'verify-email'
+                    ? <>Verify your <span style={{ color: '#C4773A' }}>email.</span></>
+                    : <>Reset your <span style={{ color: '#C4773A' }}>password.</span></>}
             </h2>
             <p style={{ fontSize: 14, color: '#7A7068', lineHeight: 1.6 }}>
               {mode === 'login'
@@ -197,9 +237,11 @@ export default function LoginModal({ onSubmit }) {
                   ? (form.role === 'supplier'
                       ? 'List your products and reach global buyers across 120+ countries.'
                       : 'Access 50,000+ products from verified Indian manufacturers.')
-                  : (resetStep === 'request'
-                      ? "Enter your registered email and we'll send a 6-digit PIN to reset your password."
-                      : <>Enter the PIN sent to <strong style={{ color: '#1C1815' }}>{form.email}</strong> along with your new password.</>)}
+                  : mode === 'verify-email'
+                    ? <>Enter the 6-digit code sent to <strong style={{ color: '#1C1815' }}>{form.email}</strong>.</>
+                    : (resetStep === 'request'
+                        ? "Enter your registered email and we'll send a 6-digit PIN to reset your password."
+                        : <>Enter the PIN sent to <strong style={{ color: '#1C1815' }}>{form.email}</strong> along with your new password.</>)}
             </p>
           </div>
 
@@ -258,8 +300,37 @@ export default function LoginModal({ onSubmit }) {
               </>
             )}
 
+            {/* Email OTP verification */}
+            {mode === 'verify-email' && (
+              <>
+                <div style={{ padding: '10px 14px', borderRadius: 10, background: '#F4EFE6', fontSize: 12.5, color: '#7A7068', lineHeight: 1.6 }}>
+                  Wrong email?{' '}
+                  <button type="button" onClick={backToRegister} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#C4773A', fontWeight: 700, fontSize: 12.5, fontFamily: 'inherit', textDecoration: 'underline' }}>
+                    Change it
+                  </button>
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#3D3830', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>6-digit code</label>
+                  <input
+                    autoFocus
+                    value={otpInput}
+                    onChange={e => setOtpInput(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                    placeholder="••••••" inputMode="numeric"
+                    style={{ ...INPUT, letterSpacing: '0.4em', fontWeight: 700, textAlign: 'center' }}
+                    onFocus={e => { e.currentTarget.style.borderColor = '#C4773A'; e.currentTarget.style.background = '#fff'; }}
+                    onBlur={e => { e.currentTarget.style.borderColor = '#E0DAD0'; e.currentTarget.style.background = '#FDF8F2'; }}
+                  />
+                </div>
+                <div style={{ textAlign: 'center', marginTop: -4 }}>
+                  <button type="button" onClick={handleResendOtp} disabled={loading} style={{ background: 'none', border: 'none', cursor: loading ? 'default' : 'pointer', color: '#8A8178', fontSize: 12.5, fontWeight: 600, fontFamily: 'inherit', textDecoration: 'underline', opacity: loading ? 0.5 : 1 }}>
+                    Didn't receive it? Resend code
+                  </button>
+                </div>
+              </>
+            )}
+
             {/* Business email — login & register */}
-            {mode !== 'forgot' && (
+            {mode !== 'forgot' && mode !== 'verify-email' && (
               <div>
                 <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#3D3830', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>Business email</label>
                 <input type="email" value={form.email} onChange={e => set('email', e.target.value)} placeholder="you@company.com" required style={INPUT}
@@ -269,7 +340,7 @@ export default function LoginModal({ onSubmit }) {
             )}
 
             {/* Password — login & register */}
-            {mode !== 'forgot' && (
+            {mode !== 'forgot' && mode !== 'verify-email' && (
               <div>
                 <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#3D3830', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>Password</label>
                 <div style={{ position: 'relative' }}>
@@ -340,9 +411,11 @@ export default function LoginModal({ onSubmit }) {
             >
               {loading
                 ? 'Please wait…'
-                : mode !== 'forgot'
-                  ? 'Continue'
-                  : resetStep === 'request' ? 'Send reset PIN' : 'Reset password'}
+                : mode === 'verify-email'
+                  ? 'Verify & Continue'
+                  : mode !== 'forgot'
+                    ? 'Continue'
+                    : resetStep === 'request' ? 'Send reset PIN' : 'Reset password'}
             </button>
           </form>
 
@@ -386,6 +459,12 @@ export default function LoginModal({ onSubmit }) {
               Already have an account?{' '}
               <button onClick={() => setMode('login')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#1C1815', fontWeight: 700, fontSize: 13, fontFamily: 'inherit', textDecoration: 'underline' }}>
                 Sign in
+              </button>
+            </p>
+          ) : mode === 'verify-email' ? (
+            <p style={{ fontSize: 13, color: '#7A7068', textAlign: 'center', margin: 0 }}>
+              <button onClick={backToRegister} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#1C1815', fontWeight: 700, fontSize: 13, fontFamily: 'inherit', textDecoration: 'underline' }}>
+                ← Back to registration
               </button>
             </p>
           ) : (

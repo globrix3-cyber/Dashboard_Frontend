@@ -238,6 +238,7 @@ export const api = {
   get, post, put, patch, delete: del,
 
   // ── Auth ─────────────────────────────────────────────────────────────────
+  sendOtp:        (body) => post('/api/auth/send-otp',        body),
   register:       (body) => post('/api/auth/register',        body),
   login:          (body) => post('/api/auth/login',           body),
   logout:         ()     => post('/api/auth/logout', { refresh_token: getRefreshToken() }),

@@ -160,8 +160,8 @@ export function AdminUsersPage() {
       ) : (
         <div style={{ background: '#fff', borderRadius: 20, border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden' }}>
           <div style={{ borderTop: `3px solid ${C.navy}` }} />
-          <div style={{ display: 'grid', gridTemplateColumns: '2fr 1.5fr 1fr 1fr auto', padding: '11px 22px', borderBottom: `1px solid ${C.borderSoft}`, background: C.cream }}>
-            {['User', 'Company', 'Role', 'Status', 'Actions'].map(h => (
+          <div style={{ display: 'grid', gridTemplateColumns: '2fr 1.5fr 1.3fr 1fr 1fr auto', padding: '11px 22px', borderBottom: `1px solid ${C.borderSoft}`, background: C.cream }}>
+            {['User', 'Company', 'Phone', 'Role', 'Status', 'Actions'].map(h => (
               <span key={h} style={{ fontSize: 10, fontWeight: 700, color: C.muted, textTransform: 'uppercase', letterSpacing: '.07em' }}>{h}</span>
             ))}
           </div>
@@ -171,7 +171,7 @@ export function AdminUsersPage() {
             const isSusp = status === 'suspended';
             return (
               <div key={u.id} style={{
-                display: 'grid', gridTemplateColumns: '2fr 1.5fr 1fr 1fr auto',
+                display: 'grid', gridTemplateColumns: '2fr 1.5fr 1.3fr 1fr 1fr auto',
                 padding: '15px 22px', borderBottom: `1px solid ${C.borderSoft}`,
                 alignItems: 'center', gap: 10, transition: 'background 0.12s',
               }}
@@ -189,6 +189,9 @@ export function AdminUsersPage() {
                 <div>
                   <div style={{ fontSize: 13, color: C.ink, fontWeight: 500 }}>{u.company || '—'}</div>
                   {u.city && <div style={{ fontSize: 11, color: C.muted, display: 'flex', alignItems: 'center', gap: 3 }}><MapPin size={9} />{u.city}</div>}
+                </div>
+                <div style={{ fontSize: 12, color: u.phone_number ? C.inkSoft : C.muted, fontFamily: u.phone_number ? 'monospace' : "'DM Sans', sans-serif" }}>
+                  {u.phone_number || '—'}
                 </div>
                 <span style={{ fontSize: 10, fontWeight: 700, padding: '3px 10px', borderRadius: 100, background: u.role === 'supplier' ? C.emeraldLt : C.navyLt, color: u.role === 'supplier' ? C.emerald : C.navy, textTransform: 'capitalize' }}>{u.role || '—'}</span>
                 <StatusBadge status={status} />
