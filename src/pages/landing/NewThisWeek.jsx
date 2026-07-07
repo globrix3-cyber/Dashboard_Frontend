@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { toggleLogin } from '../../features/auth/authSlice';
 import { T, shadow, sectionTitle } from './tokens';
@@ -29,7 +29,7 @@ function MiniCardSkeleton() {
   );
 }
 
-function MiniCard({ product, index, onLoginRequired }) {
+function MiniCard({ product, index, onLoginRequired, isLoggedIn }) {
   const [hov, setHov] = useState(false);
   const imgUrl = resolveImageUrl(product.images?.[0]?.image_url);
 
@@ -81,16 +81,29 @@ function MiniCard({ product, index, onLoginRequired }) {
         <div style={{ fontSize: 11, fontWeight: 700, color: T.ink, lineHeight: 1.35, marginBottom: 5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
           {product.name}
         </div>
-        <div style={{ fontSize: 12, fontWeight: 800, color: T.ink }}>{priceStr}</div>
+        {isLoggedIn ? (
+          <div style={{ fontSize: 12, fontWeight: 800, color: T.ink }}>{priceStr}</div>
+        ) : (
+          <div
+            onClick={e => { e.preventDefault(); onLoginRequired(); }}
+            style={{ position: 'relative', cursor: 'pointer', display: 'inline-flex', alignItems: 'center' }}
+          >
+            <div style={{ fontSize: 12, fontWeight: 800, color: T.ink, filter: 'blur(5px)', userSelect: 'none', pointerEvents: 'none' }}>{priceStr}</div>
+            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', gap: 3, fontSize: 9, color: '#8A8178', fontWeight: 700, whiteSpace: 'nowrap' }}>
+              🔒 Sign in
+            </div>
+          </div>
+        )}
       </div>
     </Link>
   );
 }
 
 export default function NewThisWeek() {
-  const dispatch  = useDispatch();
-  const bp        = useBreakpoint();
-  const openLogin = () => dispatch(toggleLogin(true));
+  const dispatch    = useDispatch();
+  const bp          = useBreakpoint();
+  const isLoggedIn  = !!useSelector(s => s.auth.token);
+  const openLogin   = () => dispatch(toggleLogin(true));
 
   const [products, setProducts] = useState([]);
   const [loading,  setLoading]  = useState(true);
@@ -130,7 +143,7 @@ export default function NewThisWeek() {
           <div style={{ display: 'grid', gridTemplateColumns: cols, gap: 12 }}>
             {showSkeletons
               ? Array.from({ length: 6 }).map((_, i) => <MiniCardSkeleton key={i} />)
-              : products.map((p, i) => <MiniCard key={p.id} product={p} index={i} onLoginRequired={openLogin} />)
+              : products.map((p, i) => <MiniCard key={p.id} product={p} index={i} onLoginRequired={openLogin} isLoggedIn={isLoggedIn} />)
             }
           </div>
         )}

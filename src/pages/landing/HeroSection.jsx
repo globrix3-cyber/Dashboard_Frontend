@@ -24,21 +24,11 @@ function PhotoMosaic({ bp }) {
         onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.04)'; }}
         onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; }}
       />
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top,rgba(18,14,10,.82) 0%,rgba(18,14,10,.08) 55%,transparent)' }} />
       <div style={{ position: 'absolute', top: 16, left: 16 }}>
         <span style={{ background: 'rgba(196,119,58,.92)', backdropFilter: 'blur(8px)', color: '#fff', fontSize: 9, fontWeight: 800, padding: '5px 12px', borderRadius: 20, letterSpacing: '.1em', display: 'flex', alignItems: 'center', gap: 5 }}>
           <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#fff', animation: 'heroPulse 1.8s ease infinite', display: 'inline-block' }} />
           LIVE MARKETPLACE
         </span>
-      </div>
-      <div style={{ position: 'absolute', bottom: 20, left: 20, right: 20 }}>
-        <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", color: '#fff', fontSize: bp.isMobile ? 17 : 22, fontWeight: 700, marginBottom: 4, lineHeight: 1.2 }}>
-          10+ Verified Suppliers
-        </div>
-        <div style={{ color: 'rgba(255,255,255,.6)', fontSize: 12, display: 'flex', alignItems: 'center', gap: 5 }}>
-          <span style={{ width: 16, height: 1, background: 'rgba(255,255,255,.35)', display: 'inline-block' }} />
-          MSMEs, Artisans & Exporters
-        </div>
       </div>
       <style>{`@keyframes heroPulse{0%,100%{opacity:1}50%{opacity:.3}}`}</style>
     </div>

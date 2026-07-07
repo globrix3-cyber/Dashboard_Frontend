@@ -11,7 +11,7 @@ import { useCurrency } from '../hooks/useCurrency';
 import { toggleLogin } from '../features/auth/authSlice';
 import {
   ChevronLeft, ChevronDown, ShoppingBag, Truck, MapPin, RotateCcw,
-  MessageSquare, Minus, Plus, BadgeCheck,
+  MessageSquare, Minus, Plus, BadgeCheck, Lock,
 } from 'lucide-react';
 
 /* ── Design tokens ─────────────────────────────────────────────────────────── */
@@ -54,7 +54,7 @@ function Accordion({ title, defaultOpen = false, children }) {
 }
 
 /* ── Compact product card for the "More from this supplier" rail ──────────── */
-function MiniProductCard({ p, onClick }) {
+function MiniProductCard({ p, onClick, isLoggedIn }) {
   const [hov, setHov] = useState(false);
   const { fmt } = useCurrency();
   const img = resolveImageUrl(p.images?.[0]?.image_url);
@@ -78,7 +78,9 @@ function MiniProductCard({ p, onClick }) {
         }
       </div>
       <div style={{ fontSize: 13, fontWeight: 700, color: C.ink, marginBottom: 1 }}>
-        {p.base_price ? fmt(p.base_price) : 'On request'}
+        {isLoggedIn
+          ? (p.base_price ? fmt(p.base_price) : 'On request')
+          : <span style={{ fontSize: 11, color: C.muted, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 3 }}><Lock size={10} />Sign in to see price</span>}
       </div>
       <div style={{ fontSize: 12, color: C.muted, lineHeight: 1.35, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
         {p.name}
@@ -321,16 +323,32 @@ export default function ProductDetailPage() {
             </h1>
 
             {/* Price */}
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 4 }}>
-              <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 26, fontWeight: 700, color: C.ink }}>
-                {fmt(unitPrice)}
-              </span>
-              <span style={{ fontSize: 13, color: C.muted }}>per {unit.replace(/s$/, '')}</span>
-            </div>
-            <div style={{ fontSize: 12.5, color: C.muted, marginBottom: 22 }}>
-              Minimum order: {moq.toLocaleString('en-IN')} {unit}
-              {product.lead_time_days ? ` · Ships in ~${product.lead_time_days} days` : ''}
-            </div>
+            {userRole ? (
+              <>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 4 }}>
+                  <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 26, fontWeight: 700, color: C.ink }}>
+                    {fmt(unitPrice)}
+                  </span>
+                  <span style={{ fontSize: 13, color: C.muted }}>per {unit.replace(/s$/, '')}</span>
+                </div>
+                <div style={{ fontSize: 12.5, color: C.muted, marginBottom: 22 }}>
+                  Minimum order: {moq.toLocaleString('en-IN')} {unit}
+                  {product.lead_time_days ? ` · Ships in ~${product.lead_time_days} days` : ''}
+                </div>
+              </>
+            ) : (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 14, background: '#FDF8F2', border: `1.5px solid ${C.border}`, borderRadius: 12, padding: '14px 18px', marginBottom: 22 }}>
+                <div style={{ width: 36, height: 36, borderRadius: 10, background: '#F0E4D4', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <Lock size={16} color={C.saffron} />
+                </div>
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: C.ink, marginBottom: 3 }}>Sign in to see wholesale pricing</div>
+                  <button onClick={() => dispatch(toggleLogin(true))} style={{ fontSize: 12, fontWeight: 700, color: C.saffron, background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontFamily: 'inherit', textDecoration: 'underline', textUnderlineOffset: 2 }}>
+                    Create a free account →
+                  </button>
+                </div>
+              </div>
+            )}
 
             {/* Variant dropdowns */}
             {variantKeys.map(key => (
@@ -394,7 +412,7 @@ export default function ProductDetailPage() {
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 10,
               boxShadow: '0 4px 16px rgba(196,119,58,.28)', opacity: addingToCart ? 0.7 : 1,
             }}>
-              {addingToCart ? 'Adding…' : `Add to cart · ${fmt(totalPrice)}`}
+              {!userRole ? 'Sign in to place order' : addingToCart ? 'Adding…' : `Add to cart · ${fmt(totalPrice)}`}
             </button>
 
             {userRole === 'buyer' && (
@@ -501,7 +519,7 @@ export default function ProductDetailPage() {
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: `repeat(auto-fill, minmax(${bp.isMobile ? '130px' : '170px'}, 1fr))`, gap: bp.isMobile ? 12 : 18 }}>
               {moreFromSupplier.map(p => (
-                <MiniProductCard key={p.id} p={p} onClick={() => window.scrollTo(0, 0)} />
+                <MiniProductCard key={p.id} p={p} onClick={() => window.scrollTo(0, 0)} isLoggedIn={!!userRole} />
               ))}
             </div>
           </div>
