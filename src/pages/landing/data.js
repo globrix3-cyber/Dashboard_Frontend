@@ -183,10 +183,10 @@ export const FEATURES = [
 
 // ── Stats ───────────────────────────────────────────────────────────────────
 export const STATS = [
-  { num: '5,000', suf: '+',  label: 'Verified Suppliers' },
-  { num: '50',    suf: 'K+', label: 'Products Listed'    },
-  { num: '$30',   suf: 'M+', label: 'Monthly Volume'     },
-  { num: '120',   suf: '+',  label: 'Countries Sourcing' },
+  { num: '10',  suf: '+', label: 'Verified Suppliers'  },
+  { num: '200', suf: '+', label: 'Products Listed'     },
+  { num: '10',  suf: '+', label: 'Categories'          },
+  { num: '120', suf: '+', label: 'Countries Served'    },
 ];
 
 // ── Testimonials ────────────────────────────────────────────────────────────

@@ -50,10 +50,9 @@ export default function CategoryNavBar({ activeCategory = 'All', onSelect }) {
                 flexShrink: 0,
                 userSelect: 'none',
               }}
-              onMouseEnter={e => { if (!isActive) e.currentTarget.style.color = T.ink; }}
+              onMouseEnter={e => { if (!isActive) e.currentTarget.style.color = '#2C1810'; }}
               onMouseLeave={e => { if (!isActive) e.currentTarget.style.color = T.mu; }}
             >
-              <span style={{ fontSize: 13 }}>{item.icon}</span>
               {item.label}
             </div>
           );

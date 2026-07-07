@@ -26,11 +26,11 @@ export default function BuyerStory() {
 
         {/* Contained image */}
         <div style={{ borderRadius: 20, overflow: 'hidden', position: 'relative', aspectRatio: '4/3' }}>
-          <img src={IMG.keralaRiceFields} alt="Kerala rice fields" loading="lazy" decoding="async"
-            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 30%', display: 'block' }} />
+          <img src={IMG.artisanEmbroidery} alt="Indian artisan hand embroidery" loading="lazy" decoding="async"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center center', display: 'block' }} />
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(44,24,16,.7) 0%, transparent 55%)' }} />
           <div style={{ position: 'absolute', bottom: 14, left: 16, right: 16 }}>
-            <span style={{ fontSize: 11, color: 'rgba(255,255,255,.8)', fontWeight: 500 }}>Kerala organic farms — one of 500+ verified sourcing regions</span>
+            <span style={{ fontSize: 11, color: 'rgba(255,255,255,.8)', fontWeight: 500 }}>Indian artisan embroidery — handcrafted by verified suppliers on Globrixa</span>
           </div>
         </div>
       </section>
@@ -73,7 +73,7 @@ export default function BuyerStory() {
 
           {/* Stats row */}
           <div style={{ display: 'flex', gap: 32 }}>
-            {[['5,000+', 'Verified suppliers'], ['120+', 'Countries sourcing'], ['50K+', 'Products listed']].map(([num, label]) => (
+            {[['10+', 'Verified suppliers'], ['120+', 'Countries sourcing'], ['200+', 'Products listed']].map(([num, label]) => (
               <div key={label}>
                 <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: bp.isTablet ? 22 : 28, fontWeight: 900, color: '#fff', letterSpacing: -0.5 }}>{num}</div>
                 <div style={{ fontSize: 11, color: 'rgba(255,255,255,.4)', fontWeight: 500, marginTop: 2 }}>{label}</div>
@@ -89,11 +89,11 @@ export default function BuyerStory() {
 
           <div style={{ position: 'relative', zIndex: 1, borderRadius: 24, overflow: 'hidden', boxShadow: '0 32px 80px rgba(0,0,0,.5)' }}>
             <img
-              src={IMG.keralaRiceFields}
-              alt="Aerial view of Kerala rice fields"
+              src={IMG.artisanEmbroidery}
+              alt="Aerial view of Indian artisan hand embroidery"
               loading="lazy"
               decoding="async"
-              style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', objectPosition: 'center 30%', display: 'block' }}
+              style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', objectPosition: 'center center', display: 'block' }}
             />
             {/* Gradient overlay */}
             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(44,24,16,.75) 0%, transparent 55%)' }} />
@@ -102,7 +102,7 @@ export default function BuyerStory() {
             <div style={{ position: 'absolute', bottom: 20, left: 20, right: 20, display: 'flex', alignItems: 'center', gap: 10 }}>
               <div style={{ width: 6, height: 6, borderRadius: '50%', background: ACC, flexShrink: 0 }} />
               <span style={{ fontSize: 12, color: 'rgba(255,255,255,.82)', fontWeight: 500, lineHeight: 1.4 }}>
-                Kerala organic farms — one of 500+ verified sourcing regions on Globrixa
+                Indian artisan embroidery — handcrafted by verified suppliers on Globrixa
               </span>
             </div>
           </div>

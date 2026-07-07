@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { setAuth, toggleLogin } from '../features/auth/authSlice';
 import { toast } from 'react-toastify';
 import { X } from 'lucide-react';
@@ -20,11 +20,12 @@ const ROLES = [
 ];
 
 export default function LoginModal({ onSubmit }) {
-  const dispatch = useDispatch();
-  const [mode, setMode]       = useState('login');
+  const dispatch    = useDispatch();
+  const loginIntent = useSelector(s => s.auth.loginIntent);
+  const [mode, setMode]       = useState(() => loginIntent === 'supplier' ? 'register' : 'login');
   const [loading, setLoading] = useState(false);
   const [showPwd, setShowPwd] = useState(false);
-  const [form, setForm] = useState({ email: '', password: '', name: '', company: '', role: 'buyer', phoneDial: DEFAULT_PHONE_COUNTRY.dial, phoneNumber: '' });
+  const [form, setForm] = useState({ email: '', password: '', name: '', company: '', role: loginIntent === 'supplier' ? 'supplier' : 'buyer', phoneDial: DEFAULT_PHONE_COUNTRY.dial, phoneNumber: '' });
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
   // Forgot-password flow: 'request' (enter email) → 'confirm' (enter PIN + new password)

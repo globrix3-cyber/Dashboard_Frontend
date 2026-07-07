@@ -12,102 +12,34 @@ const STATS = [
 ];
 
 function PhotoMosaic({ bp }) {
-  if (bp.isMobile) {
-    return (
-      <div style={{ borderRadius: 18, overflow: 'hidden', position: 'relative', height: 240 }}>
-        <img src={IMG.artisanWeaving} alt="Indian artisan weaving on a traditional loom"
-          loading="eager" fetchpriority="high" decoding="sync"
-          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top,rgba(18,14,10,.7) 0%,rgba(18,14,10,.1) 60%,transparent)' }} />
-        <div style={{ position: 'absolute', bottom: 16, left: 16, right: 16 }}>
-          <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", color: '#fff', fontSize: 17, fontWeight: 700, marginBottom: 3 }}>5,000+ Verified Suppliers</div>
-          <div style={{ color: 'rgba(255,255,255,.6)', fontSize: 11 }}>MSMEs · Artisans · Exporters</div>
-        </div>
-        <div style={{ position: 'absolute', top: 12, left: 14 }}>
-          <span style={{ background: 'rgba(196,119,58,.92)', backdropFilter: 'blur(8px)', color: '#fff', fontSize: 9, fontWeight: 800, padding: '4px 10px', borderRadius: 20, letterSpacing: '.08em', display: 'flex', alignItems: 'center', gap: 5 }}>
-            <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#fff', animation: 'heroPulse 1.8s ease infinite', display: 'inline-block' }} />
-            LIVE
-          </span>
-        </div>
-        <style>{`@keyframes heroPulse{0%,100%{opacity:1}50%{opacity:.3}}`}</style>
-      </div>
-    );
-  }
-
-  const twoCol = bp.isTablet;
+  const height = bp.isMobile ? 240 : bp.isTablet ? 380 : 460;
 
   return (
-    <div style={{ position: 'relative' }}>
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: twoCol ? '1fr 1fr' : '1.15fr 0.85fr',
-        gridTemplateRows: twoCol ? '220px' : '220px 220px',
-        gap: 10, borderRadius: 24, overflow: 'hidden',
-      }}>
-        {/* Main artisan — spans 2 rows on desktop */}
-        <div style={{ gridRow: twoCol ? '1' : '1 / 3', position: 'relative', overflow: 'hidden' }}>
-          <img src={IMG.artisanWeaving} alt="Indian artisan weaving on a traditional loom"
-            loading="eager" fetchpriority="high" decoding="sync"
-            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', transition: 'transform .6s ease', display: 'block' }}
-            onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.04)'; }}
-            onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; }}
-          />
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top,rgba(18,14,10,.82) 0%,rgba(18,14,10,.08) 55%,transparent)' }} />
-          <div style={{ position: 'absolute', top: 16, left: 16 }}>
-            <span style={{ background: 'rgba(196,119,58,.92)', backdropFilter: 'blur(8px)', color: '#fff', fontSize: 9, fontWeight: 800, padding: '5px 12px', borderRadius: 20, letterSpacing: '.1em', display: 'flex', alignItems: 'center', gap: 5 }}>
-              <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#fff', animation: 'heroPulse 1.8s ease infinite', display: 'inline-block' }} />
-              LIVE MARKETPLACE
-            </span>
-          </div>
-          <div style={{ position: 'absolute', bottom: 20, left: 20, right: 20 }}>
-            <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", color: '#fff', fontSize: 20, fontWeight: 700, marginBottom: 4, lineHeight: 1.2 }}>5,000+ Verified<br/>Suppliers</div>
-            <div style={{ color: 'rgba(255,255,255,.6)', fontSize: 12, display: 'flex', alignItems: 'center', gap: 5 }}>
-              <span style={{ width: 16, height: 1, background: 'rgba(255,255,255,.35)', display: 'inline-block' }} />
-              MSMEs, Artisans & Exporters
-            </div>
-          </div>
-        </div>
-
-        {/* Top-right — handmade pottery */}
-        <div style={{ position: 'relative', overflow: 'hidden' }}>
-          <img src={IMG.handmadePottery} alt="Vibrant handmade pottery — Handicrafts category"
-            loading="eager" fetchpriority="high" decoding="sync"
-            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'transform .5s ease' }}
-            onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.06)'; }}
-            onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; }}
-          />
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top,rgba(18,14,10,.65) 0%,transparent 55%)' }} />
-          <div style={{ position: 'absolute', top: 12, left: 12 }}>
-            <span style={{ background: 'rgba(255,255,255,.12)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,.22)', color: '#fff', fontSize: 8, fontWeight: 800, padding: '4px 10px', borderRadius: 20, letterSpacing: '.1em' }}>HANDICRAFTS</span>
-          </div>
-          <div style={{ position: 'absolute', bottom: 12, left: 14 }}>
-            <div style={{ color: '#fff', fontSize: 13, fontWeight: 700 }}>982 brands</div>
-            <div style={{ color: 'rgba(255,255,255,.55)', fontSize: 10 }}>Pottery · Jewelry · Art</div>
-          </div>
-        </div>
-
-        {/* Bottom-right — mosaic lamps (desktop only) */}
-        {!twoCol && (
-          <div style={{ position: 'relative', overflow: 'hidden' }}>
-            <img src={IMG.mosaicLamps} alt="Vibrant mosaic glass lamps — Home Décor category"
-              loading="eager" fetchpriority="high" decoding="sync"
-              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'transform .5s ease' }}
-              onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.06)'; }}
-              onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; }}
-            />
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top,rgba(18,14,10,.65) 0%,transparent 55%)' }} />
-            <div style={{ position: 'absolute', top: 12, left: 12 }}>
-              <span style={{ background: 'rgba(255,255,255,.12)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,.22)', color: '#fff', fontSize: 8, fontWeight: 800, padding: '4px 10px', borderRadius: 20, letterSpacing: '.1em' }}>HOME DÉCOR</span>
-            </div>
-            <div style={{ position: 'absolute', bottom: 12, left: 14 }}>
-              <div style={{ color: '#fff', fontSize: 13, fontWeight: 700 }}>Delhi crafts</div>
-              <div style={{ color: 'rgba(255,255,255,.55)', fontSize: 10 }}>Lamps · Ceramics · Decor</div>
-            </div>
-          </div>
-        )}
+    <div style={{ borderRadius: 24, overflow: 'hidden', position: 'relative', height }}>
+      <img
+        src={IMG.artisanWeaving}
+        alt="Indian artisan weaving on a traditional loom"
+        loading="eager" fetchpriority="high" decoding="sync"
+        style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block', transition: 'transform .6s ease' }}
+        onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.04)'; }}
+        onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; }}
+      />
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top,rgba(18,14,10,.82) 0%,rgba(18,14,10,.08) 55%,transparent)' }} />
+      <div style={{ position: 'absolute', top: 16, left: 16 }}>
+        <span style={{ background: 'rgba(196,119,58,.92)', backdropFilter: 'blur(8px)', color: '#fff', fontSize: 9, fontWeight: 800, padding: '5px 12px', borderRadius: 20, letterSpacing: '.1em', display: 'flex', alignItems: 'center', gap: 5 }}>
+          <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#fff', animation: 'heroPulse 1.8s ease infinite', display: 'inline-block' }} />
+          LIVE MARKETPLACE
+        </span>
       </div>
-
-
+      <div style={{ position: 'absolute', bottom: 20, left: 20, right: 20 }}>
+        <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", color: '#fff', fontSize: bp.isMobile ? 17 : 22, fontWeight: 700, marginBottom: 4, lineHeight: 1.2 }}>
+          10+ Verified Suppliers
+        </div>
+        <div style={{ color: 'rgba(255,255,255,.6)', fontSize: 12, display: 'flex', alignItems: 'center', gap: 5 }}>
+          <span style={{ width: 16, height: 1, background: 'rgba(255,255,255,.35)', display: 'inline-block' }} />
+          MSMEs, Artisans & Exporters
+        </div>
+      </div>
       <style>{`@keyframes heroPulse{0%,100%{opacity:1}50%{opacity:.3}}`}</style>
     </div>
   );
@@ -153,13 +85,15 @@ export default function HeroSection() {
               </button>
             </div>
 
-            <div style={{ display: 'flex', gap: bp.isMobile ? 14 : 22, flexWrap: 'wrap' }}>
-              {['Verified businesses', 'Easy sourcing', 'Export support'].map(txt => (
-                <div key={txt} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: T.mu, fontWeight: 500 }}>
-                  <span style={{ width: 18, height: 18, borderRadius: '50%', background: T.gl, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 9, color: T.g, fontWeight: 700, flexShrink: 0 }}>✓</span>
-                  {txt}
-                </div>
-              ))}
+            <div style={{ fontSize: 13, color: T.mu, fontWeight: 500 }}>
+              Are you a brand?{' '}
+              <button
+                onClick={() => dispatch(toggleLogin({ show: true, intent: 'supplier' }))}
+                onMouseEnter={() => setHovSec(true)} onMouseLeave={() => setHovSec(false)}
+                style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontFamily: 'inherit', fontSize: 13, fontWeight: 700, color: T.t, textDecoration: 'underline', textUnderlineOffset: 3 }}
+              >
+                Sign up to sell
+              </button>
             </div>
           </div>
 

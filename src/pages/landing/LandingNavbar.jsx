@@ -11,7 +11,8 @@ export default function LandingNavbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [query, setQuery]       = useState('');
 
-  const openLogin  = () => { dispatch(toggleLogin(true)); setMenuOpen(false); };
+  const openLogin        = () => { dispatch(toggleLogin(true)); setMenuOpen(false); };
+  const openSupplierRegister = () => { dispatch(toggleLogin({ show: true, intent: 'supplier' })); setMenuOpen(false); };
   const handleSearch = (e) => { e.preventDefault(); dispatch(toggleLogin(true)); };
 
   /* ── Desktop / Tablet ───────────────────────────────────────────────── */
@@ -108,7 +109,7 @@ export default function LandingNavbar() {
         {!bp.isTablet && (
           <>
             <NavLink onClick={() => navigate('/blog')}>Blog</NavLink>
-            <NavLink onClick={openLogin}>Sign up to sell</NavLink>
+            <NavLink onClick={openSupplierRegister}>Sign up to sell</NavLink>
           </>
         )}
         <NavLink onClick={openLogin}>Sign in</NavLink>
@@ -178,7 +179,7 @@ export default function LandingNavbar() {
             {[
               ['Blog', () => { navigate('/blog'); setMenuOpen(false); }],
               ['Our Story', () => { navigate('/our-story'); setMenuOpen(false); }],
-              ['Sign up to sell', openLogin],
+              ['Sign up to sell', openSupplierRegister],
             ].map(([label, fn]) => (
               <button key={label} onClick={fn} style={{ display: 'block', width: '100%', textAlign: 'left', padding: '13px 4px', fontSize: 15, fontWeight: 500, color: '#1C1815', background: 'none', border: 'none', borderBottom: '1px solid #F0EBE4', cursor: 'pointer', fontFamily: 'inherit' }}>
                 {label}

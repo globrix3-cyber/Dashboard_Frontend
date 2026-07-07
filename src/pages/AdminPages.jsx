@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { api } from '../services/api';
@@ -8,7 +8,7 @@ import {
   Users, Building2, ShoppingBag, BarChart2,
   ShieldCheck, Search, CheckCircle2, XCircle,
   Eye, Ban, ArrowLeft, TrendingUp, MapPin, Download,
-  Package, DollarSign, Loader2,
+  Package, DollarSign, Loader2, X, ClipboardList,
 } from 'lucide-react';
 import { formatDate } from '../utils/helpers';
 
@@ -22,6 +22,137 @@ const C = {
   muted: '#7A7068', border: '#D4C9B8',
   borderSoft: '#E6DED0', cream: '#F0E8DA',
 };
+
+/* ── Onboarding question label maps ────────────────────────────────────────── */
+const BUYER_QLABELS = {
+  business_type:    'What best describes your business?',
+  years_in_business:'How long have you been in business?',
+  sell_where:       'Where do you currently sell or operate?',
+  team_size:        'How many people work at your company?',
+  categories:       'Which categories are you looking to source?',
+  order_frequency:  'How often do you plan to place wholesale orders?',
+  budget:           "What's your typical monthly purchase budget?",
+  priorities:       'What matters most when choosing a supplier?',
+  heard_from:       'How did you hear about Globrixa?',
+};
+const SUPPLIER_QLABELS = {
+  brand_category:   'What best describes what your business makes or sells?',
+  years_in_business:'How long has your business been operating?',
+  team_size:        'How many people work at your company?',
+  production:       'Where are your products made?',
+  current_channels: 'Where do you currently sell?',
+  price_range:      "What's your typical wholesale price per unit?",
+  moq:              "What's your typical minimum order quantity (MOQ)?",
+  export_ready:     'Are you set up to export internationally?',
+  heard_from:       'How did you hear about Globrixa?',
+};
+
+/* ── User Detail Slide-over ────────────────────────────────────────────────── */
+function UserDetailPanel({ userId, onClose }) {
+  const [user,    setUser]    = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let alive = true;
+    setLoading(true);
+    api.admin.getUserDetail(userId)
+      .then(d => { if (alive) { setUser(d); setLoading(false); } })
+      .catch(err => { if (alive) { toast.error(err.message); setLoading(false); } });
+    return () => { alive = false; };
+  }, [userId]);
+
+  const name   = user?.full_name || user?.email?.split('@')[0] || 'User';
+  const status = user?.is_active === false ? 'suspended' : 'active';
+
+  const qLabels = user?.onboarding_role === 'supplier' ? SUPPLIER_QLABELS : BUYER_QLABELS;
+  const answers = user?.onboarding_answers || null;
+  const qaEntries = answers
+    ? Object.entries(answers).map(([key, val]) => ({
+        q: qLabels[key] || key,
+        a: Array.isArray(val) ? val.join(', ') : val,
+      }))
+    : [];
+
+  return (
+    <>
+      {/* Backdrop */}
+      <div onClick={onClose} style={{ position: 'fixed', inset: 0, background: 'rgba(28,25,21,.45)', zIndex: 1200, backdropFilter: 'blur(2px)' }} />
+
+      {/* Panel */}
+      <div style={{
+        position: 'fixed', top: 0, right: 0, bottom: 0, width: '100%', maxWidth: 500,
+        background: '#fff', zIndex: 1300, overflowY: 'auto',
+        boxShadow: '-8px 0 40px rgba(0,0,0,.18)',
+        display: 'flex', flexDirection: 'column',
+      }}>
+        {/* Header */}
+        <div style={{ padding: '20px 24px', borderBottom: `1.5px solid ${C.borderSoft}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: C.cream }}>
+          <div style={{ fontSize: 15, fontWeight: 700, color: C.ink, fontFamily: "'DM Sans', sans-serif" }}>User Profile</div>
+          <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, display: 'flex', color: C.muted }}>
+            <X size={20} />
+          </button>
+        </div>
+
+        {loading ? (
+          <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Spinner /></div>
+        ) : !user ? null : (
+          <div style={{ padding: '24px', fontFamily: "'DM Sans', sans-serif" }}>
+            {/* Avatar + name */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 22 }}>
+              <div style={{ width: 52, height: 52, borderRadius: 14, flexShrink: 0, background: user.role === 'supplier' ? C.emerald : C.navy, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 20, fontWeight: 900, fontFamily: "'Playfair Display', serif" }}>
+                {name[0]?.toUpperCase()}
+              </div>
+              <div>
+                <div style={{ fontSize: 16, fontWeight: 700, color: C.ink }}>{name}</div>
+                <div style={{ fontSize: 12, color: C.muted, marginTop: 2 }}>{user.email}</div>
+                <div style={{ marginTop: 5, display: 'flex', gap: 6, alignItems: 'center' }}>
+                  <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 9px', borderRadius: 100, background: user.role === 'supplier' ? C.emeraldLt : C.navyLt, color: user.role === 'supplier' ? C.emerald : C.navy, textTransform: 'capitalize' }}>{user.role || '—'}</span>
+                  <StatusBadge status={status} />
+                </div>
+              </div>
+            </div>
+
+            {/* Key info grid */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 24 }}>
+              {[
+                { label: 'Phone',   value: user.phone_number || '—' },
+                { label: 'Company', value: user.company || '—'      },
+                { label: 'City',    value: user.city    || '—'      },
+                { label: 'Joined',  value: formatDate(user.created_at) },
+              ].map(({ label, value }) => (
+                <div key={label} style={{ background: C.cream, borderRadius: 10, padding: '10px 14px' }}>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: C.muted, textTransform: 'uppercase', letterSpacing: '.07em', marginBottom: 3 }}>{label}</div>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: C.ink }}>{value}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Onboarding answers */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
+              <ClipboardList size={15} color={C.navy} />
+              <span style={{ fontSize: 13, fontWeight: 700, color: C.ink }}>Onboarding Quiz Answers</span>
+            </div>
+
+            {qaEntries.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '28px 0', color: C.muted, fontSize: 13 }}>
+                This user skipped the onboarding quiz.
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                {qaEntries.map(({ q, a }, i) => (
+                  <div key={i} style={{ border: `1.5px solid ${C.borderSoft}`, borderRadius: 12, padding: '12px 14px' }}>
+                    <div style={{ fontSize: 11, color: C.muted, fontWeight: 600, marginBottom: 4 }}>Q{i + 1}. {q}</div>
+                    <div style={{ fontSize: 13, color: C.ink, fontWeight: 600 }}>{a}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </>
+  );
+}
 
 /* ── Shared helpers ──────────────────────────────────────────────────────── */
 function PageHeader({ title, subtitle, accentColor, onBack, action }) {
@@ -93,9 +224,10 @@ function StatusBadge({ status }) {
 /* ══════════════════════ ADMIN USERS PAGE ═════════════════════════════════ */
 export function AdminUsersPage() {
   const navigate = useNavigate();
-  const [search,     setSearch]     = useState('');
-  const [filter,     setFilter]     = useState('all');
-  const [suspending, setSuspending] = useState(null);
+  const [search,         setSearch]         = useState('');
+  const [filter,         setFilter]         = useState('all');
+  const [suspending,     setSuspending]     = useState(null);
+  const [selectedUserId, setSelectedUserId] = useState(null);
 
   const { data: users, loading, refetch } = useFetchData(() => api.admin.getUsers({ limit: 100 }));
   const list = Array.isArray(users) ? users : [];
@@ -196,7 +328,7 @@ export function AdminUsersPage() {
                 <span style={{ fontSize: 10, fontWeight: 700, padding: '3px 10px', borderRadius: 100, background: u.role === 'supplier' ? C.emeraldLt : C.navyLt, color: u.role === 'supplier' ? C.emerald : C.navy, textTransform: 'capitalize' }}>{u.role || '—'}</span>
                 <StatusBadge status={status} />
                 <div style={{ display: 'flex', gap: 6 }}>
-                  <button title="View user" onClick={() => toast.info(`User: ${u.email || name}`)} style={{ width: 30, height: 30, borderRadius: 8, border: `1px solid ${C.borderSoft}`, background: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <button title="View user" onClick={() => setSelectedUserId(u.id)} style={{ width: 30, height: 30, borderRadius: 8, border: `1px solid ${C.borderSoft}`, background: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Eye size={13} color={C.navy} />
                   </button>
                   <button title={isSusp ? 'Reactivate' : 'Suspend'} disabled={suspending === u.id}
@@ -210,6 +342,7 @@ export function AdminUsersPage() {
           })}
         </div>
       )}
+      {selectedUserId && <UserDetailPanel userId={selectedUserId} onClose={() => setSelectedUserId(null)} />}
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );

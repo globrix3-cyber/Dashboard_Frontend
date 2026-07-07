@@ -55,8 +55,9 @@ export const IMG = {
   ceramicVasesLamps:   '/images/products/ceramic-vases-lamps.jpg',
 
   // ── Collections ──────────────────────────────────────────────────────────
-  keralaRiceFields:    '/images/collections/kerala-rice-fields.jpg',
+  keralaRiceFields:    '/images/collections/artisan-embroidery.jpg',
   indiaFactoryWorkers: '/images/collections/india-factory-workers.jpg',
+  artisanEmbroidery:   '/images/collections/artisan-embroidery.jpg',
 
   // ── Regions ──────────────────────────────────────────────────────────────
   delhiMarket:         '/images/regions/delhi-market.jpg',

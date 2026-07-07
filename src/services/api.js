@@ -312,6 +312,7 @@ export const api = {
   // ── Admin ────────────────────────────────────────────────────────────────
   admin: {
     getUsers:         (params = {}) => get(`/api/admin/users?${new URLSearchParams(params)}`),
+    getUserDetail:    (id)          => get(`/api/admin/users/${id}`),
     suspendUser:      (id)          => patch(`/api/admin/users/${id}/suspend`),
     getCompanies:     (params = {}) => get(`/api/admin/companies?${new URLSearchParams(params)}`),
     getVerifications: ()            => get('/api/admin/verifications'),

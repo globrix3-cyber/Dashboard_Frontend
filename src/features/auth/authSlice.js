@@ -5,6 +5,7 @@ const initialState = {
   userName: null,
   token: null,
   showLogin: false,
+  loginIntent: null, // 'supplier' | null
 };
 
 const authSlice = createSlice({
@@ -23,7 +24,13 @@ const authSlice = createSlice({
       state.showLogin = false;
     },
     toggleLogin: (state, action) => {
-      state.showLogin = action.payload ?? !state.showLogin;
+      if (action.payload && typeof action.payload === 'object') {
+        state.showLogin    = action.payload.show ?? !state.showLogin;
+        state.loginIntent  = action.payload.intent ?? null;
+      } else {
+        state.showLogin   = action.payload ?? !state.showLogin;
+        state.loginIntent = null;
+      }
     },
   },
 });
