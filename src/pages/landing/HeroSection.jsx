@@ -58,12 +58,12 @@ export default function HeroSection() {
           {/* Left — text */}
           <div>
             <h1 style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: bp.isMobile ? '40px' : bp.isTablet ? '56px' : 'clamp(52px,5vw,76px)', fontWeight: 700, lineHeight: 1.04, letterSpacing: -1, color: T.ink, marginBottom: 20 }}>
-              India's next-generation<br/>
+              India's next generation<br/>
               <span style={{ fontStyle: 'normal', background: `linear-gradient(135deg,${T.t} 0%,#E8A060 100%)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>wholesale marketplace</span>
             </h1>
 
             <p style={{ fontSize: bp.isMobile ? 15 : 17, color: T.is, lineHeight: 1.82, marginBottom: 32, maxWidth: 460 }}>
-              Discover fresh products from Indian manufacturers and growing brands. Built for modern B2B trade — simple, fast, and transparent.
+              Discover fresh products from Indian manufacturers and growing brands. Built for modern B2B trade: simple, fast, and transparent.
             </p>
 
             <div style={{ display: 'flex', gap: 10, marginBottom: 28 }}>

@@ -175,8 +175,7 @@ function CatSubCard({ item, cta, onAction }) {
   return (
     <div onClick={onAction} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)} style={{ background: hov ? T.tl : T.w, border: `1.5px solid ${hov ? T.t : T.bs}`, borderRadius: 12, padding: '14px 10px', textAlign: 'center', cursor: 'pointer', transform: hov ? 'translateY(-2px)' : 'none', boxShadow: hov ? shadow.sm : 'none', transition: '.18s' }}>
       <div style={{ fontSize: 24, marginBottom: 6 }}>{item.icon}</div>
-      <div style={{ fontSize: 11, fontWeight: 700, color: T.ink, marginBottom: 2 }}>{item.name}</div>
-      <div style={{ fontSize: 10, color: T.mu }}>{item.count}</div>
+      <div style={{ fontSize: 11, fontWeight: 700, color: T.ink }}>{item.name}</div>
     </div>
   );
 }
