@@ -166,16 +166,14 @@ function CatHeroCard({ item, onAction }) {
 function CatSubCard({ item, cta, onAction }) {
   const [hov, setHov] = useState(false);
   if (cta) return (
-    <div onClick={onAction} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)} style={{ background: hov ? `linear-gradient(135deg,${T.td},#8A5226)` : `linear-gradient(135deg,${T.t},${T.td})`, borderRadius: 12, padding: '16px 10px', textAlign: 'center', cursor: 'pointer', transition: '.18s', transform: hov ? 'translateY(-2px)' : 'none' }}>
-      <div style={{ fontSize: 20, marginBottom: 6 }}>→</div>
-      <div style={{ fontSize: 11, fontWeight: 700, color: '#fff', marginBottom: 2 }}>View all 24</div>
-      <div style={{ fontSize: 10, color: 'rgba(255,255,255,.75)' }}>categories</div>
+    <div onClick={onAction} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)} style={{ background: hov ? `linear-gradient(135deg,${T.td},#8A5226)` : `linear-gradient(135deg,${T.t},${T.td})`, borderRadius: 12, padding: '22px 12px', textAlign: 'center', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 68, gap: 2, transition: '.18s', transform: hov ? 'translateY(-2px)' : 'none' }}>
+      <div style={{ fontSize: 13, fontWeight: 700, color: '#fff' }}>View all 24</div>
+      <div style={{ fontSize: 11, color: 'rgba(255,255,255,.75)' }}>categories</div>
     </div>
   );
   return (
-    <div onClick={onAction} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)} style={{ background: hov ? T.tl : T.w, border: `1.5px solid ${hov ? T.t : T.bs}`, borderRadius: 12, padding: '14px 10px', textAlign: 'center', cursor: 'pointer', transform: hov ? 'translateY(-2px)' : 'none', boxShadow: hov ? shadow.sm : 'none', transition: '.18s' }}>
-      <div style={{ fontSize: 24, marginBottom: 6 }}>{item.icon}</div>
-      <div style={{ fontSize: 11, fontWeight: 700, color: T.ink }}>{item.name}</div>
+    <div onClick={onAction} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)} style={{ background: hov ? T.tl : T.w, border: `1.5px solid ${hov ? T.t : T.bs}`, borderRadius: 12, padding: '22px 12px', textAlign: 'center', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 68, transform: hov ? 'translateY(-2px)' : 'none', boxShadow: hov ? shadow.sm : 'none', transition: '.18s' }}>
+      <div style={{ fontSize: 13, fontWeight: 700, color: T.ink }}>{item.name}</div>
     </div>
   );
 }
