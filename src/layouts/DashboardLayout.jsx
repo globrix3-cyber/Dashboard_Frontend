@@ -175,6 +175,39 @@ function CategoryMenu({ onNavigate, onClose }) {
   );
 }
 
+function CurrencyMenu({ currencies, active, onSelect, onClose }) {
+  return (
+    <>
+      <div onClick={onClose} style={{ position: 'fixed', inset: 0, zIndex: 199 }} />
+      <div style={{
+        position: 'absolute', top: 'calc(100% + 10px)', right: 0, width: 200,
+        background: '#fff', borderRadius: 14, border: '1px solid #EDE8DF',
+        boxShadow: '0 16px 48px rgba(28,24,21,.16)', overflow: 'hidden', zIndex: 200,
+      }}>
+        <div style={{ padding: 6, maxHeight: 340, overflowY: 'auto' }}>
+          {currencies.map(({ code, symbol, label }) => (
+            <button
+              key={code}
+              onClick={() => onSelect(code)}
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10,
+                width: '100%', textAlign: 'left', padding: '9px 12px', borderRadius: 8,
+                border: 'none', background: code === active ? '#FBF6EF' : 'transparent', cursor: 'pointer',
+                fontSize: 13, color: '#1C1815', fontFamily: "'DM Sans', sans-serif",
+              }}
+              onMouseEnter={e => { e.currentTarget.style.background = '#FBF6EF'; }}
+              onMouseLeave={e => { e.currentTarget.style.background = code === active ? '#FBF6EF' : 'transparent'; }}
+            >
+              <span>{label}</span>
+              <span style={{ color: '#9A9088', fontWeight: 600 }}>{symbol} {code}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+}
+
 function highlightMatch(text, q) {
   const idx = text.toLowerCase().indexOf(q.toLowerCase());
   if (idx < 0) return text;
@@ -189,6 +222,7 @@ function TopBar({ role }) {
   const { userName }                  = useSelector((s) => s.auth);
   const [menuOpen, setMenuOpen]       = useState(false);
   const [catMenuOpen, setCatMenuOpen] = useState(false);
+  const [currMenuOpen, setCurrMenuOpen] = useState(false);
   const [query, setQuery]             = useState('');
   const [showDrop, setShowDrop]       = useState(false);
   const [suggestions, setSuggestions] = useState([]);
@@ -200,7 +234,7 @@ function TopBar({ role }) {
   const { links, accent, homePath, searchPlaceholder, cartPath } = ROLE_CONFIG[role];
   const messagesPath = `${homePath}/messages`;
   const openLogin = () => dispatch(toggleLogin(true));
-  const { currency, symbol, toggle: toggleCurrencyDisplay, loading: currencyLoading } = useCurrency();
+  const { currency, symbol, currencies, setCurrency: setCurrencyDisplay, loading: currencyLoading } = useCurrency();
   // Jump straight to the filtered product grid — Faire-style — instead of an
   // intermediate "pick a category" menu page.
   const goToCategory = (label) => navigate(`/products?category=${encodeURIComponent(label)}`);
@@ -341,24 +375,33 @@ function TopBar({ role }) {
           )}
 
           {!bp.isMobile && (
-            <button
-              onClick={toggleCurrencyDisplay}
-              title={currency === 'INR' ? 'Switch to USD' : 'Switch to INR'}
-              disabled={currencyLoading}
-              style={{
-                display: 'flex', alignItems: 'center', gap: 4,
-                height: 30, padding: '0 10px', borderRadius: 8,
-                border: '1.5px solid #E8E2D8',
-                background: currency === 'USD' ? '#1C1815' : '#fff',
-                color:      currency === 'USD' ? '#fff'     : '#3D3731',
-                cursor: currencyLoading ? 'not-allowed' : 'pointer',
-                fontFamily: "'DM Sans', sans-serif", fontSize: 12, fontWeight: 700,
-                flexShrink: 0, transition: 'background .15s, color .15s',
-                opacity: currencyLoading ? 0.5 : 1,
-              }}
-            >
-              {symbol} {currency}
-            </button>
+            <div style={{ position: 'relative', flexShrink: 0 }}>
+              <button
+                onClick={() => setCurrMenuOpen(o => !o)}
+                disabled={currencyLoading}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 4,
+                  height: 30, padding: '0 10px', borderRadius: 8,
+                  border: '1.5px solid #E8E2D8',
+                  background: currency !== 'INR' ? '#1C1815' : '#fff',
+                  color:      currency !== 'INR' ? '#fff'     : '#3D3731',
+                  cursor: currencyLoading ? 'not-allowed' : 'pointer',
+                  fontFamily: "'DM Sans', sans-serif", fontSize: 12, fontWeight: 700,
+                  transition: 'background .15s, color .15s',
+                  opacity: currencyLoading ? 0.5 : 1,
+                }}
+              >
+                {symbol} {currency}
+              </button>
+              {currMenuOpen && (
+                <CurrencyMenu
+                  currencies={currencies}
+                  active={currency}
+                  onSelect={(code) => { setCurrMenuOpen(false); setCurrencyDisplay(code); }}
+                  onClose={() => setCurrMenuOpen(false)}
+                />
+              )}
+            </div>
           )}
 
           {!bp.isMobile && !isGuest && (

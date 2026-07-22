@@ -5,7 +5,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { setAuth, toggleLogin } from "./features/auth/authSlice";
-import { setUsdRate } from "./features/currency/currencySlice";
+import { setRates } from "./features/currency/currencySlice";
 import { connectSocket, disconnectSocket } from "./services/socket";
 import { api, scheduleProactiveRefresh } from "./services/api";
 import { DASHBOARD_ROUTES, allowedPathsByRole } from "./constants";
@@ -37,15 +37,18 @@ export default function App() {
   // to the generic dashboard and losing their in-progress work.
   const returnPathRef = useRef(null);
 
-  // ── 0. Fetch live INR→USD rate once on startup ──────────────────────────
+  // ── 0. Fetch live INR→* exchange rates once on startup ──────────────────
   // jsdelivr CDN mirrors @fawazahmed0/currency-api and sets CORS: * — safe
-  // from any origin. Falls back to ≈₹83/$1 if the CDN is unreachable so
-  // the currency toggle always works even offline.
+  // from any origin. data.inr carries every currency's rate relative to
+  // INR (data.inr.usd, data.inr.eur, ...) in one response. Falls back to
+  // rough approximations if the CDN is unreachable so the currency
+  // selector always works even offline.
   useEffect(() => {
+    const FALLBACK_RATES = { usd: 0.012, eur: 0.011, gbp: 0.0095, aud: 0.018, cad: 0.016, sgd: 0.016, aed: 0.044, sar: 0.045 };
     fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/inr.json')
       .then(r => r.json())
-      .then(data => dispatch(setUsdRate(data.inr?.usd || 0.012)))
-      .catch(() => dispatch(setUsdRate(0.012)));
+      .then(data => dispatch(setRates(data.inr && Object.keys(data.inr).length ? data.inr : FALLBACK_RATES)))
+      .catch(() => dispatch(setRates(FALLBACK_RATES)));
   }, [dispatch]);
 
   // ── 1. Restore auth from localStorage on first load ─────────────────────
