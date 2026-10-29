@@ -7,10 +7,10 @@ import { Save, User, Mail, Phone } from 'lucide-react';
 import { PHONE_COUNTRIES, DEFAULT_PHONE_COUNTRY, combinePhone, splitPhone } from '../utils/phoneCountries';
 
 const C = {
-  saffron: '#D9600A', saffronLt: '#FDF1E8',
+  saffron: '#C8792C', saffronLt: '#FDF1E8',
   emerald: '#1A7A4A', navy: '#1B3175',
-  ink: '#1C1815', inkSoft: '#3D3731',
-  muted: '#7A7068', borderSoft: '#E6DED0', cream: '#F0E8DA',
+  ink: '#5B4632', inkSoft: '#2B2016',
+  muted: '#79634E', borderSoft: '#E3D5C1', cream: '#F0E8DA',
 };
 
 function Field({ label, icon: Icon, readOnly, ...props }) {
@@ -152,7 +152,7 @@ export default function EditProfile() {
               opacity: (saving || fetching) ? 0.65 : 1,
               boxShadow: '0 4px 16px rgba(217,96,10,0.30)', transition: 'background 0.18s, transform 0.12s',
             }}
-              onMouseEnter={e => { if (!saving) { e.currentTarget.style.background = '#BF530A'; e.currentTarget.style.transform = 'translateY(-1px)'; } }}
+              onMouseEnter={e => { if (!saving) { e.currentTarget.style.background = '#A8611F'; e.currentTarget.style.transform = 'translateY(-1px)'; } }}
               onMouseLeave={e => { e.currentTarget.style.background = C.saffron; e.currentTarget.style.transform = 'none'; }}>
               {saving ? <span style={{ width: 16, height: 16, border: '2px solid rgba(255,255,255,0.35)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} /> : <Save size={16} />}
               {saving ? 'Saving…' : 'Save Changes'}

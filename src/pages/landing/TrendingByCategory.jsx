@@ -32,7 +32,7 @@ function MiniProdCard({ item, onAction }) {
   const photo = PRODUCT_PHOTOS[item.name];
 
   return (
-    <div onClick={onAction} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)} style={{ background: T.w, borderRadius: 12, overflow: 'hidden', border: `1.5px solid ${hov ? 'rgba(196,119,58,.3)' : T.bs}`, cursor: 'pointer', transform: hov ? 'translateY(-4px)' : 'none', boxShadow: hov ? shadow.md : 'none', transition: '.22s cubic-bezier(.22,.68,0,1.2)' }}>
+    <div onClick={onAction} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)} style={{ background: T.w, borderRadius: 12, overflow: 'hidden', border: `1.5px solid ${hov ? 'rgba(200,121,44,.3)' : T.bs}`, cursor: 'pointer', transform: hov ? 'translateY(-4px)' : 'none', boxShadow: hov ? shadow.md : 'none', transition: '.22s cubic-bezier(.22,.68,0,1.2)' }}>
       <div style={{ height: 100, position: 'relative', overflow: 'hidden' }}>
         {photo ? (
           <>
@@ -43,7 +43,7 @@ function MiniProdCard({ item, onAction }) {
           <div style={{ width: '100%', height: '100%', background: item.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 32 }}>{item.emoji}</div>
         )}
         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: hov ? 1 : 0, transition: '.2s', pointerEvents: 'none' }}>
-          <span style={{ background: 'rgba(196,119,58,.92)', backdropFilter: 'blur(8px)', color: '#fff', fontSize: 9, fontWeight: 800, padding: '5px 12px', borderRadius: 20, letterSpacing: '.08em' }}>Get Quote →</span>
+          <span style={{ background: 'rgba(200,121,44,.92)', backdropFilter: 'blur(8px)', color: '#fff', fontSize: 9, fontWeight: 800, padding: '5px 12px', borderRadius: 20, letterSpacing: '.08em' }}>Get Quote →</span>
         </div>
       </div>
       <div style={{ padding: '9px 11px 11px' }}>
@@ -70,7 +70,7 @@ function CategoryRow({ row, onAction, bp }) {
               <div style={{ fontSize: 12, color: T.mu, marginTop: 2 }}>{row.count}</div>
             </div>
           </div>
-          <button onClick={onAction} style={{ fontSize: 13, color: T.t, fontWeight: 600, background: T.tl, border: `1.5px solid rgba(196,119,58,.25)`, borderRadius: 7, padding: '7px 14px', cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>{row.link}</button>
+          <button onClick={onAction} style={{ fontSize: 13, color: T.t, fontWeight: 600, background: T.tl, border: `1.5px solid rgba(200,121,44,.25)`, borderRadius: 7, padding: '7px 14px', cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>{row.link}</button>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: cols, gap: 10 }}>
           {row.products.map((item, i) => <MiniProdCard key={i} item={item} onAction={onAction} />)}

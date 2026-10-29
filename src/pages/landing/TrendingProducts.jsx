@@ -19,7 +19,7 @@ function ProductCard({ item, onAction }) {
   const photo = PRODUCT_PHOTOS[item.name];
 
   return (
-    <div onClick={onAction} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)} style={{ background: T.w, borderRadius: 16, overflow: 'hidden', border: `1.5px solid ${hov ? 'rgba(196,119,58,.3)' : T.bs}`, transform: hov ? 'translateY(-5px)' : 'none', boxShadow: hov ? shadow.md : 'none', transition: '.22s', cursor: 'pointer' }}>
+    <div onClick={onAction} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)} style={{ background: T.w, borderRadius: 16, overflow: 'hidden', border: `1.5px solid ${hov ? 'rgba(200,121,44,.3)' : T.bs}`, transform: hov ? 'translateY(-5px)' : 'none', boxShadow: hov ? shadow.md : 'none', transition: '.22s', cursor: 'pointer' }}>
       <div style={{ height: 148, position: 'relative', overflow: 'hidden' }}>
         {photo ? (
           <>
@@ -78,7 +78,7 @@ export default function TrendingProducts() {
       <div style={{ ...rW }}>
         <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 28, flexWrap: 'wrap', gap: 12 }}>
           <div><div style={eyebrow}>Most ordered</div><h2 style={sectionTitle}>Trending Products</h2></div>
-          <button onClick={openLogin} style={{ fontSize: 13, color: T.t, fontWeight: 600, background: T.tl, border: `1.5px solid rgba(196,119,58,.25)`, borderRadius: 7, padding: '8px 16px', cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>Browse all →</button>
+          <button onClick={openLogin} style={{ fontSize: 13, color: T.t, fontWeight: 600, background: T.tl, border: `1.5px solid rgba(200,121,44,.25)`, borderRadius: 7, padding: '8px 16px', cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>Browse all →</button>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: cols, gap: 14 }}>
           <SpotlightBanner onAction={openLogin} bp={bp} />

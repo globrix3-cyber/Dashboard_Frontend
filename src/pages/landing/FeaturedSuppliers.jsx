@@ -20,7 +20,7 @@ function BrandCard({ b, onAction }) {
   const photo = BRAND_PHOTOS[b.name];
 
   return (
-    <div onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)} style={{ background: T.w, borderRadius: 18, border: `1.5px solid ${hov ? 'rgba(196,119,58,.35)' : T.bs}`, overflow: 'hidden', cursor: 'pointer', transform: hov ? 'translateY(-6px)' : 'none', boxShadow: hov ? '0 20px 50px rgba(28,25,21,.13)' : shadow.sm, transition: '.25s cubic-bezier(.22,.68,0,1.2)' }}>
+    <div onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)} style={{ background: T.w, borderRadius: 18, border: `1.5px solid ${hov ? 'rgba(200,121,44,.35)' : T.bs}`, overflow: 'hidden', cursor: 'pointer', transform: hov ? 'translateY(-6px)' : 'none', boxShadow: hov ? '0 20px 50px rgba(28,25,21,.13)' : shadow.sm, transition: '.25s cubic-bezier(.22,.68,0,1.2)' }}>
 
       {/* Category label */}
       <div style={{ padding: '8px 18px 0', display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -52,7 +52,7 @@ function BrandCard({ b, onAction }) {
         <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap', marginBottom: 13 }}>
           {b.tags.map(({ v, l }) => <span key={l} style={tag(v)}>{l}</span>)}
         </div>
-        <button onClick={onAction} style={{ width: '100%', padding: '10px 0', background: hov ? T.t : T.tl, color: hov ? '#fff' : T.t, border: `1.5px solid ${hov ? T.t : 'rgba(196,119,58,.3)'}`, borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', transition: '.18s', boxShadow: hov ? '0 4px 14px rgba(196,119,58,.3)' : 'none' }}>
+        <button onClick={onAction} style={{ width: '100%', padding: '10px 0', background: hov ? T.t : T.tl, color: hov ? '#fff' : T.t, border: `1.5px solid ${hov ? T.t : 'rgba(200,121,44,.3)'}`, borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', transition: '.18s', boxShadow: hov ? '0 4px 14px rgba(200,121,44,.3)' : 'none' }}>
           Explore Collection →
         </button>
       </div>
@@ -78,7 +78,7 @@ export default function FeaturedSuppliers() {
             <h2 style={sectionTitle}>Trusted Indian Suppliers</h2>
             <p style={{ fontSize: 13, color: T.mu, marginTop: 6 }}>Verified, top-rated, ready to ship worldwide</p>
           </div>
-          <button onClick={openLogin} style={{ fontSize: 13, color: T.t, fontWeight: 600, background: T.tl, border: `1.5px solid rgba(196,119,58,.25)`, borderRadius: 7, padding: '8px 16px', cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>Browse all suppliers →</button>
+          <button onClick={openLogin} style={{ fontSize: 13, color: T.t, fontWeight: 600, background: T.tl, border: `1.5px solid rgba(200,121,44,.25)`, borderRadius: 7, padding: '8px 16px', cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>Browse all suppliers →</button>
         </div>
 
         {/* Category tabs */}

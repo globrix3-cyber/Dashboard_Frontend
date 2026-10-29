@@ -16,11 +16,11 @@ import {
 
 /* ── Design tokens ─────────────────────────────────────────────────────────── */
 const C = {
-  ink:    '#1C1815',
-  muted:  '#7A7068',
-  border: '#EDE8DF',
-  cream:  '#FDF8F2',
-  saffron:'#C4773A',
+  ink:    '#5B4632',
+  muted:  '#79634E',
+  border: '#E3D5C1',
+  cream:  '#FDF9F1',
+  saffron:'#C8792C',
   emerald:'#1A7A4A',
   navy:   '#1B3175',
 };
@@ -337,7 +337,7 @@ export default function ProductDetailPage() {
                 </div>
               </>
             ) : (
-              <div style={{ display: 'flex', alignItems: 'center', gap: 14, background: '#FDF8F2', border: `1.5px solid ${C.border}`, borderRadius: 12, padding: '14px 18px', marginBottom: 22 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 14, background: '#FDF9F1', border: `1.5px solid ${C.border}`, borderRadius: 12, padding: '14px 18px', marginBottom: 22 }}>
                 <div style={{ width: 36, height: 36, borderRadius: 10, background: '#F0E4D4', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   <Lock size={16} color={C.saffron} />
                 </div>
@@ -410,7 +410,7 @@ export default function ProductDetailPage() {
               width: '100%', padding: '14px 20px', borderRadius: 10, border: 'none', cursor: addingToCart ? 'default' : 'pointer',
               background: C.saffron, color: '#fff', fontFamily: "'DM Sans', sans-serif", fontSize: 14.5, fontWeight: 700,
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 10,
-              boxShadow: '0 4px 16px rgba(196,119,58,.28)', opacity: addingToCart ? 0.7 : 1,
+              boxShadow: '0 4px 16px rgba(200,121,44,.28)', opacity: addingToCart ? 0.7 : 1,
             }}>
               {!userRole ? 'Sign in to place order' : addingToCart ? 'Adding…' : `Add to cart · ${fmt(totalPrice)}`}
             </button>

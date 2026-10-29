@@ -12,10 +12,10 @@ export default {
       },
       colors: {
         saffron: {
-          DEFAULT: '#D9600A',
+          DEFAULT: '#C8792C',
           light:   '#FDF1E8',
           mid:     '#F0B48A',
-          dark:    '#BF530A',
+          dark:    '#A8611F',
         },
         emerald: {
           DEFAULT: '#1A7A4A',
@@ -32,8 +32,8 @@ export default {
           light:   '#FDF5E2',
         },
         ink: {
-          DEFAULT: '#1C1815',
-          soft:    '#3D3731',
+          DEFAULT: '#5B4632',
+          soft:    '#2B2016',
         },
         cream: {
           DEFAULT: '#F4EFE4',
@@ -42,8 +42,8 @@ export default {
         },
         warm:   '#FAF7F1',
         border: '#D4C9B8',
-        'border-soft': '#E6DED0',
-        muted:  '#7A7068',
+        'border-soft': '#E3D5C1',
+        muted:  '#79634E',
       },
       borderRadius: {
         xl2: '18px',

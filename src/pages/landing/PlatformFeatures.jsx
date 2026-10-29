@@ -12,7 +12,7 @@ function FeatureBlock({ f, bp }) {
       style={{
         background: T.w,
         padding: bp.isMobile ? '26px 22px' : '36px 32px',
-        border: `1.5px solid ${hov ? 'rgba(196,119,58,.3)' : T.bs}`,
+        border: `1.5px solid ${hov ? 'rgba(200,121,44,.3)' : T.bs}`,
         borderRadius: 16,
         transition: '.18s',
         boxShadow: hov ? '0 4px 20px rgba(28,25,21,.08)' : 'none',

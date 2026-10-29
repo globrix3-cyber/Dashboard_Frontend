@@ -25,7 +25,7 @@ function PhotoMosaic({ bp }) {
         onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; }}
       />
       <div style={{ position: 'absolute', top: 16, left: 16 }}>
-        <span style={{ background: 'rgba(196,119,58,.92)', backdropFilter: 'blur(8px)', color: '#fff', fontSize: 9, fontWeight: 800, padding: '5px 12px', borderRadius: 20, letterSpacing: '.1em', display: 'flex', alignItems: 'center', gap: 5 }}>
+        <span style={{ background: 'rgba(200,121,44,.92)', backdropFilter: 'blur(8px)', color: '#fff', fontSize: 9, fontWeight: 800, padding: '5px 12px', borderRadius: 20, letterSpacing: '.1em', display: 'flex', alignItems: 'center', gap: 5 }}>
           <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#fff', animation: 'heroPulse 1.8s ease infinite', display: 'inline-block' }} />
           LIVE MARKETPLACE
         </span>
@@ -45,7 +45,7 @@ export default function HeroSection() {
 
   return (
     <section style={{ background: T.c, position: 'relative', overflow: 'hidden' }}>
-      <div style={{ position: 'absolute', top: -200, right: -200, width: 600, height: 600, borderRadius: '50%', background: 'radial-gradient(circle,rgba(196,119,58,.10),transparent 70%)', pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', top: -200, right: -200, width: 600, height: 600, borderRadius: '50%', background: 'radial-gradient(circle,rgba(200,121,44,.10),transparent 70%)', pointerEvents: 'none' }} />
       <div style={{ position: 'absolute', bottom: -150, left: -150, width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle,rgba(61,122,82,.08),transparent 70%)', pointerEvents: 'none' }} />
 
       <div style={{ ...rW, padding: pad, position: 'relative', zIndex: 1 }}>
@@ -70,7 +70,7 @@ export default function HeroSection() {
               <button
                 onClick={() => dispatch(toggleLogin(true))}
                 onMouseEnter={() => setHovMain(true)} onMouseLeave={() => setHovMain(false)}
-                style={{ padding: bp.isMobile ? '13px 28px' : '15px 36px', borderRadius: 10, background: hovMain ? `linear-gradient(135deg,${T.td},#8A5226)` : `linear-gradient(135deg,${T.t},${T.td})`, color: '#fff', fontSize: bp.isMobile ? 14 : 15, fontWeight: 700, border: 'none', cursor: 'pointer', fontFamily: 'inherit', boxShadow: '0 8px 28px rgba(196,119,58,.38)', transform: hovMain ? 'translateY(-2px)' : 'none', transition: '.2s' }}>
+                style={{ padding: bp.isMobile ? '13px 28px' : '15px 36px', borderRadius: 10, background: hovMain ? `linear-gradient(135deg,${T.td},#8A5226)` : `linear-gradient(135deg,${T.t},${T.td})`, color: '#fff', fontSize: bp.isMobile ? 14 : 15, fontWeight: 700, border: 'none', cursor: 'pointer', fontFamily: 'inherit', boxShadow: '0 8px 28px rgba(200,121,44,.38)', transform: hovMain ? 'translateY(-2px)' : 'none', transition: '.2s' }}>
                 Explore products
               </button>
             </div>

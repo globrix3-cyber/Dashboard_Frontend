@@ -11,7 +11,7 @@ export default function StatsSection() {
   return (
     <div style={{ position: 'relative', padding: pad, overflow: 'hidden', background: '#2C1810' }}>
       {/* Saffron glow orbs */}
-      <div style={{ position: 'absolute', top: -200, right: -200, width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle,rgba(196,119,58,.14),transparent 70%)', pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', top: -200, right: -200, width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle,rgba(200,121,44,.14),transparent 70%)', pointerEvents: 'none' }} />
       <div style={{ position: 'absolute', bottom: -150, left: -150, width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle,rgba(61,122,52,.10),transparent 70%)', pointerEvents: 'none' }} />
 
       <div style={{ ...rW, position: 'relative', zIndex: 1 }}>

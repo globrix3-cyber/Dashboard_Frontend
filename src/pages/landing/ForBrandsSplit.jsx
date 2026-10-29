@@ -31,7 +31,7 @@ export default function ForBrandsSplit() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginBottom: 28 }}>
             {BRAND_PERKS.map(p => (
               <div key={p.title} style={{ display: 'flex', alignItems: 'flex-start', gap: 13 }}>
-                <div style={{ width: 38, height: 38, borderRadius: 10, background: T.tl, border: '1.5px solid rgba(196,119,58,.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 17, flexShrink: 0 }}>{p.icon}</div>
+                <div style={{ width: 38, height: 38, borderRadius: 10, background: T.tl, border: '1.5px solid rgba(200,121,44,.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 17, flexShrink: 0 }}>{p.icon}</div>
                 <div>
                   <div style={{ fontSize: 14, fontWeight: 700, color: T.ink, marginBottom: 2 }}>{p.title}</div>
                   <div style={{ fontSize: 13, color: T.mu, lineHeight: 1.55 }}>{p.desc}</div>
@@ -50,14 +50,14 @@ export default function ForBrandsSplit() {
           <div style={{ margin: bp.isTablet ? '32px -32px -64px' : '0 -56px 0 0', position: 'relative', overflow: 'hidden', minHeight: bp.isTablet ? 360 : 'auto' }}>
             <img src={IMG.artisanWeaving} alt="Indian artisan at work — supplier on Globrixa" loading="lazy" decoding="async" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }} />
             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(145deg,rgba(20,16,12,.88) 0%,rgba(36,28,20,.82) 100%)' }} />
-            <div style={{ position: 'absolute', top: -120, right: -120, width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle,rgba(196,119,58,.18),transparent 70%)', pointerEvents: 'none' }} />
+            <div style={{ position: 'absolute', top: -120, right: -120, width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle,rgba(200,121,44,.18),transparent 70%)', pointerEvents: 'none' }} />
             <div style={{ position: 'relative', zIndex: 1, padding: bp.isTablet ? '40px 32px' : '80px 56px', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 12 }}>
               {BRAND_METRICS.map(m => (
                 <div key={m.num} onClick={openLogin} style={{ background: 'rgba(255,255,255,.06)', border: '1px solid rgba(255,255,255,.1)', borderRadius: 16, padding: '18px 20px', display: 'flex', alignItems: 'center', gap: 14, backdropFilter: 'blur(8px)', cursor: 'pointer', transition: 'background .2s' }}
                   onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,.1)'; }}
                   onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,.06)'; }}
                 >
-                  <div style={{ width: 46, height: 46, background: 'rgba(196,119,58,.18)', borderRadius: 11, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0, border: '1px solid rgba(196,119,58,.25)' }}>{m.icon}</div>
+                  <div style={{ width: 46, height: 46, background: 'rgba(200,121,44,.18)', borderRadius: 11, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0, border: '1px solid rgba(200,121,44,.25)' }}>{m.icon}</div>
                   <div>
                     <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: 24, fontWeight: 700, color: '#fff', lineHeight: 1, marginBottom: 4 }}>{m.num}</div>
                     <div style={{ fontSize: 11, color: 'rgba(255,255,255,.45)', lineHeight: 1.4 }}>{m.label}</div>

@@ -2,7 +2,7 @@ import { IMG } from './images';
 import { useBreakpoint } from '../../hooks/useBreakpoint';
 
 const BG  = '#2C1810';
-const ACC = '#C4773A';
+const ACC = '#C8792C';
 
 export default function BuyerStory() {
   const bp = useBreakpoint();
@@ -85,7 +85,7 @@ export default function BuyerStory() {
         {/* Right — contained image */}
         <div style={{ position: 'relative' }}>
           {/* Decorative glow behind image */}
-          <div style={{ position: 'absolute', inset: -20, background: `radial-gradient(ellipse at center, rgba(196,119,58,.15) 0%, transparent 70%)`, pointerEvents: 'none', zIndex: 0 }} />
+          <div style={{ position: 'absolute', inset: -20, background: `radial-gradient(ellipse at center, rgba(200,121,44,.15) 0%, transparent 70%)`, pointerEvents: 'none', zIndex: 0 }} />
 
           <div style={{ position: 'relative', zIndex: 1, borderRadius: 24, overflow: 'hidden', boxShadow: '0 32px 80px rgba(0,0,0,.5)' }}>
             <img
@@ -108,7 +108,7 @@ export default function BuyerStory() {
           </div>
 
           {/* Floating badge */}
-          <div style={{ position: 'absolute', top: -16, right: -16, zIndex: 2, background: ACC, borderRadius: 14, padding: '10px 16px', boxShadow: '0 8px 24px rgba(196,119,58,.4)' }}>
+          <div style={{ position: 'absolute', top: -16, right: -16, zIndex: 2, background: ACC, borderRadius: 14, padding: '10px 16px', boxShadow: '0 8px 24px rgba(200,121,44,.4)' }}>
             <div style={{ fontSize: 11, fontWeight: 800, color: '#fff', letterSpacing: '.06em', textTransform: 'uppercase' }}>🇮🇳 Made in India</div>
           </div>
         </div>

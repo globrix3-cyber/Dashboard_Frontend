@@ -72,7 +72,7 @@ export default function CuratedCollections() {
             <h2 style={sectionTitle}>Curated Collections</h2>
             <p style={{ fontSize: 13, color: T.mu, marginTop: 6 }}>Handpicked by our sourcing experts</p>
           </div>
-          <button onClick={openLogin} style={{ fontSize: 13, color: T.t, fontWeight: 600, background: T.tl, border: `1.5px solid rgba(196,119,58,.25)`, borderRadius: 7, padding: '8px 16px', cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>All collections →</button>
+          <button onClick={openLogin} style={{ fontSize: 13, color: T.t, fontWeight: 600, background: T.tl, border: `1.5px solid rgba(200,121,44,.25)`, borderRadius: 7, padding: '8px 16px', cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>All collections →</button>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: cols, gap: 16 }}>
           {COLLECTIONS.map(item => <CollectionCard key={item.name} item={item} onAction={openLogin} bp={bp} />)}

@@ -14,7 +14,7 @@ const CITY_PHOTOS = {
 };
 
 const CITY_OVERLAYS = {
-  Jaipur:    'linear-gradient(145deg,rgba(196,119,58,.85),rgba(164,84,22,.78))',
+  Jaipur:    'linear-gradient(145deg,rgba(200,121,44,.85),rgba(164,84,22,.78))',
   Moradabad: 'linear-gradient(145deg,rgba(27,49,117,.85),rgba(18,34,90,.78))',
   Delhi:     'linear-gradient(145deg,rgba(61,122,82,.85),rgba(40,90,58,.78))',
   Jodhpur:   'linear-gradient(145deg,rgba(176,120,144,.85),rgba(130,80,105,.78))',
@@ -67,7 +67,7 @@ export default function BrowseByRegion() {
             <h2 style={sectionTitle}>India's Craft Capitals</h2>
             <p style={{ fontSize: 13, color: T.mu, marginTop: 6 }}>Connect directly with makers in India's iconic manufacturing hubs.</p>
           </div>
-          <button onClick={openLogin} style={{ fontSize: 13, color: T.t, fontWeight: 600, background: T.tl, border: `1.5px solid rgba(196,119,58,.25)`, borderRadius: 7, padding: '8px 16px', cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>Explore all cities →</button>
+          <button onClick={openLogin} style={{ fontSize: 13, color: T.t, fontWeight: 600, background: T.tl, border: `1.5px solid rgba(200,121,44,.25)`, borderRadius: 7, padding: '8px 16px', cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>Explore all cities →</button>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: cols, gap: 16 }}>
           {CITIES.map(city => <CityCard key={city.name} city={city} onAction={openLogin} />)}

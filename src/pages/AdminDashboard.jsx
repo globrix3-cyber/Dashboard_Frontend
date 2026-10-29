@@ -14,9 +14,9 @@ import { formatDate } from '../utils/helpers';
 
 /* ── Design tokens — Faire palette ─────────────────────────────────────── */
 const C = {
-  ink:        '#1C1815',
-  inkSoft:    '#3D3731',
-  muted:      '#7A7068',
+  ink:        '#5B4632',
+  inkSoft:    '#2B2016',
+  muted:      '#79634E',
   border:     '#EDE8E0',
   bg:         '#F5F2EE',
   white:      '#fff',
@@ -24,7 +24,7 @@ const C = {
   emeraldLt:  '#EAF5EF',
   navy:       '#1B3175',
   navyLt:     '#EEF2FB',
-  saffron:    '#C4773A',
+  saffron:    '#C8792C',
   saffronLt:  '#FDF1E8',
   gold:       '#B8730A',
   goldLt:     '#FDF5E2',

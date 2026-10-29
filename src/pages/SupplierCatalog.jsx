@@ -7,12 +7,12 @@ import { useCurrency } from '../hooks/useCurrency';
 import { resolveImageUrl } from '../utils/helpers';
 
 const C = {
-  saffron: '#D9600A', saffronLt: '#FDF1E8',
+  saffron: '#C8792C', saffronLt: '#FDF1E8',
   emerald: '#1A7A4A', emeraldLt: '#EAF5EF',
   navy: '#1B3175', navyLt: '#EEF2FB',
   gold: '#B8730A', goldLt: '#FDF5E2',
-  ink: '#1C1815', inkSoft: '#3D3731',
-  muted: '#7A7068', borderSoft: '#E6DED0', cream: '#F0E8DA',
+  ink: '#5B4632', inkSoft: '#2B2016',
+  muted: '#79634E', borderSoft: '#E3D5C1', cream: '#F0E8DA',
   red: '#DC2626', redLt: '#FEF2F2',
 };
 

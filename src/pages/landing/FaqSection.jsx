@@ -15,7 +15,7 @@ function FaqCard({ faq, bp }) {
       style={{
         background: T.w, borderRadius: 14,
         padding: bp.isMobile ? '18px 16px' : '22px 26px',
-        border: `1.5px solid ${hov || open ? 'rgba(196,119,58,.35)' : T.bs}`,
+        border: `1.5px solid ${hov || open ? 'rgba(200,121,44,.35)' : T.bs}`,
         transition: '.18s', cursor: 'pointer',
       }}
     >

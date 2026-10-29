@@ -148,10 +148,10 @@ function CatHeroCard({ item, onAction }) {
         <div style={{ position: 'absolute', inset: 0, background: item.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 80 }}>{item.emoji}</div>
       )}
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top,rgba(18,14,10,.88) 0%,rgba(18,14,10,.22) 50%,rgba(18,14,10,.04) 100%)' }} />
-      {hov && <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,rgba(196,119,58,.12) 0%,transparent 60%)', pointerEvents: 'none' }} />}
+      {hov && <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,rgba(200,121,44,.12) 0%,transparent 60%)', pointerEvents: 'none' }} />}
       <div style={{ position: 'relative', zIndex: 2, padding: '20px 18px' }}>
         <div style={{ marginBottom: 8 }}>
-          <span style={{ display: 'inline-block', background: hov ? 'rgba(196,119,58,.9)' : 'rgba(255,255,255,.12)', backdropFilter: 'blur(8px)', border: hov ? '1px solid rgba(196,119,58,.5)' : '1px solid rgba(255,255,255,.18)', color: '#fff', fontSize: 9, fontWeight: 800, padding: '4px 11px', borderRadius: 20, letterSpacing: '.1em', textTransform: 'uppercase', transition: '.22s' }}>{item.chip}</span>
+          <span style={{ display: 'inline-block', background: hov ? 'rgba(200,121,44,.9)' : 'rgba(255,255,255,.12)', backdropFilter: 'blur(8px)', border: hov ? '1px solid rgba(200,121,44,.5)' : '1px solid rgba(255,255,255,.18)', color: '#fff', fontSize: 9, fontWeight: 800, padding: '4px 11px', borderRadius: 20, letterSpacing: '.1em', textTransform: 'uppercase', transition: '.22s' }}>{item.chip}</span>
         </div>
         <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: 20, fontWeight: 700, color: '#fff', marginBottom: 4, lineHeight: 1.15 }}>{item.name}</div>
         <div style={{ fontSize: 11, color: 'rgba(255,255,255,.6)', marginBottom: 10 }}>{item.count}</div>
@@ -259,7 +259,7 @@ export default function ShopByCategory({ activeCategory = 'All', onCategoryChang
                 ← All categories
               </button>
             )}
-            <button onClick={openLogin} style={{ fontSize: 13, color: T.t, fontWeight: 600, background: T.tl, border: `1.5px solid rgba(196,119,58,.25)`, borderRadius: 7, padding: '8px 16px', cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>
+            <button onClick={openLogin} style={{ fontSize: 13, color: T.t, fontWeight: 600, background: T.tl, border: `1.5px solid rgba(200,121,44,.25)`, borderRadius: 7, padding: '8px 16px', cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>
               {activeCategory === 'All' ? 'All categories →' : `View all ${activeCategory} →`}
             </button>
           </div>
@@ -295,11 +295,11 @@ export default function ShopByCategory({ activeCategory = 'All', onCategoryChang
 
         {/* Sign-in nudge for filtered views */}
         {activeCategory !== 'All' && catData && (
-          <div style={{ marginTop: 28, padding: '16px 20px', background: 'rgba(196,119,58,.07)', border: `1.5px solid rgba(196,119,58,.2)`, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+          <div style={{ marginTop: 28, padding: '16px 20px', background: 'rgba(200,121,44,.07)', border: `1.5px solid rgba(200,121,44,.2)`, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
             <p style={{ fontSize: 13, color: T.ink, margin: 0, fontWeight: 500 }}>
               Sign in to see wholesale prices, contact suppliers, and place orders.
             </p>
-            <button onClick={openLogin} style={{ padding: '9px 22px', borderRadius: 8, background: '#1C1815', color: '#fff', fontSize: 13, fontWeight: 600, border: 'none', cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>
+            <button onClick={openLogin} style={{ padding: '9px 22px', borderRadius: 8, background: '#5B4632', color: '#fff', fontSize: 13, fontWeight: 600, border: 'none', cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>
               Sign in free →
             </button>
           </div>

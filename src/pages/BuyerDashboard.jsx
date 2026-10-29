@@ -12,11 +12,11 @@ import { useCurrency } from '../hooks/useCurrency';
 
 /* ── Design tokens ─────────────────────────────────────────────────────────── */
 const T = {
-  ink:    '#1C1815',
-  muted:  '#7A7068',
+  ink:    '#5B4632',
+  muted:  '#79634E',
   border: '#F0EAE0',
-  cream:  '#FDF8F2',
-  saffron:'#C4773A',
+  cream:  '#FDF9F1',
+  saffron:'#C8792C',
   emerald:'#1A7A4A',
   navy:   '#1B3175',
 };
@@ -67,7 +67,7 @@ function CategoryCard({ cat, onClick }) {
       style={{
         display: 'flex', alignItems: 'center', gap: 10,
         padding: '10px 12px', borderRadius: 12,
-        border: `1.5px solid ${hov ? T.saffron : '#EDE8DF'}`,
+        border: `1.5px solid ${hov ? T.saffron : '#E3D5C1'}`,
         background: hov ? T.cream : '#fff',
         cursor: 'pointer', transition: 'all .15s',
       }}
@@ -147,10 +147,10 @@ function SectionHeading({ title, cta, onCta, bp }) {
 function ProductCard({ p, isFav, onFav, onAction }) {
   const [hov, setHov] = useState(false);
   const { fmt } = useCurrency();
-  const badgeColor = p.badge === 'Trending' ? { bg: '#F3F0EB', color: '#1C1815' }
+  const badgeColor = p.badge === 'Trending' ? { bg: '#F3F0EB', color: '#5B4632' }
     : p.badge === 'Export'   ? { bg: '#EEF2FB', color: '#1B3175' }
     : p.badge === 'Verified' ? { bg: '#EAF5EF', color: T.emerald }
-    : { bg: '#F3F0EB', color: '#1C1815' };
+    : { bg: '#F3F0EB', color: '#5B4632' };
 
   return (
     <Link
@@ -164,7 +164,7 @@ function ProductCard({ p, isFav, onFav, onAction }) {
         style={{
           position: 'relative', borderRadius: 12, overflow: 'hidden',
           aspectRatio: '1 / 1', background: '#F5F0E8', marginBottom: 10,
-          border: `1px solid ${hov ? '#D4C9B8' : '#EDE8DF'}`, transition: 'border-color .15s',
+          border: `1px solid ${hov ? '#D4C9B8' : '#E3D5C1'}`, transition: 'border-color .15s',
         }}
       >
         {p.img ? (
@@ -198,7 +198,7 @@ function ProductCard({ p, isFav, onFav, onAction }) {
             opacity: hov || isFav ? 1 : 0, transition: 'opacity .15s',
           }}
         >
-          <Heart size={13} fill={isFav ? '#C4773A' : 'none'} color={isFav ? '#C4773A' : '#7A7068'} />
+          <Heart size={13} fill={isFav ? '#C8792C' : 'none'} color={isFav ? '#C8792C' : '#79634E'} />
         </button>
 
         {/* Quick add */}
@@ -320,7 +320,7 @@ export default function BuyerDashboard() {
               {hasMore && (
                 <div style={{ textAlign: 'center', paddingTop: 24, paddingBottom: 16 }}>
                   <button onClick={() => setVisibleCount(v => v + 12)}
-                    style={{ padding: '10px 32px', borderRadius: 8, border: `1.5px solid #E8E2D8`, background: '#fff', color: T.ink, fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
+                    style={{ padding: '10px 32px', borderRadius: 8, border: `1.5px solid #E3D5C1`, background: '#fff', color: T.ink, fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
                     Load more
                   </button>
                 </div>

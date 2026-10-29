@@ -79,7 +79,7 @@ export const BRANDS = [
 
 // ── Trending products ───────────────────────────────────────────────────────
 export const TRENDING_PRODUCTS = [
-  { emoji: '🪴', bg: 'linear-gradient(145deg,#FDEBD0,#F5C898)', badge: 'New',    badgeBg: 'linear-gradient(135deg,#C4773A,#A8622E)', brand: 'Heritage Décor',   name: 'Hand-painted Ceramic Pot',    moq: 'MOQ: 24 pcs',    price: '$8',   unit: '/pc',   rating: '4.9 (128)' },
+  { emoji: '🪴', bg: 'linear-gradient(145deg,#FDEBD0,#F5C898)', badge: 'New',    badgeBg: 'linear-gradient(135deg,#C8792C,#A8611F)', brand: 'Heritage Décor',   name: 'Hand-painted Ceramic Pot',    moq: 'MOQ: 24 pcs',    price: '$8',   unit: '/pc',   rating: '4.9 (128)' },
   { emoji: '🔆', bg: 'linear-gradient(145deg,#D5DCE8,#A8B4C8)', badge: null,                                                          brand: 'Moradabad Brass',  name: 'Antique Brass Table Lamp',    moq: 'MOQ: 12 pcs',    price: '$22',  unit: '/pc',   rating: '4.8 (94)'  },
   { emoji: '🪞', bg: 'linear-gradient(145deg,#EAD5D5,#C8A0A0)', badge: null,                                                          brand: 'Jodhpur Crafts',   name: 'Rajasthani Mirror Frame',     moq: 'MOQ: 6 pcs',     price: '$34',  unit: '/pc',   rating: '5.0 (210)' },
   { emoji: '🛋️', bg: 'linear-gradient(145deg,#FDEBD0,#E8C8A0)', badge: 'Export', badgeBg: 'linear-gradient(135deg,#1B3175,#122460)', brand: 'Delhi Textiles',   name: 'Block-print Cushion Cover',   moq: 'MOQ: 50 pcs',    price: '$4',   unit: '/pc',   rating: '4.9 (67)'  },
@@ -99,7 +99,7 @@ export const NEW_THIS_WEEK = [
 // ── Trending rows (kept for TrendingByCategory if needed) ───────────────────
 export const TRENDING_ROWS = [
   {
-    icon: '🖼️', iconBg: 'linear-gradient(135deg,#FDEBD0,#F0B870)', iconBorder: 'rgba(196,119,58,.2)',
+    icon: '🖼️', iconBg: 'linear-gradient(135deg,#FDEBD0,#F0B870)', iconBorder: 'rgba(200,121,44,.2)',
     title: 'Trending in Wall Décor', count: '820 brands · 12,000+ products', link: 'All Wall Décor →',
     products: [
       { emoji: '🏺', bg: 'linear-gradient(145deg,#EAD5D5,#C8A0A0)', name: 'Blue Pottery Vase',        price: '$8.50/pc',  moq: 'MOQ 6 pcs'  },
@@ -111,7 +111,7 @@ export const TRENDING_ROWS = [
     ],
   },
   {
-    icon: '🛋️', iconBg: 'linear-gradient(135deg,#FDEBD0,#E8C8A0)', iconBorder: 'rgba(196,119,58,.2)',
+    icon: '🛋️', iconBg: 'linear-gradient(135deg,#FDEBD0,#E8C8A0)', iconBorder: 'rgba(200,121,44,.2)',
     title: 'Trending in Soft Furnishings', count: '640 brands · 9,500+ products', link: 'All Soft Furnishings →',
     products: [
       { emoji: '🛋️', bg: 'linear-gradient(145deg,#FDEBD0,#F0C898)', name: 'Block Print Cushion Cover', price: '$4.00/pc',  moq: 'MOQ 50 pcs' },
@@ -173,10 +173,10 @@ export const CITIES = [
 
 // ── Platform features ───────────────────────────────────────────────────────
 export const FEATURES = [
-  { icon: '🤝', iconBg: 'linear-gradient(135deg,#FDF3EB,#FAE8D4)', iconBorder: 'rgba(196,119,58,.25)', title: 'Trade Assurance',       desc: 'Escrow-backed payments release only after you approve goods. Every transaction is fully protected.' },
+  { icon: '🤝', iconBg: 'linear-gradient(135deg,#FDF3EB,#FAE8D4)', iconBorder: 'rgba(200,121,44,.25)', title: 'Trade Assurance',       desc: 'Escrow-backed payments release only after you approve goods. Every transaction is fully protected.' },
   { icon: '⚡', iconBg: 'linear-gradient(135deg,#EBF4EE,#DCF0E4)', iconBorder: 'rgba(61,122,52,.2)',   title: 'Instant RFQ Matching',  desc: 'Post a sourcing requirement and receive verified quotes within hours from the right suppliers.' },
   { icon: '📊', iconBg: 'linear-gradient(135deg,#EEF2FB,#DCE4F8)', iconBorder: 'rgba(27,49,117,.15)',  title: 'Real-Time Analytics',   desc: 'Live dashboards for market rates, supplier scorecards, and shipment tracking — all in one place.' },
-  { icon: '📄', iconBg: 'linear-gradient(135deg,#FDF3EB,#FAE8D4)', iconBorder: 'rgba(196,119,58,.25)', title: 'Digital Contracts',     desc: 'Negotiate terms, sign digitally, and store every contract securely. No PDFs over email.' },
+  { icon: '📄', iconBg: 'linear-gradient(135deg,#FDF3EB,#FAE8D4)', iconBorder: 'rgba(200,121,44,.25)', title: 'Digital Contracts',     desc: 'Negotiate terms, sign digitally, and store every contract securely. No PDFs over email.' },
   { icon: '🚚', iconBg: 'linear-gradient(135deg,#EBF4EE,#DCF0E4)', iconBorder: 'rgba(61,122,52,.2)',   title: 'Shipment Tracking',     desc: 'Real-time logistics visibility from dispatch to delivery. Know where your order is at every step.' },
   { icon: '🛡️', iconBg: 'linear-gradient(135deg,#EEF2FB,#DCE4F8)', iconBorder: 'rgba(27,49,117,.15)',  title: 'Export Compliance',     desc: 'GST invoices, shipping docs, and export paperwork — generated automatically for every order.' },
 ];
@@ -191,7 +191,7 @@ export const STATS = [
 
 // ── Testimonials ────────────────────────────────────────────────────────────
 export const TESTIMONIALS = [
-  { initial: 'S', bg: 'linear-gradient(135deg,#C4773A,#A8622E)', rating: '★★★★★', quote: '"We found our best Jaipur pottery supplier on Globrixa in under a week. The quality verification process gave us real confidence before ordering."', name: 'Sarah Mitchell',    role: 'Buyer · Terrain Home, Philadelphia' },
+  { initial: 'S', bg: 'linear-gradient(135deg,#C8792C,#A8611F)', rating: '★★★★★', quote: '"We found our best Jaipur pottery supplier on Globrixa in under a week. The quality verification process gave us real confidence before ordering."', name: 'Sarah Mitchell',    role: 'Buyer · Terrain Home, Philadelphia' },
   { initial: 'P', bg: 'linear-gradient(135deg,#3D7A52,#2A6040)', rating: '★★★★★', quote: '"Our import volume tripled in three months. Best platform for sourcing Indian home décor — the supplier quality is consistently excellent."',      name: 'Pierre Dubois',     role: 'Import Manager · Maison & Objet, Paris' },
   { initial: 'A', bg: 'linear-gradient(135deg,#1B3175,#122460)', rating: '★★★★★', quote: '"Trade assurance completely transformed how we do international orders. The export support team is always responsive. Outstanding."',               name: 'Aiko Tanaka',       role: 'Founder · Wabi Studio, Tokyo' },
 ];

@@ -39,7 +39,7 @@ export default function LandingFooter() {
   ];
 
   return (
-    <footer style={{ background: '#0F0E0D', padding: pad }}>
+    <footer style={{ background: '#5B4632', padding: pad }}>
       <div style={{ maxWidth: 1100, margin: '0 auto' }}>
 
         {/* Main grid */}
@@ -67,7 +67,7 @@ export default function LandingFooter() {
           {/* Support + Company + Address */}
           {COLS.map(col => (
             <div key={col.heading}>
-              <h5 style={{ fontSize: 11, fontWeight: 700, letterSpacing: '.12em', textTransform: 'uppercase', color: '#C4773A', marginBottom: 16 }}>
+              <h5 style={{ fontSize: 11, fontWeight: 700, letterSpacing: '.12em', textTransform: 'uppercase', color: '#C8792C', marginBottom: 16 }}>
                 {col.heading}
               </h5>
               {col.links ? col.links.map(link => (

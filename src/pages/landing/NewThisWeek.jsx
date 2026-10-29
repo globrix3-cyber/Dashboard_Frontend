@@ -48,7 +48,7 @@ function MiniCard({ product, index, onLoginRequired, isLoggedIn }) {
       onMouseLeave={() => setHov(false)}
       style={{
         background: T.w, borderRadius: 12, overflow: 'hidden',
-        border: `1.5px solid ${hov ? 'rgba(196,119,58,.3)' : T.bs}`,
+        border: `1.5px solid ${hov ? 'rgba(200,121,44,.3)' : T.bs}`,
         cursor: 'pointer',
         transform: hov ? 'translateY(-4px)' : 'none',
         boxShadow: hov ? shadow.md : 'none',
@@ -71,7 +71,7 @@ function MiniCard({ product, index, onLoginRequired, isLoggedIn }) {
           </div>
         )}
         <div style={{ position: 'absolute', top: 8, left: 8 }}>
-          <span style={{ background: 'rgba(196,119,58,.92)', backdropFilter: 'blur(6px)', color: '#fff', fontSize: 7, fontWeight: 800, padding: '3px 7px', borderRadius: 4, letterSpacing: '.08em' }}>NEW</span>
+          <span style={{ background: 'rgba(200,121,44,.92)', backdropFilter: 'blur(6px)', color: '#fff', fontSize: 7, fontWeight: 800, padding: '3px 7px', borderRadius: 4, letterSpacing: '.08em' }}>NEW</span>
         </div>
       </div>
       <div style={{ padding: '9px 11px 12px' }}>
@@ -89,7 +89,7 @@ function MiniCard({ product, index, onLoginRequired, isLoggedIn }) {
             style={{ position: 'relative', cursor: 'pointer', display: 'inline-flex', alignItems: 'center' }}
           >
             <div style={{ fontSize: 12, fontWeight: 800, color: T.ink, filter: 'blur(5px)', userSelect: 'none', pointerEvents: 'none' }}>{priceStr}</div>
-            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', gap: 3, fontSize: 9, color: '#8A8178', fontWeight: 700, whiteSpace: 'nowrap' }}>
+            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', gap: 3, fontSize: 9, color: '#79634E', fontWeight: 700, whiteSpace: 'nowrap' }}>
               🔒 Sign in
             </div>
           </div>
@@ -130,7 +130,7 @@ export default function NewThisWeek() {
             <span style={{ background: `linear-gradient(135deg,${T.t},${T.td})`, color: '#fff', fontSize: 9, fontWeight: 800, padding: '4px 12px', borderRadius: 5, letterSpacing: '.08em', textTransform: 'uppercase' }}>New This Week</span>
             <h2 style={sectionTitle}>Just listed</h2>
           </div>
-          <button onClick={openLogin} style={{ fontSize: 13, color: T.t, fontWeight: 600, background: T.tl, border: `1.5px solid rgba(196,119,58,.25)`, borderRadius: 7, padding: '8px 16px', cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>
+          <button onClick={openLogin} style={{ fontSize: 13, color: T.t, fontWeight: 600, background: T.tl, border: `1.5px solid rgba(200,121,44,.25)`, borderRadius: 7, padding: '8px 16px', cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>
             See all new arrivals →
           </button>
         </div>

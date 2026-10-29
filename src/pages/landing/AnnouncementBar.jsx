@@ -1,13 +1,13 @@
 export default function AnnouncementBar() {
   return (
     <div style={{
-      background: 'linear-gradient(90deg,#1C1915 0%,#2A2320 50%,#1C1915 100%)',
+      background: 'linear-gradient(90deg,#5B4632 0%,#2A2320 50%,#5B4632 100%)',
       color: 'rgba(255,255,255,.82)', fontSize: 12, fontWeight: 500,
       textAlign: 'center', padding: '10px 18px',
       display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, flexWrap: 'wrap',
     }}>
       <span style={{
-        background: 'linear-gradient(135deg,#C4773A,#A8622E)',
+        background: 'linear-gradient(135deg,#C8792C,#A8611F)',
         color: '#fff', fontSize: 9, fontWeight: 800,
         padding: '3px 10px', borderRadius: 4, letterSpacing: '.08em', textTransform: 'uppercase',
       }}>NEW</span>

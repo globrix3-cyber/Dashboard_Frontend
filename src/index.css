@@ -6,7 +6,7 @@
 
 /* ─────────────────────────────────────────────────────────────────────────────
    Globrixa Design System
-   Brand: Cream / Saffron #D9600A / Emerald #1A7A4A / Navy #1B3175
+   Brand: Cream / Saffron #C8792C / Emerald #1A7A4A / Navy #1B3175
 ────────────────────────────────────────────────────────────────────────────── */
 
 /* ── Variables ───────────────────────────────────────────────────────────── */
@@ -15,7 +15,7 @@
   --cream-mid:    #EDE5D4;
   --cream-deep:   #E4D9C4;
   --warm-white:   #FAF7F1;
-  --saffron:      #D9600A;
+  --saffron:      #C8792C;
   --saffron-lt:   #FDF1E8;
   --saffron-mid:  #F0B48A;
   --emerald:      #1A7A4A;
@@ -24,11 +24,11 @@
   --navy-lt:      #EEF2FB;
   --gold:         #B8730A;
   --gold-lt:      #FDF5E2;
-  --ink:          #1C1815;
-  --ink-soft:     #3D3731;
-  --muted:        #7A7068;
+  --ink:          #5B4632;
+  --ink-soft:     #2B2016;
+  --muted:        #79634E;
   --border:       #D4C9B8;
-  --border-soft:  #E6DED0;
+  --border-soft:  #E3D5C1;
   --shadow-xs:    0 1px 3px rgba(28,24,21,0.06);
   --shadow-sm:    0 2px 8px rgba(28,24,21,0.08);
   --shadow-md:    0 6px 24px rgba(28,24,21,0.10);
@@ -82,7 +82,7 @@ h1, h2, h3, h4 {
   white-space: nowrap;
   text-decoration: none;
 }
-.btn-primary:hover  { background: #BF530A; transform: translateY(-1px); box-shadow: 0 6px 22px rgba(217,96,10,0.38); }
+.btn-primary:hover  { background: #A8611F; transform: translateY(-1px); box-shadow: 0 6px 22px rgba(217,96,10,0.38); }
 .btn-primary:active { transform: translateY(0); }
 .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; transform: none; box-shadow: none; }
 

@@ -19,7 +19,7 @@ export default function LandingNavbar() {
   if (!bp.isMobile) return (
     <nav style={{
       background: '#fff',
-      borderBottom: '1px solid #E8E2D8',
+      borderBottom: '1px solid #E3D5C1',
       height: bp.isTablet ? 58 : 64,
       display: 'flex',
       alignItems: 'center',
@@ -37,7 +37,7 @@ export default function LandingNavbar() {
           fontFamily: "'DM Sans',sans-serif",
           fontSize: bp.isTablet ? 13 : 15,
           fontWeight: 800,
-          color: '#1C1815',
+          color: '#5B4632',
           letterSpacing: '0.04em',
           textTransform: 'uppercase',
           whiteSpace: 'nowrap',
@@ -55,15 +55,15 @@ export default function LandingNavbar() {
             padding: '7px 14px',
             marginLeft: 24,
             borderRadius: 6,
-            border: '1.5px solid #E0DAD0',
+            border: '1.5px solid #E3D5C1',
             background: '#fff',
-            fontSize: 13, fontWeight: 500, color: '#1C1815',
+            fontSize: 13, fontWeight: 500, color: '#5B4632',
             cursor: 'pointer', fontFamily: 'inherit',
             flexShrink: 0, whiteSpace: 'nowrap',
             transition: 'border-color .15s',
           }}
-          onMouseEnter={e => { e.currentTarget.style.borderColor = '#C4773A'; }}
-          onMouseLeave={e => { e.currentTarget.style.borderColor = '#E0DAD0'; }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = '#C8792C'; }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = '#E3D5C1'; }}
         >
           All categories
           <svg width="10" height="10" viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0 }}>
@@ -80,17 +80,17 @@ export default function LandingNavbar() {
         <div
           style={{
             display: 'flex', alignItems: 'center',
-            border: '1.5px solid #E0DAD0',
+            border: '1.5px solid #E3D5C1',
             borderRadius: 100,
             height: bp.isTablet ? 38 : 42,
             padding: '0 16px', gap: 10,
-            background: '#FDF8F2',
+            background: '#FDF9F1',
             transition: 'border-color .15s',
           }}
-          onFocusCapture={e => { e.currentTarget.style.borderColor = '#C4773A'; }}
-          onBlurCapture={e => { e.currentTarget.style.borderColor = '#E0DAD0'; }}
+          onFocusCapture={e => { e.currentTarget.style.borderColor = '#C8792C'; }}
+          onBlurCapture={e => { e.currentTarget.style.borderColor = '#E3D5C1'; }}
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9A9088" strokeWidth="2" style={{ flexShrink: 0 }}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#79634E" strokeWidth="2" style={{ flexShrink: 0 }}>
             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
           </svg>
           <input
@@ -99,7 +99,7 @@ export default function LandingNavbar() {
             onChange={e => setQuery(e.target.value)}
             onFocus={() => dispatch(toggleLogin(true))}
             placeholder="Search wholesale products or brands"
-            style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontSize: 13, color: '#1C1815', fontFamily: 'inherit' }}
+            style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontSize: 13, color: '#5B4632', fontFamily: 'inherit' }}
           />
         </div>
       </form>
@@ -119,14 +119,14 @@ export default function LandingNavbar() {
             marginLeft: 10,
             padding: bp.isTablet ? '8px 18px' : '9px 22px',
             borderRadius: 100,
-            background: '#1C1815', color: '#fff',
+            background: '#5B4632', color: '#fff',
             fontSize: 13, fontWeight: 600,
             border: 'none', cursor: 'pointer',
             fontFamily: 'inherit', whiteSpace: 'nowrap',
             transition: 'background .15s',
           }}
-          onMouseEnter={e => { e.currentTarget.style.background = '#3D3730'; }}
-          onMouseLeave={e => { e.currentTarget.style.background = '#1C1815'; }}
+          onMouseEnter={e => { e.currentTarget.style.background = '#2B2016'; }}
+          onMouseLeave={e => { e.currentTarget.style.background = '#5B4632'; }}
         >
           Join free
         </button>
@@ -138,13 +138,13 @@ export default function LandingNavbar() {
   return (
     <>
       <nav style={{
-        background: '#fff', borderBottom: '1px solid #E8E2D8',
+        background: '#fff', borderBottom: '1px solid #E3D5C1',
         height: 54, display: 'flex', alignItems: 'center',
         justifyContent: 'space-between', padding: '0 16px',
         position: 'sticky', top: 0, zIndex: 1000,
       }}>
         <button onClick={() => navigate('/')} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
-          <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 12, fontWeight: 800, color: '#1C1815', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+          <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 12, fontWeight: 800, color: '#5B4632', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
             G L O B R I X A
           </span>
         </button>
@@ -155,7 +155,7 @@ export default function LandingNavbar() {
         >
           {[0, 1, 2].map(i => (
             <span key={i} style={{
-              display: 'block', width: 22, height: 2, borderRadius: 2, background: '#1C1815',
+              display: 'block', width: 22, height: 2, borderRadius: 2, background: '#5B4632',
               transition: 'transform .22s, opacity .22s',
               transform: menuOpen
                 ? (i === 0 ? 'translateY(7px) rotate(45deg)' : i === 2 ? 'translateY(-7px) rotate(-45deg)' : 'scaleX(0)')
@@ -171,23 +171,23 @@ export default function LandingNavbar() {
           style={{ position: 'fixed', top: 54, left: 0, right: 0, bottom: 0, background: 'rgba(15,14,13,.55)', backdropFilter: 'blur(4px)', zIndex: 999 }}
           onClick={() => setMenuOpen(false)}
         >
-          <div onClick={e => e.stopPropagation()} style={{ background: '#fff', padding: '20px 18px 28px', borderBottom: '1px solid #E8E2D8' }}>
-            <form onSubmit={handleSearch} style={{ display: 'flex', alignItems: 'center', gap: 8, border: '1.5px solid #E0DAD0', borderRadius: 100, height: 44, padding: '0 14px', marginBottom: 18, background: '#FDF8F2' }}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9A9088" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-              <input type="text" value={query} onChange={e => setQuery(e.target.value)} placeholder="Search products or brands…" style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontSize: 14, fontFamily: 'inherit', color: '#1C1815' }} />
+          <div onClick={e => e.stopPropagation()} style={{ background: '#fff', padding: '20px 18px 28px', borderBottom: '1px solid #E3D5C1' }}>
+            <form onSubmit={handleSearch} style={{ display: 'flex', alignItems: 'center', gap: 8, border: '1.5px solid #E3D5C1', borderRadius: 100, height: 44, padding: '0 14px', marginBottom: 18, background: '#FDF9F1' }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#79634E" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              <input type="text" value={query} onChange={e => setQuery(e.target.value)} placeholder="Search products or brands…" style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontSize: 14, fontFamily: 'inherit', color: '#5B4632' }} />
             </form>
             {[
               ['Blog', () => { navigate('/blog'); setMenuOpen(false); }],
               ['Our Story', () => { navigate('/our-story'); setMenuOpen(false); }],
               ['Sign up to sell', openSupplierRegister],
             ].map(([label, fn]) => (
-              <button key={label} onClick={fn} style={{ display: 'block', width: '100%', textAlign: 'left', padding: '13px 4px', fontSize: 15, fontWeight: 500, color: '#1C1815', background: 'none', border: 'none', borderBottom: '1px solid #F0EBE4', cursor: 'pointer', fontFamily: 'inherit' }}>
+              <button key={label} onClick={fn} style={{ display: 'block', width: '100%', textAlign: 'left', padding: '13px 4px', fontSize: 15, fontWeight: 500, color: '#5B4632', background: 'none', border: 'none', borderBottom: '1px solid #F0EBE4', cursor: 'pointer', fontFamily: 'inherit' }}>
                 {label}
               </button>
             ))}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 20 }}>
-              <button onClick={openLogin} style={{ width: '100%', padding: '13px', borderRadius: 100, background: '#1C1815', color: '#fff', fontSize: 14, fontWeight: 700, border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}>Join free</button>
-              <button onClick={openLogin} style={{ width: '100%', padding: '12px', borderRadius: 100, background: 'none', color: '#1C1815', fontSize: 14, fontWeight: 500, border: '1.5px solid #E0DAD0', cursor: 'pointer', fontFamily: 'inherit' }}>Sign in</button>
+              <button onClick={openLogin} style={{ width: '100%', padding: '13px', borderRadius: 100, background: '#5B4632', color: '#fff', fontSize: 14, fontWeight: 700, border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}>Join free</button>
+              <button onClick={openLogin} style={{ width: '100%', padding: '12px', borderRadius: 100, background: 'none', color: '#5B4632', fontSize: 14, fontWeight: 500, border: '1.5px solid #E3D5C1', cursor: 'pointer', fontFamily: 'inherit' }}>Sign in</button>
             </div>
           </div>
         </div>
@@ -200,9 +200,9 @@ function NavLink({ onClick, children }) {
   return (
     <button
       onClick={onClick}
-      style={{ padding: '6px 14px', fontSize: 13, fontWeight: 500, color: '#5A5248', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit', borderRadius: 6, transition: 'color .15s', whiteSpace: 'nowrap' }}
-      onMouseEnter={e => { e.currentTarget.style.color = '#1C1815'; }}
-      onMouseLeave={e => { e.currentTarget.style.color = '#5A5248'; }}
+      style={{ padding: '6px 14px', fontSize: 13, fontWeight: 500, color: '#79634E', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit', borderRadius: 6, transition: 'color .15s', whiteSpace: 'nowrap' }}
+      onMouseEnter={e => { e.currentTarget.style.color = '#5B4632'; }}
+      onMouseLeave={e => { e.currentTarget.style.color = '#79634E'; }}
     >
       {children}
     </button>

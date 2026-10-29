@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { toggleLogin } from '../features/auth/authSlice';
 
 const T = {
-  t: '#C4773A', td: '#A8622E', tl: '#FDF3EB',
-  ink: '#1C1815', is: '#3D3830', mu: '#7A7068',
-  b: '#DEDAD0', bs: '#EDE8DF', c: '#FDF8F2',
+  t: '#C8792C', td: '#A8611F', tl: '#FDF3EB',
+  ink: '#5B4632', is: '#5B4632', mu: '#79634E',
+  b: '#E3D5C1', bs: '#E3D5C1', c: '#FDF9F1',
   g: '#3D7A52', gl: '#EBF4EE',
 };
 
@@ -117,7 +117,7 @@ export default function OurStoryPage() {
       <div style={{ background: T.ink, padding: '72px 28px', textAlign: 'center' }}>
         <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: 'clamp(28px,4vw,48px)', fontWeight: 900, color: '#fff', letterSpacing: -1.5, marginBottom: 16 }}>Ready to start sourcing?</h2>
         <p style={{ fontSize: 16, color: 'rgba(255,255,255,.6)', marginBottom: 36, maxWidth: 420, margin: '0 auto 36px' }}>Join thousands of global buyers already sourcing from India's best manufacturers.</p>
-        <button onClick={handleCta} style={{ padding: '15px 40px', borderRadius: 100, border: 'none', background: T.t, color: '#fff', fontSize: 15, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', boxShadow: '0 8px 28px rgba(196,119,58,.4)' }}>
+        <button onClick={handleCta} style={{ padding: '15px 40px', borderRadius: 100, border: 'none', background: T.t, color: '#fff', fontSize: 15, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', boxShadow: '0 8px 28px rgba(200,121,44,.4)' }}>
           Explore products →
         </button>
       </div>

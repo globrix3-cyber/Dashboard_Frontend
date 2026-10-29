@@ -6,8 +6,8 @@ import { PHONE_COUNTRIES, DEFAULT_PHONE_COUNTRY, combinePhone } from '../utils/p
 
 const INPUT = {
   padding: '14px 16px', borderRadius: 10,
-  border: '1.5px solid #E0DAD0', background: '#FDF8F2',
-  fontSize: 15, color: '#1C1815', fontFamily: "'DM Sans', sans-serif",
+  border: '1.5px solid #E3D5C1', background: '#FDF9F1',
+  fontSize: 15, color: '#5B4632', fontFamily: "'DM Sans', sans-serif",
   outline: 'none', boxSizing: 'border-box',
 };
 
@@ -50,12 +50,12 @@ export default function AddPhoneModal({ onDone }) {
           width: 48, height: 48, borderRadius: 14, background: '#FDF1E8',
           display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 18,
         }}>
-          <Phone size={22} color="#C4773A" />
+          <Phone size={22} color="#C8792C" />
         </div>
-        <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 21, fontWeight: 800, color: '#1C1815', margin: '0 0 8px' }}>
+        <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 21, fontWeight: 800, color: '#5B4632', margin: '0 0 8px' }}>
           Add your phone number
         </h2>
-        <p style={{ fontSize: 13.5, color: '#7A7068', lineHeight: 1.6, margin: '0 0 22px' }}>
+        <p style={{ fontSize: 13.5, color: '#79634E', lineHeight: 1.6, margin: '0 0 22px' }}>
           Suppliers and buyers use this to reach you about RFQs and orders. Add it now to keep your account up to date.
         </p>
 
@@ -75,15 +75,15 @@ export default function AddPhoneModal({ onDone }) {
 
           <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
             <button type="button" onClick={onDone} disabled={saving} style={{
-              flex: 1, padding: '12px 0', borderRadius: 100, border: '1.5px solid #E0DAD0',
-              background: '#fff', color: '#7A7068', cursor: 'pointer',
+              flex: 1, padding: '12px 0', borderRadius: 100, border: '1.5px solid #E3D5C1',
+              background: '#fff', color: '#79634E', cursor: 'pointer',
               fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 13.5,
             }}>
               Skip for now
             </button>
             <button type="submit" disabled={saving} style={{
               flex: 1, padding: '12px 0', borderRadius: 100, border: 'none',
-              background: '#C4773A', color: '#fff', cursor: saving ? 'default' : 'pointer',
+              background: '#C8792C', color: '#fff', cursor: saving ? 'default' : 'pointer',
               fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13.5,
               opacity: saving ? 0.7 : 1,
             }}>

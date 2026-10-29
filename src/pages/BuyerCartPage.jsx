@@ -23,27 +23,27 @@ function CartRow({ item, onQtyChange, onRemove, removing, fmt }) {
   return (
     <div style={{
       display: 'grid', gridTemplateColumns: '64px 2fr 1fr 140px 1fr 40px', gap: 16,
-      alignItems: 'center', padding: '16px 20px', borderBottom: '1px solid #EDE8DF',
+      alignItems: 'center', padding: '16px 20px', borderBottom: '1px solid #E3D5C1',
     }}>
-      <div style={{ width: 56, height: 56, borderRadius: 10, overflow: 'hidden', background: '#F5F2EE', border: '1px solid #EDE8DF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+      <div style={{ width: 56, height: 56, borderRadius: 10, overflow: 'hidden', background: '#F5F2EE', border: '1px solid #E3D5C1', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
         {thumb
           ? <img src={thumb} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-          : <Package size={20} color="#9A9088" />
+          : <Package size={20} color="#79634E" />
         }
       </div>
 
       <div style={{ minWidth: 0 }}>
-        <div style={{ fontSize: 14, fontWeight: 700, color: '#1C1815', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.name}</div>
-        {item.variant_name && <div style={{ fontSize: 12, color: '#7A7068', marginTop: 2 }}>{item.variant_name}</div>}
-        <div style={{ fontSize: 11.5, color: '#9A9088', marginTop: 2 }}>MOQ: {moq.toLocaleString('en-IN')} {unit}</div>
+        <div style={{ fontSize: 14, fontWeight: 700, color: '#5B4632', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.name}</div>
+        {item.variant_name && <div style={{ fontSize: 12, color: '#79634E', marginTop: 2 }}>{item.variant_name}</div>}
+        <div style={{ fontSize: 11.5, color: '#79634E', marginTop: 2 }}>MOQ: {moq.toLocaleString('en-IN')} {unit}</div>
       </div>
 
-      <div style={{ fontSize: 13, color: '#7A7068' }}>{item.supplier_name}</div>
+      <div style={{ fontSize: 13, color: '#79634E' }}>{item.supplier_name}</div>
 
-      <div style={{ display: 'inline-flex', alignItems: 'center', border: '1.5px solid #EDE8DF', borderRadius: 10, overflow: 'hidden', width: 'fit-content' }}>
+      <div style={{ display: 'inline-flex', alignItems: 'center', border: '1.5px solid #E3D5C1', borderRadius: 10, overflow: 'hidden', width: 'fit-content' }}>
         <button onClick={() => onQtyChange(item.id, Math.max(moq, item.quantity - 1))} disabled={item.quantity <= moq} style={{
           width: 32, height: 34, border: 'none', background: '#fff', cursor: item.quantity <= moq ? 'default' : 'pointer',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', color: item.quantity <= moq ? '#D8CFC1' : '#1C1815',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', color: item.quantity <= moq ? '#D8CFC1' : '#5B4632',
         }}>
           <Minus size={12} />
         </button>
@@ -52,17 +52,17 @@ function CartRow({ item, onQtyChange, onRemove, removing, fmt }) {
           value={item.quantity}
           onChange={e => setExactQty(e.target.value)}
           onBlur={e => setExactQty(e.target.value || moq)}
-          style={{ width: 48, textAlign: 'center', fontSize: 13, fontWeight: 700, color: '#1C1815', border: 'none', outline: 'none', background: 'transparent' }}
+          style={{ width: 48, textAlign: 'center', fontSize: 13, fontWeight: 700, color: '#5B4632', border: 'none', outline: 'none', background: 'transparent' }}
         />
         <button onClick={() => onQtyChange(item.id, item.quantity + 1)} style={{
           width: 32, height: 34, border: 'none', background: '#fff', cursor: 'pointer',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#1C1815',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#5B4632',
         }}>
           <Plus size={12} />
         </button>
       </div>
 
-      <div style={{ fontSize: 14, fontWeight: 700, color: '#1C1815' }}>{fmt(lineTotal)}</div>
+      <div style={{ fontSize: 14, fontWeight: 700, color: '#5B4632' }}>{fmt(lineTotal)}</div>
 
       <button onClick={() => onRemove(item.id)} disabled={removing} title="Remove" style={{
         width: 32, height: 32, borderRadius: 8, border: 'none', background: '#FEF2F2', color: '#DC2626',
@@ -128,10 +128,10 @@ export default function BuyerCartPage() {
           } />
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-          <div style={{ background: '#fff', borderRadius: 18, border: '1.5px solid #EDE8DF', overflow: 'hidden' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '64px 2fr 1fr 140px 1fr 40px', gap: 16, padding: '12px 20px', background: '#F5F2EE', borderBottom: '1px solid #EDE8DF' }}>
+          <div style={{ background: '#fff', borderRadius: 18, border: '1.5px solid #E3D5C1', overflow: 'hidden' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '64px 2fr 1fr 140px 1fr 40px', gap: 16, padding: '12px 20px', background: '#F5F2EE', borderBottom: '1px solid #E3D5C1' }}>
               {['', 'Product', 'Supplier', 'Quantity', 'Total', ''].map((h, i) => (
-                <span key={h || i} style={{ fontSize: 10, fontWeight: 700, color: '#7A7068', textTransform: 'uppercase', letterSpacing: '0.07em' }}>{h}</span>
+                <span key={h || i} style={{ fontSize: 10, fontWeight: 700, color: '#79634E', textTransform: 'uppercase', letterSpacing: '0.07em' }}>{h}</span>
               ))}
             </div>
             {items.map(item => (
@@ -140,15 +140,15 @@ export default function BuyerCartPage() {
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 24, padding: '0 4px' }}>
-            <div style={{ fontSize: 14, color: '#7A7068' }}>
-              Total ({items.length} item{items.length !== 1 ? 's' : ''}): <strong style={{ color: '#1C1815', fontSize: 17 }}>{fmt(grandTotal)}</strong>
+            <div style={{ fontSize: 14, color: '#79634E' }}>
+              Total ({items.length} item{items.length !== 1 ? 's' : ''}): <strong style={{ color: '#5B4632', fontSize: 17 }}>{fmt(grandTotal)}</strong>
             </div>
             <button
               onClick={() => toast.info('Checkout is coming soon — for now, request a quote or contract per supplier.')}
               style={{
                 padding: '13px 28px', borderRadius: 100, border: 'none', cursor: 'pointer',
-                background: '#C4773A', color: '#fff', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 14,
-                boxShadow: '0 4px 16px rgba(196,119,58,.28)',
+                background: '#C8792C', color: '#fff', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 14,
+                boxShadow: '0 4px 16px rgba(200,121,44,.28)',
               }}>
               Proceed to checkout
             </button>

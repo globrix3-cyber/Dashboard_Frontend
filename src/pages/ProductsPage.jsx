@@ -100,7 +100,7 @@ export default function ProductsPage() {
   /* ── Sidebar panel (shared between desktop sidebar and mobile drawer) ── */
   const SidebarContent = () => (
     <>
-      <div style={{ fontSize: 12, fontWeight: 700, color: '#9A9088', textTransform: 'uppercase', letterSpacing: '.07em', marginBottom: 12, paddingBottom: 10, borderBottom: '1px solid #EDE8E0' }}>
+      <div style={{ fontSize: 12, fontWeight: 700, color: '#79634E', textTransform: 'uppercase', letterSpacing: '.07em', marginBottom: 12, paddingBottom: 10, borderBottom: '1px solid #EDE8E0' }}>
         {search ? `"${search}"` : 'Categories'}
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -110,12 +110,12 @@ export default function ProductsPage() {
             padding: '9px 12px', borderRadius: 8, border: 'none',
             fontFamily: "'DM Sans', sans-serif", fontSize: 13.5,
             fontWeight: cat === c ? 700 : 400,
-            color: cat === c ? '#1C1815' : '#7A7068',
+            color: cat === c ? '#5B4632' : '#79634E',
             background: cat === c ? '#EDE8E0' : 'transparent',
             cursor: 'pointer', transition: 'background .1s, color .1s',
           }}
-            onMouseEnter={e => { if (cat !== c) { e.currentTarget.style.background = '#F5F2EE'; e.currentTarget.style.color = '#1C1815'; } }}
-            onMouseLeave={e => { if (cat !== c) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#7A7068'; } }}
+            onMouseEnter={e => { if (cat !== c) { e.currentTarget.style.background = '#F5F2EE'; e.currentTarget.style.color = '#5B4632'; } }}
+            onMouseLeave={e => { if (cat !== c) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#79634E'; } }}
           >
             {c}
           </button>
@@ -125,7 +125,7 @@ export default function ProductsPage() {
   );
 
   return (
-    <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", color: '#1C1815' }}
+    <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", color: '#5B4632' }}
       onClick={() => showSort && setShowSort(false)}>
 
       {/* ── Category tiles ───────────────────────────────────────────────── */}
@@ -157,21 +157,21 @@ export default function ProductsPage() {
         <div style={{ display: 'flex', gap: 8, marginBottom: 14 }}>
           <button
             onClick={e => { e.stopPropagation(); setShowMobileFilter(o => !o); }}
-            style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 14px', borderRadius: 8, border: `1.5px solid ${cat !== 'All' ? '#C4773A' : '#EDE8E0'}`, background: cat !== 'All' ? '#FDF3EB' : '#fff', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, color: cat !== 'All' ? '#C4773A' : '#1C1815', flex: 1 }}
+            style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 14px', borderRadius: 8, border: `1.5px solid ${cat !== 'All' ? '#C8792C' : '#EDE8E0'}`, background: cat !== 'All' ? '#FDF3EB' : '#fff', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, color: cat !== 'All' ? '#C8792C' : '#5B4632', flex: 1 }}
           >
             <SlidersHorizontal size={13} />
             {cat !== 'All' ? cat : 'All categories'}
           </button>
           <div style={{ position: 'relative' }} onClick={e => e.stopPropagation()}>
             <button onClick={() => setShowSort(o => !o)}
-              style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '8px 12px', borderRadius: 8, border: '1.5px solid #EDE8E0', background: '#fff', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 500, color: '#1C1815', whiteSpace: 'nowrap' }}>
+              style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '8px 12px', borderRadius: 8, border: '1.5px solid #EDE8E0', background: '#fff', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 500, color: '#5B4632', whiteSpace: 'nowrap' }}>
               Sort <ChevronDown size={12} />
             </button>
             {showSort && (
               <div style={{ position: 'absolute', right: 0, top: 'calc(100% + 4px)', background: '#fff', border: '1.5px solid #EDE8E0', borderRadius: 10, overflow: 'hidden', zIndex: 50, minWidth: 180, boxShadow: '0 6px 24px rgba(28,24,21,.1)' }}>
                 {SORT_OPTIONS.map(o => (
                   <button key={o.value} onClick={() => { setSort(o.value); setShowSort(false); }}
-                    style={{ display: 'block', width: '100%', textAlign: 'left', padding: '11px 14px', border: 'none', background: sort === o.value ? '#F5F2EE' : '#fff', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: sort === o.value ? 700 : 400, color: '#1C1815' }}>
+                    style={{ display: 'block', width: '100%', textAlign: 'left', padding: '11px 14px', border: 'none', background: sort === o.value ? '#F5F2EE' : '#fff', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: sort === o.value ? 700 : 400, color: '#5B4632' }}>
                     {o.label}
                   </button>
                 ))}
@@ -187,9 +187,9 @@ export default function ProductsPage() {
           <div onClick={() => setShowMobileFilter(false)} style={{ position: 'fixed', inset: 0, background: 'rgba(28,24,21,.4)', zIndex: 200 }} />
           <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, background: '#fff', borderRadius: '20px 20px 0 0', padding: '20px 18px 32px', zIndex: 201, maxHeight: '70vh', overflowY: 'auto', boxShadow: '0 -8px 32px rgba(28,24,21,.15)' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-              <span style={{ fontSize: 15, fontWeight: 700, color: '#1C1815' }}>Filter by category</span>
+              <span style={{ fontSize: 15, fontWeight: 700, color: '#5B4632' }}>Filter by category</span>
               <button onClick={() => setShowMobileFilter(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}>
-                <X size={18} color="#7A7068" />
+                <X size={18} color="#79634E" />
               </button>
             </div>
             <SidebarContent />
@@ -213,19 +213,19 @@ export default function ProductsPage() {
           {/* Sort / count bar — desktop & tablet */}
           {!bp.isMobile && (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 }}>
-              <span style={{ fontSize: 13, color: '#7A7068' }}>
-                <strong style={{ color: '#1C1815' }}>{filtered.length}</strong> product{filtered.length !== 1 ? 's' : ''}
+              <span style={{ fontSize: 13, color: '#79634E' }}>
+                <strong style={{ color: '#5B4632' }}>{filtered.length}</strong> product{filtered.length !== 1 ? 's' : ''}
               </span>
               <div style={{ position: 'relative' }} onClick={e => e.stopPropagation()}>
                 <button onClick={() => setShowSort(o => !o)}
-                  style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 14px', borderRadius: 8, border: '1.5px solid #EDE8E0', background: '#fff', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 500, color: '#1C1815' }}>
+                  style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 14px', borderRadius: 8, border: '1.5px solid #EDE8E0', background: '#fff', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 500, color: '#5B4632' }}>
                   {SORT_OPTIONS.find(o => o.value === sort)?.label} <ChevronDown size={13} />
                 </button>
                 {showSort && (
                   <div style={{ position: 'absolute', right: 0, top: 'calc(100% + 4px)', background: '#fff', border: '1.5px solid #EDE8E0', borderRadius: 10, overflow: 'hidden', zIndex: 50, minWidth: 190, boxShadow: '0 6px 24px rgba(28,24,21,.1)' }}>
                     {SORT_OPTIONS.map(o => (
                       <button key={o.value} onClick={() => { setSort(o.value); setShowSort(false); }}
-                        style={{ display: 'block', width: '100%', textAlign: 'left', padding: '10px 14px', border: 'none', background: sort === o.value ? '#F5F2EE' : '#fff', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: sort === o.value ? 700 : 400, color: '#1C1815' }}>
+                        style={{ display: 'block', width: '100%', textAlign: 'left', padding: '10px 14px', border: 'none', background: sort === o.value ? '#F5F2EE' : '#fff', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: sort === o.value ? 700 : 400, color: '#5B4632' }}>
                         {o.label}
                       </button>
                     ))}
@@ -237,17 +237,17 @@ export default function ProductsPage() {
 
           {/* Mobile: product count */}
           {bp.isMobile && (
-            <div style={{ fontSize: 12, color: '#7A7068', marginBottom: 12 }}>
-              <strong style={{ color: '#1C1815' }}>{filtered.length}</strong> product{filtered.length !== 1 ? 's' : ''}
+            <div style={{ fontSize: 12, color: '#79634E', marginBottom: 12 }}>
+              <strong style={{ color: '#5B4632' }}>{filtered.length}</strong> product{filtered.length !== 1 ? 's' : ''}
               {cat !== 'All' ? ` in ${cat}` : ''}
             </div>
           )}
 
           {/* Product grid */}
           {loading ? <Spinner /> : error ? (
-            <div style={{ padding: 32, textAlign: 'center', color: '#7A7068' }}>
+            <div style={{ padding: 32, textAlign: 'center', color: '#79634E' }}>
               <p style={{ marginBottom: 12 }}>Could not load products.</p>
-              <button onClick={() => window.location.reload()} style={{ padding: '8px 20px', borderRadius: 100, background: '#D9600A', color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 700, fontFamily: "'DM Sans', sans-serif" }}>Retry</button>
+              <button onClick={() => window.location.reload()} style={{ padding: '8px 20px', borderRadius: 100, background: '#C8792C', color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 700, fontFamily: "'DM Sans', sans-serif" }}>Retry</button>
             </div>
           ) : filtered.length === 0 ? (
             <EmptyState icon={ShoppingBag} title="No products found" desc="Try a different search or category." />
@@ -274,17 +274,17 @@ export default function ProductsPage() {
                       <button onClick={e => toggleFav(e, p.id)}
                         aria-label={favs.has(p.id) ? 'Remove from wishlist' : 'Add to wishlist'}
                         style={{ marginLeft: 'auto', width: 28, height: 28, borderRadius: '50%', border: 'none', background: 'rgba(255,255,255,.92)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', backdropFilter: 'blur(4px)' }}>
-                        <Heart size={13} fill={favs.has(p.id) ? '#D9600A' : 'none'} color={favs.has(p.id) ? '#D9600A' : '#7A7068'} />
+                        <Heart size={13} fill={favs.has(p.id) ? '#C8792C' : 'none'} color={favs.has(p.id) ? '#C8792C' : '#79634E'} />
                       </button>
                     </div>
                   </div>
 
                   {/* Text */}
                   <div style={{ padding: bp.isMobile ? '9px 10px 11px' : '12px 14px 14px' }}>
-                    <div style={{ fontSize: 9, color: '#9A9088', textTransform: 'uppercase', letterSpacing: '.07em', marginBottom: 2 }}>
+                    <div style={{ fontSize: 9, color: '#79634E', textTransform: 'uppercase', letterSpacing: '.07em', marginBottom: 2 }}>
                       {p.category_name || '—'}
                     </div>
-                    <div style={{ fontSize: bp.isMobile ? 12 : 13.5, fontWeight: 500, color: '#1C1815', lineHeight: 1.35, marginBottom: bp.isMobile ? 7 : 10, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                    <div style={{ fontSize: bp.isMobile ? 12 : 13.5, fontWeight: 500, color: '#5B4632', lineHeight: 1.35, marginBottom: bp.isMobile ? 7 : 10, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                       {p.name}
                     </div>
                     <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 4 }}>
@@ -292,12 +292,12 @@ export default function ProductsPage() {
                         <div style={{ fontSize: bp.isMobile ? 13 : 15, fontWeight: 700, letterSpacing: '-.3px' }}>
                           {p.base_price ? fmt(p.base_price) : 'On Request'}
                         </div>
-                        {p.moq_unit && !bp.isMobile && <div style={{ fontSize: 11, color: '#9A9088', marginTop: 1 }}>MOQ {p.min_order_quantity} {p.moq_unit}</div>}
+                        {p.moq_unit && !bp.isMobile && <div style={{ fontSize: 11, color: '#79634E', marginTop: 1 }}>MOQ {p.min_order_quantity} {p.moq_unit}</div>}
                       </div>
                       <button onClick={e => handleGetQuote(e, p)}
-                        style={{ flexShrink: 0, padding: bp.isMobile ? '5px 9px' : '6px 12px', borderRadius: 7, border: '1.5px solid #1C1815', background: '#fff', color: '#1C1815', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: bp.isMobile ? 11 : 12, transition: 'background .12s, color .12s' }}
-                        onMouseEnter={e => { e.currentTarget.style.background = '#1C1815'; e.currentTarget.style.color = '#fff'; }}
-                        onMouseLeave={e => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.color = '#1C1815'; }}>
+                        style={{ flexShrink: 0, padding: bp.isMobile ? '5px 9px' : '6px 12px', borderRadius: 7, border: '1.5px solid #5B4632', background: '#fff', color: '#5B4632', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: bp.isMobile ? 11 : 12, transition: 'background .12s, color .12s' }}
+                        onMouseEnter={e => { e.currentTarget.style.background = '#5B4632'; e.currentTarget.style.color = '#fff'; }}
+                        onMouseLeave={e => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.color = '#5B4632'; }}>
                         Quote
                       </button>
                     </div>

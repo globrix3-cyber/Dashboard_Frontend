@@ -11,12 +11,12 @@ import { formatCurrency, resolveImageUrl } from '../utils/helpers';
 
 /* ── Design tokens ─────────────────────────────────────────────────────────── */
 const T = {
-  ink:        '#1C1815',
-  muted:      '#7A7068',
-  borderSoft: '#EDE8DF',
-  cream:      '#FDF8F2',
+  ink:        '#5B4632',
+  muted:      '#79634E',
+  borderSoft: '#E3D5C1',
+  cream:      '#FDF9F1',
   emerald:    '#1A7A4A', emeraldLt: '#EAF5EF',
-  saffron:    '#C4773A', saffronLt: '#FDF1E8',
+  saffron:    '#C8792C', saffronLt: '#FDF1E8',
   navy:       '#1B3175', navyLt:    '#EEF2FB',
   gold:       '#B8730A', goldLt:    '#FDF5E2',
   red:        '#DC2626', redLt:     '#FEF2F2',

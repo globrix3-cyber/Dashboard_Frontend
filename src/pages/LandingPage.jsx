@@ -28,7 +28,7 @@ export default function LandingPage() {
   };
 
   return (
-    <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: '#FDF8F2', minHeight: '100vh', overflowX: 'hidden' }}>
+    <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: '#FDF9F1', minHeight: '100vh', overflowX: 'hidden' }}>
       <LandingNavbar />
       <HeroSection />
 <CategoryNavBar activeCategory={activeCategory} onSelect={handleCategorySelect} />

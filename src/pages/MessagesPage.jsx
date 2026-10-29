@@ -13,13 +13,13 @@ import { formatDate } from '../utils/helpers';
 
 const C = {
   navy:       '#1B3175', navyLt:     '#EEF2FB',
-  saffron:    '#D9600A', saffronLt:  '#FDF1E8',
+  saffron:    '#C8792C', saffronLt:  '#FDF1E8',
   emerald:    '#1A7A4A', emeraldLt:  '#EAF5EF',
   gold:       '#B8730A', goldLt:     '#FDF5E2',
-  ink:        '#1C1815', inkSoft:    '#3D3731',
-  muted:      '#7A7068', border:     '#D4C9B8',
-  borderSoft: '#E6DED0', cream:      '#F0E8DA',
-  warmWhite:  '#FDF8F2',
+  ink:        '#5B4632', inkSoft:    '#2B2016',
+  muted:      '#79634E', border:     '#D4C9B8',
+  borderSoft: '#E3D5C1', cream:      '#F0E8DA',
+  warmWhite:  '#FDF9F1',
 };
 
 /* ── helpers ────────────────────────────────────────────────────────────────── */
