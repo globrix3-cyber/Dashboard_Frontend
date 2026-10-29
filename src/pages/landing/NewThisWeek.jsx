@@ -19,8 +19,8 @@ const FALLBACK_COLORS = [
 function MiniCardSkeleton() {
   return (
     <div style={{ background: T.w, borderRadius: 12, overflow: 'hidden', border: `1.5px solid ${T.bs}` }}>
-      <div style={{ height: 110, background: 'linear-gradient(90deg,#f0ebe3 25%,#e8e1d8 50%,#f0ebe3 75%)', backgroundSize: '200% 100%', animation: 'shimmer 1.4s infinite' }} />
-      <div style={{ padding: '9px 11px 12px', display: 'flex', flexDirection: 'column', gap: 6 }}>
+      <div style={{ aspectRatio: '1 / 1', background: 'linear-gradient(90deg,#f0ebe3 25%,#e8e1d8 50%,#f0ebe3 75%)', backgroundSize: '200% 100%', animation: 'shimmer 1.4s infinite' }} />
+      <div style={{ padding: '14px 16px 18px', display: 'flex', flexDirection: 'column', gap: 8 }}>
         <div style={{ height: 8, width: '55%', borderRadius: 4, background: '#e8e1d8' }} />
         <div style={{ height: 10, width: '80%', borderRadius: 4, background: '#e8e1d8' }} />
         <div style={{ height: 10, width: '40%', borderRadius: 4, background: '#e8e1d8' }} />
@@ -56,7 +56,7 @@ function MiniCard({ product, index, onLoginRequired, isLoggedIn }) {
         textDecoration: 'none', display: 'block',
       }}
     >
-      <div style={{ height: 110, position: 'relative', overflow: 'hidden' }}>
+      <div style={{ aspectRatio: '1 / 1', position: 'relative', overflow: 'hidden' }}>
         {imgUrl ? (
           <>
             <img
@@ -71,25 +71,25 @@ function MiniCard({ product, index, onLoginRequired, isLoggedIn }) {
           </div>
         )}
         <div style={{ position: 'absolute', top: 8, left: 8 }}>
-          <span style={{ background: 'rgba(200,121,44,.92)', backdropFilter: 'blur(6px)', color: '#fff', fontSize: 7, fontWeight: 800, padding: '3px 7px', borderRadius: 4, letterSpacing: '.08em' }}>NEW</span>
+          <span style={{ background: 'rgba(200,121,44,.92)', backdropFilter: 'blur(6px)', color: '#fff', fontSize: 9, fontWeight: 800, padding: '4px 9px', borderRadius: 4, letterSpacing: '.08em' }}>NEW</span>
         </div>
       </div>
-      <div style={{ padding: '9px 11px 12px' }}>
-        <div style={{ fontSize: 9, color: T.t, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.05em', marginBottom: 3, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+      <div style={{ padding: '14px 16px 18px' }}>
+        <div style={{ fontSize: 11, color: T.t, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.05em', marginBottom: 5, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
           {product.category_name || 'Uncategorized'}
         </div>
-        <div style={{ fontSize: 11, fontWeight: 700, color: T.ink, lineHeight: 1.35, marginBottom: 5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+        <div style={{ fontSize: 15, fontWeight: 700, color: T.ink, lineHeight: 1.35, marginBottom: 8, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
           {product.name}
         </div>
         {isLoggedIn ? (
-          <div style={{ fontSize: 12, fontWeight: 800, color: T.ink }}>{priceStr}</div>
+          <div style={{ fontSize: 16, fontWeight: 800, color: T.ink }}>{priceStr}</div>
         ) : (
           <div
             onClick={e => { e.preventDefault(); onLoginRequired(); }}
             style={{ position: 'relative', cursor: 'pointer', display: 'inline-flex', alignItems: 'center' }}
           >
-            <div style={{ fontSize: 12, fontWeight: 800, color: T.ink, filter: 'blur(5px)', userSelect: 'none', pointerEvents: 'none' }}>{priceStr}</div>
-            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', gap: 3, fontSize: 9, color: '#79634E', fontWeight: 700, whiteSpace: 'nowrap' }}>
+            <div style={{ fontSize: 16, fontWeight: 800, color: T.ink, filter: 'blur(5px)', userSelect: 'none', pointerEvents: 'none' }}>{priceStr}</div>
+            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', gap: 4, fontSize: 11, color: '#79634E', fontWeight: 700, whiteSpace: 'nowrap' }}>
               🔒 Sign in
             </div>
           </div>
@@ -107,18 +107,19 @@ export default function NewThisWeek() {
 
   const [products, setProducts] = useState([]);
   const [loading,  setLoading]  = useState(true);
+  const [viewAllHov, setViewAllHov] = useState(false);
 
   useEffect(() => {
     api.getProducts()
       .then(res => {
         const list = Array.isArray(res) ? res : (res?.data ?? []);
-        setProducts(list.slice(0, 6));
+        setProducts(list.slice(0, 8));
       })
       .catch(() => setProducts([]))
       .finally(() => setLoading(false));
   }, []);
 
-  const cols = bp.isMobile ? 'repeat(2,1fr)' : bp.isTablet ? 'repeat(3,1fr)' : 'repeat(6,1fr)';
+  const cols = bp.isMobile ? 'repeat(2,1fr)' : 'repeat(4,1fr)';
   const showSkeletons = loading;
   const showEmpty = !loading && products.length === 0;
 
@@ -130,9 +131,6 @@ export default function NewThisWeek() {
             <span style={{ background: `linear-gradient(135deg,${T.t},${T.td})`, color: '#fff', fontSize: 9, fontWeight: 800, padding: '4px 12px', borderRadius: 5, letterSpacing: '.08em', textTransform: 'uppercase' }}>New This Week</span>
             <h2 style={sectionTitle}>Just listed</h2>
           </div>
-          <button onClick={openLogin} style={{ fontSize: 13, color: T.t, fontWeight: 600, background: T.tl, border: `1.5px solid rgba(200,121,44,.25)`, borderRadius: 7, padding: '8px 16px', cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>
-            See all new arrivals →
-          </button>
         </div>
 
         {showEmpty ? (
@@ -140,13 +138,29 @@ export default function NewThisWeek() {
             No products listed yet — check back soon!
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: cols, gap: 12 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: cols, gap: bp.isMobile ? 12 : 20 }}>
             {showSkeletons
-              ? Array.from({ length: 6 }).map((_, i) => <MiniCardSkeleton key={i} />)
+              ? Array.from({ length: 8 }).map((_, i) => <MiniCardSkeleton key={i} />)
               : products.map((p, i) => <MiniCard key={p.id} product={p} index={i} onLoginRequired={openLogin} isLoggedIn={isLoggedIn} />)
             }
           </div>
         )}
+
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 36 }}>
+          <Link
+            to="/products"
+            onMouseEnter={() => setViewAllHov(true)}
+            onMouseLeave={() => setViewAllHov(false)}
+            style={{
+              display: 'inline-block', padding: '14px 40px', borderRadius: 4,
+              background: viewAllHov ? '#2B2016' : '#5B4632', color: '#fff',
+              fontSize: 14, fontWeight: 600, letterSpacing: '.04em',
+              textDecoration: 'none', transition: 'background .2s ease',
+            }}
+          >
+            View all products
+          </Link>
+        </div>
       </div>
       <style>{`
         @keyframes shimmer {

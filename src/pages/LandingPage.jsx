@@ -6,6 +6,7 @@ import CategoryNavBar     from './landing/CategoryNavBar';
 import ShopByCategory     from './landing/ShopByCategory';
 import FeaturedSuppliers  from './landing/FeaturedSuppliers';
 import NewThisWeek        from './landing/NewThisWeek';
+import RetailAudience     from './landing/RetailAudience';
 import BrowseByRegion     from './landing/BrowseByRegion';
 import SourceConfidently  from './landing/SourceConfidently';
 import StatsSection       from './landing/StatsSection';
@@ -31,10 +32,11 @@ export default function LandingPage() {
     <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: '#FDF9F1', minHeight: '100vh', overflowX: 'hidden' }}>
       <LandingNavbar />
       <HeroSection />
-<CategoryNavBar activeCategory={activeCategory} onSelect={handleCategorySelect} />
+      <CategoryNavBar activeCategory={activeCategory} onSelect={handleCategorySelect} />
       <ShopByCategory activeCategory={activeCategory} onCategoryChange={handleCategorySelect} />
       <FeaturedSuppliers />
       <NewThisWeek />
+      <RetailAudience />
       <BrowseByRegion />
       <SourceConfidently />
       <StatsSection />

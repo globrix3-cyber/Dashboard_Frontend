@@ -12,7 +12,6 @@ export default function LandingNavbar() {
   const [query, setQuery]       = useState('');
 
   const openLogin        = () => { dispatch(toggleLogin(true)); setMenuOpen(false); };
-  const openSupplierRegister = () => { dispatch(toggleLogin({ show: true, intent: 'supplier' })); setMenuOpen(false); };
   const handleSearch = (e) => { e.preventDefault(); dispatch(toggleLogin(true)); };
 
   /* ── Desktop / Tablet ───────────────────────────────────────────────── */
@@ -20,7 +19,7 @@ export default function LandingNavbar() {
     <nav style={{
       background: '#fff',
       borderBottom: '1px solid #E3D5C1',
-      height: bp.isTablet ? 58 : 64,
+      height: bp.isTablet ? 70 : 84,
       display: 'flex',
       alignItems: 'center',
       padding: bp.isTablet ? '0 24px' : '0 48px',
@@ -34,15 +33,15 @@ export default function LandingNavbar() {
         style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, flexShrink: 0 }}
       >
         <span style={{
-          fontFamily: "'DM Sans',sans-serif",
-          fontSize: bp.isTablet ? 13 : 15,
-          fontWeight: 800,
+          fontFamily: "'Cormorant Garamond', Georgia, serif",
+          fontSize: bp.isTablet ? 24 : 28,
+          fontWeight: 700,
           color: '#5B4632',
-          letterSpacing: '0.04em',
+          letterSpacing: '.14em',
           textTransform: 'uppercase',
           whiteSpace: 'nowrap',
         }}>
-          G L O B R I X A
+          GLOBRIXA
         </span>
       </button>
 
@@ -52,12 +51,12 @@ export default function LandingNavbar() {
           onClick={openLogin}
           style={{
             display: 'flex', alignItems: 'center', gap: 5,
-            padding: '7px 14px',
+            padding: '9px 16px',
             marginLeft: 24,
             borderRadius: 6,
             border: '1.5px solid #E3D5C1',
             background: '#fff',
-            fontSize: 13, fontWeight: 500, color: '#5B4632',
+            fontSize: 15, fontWeight: 500, color: '#5B4632',
             cursor: 'pointer', fontFamily: 'inherit',
             flexShrink: 0, whiteSpace: 'nowrap',
             transition: 'border-color .15s',
@@ -82,7 +81,7 @@ export default function LandingNavbar() {
             display: 'flex', alignItems: 'center',
             border: '1.5px solid #E3D5C1',
             borderRadius: 100,
-            height: bp.isTablet ? 38 : 42,
+            height: bp.isTablet ? 44 : 48,
             padding: '0 16px', gap: 10,
             background: '#FDF9F1',
             transition: 'border-color .15s',
@@ -90,7 +89,7 @@ export default function LandingNavbar() {
           onFocusCapture={e => { e.currentTarget.style.borderColor = '#C8792C'; }}
           onBlurCapture={e => { e.currentTarget.style.borderColor = '#E3D5C1'; }}
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#79634E" strokeWidth="2" style={{ flexShrink: 0 }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#79634E" strokeWidth="2" style={{ flexShrink: 0 }}>
             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
           </svg>
           <input
@@ -99,7 +98,7 @@ export default function LandingNavbar() {
             onChange={e => setQuery(e.target.value)}
             onFocus={() => dispatch(toggleLogin(true))}
             placeholder="Search wholesale products or brands"
-            style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontSize: 13, color: '#5B4632', fontFamily: 'inherit' }}
+            style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontSize: 15, color: '#5B4632', fontFamily: 'inherit' }}
           />
         </div>
       </form>
@@ -107,20 +106,17 @@ export default function LandingNavbar() {
       {/* Right nav — pushed to far right by the flex-1 search */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 0, flexShrink: 0 }}>
         {!bp.isTablet && (
-          <>
-            <NavLink onClick={() => navigate('/blog')}>Blog</NavLink>
-            <NavLink onClick={openSupplierRegister}>Sign up to sell</NavLink>
-          </>
+          <NavLink onClick={() => navigate('/blog')}>Blog</NavLink>
         )}
         <NavLink onClick={openLogin}>Sign in</NavLink>
         <button
           onClick={openLogin}
           style={{
             marginLeft: 10,
-            padding: bp.isTablet ? '8px 18px' : '9px 22px',
+            padding: bp.isTablet ? '11px 24px' : '13px 32px',
             borderRadius: 100,
             background: '#5B4632', color: '#fff',
-            fontSize: 13, fontWeight: 600,
+            fontSize: 15, fontWeight: 700, letterSpacing: '.06em',
             border: 'none', cursor: 'pointer',
             fontFamily: 'inherit', whiteSpace: 'nowrap',
             transition: 'background .15s',
@@ -128,7 +124,7 @@ export default function LandingNavbar() {
           onMouseEnter={e => { e.currentTarget.style.background = '#2B2016'; }}
           onMouseLeave={e => { e.currentTarget.style.background = '#5B4632'; }}
         >
-          Join free
+          GET QUOTE
         </button>
       </div>
     </nav>
@@ -139,13 +135,13 @@ export default function LandingNavbar() {
     <>
       <nav style={{
         background: '#fff', borderBottom: '1px solid #E3D5C1',
-        height: 54, display: 'flex', alignItems: 'center',
+        height: 64, display: 'flex', alignItems: 'center',
         justifyContent: 'space-between', padding: '0 16px',
         position: 'sticky', top: 0, zIndex: 1000,
       }}>
         <button onClick={() => navigate('/')} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
-          <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 12, fontWeight: 800, color: '#5B4632', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
-            G L O B R I X A
+          <span style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 22, fontWeight: 700, color: '#5B4632', letterSpacing: '.14em', textTransform: 'uppercase' }}>
+            GLOBRIXA
           </span>
         </button>
         <button
@@ -168,7 +164,7 @@ export default function LandingNavbar() {
 
       {menuOpen && (
         <div
-          style={{ position: 'fixed', top: 54, left: 0, right: 0, bottom: 0, background: 'rgba(15,14,13,.55)', backdropFilter: 'blur(4px)', zIndex: 999 }}
+          style={{ position: 'fixed', top: 64, left: 0, right: 0, bottom: 0, background: 'rgba(15,14,13,.55)', backdropFilter: 'blur(4px)', zIndex: 999 }}
           onClick={() => setMenuOpen(false)}
         >
           <div onClick={e => e.stopPropagation()} style={{ background: '#fff', padding: '20px 18px 28px', borderBottom: '1px solid #E3D5C1' }}>
@@ -179,14 +175,13 @@ export default function LandingNavbar() {
             {[
               ['Blog', () => { navigate('/blog'); setMenuOpen(false); }],
               ['Our Story', () => { navigate('/our-story'); setMenuOpen(false); }],
-              ['Sign up to sell', openSupplierRegister],
             ].map(([label, fn]) => (
               <button key={label} onClick={fn} style={{ display: 'block', width: '100%', textAlign: 'left', padding: '13px 4px', fontSize: 15, fontWeight: 500, color: '#5B4632', background: 'none', border: 'none', borderBottom: '1px solid #F0EBE4', cursor: 'pointer', fontFamily: 'inherit' }}>
                 {label}
               </button>
             ))}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 20 }}>
-              <button onClick={openLogin} style={{ width: '100%', padding: '13px', borderRadius: 100, background: '#5B4632', color: '#fff', fontSize: 14, fontWeight: 700, border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}>Join free</button>
+              <button onClick={openLogin} style={{ width: '100%', padding: '13px', borderRadius: 100, background: '#5B4632', color: '#fff', fontSize: 14, fontWeight: 700, border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}>GET QUOTE</button>
               <button onClick={openLogin} style={{ width: '100%', padding: '12px', borderRadius: 100, background: 'none', color: '#5B4632', fontSize: 14, fontWeight: 500, border: '1.5px solid #E3D5C1', cursor: 'pointer', fontFamily: 'inherit' }}>Sign in</button>
             </div>
           </div>
@@ -200,7 +195,7 @@ function NavLink({ onClick, children }) {
   return (
     <button
       onClick={onClick}
-      style={{ padding: '6px 14px', fontSize: 13, fontWeight: 500, color: '#79634E', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit', borderRadius: 6, transition: 'color .15s', whiteSpace: 'nowrap' }}
+      style={{ padding: '6px 14px', fontSize: 15, fontWeight: 500, color: '#79634E', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit', borderRadius: 6, transition: 'color .15s', whiteSpace: 'nowrap' }}
       onMouseEnter={e => { e.currentTarget.style.color = '#5B4632'; }}
       onMouseLeave={e => { e.currentTarget.style.color = '#79634E'; }}
     >

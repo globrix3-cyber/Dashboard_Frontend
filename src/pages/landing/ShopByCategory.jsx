@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { toggleLogin } from '../../features/auth/authSlice';
 import { T, shadow, eyebrow, sectionTitle } from './tokens';
-import { CAT_HERO, CAT_SUB } from './data';
+import { CAT_SUB } from './data';
 import { IMG } from './images';
 import { useBreakpoint, rPad, rW } from '../../hooks/useBreakpoint';
 
@@ -120,44 +120,34 @@ export const CAT_DATA = {
   },
 };
 
-// ── Hero cards for "All" view ─────────────────────────────────────────────────
-const CAT_IMAGES = {
-  'Wall Décor':            IMG.blueCeramicVases,
-  'Soft Furnishings':      IMG.jaipurTextiles,
-  'Handicrafts & Artisan': IMG.wovenBaskets,
-  'Kitchen & Dining':      IMG.ceramicKitchenware,
-};
+// ── Bento cards for "All" view ────────────────────────────────────────────────
+// First entry is the large feature card (spans both rows on desktop/tablet).
+const BENTO_CATS = [
+  { name: 'Handicrafts & Artisan',  img: IMG.wovenBaskets },
+  { name: 'Wall Décor',             img: IMG.blueCeramicVases },
+  { name: 'Soft Furnishings',       img: IMG.jaipurTextiles },
+  { name: 'Kitchen & Dining',       img: IMG.ceramicKitchenware },
+  { name: 'Decorative Accessories', img: IMG.ceramicVasesLamps },
+];
 
-function CatHeroCard({ item, onAction }) {
+function CatBentoCard({ item, onAction, isMobile, style }) {
   const [hov, setHov] = useState(false);
-  const photo = CAT_IMAGES[item.name];
   return (
     <div onClick={onAction} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)} style={{
-      borderRadius: 18, overflow: 'hidden', position: 'relative', cursor: 'pointer',
-      aspectRatio: '3/4',
-      display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
-      transform: hov ? 'translateY(-6px)' : 'none',
-      boxShadow: hov ? shadow.lg : shadow.sm,
-      transition: '.28s cubic-bezier(.22,.68,0,1.2)',
+      position: 'relative', overflow: 'hidden', borderRadius: 4, cursor: 'pointer',
+      background: '#E3D5C1', minHeight: 0, ...style,
     }}>
-      {photo ? (
-        <img src={photo} alt={item.name} loading="lazy" decoding="async"
-          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', transform: hov ? 'scale(1.07)' : 'scale(1)', transition: 'transform .55s ease' }}
-        />
-      ) : (
-        <div style={{ position: 'absolute', inset: 0, background: item.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 80 }}>{item.emoji}</div>
-      )}
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top,rgba(18,14,10,.88) 0%,rgba(18,14,10,.22) 50%,rgba(18,14,10,.04) 100%)' }} />
-      {hov && <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,rgba(200,121,44,.12) 0%,transparent 60%)', pointerEvents: 'none' }} />}
-      <div style={{ position: 'relative', zIndex: 2, padding: '20px 18px' }}>
-        <div style={{ marginBottom: 8 }}>
-          <span style={{ display: 'inline-block', background: hov ? 'rgba(200,121,44,.9)' : 'rgba(255,255,255,.12)', backdropFilter: 'blur(8px)', border: hov ? '1px solid rgba(200,121,44,.5)' : '1px solid rgba(255,255,255,.18)', color: '#fff', fontSize: 9, fontWeight: 800, padding: '4px 11px', borderRadius: 20, letterSpacing: '.1em', textTransform: 'uppercase', transition: '.22s' }}>{item.chip}</span>
-        </div>
-        <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: 20, fontWeight: 700, color: '#fff', marginBottom: 4, lineHeight: 1.15 }}>{item.name}</div>
-        <div style={{ fontSize: 11, color: 'rgba(255,255,255,.6)', marginBottom: 10 }}>{item.count}</div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 5, color: hov ? T.tm : 'rgba(255,255,255,.45)', fontSize: 11, fontWeight: 600, transition: '.22s', transform: hov ? 'translateX(4px)' : 'none' }}>
-          Browse {item.name} <span style={{ fontSize: 13 }}>→</span>
-        </div>
+      <img src={item.img} alt={item.name} loading="lazy" decoding="async"
+        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block', transform: hov ? 'scale(1.05)' : 'scale(1)', transition: 'transform .6s ease' }}
+      />
+      <div style={{
+        position: 'absolute', left: 12, right: 12, bottom: 12,
+        background: 'rgba(227,213,193,.88)', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)',
+        borderRadius: 4, padding: '10px 14px',
+        fontFamily: "'Cormorant Garamond','Playfair Display',Georgia,serif",
+        fontSize: isMobile ? 16 : 22, fontWeight: 500, color: '#5B4632', lineHeight: 1.15,
+      }}>
+        {item.name}
       </div>
     </div>
   );
@@ -226,9 +216,19 @@ export default function ShopByCategory({ activeCategory = 'All', onCategoryChang
   const bp        = useBreakpoint();
   const openLogin = () => dispatch(toggleLogin(true));
 
-  const heroColumns = bp.isMobile ? 'repeat(2,1fr)' : bp.isTablet ? 'repeat(2,1fr)' : 'repeat(4,1fr)';
-  const subColumns  = bp.isMobile ? 'repeat(3,1fr)' : bp.isTablet ? 'repeat(4,1fr)' : 'repeat(6,1fr)';
+  const subCats     = CAT_SUB.filter(item => item.name !== 'Decorative Accessories');
+  const subColumns  = bp.isMobile ? 'repeat(3,1fr)' : `repeat(${subCats.length + 1},1fr)`;
   const prodColumns = bp.isMobile ? 'repeat(2,1fr)' : bp.isTablet ? 'repeat(3,1fr)' : 'repeat(3,1fr)';
+
+  // Bento grid: desktop/tablet = 3 cols × 2 rows with card 1 spanning both rows.
+  // Mobile = 2 cols, card 1 full width, remaining 4 in a 2×2.
+  const bentoGrid = bp.isMobile
+    ? { gridTemplateColumns: 'repeat(2,1fr)' }
+    : { gridTemplateColumns: 'repeat(3,1fr)', gridTemplateRows: 'repeat(2,1fr)', height: bp.isTablet ? 480 : 620 };
+  const bentoCardStyle = (i) => {
+    if (bp.isMobile) return i === 0 ? { gridColumn: '1 / -1', aspectRatio: '16/10' } : { aspectRatio: '1/1' };
+    return i === 0 ? { gridColumn: '1', gridRow: '1 / span 2' } : {};
+  };
 
   const catData = CAT_DATA[activeCategory];
 
@@ -237,42 +237,52 @@ export default function ShopByCategory({ activeCategory = 'All', onCategoryChang
       <div style={{ ...rW }}>
 
         {/* Header */}
-        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 28, gap: 12, flexWrap: 'wrap' }}>
-          <div>
-            <div style={eyebrow}>
-              {activeCategory === 'All' ? 'Browse' : 'Category'}
+        {activeCategory === 'All' ? (
+          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 28, gap: 12, flexWrap: 'wrap' }}>
+            <div>
+              <div style={{ ...eyebrow, color: '#79634E', fontSize: 11, letterSpacing: '.18em' }}>Shop by Category</div>
+              <h2 style={{ ...sectionTitle, fontWeight: 500, margin: 0 }}>Find your category</h2>
             </div>
-            <h2 style={sectionTitle}>
-              {activeCategory === 'All' ? 'Shop by Category' : activeCategory}
-            </h2>
-            <p style={{ fontSize: 13, color: T.mu, marginTop: 6 }}>
-              {activeCategory === 'All' ? '24 categories · 5,000+ verified suppliers' : catData?.meta}
-            </p>
+            <button onClick={openLogin} style={{
+              fontSize: 12, letterSpacing: '.12em', textTransform: 'uppercase', fontWeight: 600,
+              color: '#5B4632', background: 'none', border: 'none', borderBottom: '1px solid #5B4632',
+              borderRadius: 0, padding: '0 0 3px', cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap',
+            }}>
+              View all
+            </button>
           </div>
+        ) : (
+          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 28, gap: 12, flexWrap: 'wrap' }}>
+            <div>
+              <div style={eyebrow}>Category</div>
+              <h2 style={sectionTitle}>{activeCategory}</h2>
+              <p style={{ fontSize: 13, color: T.mu, marginTop: 6 }}>{catData?.meta}</p>
+            </div>
 
-          <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-            {activeCategory !== 'All' && (
+            <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
               <button
                 onClick={() => onCategoryChange?.('All')}
                 style={{ fontSize: 13, color: T.mu, fontWeight: 500, background: '#fff', border: `1.5px solid ${T.bs}`, borderRadius: 7, padding: '8px 14px', cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}
               >
                 ← All categories
               </button>
-            )}
-            <button onClick={openLogin} style={{ fontSize: 13, color: T.t, fontWeight: 600, background: T.tl, border: `1.5px solid rgba(200,121,44,.25)`, borderRadius: 7, padding: '8px 16px', cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>
-              {activeCategory === 'All' ? 'All categories →' : `View all ${activeCategory} →`}
-            </button>
+              <button onClick={openLogin} style={{ fontSize: 13, color: T.t, fontWeight: 600, background: T.tl, border: `1.5px solid rgba(200,121,44,.25)`, borderRadius: 7, padding: '8px 16px', cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>
+                {`View all ${activeCategory} →`}
+              </button>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Content */}
         {activeCategory === 'All' ? (
           <>
-            <div style={{ display: 'grid', gridTemplateColumns: heroColumns, gap: 12, marginBottom: 10 }}>
-              {CAT_HERO.map(item => <CatHeroCard key={item.name} item={item} onAction={openLogin} />)}
+            <div style={{ display: 'grid', gap: 14, ...bentoGrid }}>
+              {BENTO_CATS.map((item, i) => (
+                <CatBentoCard key={item.name} item={item} isMobile={bp.isMobile} style={bentoCardStyle(i)} onAction={openLogin} />
+              ))}
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: subColumns, gap: 8 }}>
-              {CAT_SUB.map(item => <CatSubCard key={item.name} item={item} onAction={openLogin} />)}
+            <div style={{ display: 'grid', gridTemplateColumns: subColumns, gap: 8, marginTop: 14 }}>
+              {subCats.map(item => <CatSubCard key={item.name} item={item} onAction={openLogin} />)}
               <CatSubCard cta onAction={openLogin} />
             </div>
           </>
