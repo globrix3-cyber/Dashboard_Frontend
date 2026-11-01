@@ -6,7 +6,7 @@ const SERIF = "'Cormorant Garamond', Georgia, serif";
 
 const COLLECTIONS = [
   { name: 'Home & Living',         body: 'Everyday objects, beautifully considered.', img: '/images/v3/ceramics.jpg',              to: '/products?category=Home%20%26%20Garden' },
-  { name: 'Fashion & Accessories', body: 'Small details. A signature style.',         img: '/images/v3/category-leather-bags.jpg', to: '/products?category=Apparel%20%26%20Textiles' },
+  { name: 'Fashion & Accessories', body: 'Small details. A signature style.',         img: '/images/v3/bags.jpg', to: '/products?category=Apparel%20%26%20Textiles' },
   { name: 'Beauty & Wellness',     body: 'A little ritual goes a long way.',          img: '/images/v3/skincare.jpg',              to: '/products?category=Beauty%20%26%20Personal%20Care' },
   { name: 'Gifts & Lifestyle',     body: 'Thoughtful things, waiting to be found.',   img: '/images/v3/decor.jpg',                 to: '/products?category=Handicrafts%20%26%20Gifts' },
 ];
