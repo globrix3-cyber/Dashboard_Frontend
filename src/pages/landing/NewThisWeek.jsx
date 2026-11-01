@@ -84,7 +84,7 @@ export default function NewThisWeek() {
   const [sort,     setSort]     = useState('featured');
 
   useEffect(() => {
-    api.getProducts()
+    api.getProducts({ limit: 8 })
       .then(res => {
         const list = Array.isArray(res) ? res : (res?.data ?? []);
         setProducts(list.slice(0, 8));
