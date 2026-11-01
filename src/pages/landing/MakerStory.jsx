@@ -5,10 +5,11 @@ export default function MakerStory() {
   const navigate = useNavigate();
   const bp       = useBreakpoint();
   return (
-    <section id="makers" style={{ display: 'grid', gridTemplateColumns: bp.isMobile ? '1fr' : '1fr 1fr', background: '#5B4632' }}>
+    <section id="makers" style={{ scrollMarginTop: 90, display: 'grid', gridTemplateColumns: bp.isMobile ? '1fr' : '1fr 1fr', background: '#5B4632' }}>
       <img src="/images/v3/furniture-design-workspace-edited.jpg" alt="Furniture designer sketching an armchair" loading="lazy" decoding="async"
         style={{ width: '100%', height: bp.isMobile ? 280 : '100%', minHeight: bp.isMobile ? 0 : 510, objectFit: 'cover', display: 'block' }} />
       <div style={{ padding: bp.isMobile ? '40px 18px' : bp.isTablet ? '48px 32px' : '0 80px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start' }}>
+        <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: '.2em', color: '#F4D9A0', marginBottom: 16 }}>BEHIND EVERY FIND, A MAKER</div>
         <h2 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: bp.isMobile ? 36 : 48, fontWeight: 500, lineHeight: 1.1, color: '#F4D9A0', margin: 0 }}>
           Made with purpose.<br />Chosen with <em>care.</em>
         </h2>

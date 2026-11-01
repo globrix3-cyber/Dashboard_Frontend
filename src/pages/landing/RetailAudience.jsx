@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { toggleLogin } from '../../features/auth/authSlice';
-import { useBreakpoint, rPad, rW } from '../../hooks/useBreakpoint';
+import { useBreakpoint, rGutter } from '../../hooks/useBreakpoint';
 
 const LEFT_IMAGE  = '/images/v3/boutique-studio-portrait.jpg';
 const RIGHT_IMAGE = '/images/v3/furniture-shop-portrait.jpg';
@@ -15,9 +15,9 @@ export default function RetailAudience() {
 
   const imgStyle = {
     width: '100%',
-    aspectRatio: bp.isMobile ? '4 / 3' : '4 / 5',
+    aspectRatio: bp.isMobile ? '4 / 3' : '1 / 1',
     objectFit: 'cover',
-    borderRadius: 4,
+    
     display: 'block',
   };
 
@@ -48,7 +48,7 @@ export default function RetailAudience() {
           background: btnHov ? '#C8792C' : '#C8792C',
           color: '#2B2016',
           padding: '13px 28px',
-          borderRadius: 4,
+          
           border: 'none',
           fontSize: 14,
           fontWeight: 600,
@@ -63,8 +63,8 @@ export default function RetailAudience() {
   );
 
   return (
-    <section style={{ background: '#5B4632', padding: rPad(bp) }}>
-      <div style={{ ...rW, display: 'grid', gridTemplateColumns: cols, gap: 40, alignItems: 'center' }}>
+    <section style={{ background: '#5B4632', padding: bp.isMobile ? '44px 0' : '62px 0' }}>
+      <div style={{ ...rGutter(bp), display: 'grid', gridTemplateColumns: cols, gap: bp.isMobile ? 28 : 56, alignItems: 'center' }}>
         {bp.isMobile ? (
           <>
             {text}
