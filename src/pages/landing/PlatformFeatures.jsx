@@ -15,7 +15,7 @@ function FeatureBlock({ f, bp }) {
         border: `1.5px solid ${hov ? 'rgba(200,121,44,.3)' : T.bs}`,
         borderRadius: 16,
         transition: '.18s',
-        boxShadow: hov ? '0 4px 20px rgba(28,25,21,.08)' : 'none',
+        boxShadow: hov ? '0 4px 20px rgba(43,32,22,.08)' : 'none',
       }}
     >
       <div style={{ width: 48, height: 48, borderRadius: 12, background: f.iconBg, border: `1.5px solid ${f.iconBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, marginBottom: 16 }}>{f.icon}</div>

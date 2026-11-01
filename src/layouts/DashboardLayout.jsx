@@ -13,22 +13,22 @@ const CSS_VARS = `
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap');
 
   :root {
-    --cream:        #F0E8DA;
-    --cream-mid:    #E8DFCF;
+    --cream:        #E3D5C1;
+    --cream-mid:    #E3D5C1;
     --cream-deep:   #E3D5C1;
     --warm-white:   #FDF9F1;
     --saffron:      #C8792C;
-    --saffron-lt:   #FDF1E8;
+    --saffron-lt:   #FDF9F1;
     --emerald:      #1A7A4A;
     --emerald-lt:   #EAF5EF;
-    --navy:         #1B3175;
-    --navy-lt:      #EEF2FB;
-    --gold:         #B8730A;
-    --gold-lt:      #FDF5E2;
+    --navy:         #5B4632;
+    --navy-lt:      #F0DCC0;
+    --gold:         #C8792C;
+    --gold-lt:      #FDF9F1;
     --ink:          #5B4632;
     --ink-soft:     #2B2016;
     --muted:        #79634E;
-    --border:       #D4C9B8;
+    --border:       #E3D5C1;
     --border-soft:  #E3D5C1;
   }
 `;
@@ -88,7 +88,7 @@ const ROLE_CONFIG = {
     searchPlaceholder: 'Search RFQs, buyers, orders…', cartPath: '/supplier-dashboard/orders',
   },
   admin: {
-    links: adminLinks, accent: '#1B3175', homePath: '/admin-dashboard',
+    links: adminLinks, accent: '#5B4632', homePath: '/admin-dashboard',
     searchPlaceholder: 'Search users, companies, orders…', cartPath: '/products',
   },
   guest: {
@@ -113,10 +113,10 @@ function AccountMenu({ userName, items, onNavigate, onLogout, onClose }) {
       <div onClick={onClose} style={{ position: 'fixed', inset: 0, zIndex: 199 }} />
       <div style={{
         position: 'absolute', top: 'calc(100% + 10px)', right: 0, width: 236,
-        background: '#fff', borderRadius: 14, border: '1px solid #E3D5C1',
-        boxShadow: '0 16px 48px rgba(28,24,21,.16)', overflow: 'hidden', zIndex: 200,
+        background: '#FDF9F1', borderRadius: 14, border: '1px solid #E3D5C1',
+        boxShadow: '0 16px 48px rgba(43,32,22,.16)', overflow: 'hidden', zIndex: 200,
       }}>
-        <div style={{ padding: '16px 18px', borderBottom: '1px solid #F2EDE4' }}>
+        <div style={{ padding: '16px 18px', borderBottom: '1px solid #E3D5C1' }}>
           <div style={{ fontSize: 16, fontWeight: 700, color: '#5B4632', fontFamily: "'Cormorant Garamond', serif" }}>Hi, {userName?.split(' ')[0] || userName}</div>
         </div>
         <div style={{ padding: 6, maxHeight: 320, overflowY: 'auto' }}>
@@ -125,14 +125,14 @@ function AccountMenu({ userName, items, onNavigate, onLogout, onClose }) {
               key={path}
               onClick={() => onNavigate(path)}
               style={{ display: 'block', width: '100%', textAlign: 'left', padding: '10px 12px', borderRadius: 8, border: 'none', background: 'transparent', cursor: 'pointer', fontSize: 13.5, color: '#5B4632', fontFamily: "'DM Sans', sans-serif" }}
-              onMouseEnter={e => { e.currentTarget.style.background = '#FBF6EF'; }}
+              onMouseEnter={e => { e.currentTarget.style.background = '#FDF9F1'; }}
               onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
             >
               {label}
             </button>
           ))}
         </div>
-        <div style={{ borderTop: '1px solid #F2EDE4', padding: 6 }}>
+        <div style={{ borderTop: '1px solid #E3D5C1', padding: 6 }}>
           <button
             onClick={onLogout}
             style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%', textAlign: 'left', padding: '10px 12px', borderRadius: 8, border: 'none', background: 'transparent', cursor: 'pointer', fontSize: 13.5, fontWeight: 600, color: '#C0392B', fontFamily: "'DM Sans', sans-serif" }}
@@ -154,8 +154,8 @@ function CategoryMenu({ onNavigate, onClose }) {
       <div onClick={onClose} style={{ position: 'fixed', inset: 0, zIndex: 199 }} />
       <div style={{
         position: 'absolute', top: 'calc(100% + 10px)', left: 0, width: 240,
-        background: '#fff', borderRadius: 14, border: '1px solid #E3D5C1',
-        boxShadow: '0 16px 48px rgba(28,24,21,.16)', overflow: 'hidden', zIndex: 200,
+        background: '#FDF9F1', borderRadius: 14, border: '1px solid #E3D5C1',
+        boxShadow: '0 16px 48px rgba(43,32,22,.16)', overflow: 'hidden', zIndex: 200,
       }}>
         <div style={{ padding: 6, maxHeight: 360, overflowY: 'auto' }}>
           {CATEGORY_NAV.map((label) => (
@@ -163,7 +163,7 @@ function CategoryMenu({ onNavigate, onClose }) {
               key={label}
               onClick={() => onNavigate(label)}
               style={{ display: 'block', width: '100%', textAlign: 'left', padding: '10px 12px', borderRadius: 8, border: 'none', background: 'transparent', cursor: 'pointer', fontSize: 13.5, color: '#5B4632', fontFamily: "'DM Sans', sans-serif" }}
-              onMouseEnter={e => { e.currentTarget.style.background = '#FBF6EF'; }}
+              onMouseEnter={e => { e.currentTarget.style.background = '#FDF9F1'; }}
               onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
             >
               {label}
@@ -181,8 +181,8 @@ function CurrencyMenu({ currencies, active, onSelect, onClose }) {
       <div onClick={onClose} style={{ position: 'fixed', inset: 0, zIndex: 199 }} />
       <div style={{
         position: 'absolute', top: 'calc(100% + 10px)', right: 0, width: 200,
-        background: '#fff', borderRadius: 14, border: '1px solid #E3D5C1',
-        boxShadow: '0 16px 48px rgba(28,24,21,.16)', overflow: 'hidden', zIndex: 200,
+        background: '#FDF9F1', borderRadius: 14, border: '1px solid #E3D5C1',
+        boxShadow: '0 16px 48px rgba(43,32,22,.16)', overflow: 'hidden', zIndex: 200,
       }}>
         <div style={{ padding: 6, maxHeight: 340, overflowY: 'auto' }}>
           {currencies.map(({ code, symbol, label }) => (
@@ -192,11 +192,11 @@ function CurrencyMenu({ currencies, active, onSelect, onClose }) {
               style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10,
                 width: '100%', textAlign: 'left', padding: '9px 12px', borderRadius: 8,
-                border: 'none', background: code === active ? '#FBF6EF' : 'transparent', cursor: 'pointer',
+                border: 'none', background: code === active ? '#FDF9F1' : 'transparent', cursor: 'pointer',
                 fontSize: 13, color: '#5B4632', fontFamily: "'DM Sans', sans-serif",
               }}
-              onMouseEnter={e => { e.currentTarget.style.background = '#FBF6EF'; }}
-              onMouseLeave={e => { e.currentTarget.style.background = code === active ? '#FBF6EF' : 'transparent'; }}
+              onMouseEnter={e => { e.currentTarget.style.background = '#FDF9F1'; }}
+              onMouseLeave={e => { e.currentTarget.style.background = code === active ? '#FDF9F1' : 'transparent'; }}
             >
               <span>{label}</span>
               <span style={{ color: '#79634E', fontWeight: 600 }}>{symbol} {code}</span>
@@ -292,7 +292,7 @@ function TopBar({ role }) {
   };
 
   return (
-    <header style={{ flexShrink: 0, zIndex: 100, background: '#fff', borderBottom: '1px solid #EFE9DF' }}>
+    <header style={{ flexShrink: 0, zIndex: 100, background: '#FDF9F1', borderBottom: '1px solid #FDF9F1' }}>
 
       {/* Row 1 — logo · all categories · search · language · setup guide · bell/account/cart */}
       <div style={{ height: 64, display: 'flex', alignItems: 'center', gap: bp.isMobile ? 10 : 16, padding: bp.isMobile ? '0 16px' : '0 32px' }}>
@@ -307,7 +307,7 @@ function TopBar({ role }) {
           <div style={{ position: 'relative', flexShrink: 0 }}>
             <button
               onClick={() => setCatMenuOpen(o => !o)}
-              style={{ display: 'flex', alignItems: 'center', gap: 6, height: 38, padding: '0 14px', borderRadius: 10, border: '1.5px solid #E3D5C1', background: catMenuOpen ? '#FDF9F1' : '#fff', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, color: '#5B4632', whiteSpace: 'nowrap' }}
+              style={{ display: 'flex', alignItems: 'center', gap: 6, height: 38, padding: '0 14px', borderRadius: 10, border: '1.5px solid #E3D5C1', background: catMenuOpen ? '#FDF9F1' : '#FDF9F1', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, color: '#5B4632', whiteSpace: 'nowrap' }}
             >
               All categories <ChevronDown size={14} color="#79634E" />
             </button>
@@ -321,7 +321,7 @@ function TopBar({ role }) {
         )}
 
         <div style={{ flex: 1, position: 'relative' }}>
-          <Search size={14} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: '#B0A89E', pointerEvents: 'none', zIndex: 1 }} />
+          <Search size={14} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: '#79634E', pointerEvents: 'none', zIndex: 1 }} />
           <input
             value={query}
             onChange={e => { setQuery(e.target.value); setShowDrop(true); }}
@@ -338,23 +338,23 @@ function TopBar({ role }) {
 
           {/* Autocomplete dropdown */}
           {showDrop && query.length >= 2 && (
-            <div style={{ position: 'absolute', top: 'calc(100% + 6px)', left: 0, right: 0, background: '#fff', border: '1.5px solid #E3D5C1', borderRadius: 14, overflow: 'hidden', boxShadow: '0 8px 32px rgba(28,24,21,0.13)', zIndex: 1000 }}>
+            <div style={{ position: 'absolute', top: 'calc(100% + 6px)', left: 0, right: 0, background: '#FDF9F1', border: '1.5px solid #E3D5C1', borderRadius: 14, overflow: 'hidden', boxShadow: '0 8px 32px rgba(43,32,22,0.13)', zIndex: 1000 }}>
               {suggestions.map((s, i) => (
                 <div key={i} onMouseDown={() => pickSuggestion(s)}
-                  style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', cursor: 'pointer', fontSize: 13, color: '#5B4632', borderBottom: '1px solid #F5F0EA', background: '#fff' }}
+                  style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', cursor: 'pointer', fontSize: 13, color: '#5B4632', borderBottom: '1px solid #E3D5C1', background: '#FDF9F1' }}
                   onMouseEnter={e => e.currentTarget.style.background = '#FDF9F1'}
-                  onMouseLeave={e => e.currentTarget.style.background = '#fff'}
+                  onMouseLeave={e => e.currentTarget.style.background = '#FDF9F1'}
                 >
                   {s.type === 'product'
                     ? <Search size={13} color="#79634E" style={{ flexShrink: 0 }} />
                     : <Tag size={13} color="#C8792C" style={{ flexShrink: 0 }} />}
                   <span style={{ flex: 1 }}>{highlightMatch(s.label, query)}</span>
-                  {s.type === 'category' && <span style={{ fontSize: 11, color: '#79634E', background: '#F5F0EA', padding: '2px 8px', borderRadius: 100, flexShrink: 0 }}>Category</span>}
+                  {s.type === 'category' && <span style={{ fontSize: 11, color: '#79634E', background: '#E3D5C1', padding: '2px 8px', borderRadius: 100, flexShrink: 0 }}>Category</span>}
                 </div>
               ))}
               <div onMouseDown={submitSearch}
                 style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 14px', cursor: 'pointer', fontSize: 12, fontWeight: 700, color: '#C8792C', background: '#FDF9F1' }}
-                onMouseEnter={e => e.currentTarget.style.background = '#FDF1E8'}
+                onMouseEnter={e => e.currentTarget.style.background = '#FDF9F1'}
                 onMouseLeave={e => e.currentTarget.style.background = '#FDF9F1'}
               >
                 <Search size={13} />
@@ -383,8 +383,8 @@ function TopBar({ role }) {
                   display: 'flex', alignItems: 'center', gap: 4,
                   height: 30, padding: '0 10px', borderRadius: 8,
                   border: '1.5px solid #E3D5C1',
-                  background: currency !== 'INR' ? '#5B4632' : '#fff',
-                  color:      currency !== 'INR' ? '#fff'     : '#2B2016',
+                  background: currency !== 'INR' ? '#5B4632' : '#FDF9F1',
+                  color:      currency !== 'INR' ? '#FDF9F1'     : '#2B2016',
                   cursor: currencyLoading ? 'not-allowed' : 'pointer',
                   fontFamily: "'DM Sans', sans-serif", fontSize: 12, fontWeight: 700,
                   transition: 'background .15s, color .15s',
@@ -407,7 +407,7 @@ function TopBar({ role }) {
           {!bp.isMobile && !isGuest && (
             <button
               onClick={() => navigate('/edit-profile')}
-              style={{ height: 38, padding: '0 18px', borderRadius: 100, border: '1.5px solid #E3D5C1', background: '#fff', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 12.5, fontWeight: 600, color: '#5B4632', whiteSpace: 'nowrap', flexShrink: 0 }}
+              style={{ height: 38, padding: '0 18px', borderRadius: 100, border: '1.5px solid #E3D5C1', background: '#FDF9F1', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 12.5, fontWeight: 600, color: '#5B4632', whiteSpace: 'nowrap', flexShrink: 0 }}
             >
               Setup guide
             </button>
@@ -423,7 +423,7 @@ function TopBar({ role }) {
               </button>
               <button
                 onClick={openLogin}
-                style={{ height: 38, padding: '0 20px', borderRadius: 100, border: 'none', background: accent, color: '#fff', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 700, whiteSpace: 'nowrap' }}
+                style={{ height: 38, padding: '0 20px', borderRadius: 100, border: 'none', background: accent, color: '#FDF9F1', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 700, whiteSpace: 'nowrap' }}
               >
                 Sign up
               </button>
@@ -437,7 +437,7 @@ function TopBar({ role }) {
                 >
                   <Bell size={15} color="#79634E" />
                 </button>
-                <div style={{ position: 'absolute', top: -2, right: -2, width: 8, height: 8, borderRadius: '50%', background: '#DC2626', border: '1.5px solid #fff' }} />
+                <div style={{ position: 'absolute', top: -2, right: -2, width: 8, height: 8, borderRadius: '50%', background: '#DC2626', border: '1.5px solid #FDF9F1' }} />
               </div>
 
               <div style={{ position: 'relative' }}>
@@ -466,8 +466,8 @@ function TopBar({ role }) {
                 {role === 'buyer' && cartCount > 0 && (
                   <span style={{
                     position: 'absolute', top: -5, right: -5, minWidth: 17, height: 17, padding: '0 4px',
-                    borderRadius: 100, background: accent, color: '#fff', fontSize: 10, fontWeight: 700,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1.5px solid #fff',
+                    borderRadius: 100, background: accent, color: '#FDF9F1', fontSize: 10, fontWeight: 700,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1.5px solid #FDF9F1',
                   }}>{cartCount > 99 ? '99+' : cartCount}</span>
                 )}
               </button>
@@ -511,7 +511,7 @@ export default function DashboardLayout({ children, fullBleed = false }) {
   const hPad = bp.isMobile ? 16 : 32;
 
   return (
-    <div style={{ height: '100vh', overflow: 'hidden', display: 'flex', flexDirection: 'column', background: '#FAFAF9' }}>
+    <div style={{ height: '100vh', overflow: 'hidden', display: 'flex', flexDirection: 'column', background: '#FDF9F1' }}>
       <TopBar role={role} />
       <main style={{ flex: 1, overflowY: 'auto' }}>
         {fullBleed ? children : (

@@ -195,12 +195,12 @@ export default function LoginModal({ onSubmit }) {
   return (
     <div
       onClick={e => e.target === e.currentTarget && close()}
-      style={{ position: 'fixed', inset: 0, zIndex: 1000, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '24px 16px', background: 'rgba(28,24,21,.5)', backdropFilter: 'blur(8px)', overflowY: 'auto' }}
+      style={{ position: 'fixed', inset: 0, zIndex: 1000, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '24px 16px', background: 'rgba(43,32,22,.5)', backdropFilter: 'blur(8px)', overflowY: 'auto' }}
     >
-      <div style={{ width: '100%', maxWidth: 460, background: '#fff', borderRadius: 20, overflow: 'hidden', boxShadow: '0 32px 80px rgba(28,24,21,.22)', position: 'relative', animation: 'modalIn .38s cubic-bezier(.22,.68,0,1.2) both', flexShrink: 0, marginBottom: 24 }}>
+      <div style={{ width: '100%', maxWidth: 460, background: '#FDF9F1', borderRadius: 20, overflow: 'hidden', boxShadow: '0 32px 80px rgba(43,32,22,.22)', position: 'relative', animation: 'modalIn .38s cubic-bezier(.22,.68,0,1.2) both', flexShrink: 0, marginBottom: 24 }}>
 
         {/* Close */}
-        <button onClick={close} style={{ position: 'absolute', top: 14, right: 14, width: 30, height: 30, borderRadius: 8, border: '1.5px solid #E3D5C1', background: '#F0E8DA', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2 }}>
+        <button onClick={close} style={{ position: 'absolute', top: 14, right: 14, width: 30, height: 30, borderRadius: 8, border: '1.5px solid #E3D5C1', background: '#E3D5C1', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2 }}>
           <X size={14} color="#79634E" />
         </button>
 
@@ -252,7 +252,7 @@ export default function LoginModal({ onSubmit }) {
             {mode === 'register' && (
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
                 {ROLES.map(r => (
-                  <button type="button" key={r.value} onClick={() => set('role', r.value)} style={{ padding: '12px', borderRadius: 12, border: `2px solid ${form.role === r.value ? '#C8792C' : '#E3D5C1'}`, background: form.role === r.value ? '#FDF3EB' : '#fff', cursor: 'pointer', textAlign: 'left', fontFamily: 'inherit', transition: '.15s' }}>
+                  <button type="button" key={r.value} onClick={() => set('role', r.value)} style={{ padding: '12px', borderRadius: 12, border: `2px solid ${form.role === r.value ? '#C8792C' : '#E3D5C1'}`, background: form.role === r.value ? '#FDF9F1' : '#FDF9F1', cursor: 'pointer', textAlign: 'left', fontFamily: 'inherit', transition: '.15s' }}>
                     <div style={{ fontSize: 18, marginBottom: 4 }}>{r.icon}</div>
                     <div style={{ fontSize: 13, fontWeight: 700, color: '#5B4632' }}>{r.label}</div>
                     <div style={{ fontSize: 11, color: '#79634E' }}>{r.sub}</div>
@@ -267,7 +267,7 @@ export default function LoginModal({ onSubmit }) {
                 <div>
                   <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>Full Name</label>
                   <input value={form.name} onChange={e => set('name', e.target.value)} placeholder="Rajesh Kumar" style={INPUT}
-                    onFocus={e => { e.currentTarget.style.borderColor = '#C8792C'; e.currentTarget.style.background = '#fff'; }}
+                    onFocus={e => { e.currentTarget.style.borderColor = '#C8792C'; e.currentTarget.style.background = '#FDF9F1'; }}
                     onBlur={e => { e.currentTarget.style.borderColor = '#E3D5C1'; e.currentTarget.style.background = '#FDF9F1'; }} />
                 </div>
                 <div>
@@ -279,7 +279,7 @@ export default function LoginModal({ onSubmit }) {
                     onChange={e => set('company', e.target.value)}
                     placeholder={form.role === 'supplier' ? 'e.g. Jaipur Crafts Pvt Ltd' : 'e.g. Reliance Retail Ltd'}
                     style={INPUT}
-                    onFocus={e => { e.currentTarget.style.borderColor = '#C8792C'; e.currentTarget.style.background = '#fff'; }}
+                    onFocus={e => { e.currentTarget.style.borderColor = '#C8792C'; e.currentTarget.style.background = '#FDF9F1'; }}
                     onBlur={e => { e.currentTarget.style.borderColor = '#E3D5C1'; e.currentTarget.style.background = '#FDF9F1'; }} />
                 </div>
                 <div>
@@ -294,7 +294,7 @@ export default function LoginModal({ onSubmit }) {
                       type="tel" inputMode="numeric" value={form.phoneNumber}
                       onChange={e => set('phoneNumber', e.target.value.replace(/[^\d\s]/g, ''))}
                       placeholder="98765 43210" style={{ ...INPUT, flex: 1 }}
-                      onFocus={e => { e.currentTarget.style.borderColor = '#C8792C'; e.currentTarget.style.background = '#fff'; }}
+                      onFocus={e => { e.currentTarget.style.borderColor = '#C8792C'; e.currentTarget.style.background = '#FDF9F1'; }}
                       onBlur={e => { e.currentTarget.style.borderColor = '#E3D5C1'; e.currentTarget.style.background = '#FDF9F1'; }} />
                   </div>
                 </div>
@@ -304,7 +304,7 @@ export default function LoginModal({ onSubmit }) {
             {/* Email OTP verification */}
             {mode === 'verify-email' && (
               <>
-                <div style={{ padding: '10px 14px', borderRadius: 10, background: '#F4EFE6', fontSize: 12.5, color: '#79634E', lineHeight: 1.6 }}>
+                <div style={{ padding: '10px 14px', borderRadius: 10, background: '#E3D5C1', fontSize: 12.5, color: '#79634E', lineHeight: 1.6 }}>
                   Wrong email?{' '}
                   <button type="button" onClick={backToRegister} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#C8792C', fontWeight: 700, fontSize: 12.5, fontFamily: 'inherit', textDecoration: 'underline' }}>
                     Change it
@@ -318,7 +318,7 @@ export default function LoginModal({ onSubmit }) {
                     onChange={e => setOtpInput(e.target.value.replace(/\D/g, '').slice(0, 6))}
                     placeholder="••••••" inputMode="numeric"
                     style={{ ...INPUT, letterSpacing: '0.4em', fontWeight: 700, textAlign: 'center' }}
-                    onFocus={e => { e.currentTarget.style.borderColor = '#C8792C'; e.currentTarget.style.background = '#fff'; }}
+                    onFocus={e => { e.currentTarget.style.borderColor = '#C8792C'; e.currentTarget.style.background = '#FDF9F1'; }}
                     onBlur={e => { e.currentTarget.style.borderColor = '#E3D5C1'; e.currentTarget.style.background = '#FDF9F1'; }}
                   />
                 </div>
@@ -335,7 +335,7 @@ export default function LoginModal({ onSubmit }) {
               <div>
                 <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>Business email</label>
                 <input type="email" value={form.email} onChange={e => set('email', e.target.value)} placeholder="you@company.com" required style={INPUT}
-                  onFocus={e => { e.currentTarget.style.borderColor = '#C8792C'; e.currentTarget.style.background = '#fff'; }}
+                  onFocus={e => { e.currentTarget.style.borderColor = '#C8792C'; e.currentTarget.style.background = '#FDF9F1'; }}
                   onBlur={e => { e.currentTarget.style.borderColor = '#E3D5C1'; e.currentTarget.style.background = '#FDF9F1'; }} />
               </div>
             )}
@@ -346,7 +346,7 @@ export default function LoginModal({ onSubmit }) {
                 <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>Password</label>
                 <div style={{ position: 'relative' }}>
                   <input type={showPwd ? 'text' : 'password'} value={form.password} onChange={e => set('password', e.target.value)} placeholder="••••••••" required style={{ ...INPUT, paddingRight: 52 }}
-                    onFocus={e => { e.currentTarget.style.borderColor = '#C8792C'; e.currentTarget.style.background = '#fff'; }}
+                    onFocus={e => { e.currentTarget.style.borderColor = '#C8792C'; e.currentTarget.style.background = '#FDF9F1'; }}
                     onBlur={e => { e.currentTarget.style.borderColor = '#E3D5C1'; e.currentTarget.style.background = '#FDF9F1'; }} />
                   <button type="button" onClick={() => setShowPwd(s => !s)} style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#79634E', fontSize: 12, fontFamily: 'inherit', fontWeight: 600 }}>
                     {showPwd ? 'Hide' : 'Show'}
@@ -369,7 +369,7 @@ export default function LoginModal({ onSubmit }) {
               <div>
                 <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>Registered email</label>
                 <input type="email" value={form.email} onChange={e => set('email', e.target.value)} placeholder="you@company.com" required style={INPUT}
-                  onFocus={e => { e.currentTarget.style.borderColor = '#C8792C'; e.currentTarget.style.background = '#fff'; }}
+                  onFocus={e => { e.currentTarget.style.borderColor = '#C8792C'; e.currentTarget.style.background = '#FDF9F1'; }}
                   onBlur={e => { e.currentTarget.style.borderColor = '#E3D5C1'; e.currentTarget.style.background = '#FDF9F1'; }} />
               </div>
             )}
@@ -377,7 +377,7 @@ export default function LoginModal({ onSubmit }) {
             {/* Step 2 — enter PIN + new password */}
             {mode === 'forgot' && resetStep === 'confirm' && (
               <>
-                <div style={{ padding: '10px 14px', borderRadius: 10, background: '#F4EFE6', fontSize: 12.5, color: '#79634E', lineHeight: 1.6 }}>
+                <div style={{ padding: '10px 14px', borderRadius: 10, background: '#E3D5C1', fontSize: 12.5, color: '#79634E', lineHeight: 1.6 }}>
                   Wrong email?{' '}
                   <button type="button" onClick={() => setResetStep('request')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#C8792C', fontWeight: 700, fontSize: 12.5, fontFamily: 'inherit', textDecoration: 'underline' }}>
                     Use a different one
@@ -387,14 +387,14 @@ export default function LoginModal({ onSubmit }) {
                   <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>6-digit PIN</label>
                   <input value={pin} onChange={e => setPin(e.target.value.replace(/\D/g, '').slice(0, 6))} placeholder="••••••" inputMode="numeric" required
                     style={{ ...INPUT, letterSpacing: '0.4em', fontWeight: 700, textAlign: 'center' }}
-                    onFocus={e => { e.currentTarget.style.borderColor = '#C8792C'; e.currentTarget.style.background = '#fff'; }}
+                    onFocus={e => { e.currentTarget.style.borderColor = '#C8792C'; e.currentTarget.style.background = '#FDF9F1'; }}
                     onBlur={e => { e.currentTarget.style.borderColor = '#E3D5C1'; e.currentTarget.style.background = '#FDF9F1'; }} />
                 </div>
                 <div>
                   <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>New password</label>
                   <div style={{ position: 'relative' }}>
                     <input type={showNewPwd ? 'text' : 'password'} value={newPassword} onChange={e => setNewPassword(e.target.value)} placeholder="••••••••" required style={{ ...INPUT, paddingRight: 52 }}
-                      onFocus={e => { e.currentTarget.style.borderColor = '#C8792C'; e.currentTarget.style.background = '#fff'; }}
+                      onFocus={e => { e.currentTarget.style.borderColor = '#C8792C'; e.currentTarget.style.background = '#FDF9F1'; }}
                       onBlur={e => { e.currentTarget.style.borderColor = '#E3D5C1'; e.currentTarget.style.background = '#FDF9F1'; }} />
                     <button type="button" onClick={() => setShowNewPwd(s => !s)} style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#79634E', fontSize: 12, fontFamily: 'inherit', fontWeight: 600 }}>
                       {showNewPwd ? 'Hide' : 'Show'}
@@ -406,7 +406,7 @@ export default function LoginModal({ onSubmit }) {
 
             {/* Submit */}
             <button type="submit" disabled={loading}
-              style={{ marginTop: 4, width: '100%', padding: '15px', borderRadius: 10, border: 'none', background: loading ? '#C8C0B4' : '#5B4632', color: '#fff', fontSize: 15, fontWeight: 700, cursor: loading ? 'not-allowed' : 'pointer', fontFamily: 'inherit', transition: 'background .18s' }}
+              style={{ marginTop: 4, width: '100%', padding: '15px', borderRadius: 10, border: 'none', background: loading ? '#E3D5C1' : '#5B4632', color: '#FDF9F1', fontSize: 15, fontWeight: 700, cursor: loading ? 'not-allowed' : 'pointer', fontFamily: 'inherit', transition: 'background .18s' }}
               onMouseEnter={e => { if (!loading) e.currentTarget.style.background = '#2B2016'; }}
               onMouseLeave={e => { if (!loading) e.currentTarget.style.background = '#5B4632'; }}
             >
@@ -421,7 +421,7 @@ export default function LoginModal({ onSubmit }) {
           </form>
 
           {/* Terms */}
-          <p style={{ fontSize: 11, color: '#B0A898', textAlign: 'center', marginTop: 18, lineHeight: 1.65 }}>
+          <p style={{ fontSize: 11, color: '#79634E', textAlign: 'center', marginTop: 18, lineHeight: 1.65 }}>
             By continuing, you agree to our{' '}
             <span style={{ textDecoration: 'underline', cursor: 'pointer' }}>Terms of Service</span>
             {' '}and{' '}
@@ -433,7 +433,7 @@ export default function LoginModal({ onSubmit }) {
 
         {/* Footer toggle */}
         {mode !== 'onboarding' && (
-        <div style={{ background: '#FBF6F0', borderTop: '1px solid #E3D5C1', padding: '18px 32px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <div style={{ background: '#FDF9F1', borderTop: '1px solid #E3D5C1', padding: '18px 32px', display: 'flex', flexDirection: 'column', gap: 10 }}>
           {mode === 'login' ? (
             <>
               <p style={{ fontSize: 13, color: '#79634E', textAlign: 'center', margin: 0 }}>

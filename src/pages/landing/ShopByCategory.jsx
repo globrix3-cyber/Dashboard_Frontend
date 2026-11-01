@@ -156,9 +156,9 @@ function CatBentoCard({ item, onAction, isMobile, style }) {
 function CatSubCard({ item, cta, onAction }) {
   const [hov, setHov] = useState(false);
   if (cta) return (
-    <div onClick={onAction} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)} style={{ background: hov ? `linear-gradient(135deg,${T.td},#8A5226)` : `linear-gradient(135deg,${T.t},${T.td})`, borderRadius: 12, padding: '22px 12px', textAlign: 'center', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 68, gap: 2, transition: '.18s', transform: hov ? 'translateY(-2px)' : 'none' }}>
-      <div style={{ fontSize: 13, fontWeight: 700, color: '#fff' }}>View all 24</div>
-      <div style={{ fontSize: 11, color: 'rgba(255,255,255,.75)' }}>categories</div>
+    <div onClick={onAction} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)} style={{ background: hov ? `linear-gradient(135deg,${T.td},#C8792C)` : `linear-gradient(135deg,${T.t},${T.td})`, borderRadius: 12, padding: '22px 12px', textAlign: 'center', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 68, gap: 2, transition: '.18s', transform: hov ? 'translateY(-2px)' : 'none' }}>
+      <div style={{ fontSize: 13, fontWeight: 700, color: '#FDF9F1' }}>View all 24</div>
+      <div style={{ fontSize: 11, color: 'rgba(253,249,241,.75)' }}>categories</div>
     </div>
   );
   return (
@@ -175,11 +175,11 @@ function ProductCard({ p, onAction, bp }) {
     <div
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
-      style={{ background: '#fff', borderRadius: 14, border: `1.5px solid ${hov ? T.t : T.bs}`, overflow: 'hidden', cursor: 'pointer', transition: 'border-color .18s, transform .18s, box-shadow .18s', transform: hov ? 'translateY(-4px)' : 'none', boxShadow: hov ? shadow.sm : 'none' }}
+      style={{ background: '#FDF9F1', borderRadius: 14, border: `1.5px solid ${hov ? T.t : T.bs}`, overflow: 'hidden', cursor: 'pointer', transition: 'border-color .18s, transform .18s, box-shadow .18s', transform: hov ? 'translateY(-4px)' : 'none', boxShadow: hov ? shadow.sm : 'none' }}
       onClick={onAction}
     >
       {/* Image / emoji */}
-      <div style={{ height: bp.isMobile ? 140 : 160, position: 'relative', overflow: 'hidden', background: p.bg || '#F0E8DA' }}>
+      <div style={{ height: bp.isMobile ? 140 : 160, position: 'relative', overflow: 'hidden', background: p.bg || '#E3D5C1' }}>
         {p.img ? (
           <img src={p.img} alt={p.name} loading="lazy" decoding="async"
             style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block', transform: hov ? 'scale(1.05)' : 'scale(1)', transition: 'transform .4s ease' }}
@@ -189,8 +189,8 @@ function ProductCard({ p, onAction, bp }) {
             {p.emoji}
           </div>
         )}
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(18,14,10,.25) 0%, transparent 50%)' }} />
-        <div style={{ position: 'absolute', top: 10, right: 10, background: 'rgba(0,0,0,.45)', backdropFilter: 'blur(6px)', borderRadius: 20, padding: '3px 8px', fontSize: 10, color: '#fff', fontWeight: 600 }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(43,32,22,.25) 0%, transparent 50%)' }} />
+        <div style={{ position: 'absolute', top: 10, right: 10, background: 'rgba(43,32,22,.45)', backdropFilter: 'blur(6px)', borderRadius: 20, padding: '3px 8px', fontSize: 10, color: '#FDF9F1', fontWeight: 600 }}>
           {p.rating}
         </div>
       </div>
@@ -262,7 +262,7 @@ export default function ShopByCategory({ activeCategory = 'All', onCategoryChang
             <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
               <button
                 onClick={() => onCategoryChange?.('All')}
-                style={{ fontSize: 13, color: T.mu, fontWeight: 500, background: '#fff', border: `1.5px solid ${T.bs}`, borderRadius: 7, padding: '8px 14px', cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}
+                style={{ fontSize: 13, color: T.mu, fontWeight: 500, background: '#FDF9F1', border: `1.5px solid ${T.bs}`, borderRadius: 7, padding: '8px 14px', cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}
               >
                 ← All categories
               </button>
@@ -297,7 +297,7 @@ export default function ShopByCategory({ activeCategory = 'All', onCategoryChang
           <div style={{ textAlign: 'center', padding: '60px 20px', color: T.mu }}>
             <div style={{ fontSize: 40, marginBottom: 16 }}>🔍</div>
             <p style={{ fontSize: 15 }}>Products coming soon for this category.</p>
-            <button onClick={() => onCategoryChange?.('All')} style={{ marginTop: 16, padding: '10px 24px', borderRadius: 8, border: `1.5px solid ${T.bs}`, background: '#fff', color: T.ink, fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>
+            <button onClick={() => onCategoryChange?.('All')} style={{ marginTop: 16, padding: '10px 24px', borderRadius: 8, border: `1.5px solid ${T.bs}`, background: '#FDF9F1', color: T.ink, fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>
               ← Back to all
             </button>
           </div>
@@ -309,7 +309,7 @@ export default function ShopByCategory({ activeCategory = 'All', onCategoryChang
             <p style={{ fontSize: 13, color: T.ink, margin: 0, fontWeight: 500 }}>
               Sign in to see wholesale prices, contact suppliers, and place orders.
             </p>
-            <button onClick={openLogin} style={{ padding: '9px 22px', borderRadius: 8, background: '#5B4632', color: '#fff', fontSize: 13, fontWeight: 600, border: 'none', cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>
+            <button onClick={openLogin} style={{ padding: '9px 22px', borderRadius: 8, background: '#5B4632', color: '#FDF9F1', fontSize: 13, fontWeight: 600, border: 'none', cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>
               Sign in free →
             </button>
           </div>

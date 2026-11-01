@@ -1,95 +1,35 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { toggleLogin } from '../../features/auth/authSlice';
-import { T, shadow } from './tokens';
-import { IMG } from './images';
-import { useBreakpoint, rW } from '../../hooks/useBreakpoint';
-
-const STATS = [
-  { n: '$30M+',  l: 'Monthly Volume' },
-  { n: '50K+',   l: 'Products' },
-  { n: '5,000+', l: 'Suppliers' },
-];
-
-function PhotoMosaic({ bp }) {
-  const height = bp.isMobile ? 240 : bp.isTablet ? 380 : 460;
-
-  return (
-    <div style={{ borderRadius: 24, overflow: 'hidden', position: 'relative', height }}>
-      <img
-        src={IMG.artisanWeaving}
-        alt="Indian artisan weaving on a traditional loom"
-        loading="eager" fetchpriority="high" decoding="sync"
-        style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block', transition: 'transform .6s ease' }}
-        onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.04)'; }}
-        onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; }}
-      />
-      <div style={{ position: 'absolute', top: 16, left: 16 }}>
-        <span style={{ background: 'rgba(200,121,44,.92)', backdropFilter: 'blur(8px)', color: '#fff', fontSize: 9, fontWeight: 800, padding: '5px 12px', borderRadius: 20, letterSpacing: '.1em', display: 'flex', alignItems: 'center', gap: 5 }}>
-          <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#fff', animation: 'heroPulse 1.8s ease infinite', display: 'inline-block' }} />
-          LIVE MARKETPLACE
-        </span>
-      </div>
-      <style>{`@keyframes heroPulse{0%,100%{opacity:1}50%{opacity:.3}}`}</style>
-    </div>
-  );
-}
+import { useNavigate } from 'react-router-dom';
+import { useBreakpoint } from '../../hooks/useBreakpoint';
 
 export default function HeroSection() {
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const bp       = useBreakpoint();
-  const [hovMain, setHovMain] = useState(false);
-  const [hovSec,  setHovSec]  = useState(false);
-
-  const pad = bp.isMobile ? '48px 18px 52px' : bp.isTablet ? '60px 32px 56px' : '80px 56px 72px';
+  const side     = bp.isMobile ? 18 : bp.isTablet ? 32 : 72;
 
   return (
-    <section style={{ background: T.c, position: 'relative', overflow: 'hidden' }}>
-      <div style={{ position: 'absolute', top: -200, right: -200, width: 600, height: 600, borderRadius: '50%', background: 'radial-gradient(circle,rgba(200,121,44,.10),transparent 70%)', pointerEvents: 'none' }} />
-      <div style={{ position: 'absolute', bottom: -150, left: -150, width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle,rgba(61,122,82,.08),transparent 70%)', pointerEvents: 'none' }} />
-
-      <div style={{ ...rW, padding: pad, position: 'relative', zIndex: 1 }}>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: bp.isMobile ? '1fr' : '1fr 1fr',
-          gap: bp.isMobile ? 32 : 56,
-          alignItems: 'center',
-        }}>
-          {/* Left — text */}
-          <div>
-            <h1 style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: bp.isMobile ? '40px' : bp.isTablet ? '56px' : 'clamp(52px,5vw,76px)', fontWeight: 700, lineHeight: 1.04, letterSpacing: -1, color: T.ink, marginBottom: 20 }}>
-              India's next generation<br/>
-              <span style={{ fontStyle: 'normal', background: `linear-gradient(135deg,${T.t} 0%,#E8A060 100%)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>wholesale marketplace</span>
-            </h1>
-
-            <p style={{ fontSize: bp.isMobile ? 15 : 17, color: T.is, lineHeight: 1.82, marginBottom: 32, maxWidth: 460 }}>
-              Discover fresh products from Indian manufacturers and growing brands. Built for modern B2B trade: simple, fast, and transparent.
-            </p>
-
-            <div style={{ display: 'flex', gap: 10, marginBottom: 28 }}>
-              <button
-                onClick={() => dispatch(toggleLogin(true))}
-                onMouseEnter={() => setHovMain(true)} onMouseLeave={() => setHovMain(false)}
-                style={{ padding: bp.isMobile ? '13px 28px' : '15px 36px', borderRadius: 10, background: hovMain ? `linear-gradient(135deg,${T.td},#8A5226)` : `linear-gradient(135deg,${T.t},${T.td})`, color: '#fff', fontSize: bp.isMobile ? 14 : 15, fontWeight: 700, border: 'none', cursor: 'pointer', fontFamily: 'inherit', boxShadow: '0 8px 28px rgba(200,121,44,.38)', transform: hovMain ? 'translateY(-2px)' : 'none', transition: '.2s' }}>
-                Explore products
-              </button>
-            </div>
-
-            <div style={{ fontSize: 13, color: T.mu, fontWeight: 500 }}>
-              Are you a brand?{' '}
-              <button
-                onClick={() => dispatch(toggleLogin({ show: true, intent: 'supplier' }))}
-                onMouseEnter={() => setHovSec(true)} onMouseLeave={() => setHovSec(false)}
-                style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontFamily: 'inherit', fontSize: 13, fontWeight: 700, color: T.t, textDecoration: 'underline', textUnderlineOffset: 3 }}
-              >
-                Sign up to sell
-              </button>
-            </div>
-          </div>
-
-          {/* Right — photo mosaic */}
-          <PhotoMosaic bp={bp} />
-        </div>
+    <section style={{ position: 'relative', height: bp.isMobile ? 520 : bp.isTablet ? 560 : 620, overflow: 'hidden', background: '#2B2016' }}>
+      <img
+        src="/images/v3/rustic-living-room-edited.jpg"
+        alt="Sunlit rustic living room with a cream sofa and a wooden coffee table"
+        loading="eager" fetchPriority="high" decoding="async"
+        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: bp.isMobile ? '62% center' : 'center' }}
+      />
+      <div style={{ position: 'absolute', inset: 0, background: bp.isMobile ? 'rgba(43,32,22,.58)' : 'linear-gradient(90deg,rgba(43,32,22,.82) 0%,rgba(43,32,22,.5) 42%,rgba(43,32,22,0) 72%)' }} />
+      <div style={{ position: 'relative', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: `0 ${side}px`, maxWidth: 1440, margin: '0 auto', boxSizing: 'border-box' }}>
+        <h1 style={{ fontFamily: "'Bodoni Moda', 'Bodoni 72', Didot, serif", fontStyle: 'italic', fontWeight: 400, fontSize: bp.isMobile ? 48 : bp.isTablet ? 62 : 76, lineHeight: 1.06, color: '#FDF9F1', margin: 0 }}>
+          From India<br /><span style={{ color: '#F4D9A0' }}>with intention</span>
+        </h1>
+        <p style={{ fontSize: bp.isMobile ? 18 : 24, lineHeight: 1.55, color: '#FDF9F1', margin: '22px 0 30px', maxWidth: 500 }}>
+          Distinctive Indian designs for your next great collection.
+        </p>
+        <button
+          onClick={() => navigate('/products')}
+          style={{ alignSelf: 'flex-start', display: 'flex', gap: 38, padding: '15px 21px', background: 'transparent', border: '1px solid #FDF9F1', color: '#FDF9F1', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', transition: 'background .15s' }}
+          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(253,249,241,.15)'; }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
+        >
+          Explore wholesale <span>↗</span>
+        </button>
       </div>
     </section>
   );

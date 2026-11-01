@@ -70,7 +70,7 @@ export default function CreateRFQForm() {
         }
       />
 
-      <div className="bg-white rounded-3xl border border-gray-200 p-8" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+      <div className="bg-white rounded-3xl border border-gray-200 p-8" style={{ boxShadow: '0 1px 3px rgba(43,32,22,0.05)' }}>
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
           <InputField label="RFQ Title *" value={form.title}
             onChange={(e) => set('title', e.target.value)}

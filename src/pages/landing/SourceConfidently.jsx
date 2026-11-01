@@ -27,7 +27,7 @@ const PILLARS = [
 
 function PillarCard({ p, bp }) {
   return (
-    <div style={{ background: '#fff', borderRadius: 20, border: `1.5px solid ${T.bs}`, overflow: 'hidden' }}>
+    <div style={{ background: '#FDF9F1', borderRadius: 20, border: `1.5px solid ${T.bs}`, overflow: 'hidden' }}>
       {/* Photo */}
       <div style={{ height: bp.isMobile ? 180 : 200, position: 'relative', overflow: 'hidden' }}>
         <img
@@ -37,7 +37,7 @@ function PillarCard({ p, bp }) {
           decoding="async"
           style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block' }}
         />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(28,25,21,.35) 0%, transparent 60%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(43,32,22,.35) 0%, transparent 60%)' }} />
       </div>
       {/* Text */}
       <div style={{ padding: bp.isMobile ? '20px 18px' : '24px 24px' }}>

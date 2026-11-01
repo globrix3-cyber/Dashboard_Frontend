@@ -16,7 +16,7 @@ export default function CategoryNavBar({ activeCategory = 'All', onSelect }) {
       position: 'sticky',
       top: navH,
       zIndex: 150,
-      boxShadow: '0 2px 12px rgba(28,25,21,.04)',
+      boxShadow: '0 2px 12px rgba(43,32,22,.04)',
     }}>
       <div style={{
         maxWidth: 1200,
@@ -50,7 +50,7 @@ export default function CategoryNavBar({ activeCategory = 'All', onSelect }) {
                 flexShrink: 0,
                 userSelect: 'none',
               }}
-              onMouseEnter={e => { if (!isActive) e.currentTarget.style.color = '#2C1810'; }}
+              onMouseEnter={e => { if (!isActive) e.currentTarget.style.color = '#2B2016'; }}
               onMouseLeave={e => { if (!isActive) e.currentTarget.style.color = T.mu; }}
             >
               {item.label}

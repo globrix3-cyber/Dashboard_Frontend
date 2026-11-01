@@ -7,10 +7,10 @@ import { Save, User, Mail, Phone } from 'lucide-react';
 import { PHONE_COUNTRIES, DEFAULT_PHONE_COUNTRY, combinePhone, splitPhone } from '../utils/phoneCountries';
 
 const C = {
-  saffron: '#C8792C', saffronLt: '#FDF1E8',
-  emerald: '#1A7A4A', navy: '#1B3175',
+  saffron: '#C8792C', saffronLt: '#FDF9F1',
+  emerald: '#1A7A4A', navy: '#5B4632',
   ink: '#5B4632', inkSoft: '#2B2016',
-  muted: '#79634E', borderSoft: '#E3D5C1', cream: '#F0E8DA',
+  muted: '#79634E', borderSoft: '#E3D5C1', cream: '#E3D5C1',
 };
 
 function Field({ label, icon: Icon, readOnly, ...props }) {
@@ -24,14 +24,14 @@ function Field({ label, icon: Icon, readOnly, ...props }) {
         <input readOnly={readOnly} {...props} style={{
           width: '100%', padding: Icon ? '12px 14px 12px 40px' : '12px 14px',
           borderRadius: 12, border: `1.5px solid ${C.borderSoft}`,
-          background: readOnly ? '#F0EDE8' : C.cream,
+          background: readOnly ? '#E3D5C1' : C.cream,
           fontFamily: "'DM Sans', sans-serif", fontSize: 14,
           color: readOnly ? C.muted : C.ink,
           outline: 'none', transition: 'border-color 0.15s, background 0.15s',
           boxSizing: 'border-box', cursor: readOnly ? 'not-allowed' : 'text',
         }}
-          onFocus={e => { if (!readOnly) { e.currentTarget.style.borderColor = C.saffron; e.currentTarget.style.background = '#fff'; } }}
-          onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = readOnly ? '#F0EDE8' : C.cream; }}
+          onFocus={e => { if (!readOnly) { e.currentTarget.style.borderColor = C.saffron; e.currentTarget.style.background = '#FDF9F1'; } }}
+          onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = readOnly ? '#E3D5C1' : C.cream; }}
         />
       </div>
     </div>
@@ -83,10 +83,10 @@ export default function EditProfile() {
         <p style={{ fontSize: 13, color: C.muted, marginTop: 6 }}>Update your account information</p>
       </div>
 
-      <div style={{ background: '#fff', borderRadius: 20, border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden', boxShadow: '0 2px 8px rgba(28,24,21,0.06)' }}>
+      <div style={{ background: '#FDF9F1', borderRadius: 20, border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden', boxShadow: '0 2px 8px rgba(43,32,22,0.06)' }}>
         <div style={{ display: 'flex', height: 3 }}>
           <div style={{ flex: 1, background: C.saffron }} />
-          <div style={{ flex: 1, background: '#fff', borderTop: `0.5px solid ${C.borderSoft}`, borderBottom: `0.5px solid ${C.borderSoft}` }} />
+          <div style={{ flex: 1, background: '#FDF9F1', borderTop: `0.5px solid ${C.borderSoft}`, borderBottom: `0.5px solid ${C.borderSoft}` }} />
           <div style={{ flex: 1, background: C.emerald }} />
         </div>
         <div style={{ padding: '32px 36px' }}>
@@ -96,7 +96,7 @@ export default function EditProfile() {
               width: 76, height: 76, borderRadius: 20, flexShrink: 0,
               background: `linear-gradient(135deg, ${roleColor}, ${roleColor}cc)`,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              color: '#fff', fontSize: 30, fontFamily: "'Playfair Display', serif", fontWeight: 900,
+              color: '#FDF9F1', fontSize: 30, fontFamily: "'Playfair Display', serif", fontWeight: 900,
               boxShadow: `0 6px 20px ${roleColor}30`,
             }}>
               {fetching ? <User size={28} /> : initials}
@@ -136,7 +136,7 @@ export default function EditProfile() {
                       background: C.cream, fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: C.ink,
                       outline: 'none', boxSizing: 'border-box', transition: 'border-color 0.15s, background 0.15s',
                     }}
-                    onFocus={e => { e.currentTarget.style.borderColor = C.saffron; e.currentTarget.style.background = '#fff'; }}
+                    onFocus={e => { e.currentTarget.style.borderColor = C.saffron; e.currentTarget.style.background = '#FDF9F1'; }}
                     onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = C.cream; }}
                   />
                 </div>
@@ -147,14 +147,14 @@ export default function EditProfile() {
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 9,
               padding: '13px 0', borderRadius: 100, border: 'none',
               cursor: (saving || fetching) ? 'not-allowed' : 'pointer',
-              background: C.saffron, color: '#fff',
+              background: C.saffron, color: '#FDF9F1',
               fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 14,
               opacity: (saving || fetching) ? 0.65 : 1,
-              boxShadow: '0 4px 16px rgba(217,96,10,0.30)', transition: 'background 0.18s, transform 0.12s',
+              boxShadow: '0 4px 16px rgba(200,121,44,0.30)', transition: 'background 0.18s, transform 0.12s',
             }}
-              onMouseEnter={e => { if (!saving) { e.currentTarget.style.background = '#A8611F'; e.currentTarget.style.transform = 'translateY(-1px)'; } }}
+              onMouseEnter={e => { if (!saving) { e.currentTarget.style.background = '#C8792C'; e.currentTarget.style.transform = 'translateY(-1px)'; } }}
               onMouseLeave={e => { e.currentTarget.style.background = C.saffron; e.currentTarget.style.transform = 'none'; }}>
-              {saving ? <span style={{ width: 16, height: 16, border: '2px solid rgba(255,255,255,0.35)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} /> : <Save size={16} />}
+              {saving ? <span style={{ width: 16, height: 16, border: '2px solid rgba(253,249,241,0.35)', borderTopColor: '#FDF9F1', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} /> : <Save size={16} />}
               {saving ? 'Saving…' : 'Save Changes'}
             </button>
           </form>

@@ -16,9 +16,9 @@ const T = {
   borderSoft: '#E3D5C1',
   cream:      '#FDF9F1',
   emerald:    '#1A7A4A', emeraldLt: '#EAF5EF',
-  saffron:    '#C8792C', saffronLt: '#FDF1E8',
-  navy:       '#1B3175', navyLt:    '#EEF2FB',
-  gold:       '#B8730A', goldLt:    '#FDF5E2',
+  saffron:    '#C8792C', saffronLt: '#FDF9F1',
+  navy:       '#5B4632', navyLt:    '#F0DCC0',
+  gold:       '#C8792C', goldLt:    '#FDF9F1',
   red:        '#DC2626', redLt:     '#FEF2F2',
 };
 
@@ -33,10 +33,10 @@ const PRODUCT_STATUS = {
 function StatCard({ icon: Icon, label, value, accent, bg }) {
   return (
     <div
-      onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 4px 18px rgba(0,0,0,.08)'; }}
+      onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 4px 18px rgba(43,32,22,.08)'; }}
       onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; }}
       style={{
-        background: '#fff', borderRadius: 14, border: `1.5px solid ${T.borderSoft}`,
+        background: '#FDF9F1', borderRadius: 14, border: `1.5px solid ${T.borderSoft}`,
         padding: '18px 20px', display: 'flex', alignItems: 'center', gap: 14,
         transition: 'box-shadow .2s',
       }}>
@@ -54,7 +54,7 @@ function StatCard({ icon: Icon, label, value, accent, bg }) {
 /* ── Panel wrapper ─────────────────────────────────────────────────────────── */
 function Panel({ title, accent, count, onViewAll, loading, empty, children }) {
   return (
-    <div style={{ background: '#fff', borderRadius: 14, border: `1.5px solid ${T.borderSoft}`, overflow: 'hidden' }}>
+    <div style={{ background: '#FDF9F1', borderRadius: 14, border: `1.5px solid ${T.borderSoft}`, overflow: 'hidden' }}>
       <div style={{ height: 3, background: accent }} />
       <div style={{ padding: '14px 20px', borderBottom: `1px solid ${T.borderSoft}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -81,8 +81,8 @@ function RFQCard({ r, onClick }) {
   return (
     <div onClick={onClick}
       onMouseEnter={e => { e.currentTarget.style.background = T.cream; }}
-      onMouseLeave={e => { e.currentTarget.style.background = '#fff'; }}
-      style={{ padding: '13px 20px', borderBottom: `1px solid ${T.borderSoft}`, cursor: 'pointer', transition: 'background .15s', background: '#fff' }}>
+      onMouseLeave={e => { e.currentTarget.style.background = '#FDF9F1'; }}
+      style={{ padding: '13px 20px', borderBottom: `1px solid ${T.borderSoft}`, cursor: 'pointer', transition: 'background .15s', background: '#FDF9F1' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontSize: 13.5, fontWeight: 600, color: T.ink, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.title}</div>
@@ -107,7 +107,7 @@ const QUOTE_COLORS = {
 };
 
 function QuoteRow({ q }) {
-  const s = QUOTE_COLORS[q.status] ?? { bg: '#F3F0EB', color: T.muted };
+  const s = QUOTE_COLORS[q.status] ?? { bg: '#E3D5C1', color: T.muted };
   return (
     <div style={{ padding: '13px 20px', borderBottom: `1px solid ${T.borderSoft}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
       <div style={{ flex: 1, minWidth: 0 }}>
@@ -126,8 +126,8 @@ function CatalogRow({ p, onEdit }) {
   return (
     <div
       onMouseEnter={e => { e.currentTarget.style.background = T.cream; }}
-      onMouseLeave={e => { e.currentTarget.style.background = '#fff'; }}
-      style={{ padding: '12px 20px', borderBottom: `1px solid ${T.borderSoft}`, transition: 'background .15s', background: '#fff', display: 'flex', alignItems: 'center', gap: 12 }}>
+      onMouseLeave={e => { e.currentTarget.style.background = '#FDF9F1'; }}
+      style={{ padding: '12px 20px', borderBottom: `1px solid ${T.borderSoft}`, transition: 'background .15s', background: '#FDF9F1', display: 'flex', alignItems: 'center', gap: 12 }}>
       <div style={{ width: 44, height: 44, borderRadius: 8, overflow: 'hidden', background: T.cream, flexShrink: 0, border: `1px solid ${T.borderSoft}` }}>
         {imgUrl
           ? <img src={imgUrl} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -187,12 +187,12 @@ export default function SupplierDashboard() {
         <div style={{ display: 'flex', gap: 8 }}>
           {!bp.isMobile && (
             <button onClick={() => navigate('/supplier-dashboard/catalog/new')}
-              style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', borderRadius: 8, border: `1.5px solid ${T.borderSoft}`, background: '#fff', color: T.ink, fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
+              style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', borderRadius: 8, border: `1.5px solid ${T.borderSoft}`, background: '#FDF9F1', color: T.ink, fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
               <Plus size={13} /> List product
             </button>
           )}
           <button onClick={() => navigate('/supplier-dashboard/rfqs')}
-            style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', borderRadius: 8, border: 'none', background: T.emerald, color: '#fff', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
+            style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', borderRadius: 8, border: 'none', background: T.emerald, color: '#FDF9F1', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
             <FileSearch size={13} /> {bp.isMobile ? 'RFQs' : 'Browse RFQs'}
           </button>
         </div>
@@ -202,7 +202,7 @@ export default function SupplierDashboard() {
       <div style={{ display: 'grid', gridTemplateColumns: bp.isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: bp.isMobile ? 8 : 14, marginBottom: 24 }}>
         {sl || pl ? (
           Array(4).fill(0).map((_, i) => (
-            <div key={i} style={{ background: '#fff', borderRadius: 14, border: `1.5px solid ${T.borderSoft}`, padding: '18px 20px', height: 82 }} />
+            <div key={i} style={{ background: '#FDF9F1', borderRadius: 14, border: `1.5px solid ${T.borderSoft}`, padding: '18px 20px', height: 82 }} />
           ))
         ) : (
           <>
@@ -255,7 +255,7 @@ export default function SupplierDashboard() {
             <div style={{ fontSize: 14.5, fontWeight: 700, color: T.ink, marginBottom: 5 }}>No products listed yet</div>
             <div style={{ fontSize: 12.5, color: T.muted, marginBottom: 18 }}>List your first product to start reaching buyers on Globrixa</div>
             <button onClick={() => navigate('/supplier-dashboard/catalog/new')}
-              style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '10px 22px', borderRadius: 100, border: 'none', background: T.emerald, color: '#fff', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
+              style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '10px 22px', borderRadius: 100, border: 'none', background: T.emerald, color: '#FDF9F1', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
               <Plus size={14} /> List your first product
             </button>
           </div>

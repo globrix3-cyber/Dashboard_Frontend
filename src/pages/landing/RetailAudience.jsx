@@ -3,9 +3,8 @@ import { useDispatch } from 'react-redux';
 import { toggleLogin } from '../../features/auth/authSlice';
 import { useBreakpoint, rPad, rW } from '../../hooks/useBreakpoint';
 
-// Placeholder images — the client will supply final images via Drive.
-const LEFT_IMAGE  = '/images/people/woman-artisan-market.jpg';
-const RIGHT_IMAGE = '/images/people/businessman-portrait.jpg';
+const LEFT_IMAGE  = '/images/v3/boutique-studio-portrait.jpg';
+const RIGHT_IMAGE = '/images/v3/furniture-shop-portrait.jpg';
 
 export default function RetailAudience() {
   const dispatch = useDispatch();
@@ -38,7 +37,7 @@ export default function RetailAudience() {
       }}>
         From Local Shops to Growing Retail Businesses
       </h2>
-      <p style={{ fontSize: 15, lineHeight: 1.7, color: 'rgba(253,249,241,.85)', margin: '0 0 28px' }}>
+      <p style={{ fontSize: 15, lineHeight: 1.7, color: '#F0DCC0', margin: '0 0 28px' }}>
         Globrixa helps retailers, importers, and online sellers source distinctive furniture and home accessories their customers will love.
       </p>
       <button
@@ -46,7 +45,7 @@ export default function RetailAudience() {
         onMouseEnter={() => setBtnHov(true)}
         onMouseLeave={() => setBtnHov(false)}
         style={{
-          background: btnHov ? '#D68A3D' : '#C8792C',
+          background: btnHov ? '#C8792C' : '#C8792C',
           color: '#2B2016',
           padding: '13px 28px',
           borderRadius: 4,

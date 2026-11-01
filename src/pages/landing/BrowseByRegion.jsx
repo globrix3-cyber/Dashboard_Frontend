@@ -15,9 +15,9 @@ const CITY_PHOTOS = {
 
 const CITY_OVERLAYS = {
   Jaipur:    'linear-gradient(145deg,rgba(200,121,44,.85),rgba(164,84,22,.78))',
-  Moradabad: 'linear-gradient(145deg,rgba(27,49,117,.85),rgba(18,34,90,.78))',
+  Moradabad: 'linear-gradient(145deg,rgba(91,70,50,.85),rgba(18,34,90,.78))',
   Delhi:     'linear-gradient(145deg,rgba(61,122,82,.85),rgba(40,90,58,.78))',
-  Jodhpur:   'linear-gradient(145deg,rgba(176,120,144,.85),rgba(130,80,105,.78))',
+  Jodhpur:   'linear-gradient(145deg,rgba(43,32,22,.85),rgba(130,80,105,.78))',
 };
 
 function CityCard({ city, onAction }) {
@@ -33,17 +33,17 @@ function CityCard({ city, onAction }) {
       <div style={{ position: 'absolute', inset: 0, background: overlay, opacity: hov ? 0.9 : 0.8, transition: '.25s' }} />
       <div style={{ position: 'relative', zIndex: 2, padding: '26px 22px', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
         <div>
-          <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: 26, fontWeight: 800, color: '#fff', marginBottom: 4 }}>{city.name}</div>
-          <div style={{ fontSize: 11, color: 'rgba(255,255,255,.7)', marginBottom: 14, fontStyle: 'italic' }}>{city.tagline}</div>
-          <div style={{ fontSize: 12, color: 'rgba(255,255,255,.8)', lineHeight: 1.7 }}>{city.desc}</div>
+          <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: 26, fontWeight: 800, color: '#FDF9F1', marginBottom: 4 }}>{city.name}</div>
+          <div style={{ fontSize: 11, color: 'rgba(253,249,241,.7)', marginBottom: 14, fontStyle: 'italic' }}>{city.tagline}</div>
+          <div style={{ fontSize: 12, color: 'rgba(253,249,241,.8)', lineHeight: 1.7 }}>{city.desc}</div>
         </div>
         <div>
           <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 14 }}>
             {city.tags.map(([, l]) => (
-              <span key={l} style={{ background: 'rgba(255,255,255,.15)', backdropFilter: 'blur(6px)', border: '1px solid rgba(255,255,255,.22)', color: '#fff', fontSize: 10, fontWeight: 600, padding: '3px 10px', borderRadius: 20 }}>{l}</span>
+              <span key={l} style={{ background: 'rgba(253,249,241,.15)', backdropFilter: 'blur(6px)', border: '1px solid rgba(253,249,241,.22)', color: '#FDF9F1', fontSize: 10, fontWeight: 600, padding: '3px 10px', borderRadius: 20 }}>{l}</span>
             ))}
           </div>
-          <div style={{ fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,.85)', display: 'flex', alignItems: 'center', gap: 5, transform: hov ? 'translateX(4px)' : 'none', transition: '.2s' }}>
+          <div style={{ fontSize: 12, fontWeight: 700, color: 'rgba(253,249,241,.85)', display: 'flex', alignItems: 'center', gap: 5, transform: hov ? 'translateX(4px)' : 'none', transition: '.2s' }}>
             Browse suppliers <span style={{ fontSize: 14 }}>→</span>
           </div>
         </div>

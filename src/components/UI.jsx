@@ -2,13 +2,13 @@ import { Loader2, TrendingUp, TrendingDown } from 'lucide-react';
 import { statusLabel } from '../utils/helpers';
 
 const C = {
-  saffron:    '#C8792C', saffronLt: '#FDF1E8',
+  saffron:    '#C8792C', saffronLt: '#FDF9F1',
   emerald:    '#1A7A4A', emeraldLt: '#EAF5EF',
-  navy:       '#1B3175', navyLt:    '#EEF2FB',
-  gold:       '#B8730A', goldLt:    '#FDF5E2',
+  navy:       '#5B4632', navyLt:    '#F0DCC0',
+  gold:       '#C8792C', goldLt:    '#FDF9F1',
   ink:        '#5B4632', inkSoft:   '#2B2016',
   muted:      '#79634E', borderSoft:'#E3D5C1',
-  cream:      '#F0E8DA',
+  cream:      '#E3D5C1',
 };
 
 /* ── Spinner ─────────────────────────────────────────────────────────────── */
@@ -29,21 +29,21 @@ const BADGE_MAP = {
   approved:      { bg: '#EAF5EF', color: '#1A7A4A' },
   accepted:      { bg: '#EAF5EF', color: '#1A7A4A' },
   verified:      { bg: '#EAF5EF', color: '#1A7A4A' },
-  pending:       { bg: '#FDF5E2', color: '#B8730A' },
-  in_production: { bg: '#EEF2FB', color: '#1B3175' },
-  shipped:       { bg: '#EEF2FB', color: '#1B3175' },
-  quoted:        { bg: '#EEF2FB', color: '#1B3175' },
-  under_review:  { bg: '#EEF2FB', color: '#1B3175' },
-  draft:         { bg: '#F0E8DA', color: '#79634E' },
-  inactive:      { bg: '#F0E8DA', color: '#79634E' },
-  closed:        { bg: '#F0E8DA', color: '#79634E' },
+  pending:       { bg: '#FDF9F1', color: '#C8792C' },
+  in_production: { bg: '#F0DCC0', color: '#5B4632' },
+  shipped:       { bg: '#F0DCC0', color: '#5B4632' },
+  quoted:        { bg: '#F0DCC0', color: '#5B4632' },
+  under_review:  { bg: '#F0DCC0', color: '#5B4632' },
+  draft:         { bg: '#E3D5C1', color: '#79634E' },
+  inactive:      { bg: '#E3D5C1', color: '#79634E' },
+  closed:        { bg: '#E3D5C1', color: '#79634E' },
   rejected:      { bg: '#FEF2F2', color: '#DC2626' },
   cancelled:     { bg: '#FEF2F2', color: '#DC2626' },
   suspended:     { bg: '#FEF2F2', color: '#DC2626' },
 };
 
 export function Badge({ status, text }) {
-  const s = BADGE_MAP[status] || { bg: '#F0E8DA', color: '#79634E' };
+  const s = BADGE_MAP[status] || { bg: '#E3D5C1', color: '#79634E' };
   const label = text || statusLabel(status);
   return (
     <span style={{
@@ -167,7 +167,7 @@ export function InputField({ label, error, ...props }) {
           fontSize: 14, color: C.ink, outline: 'none',
           transition: 'border-color 0.15s, background 0.15s',
         }}
-        onFocus={e => { e.currentTarget.style.borderColor = C.saffron; e.currentTarget.style.background = '#fff'; }}
+        onFocus={e => { e.currentTarget.style.borderColor = C.saffron; e.currentTarget.style.background = '#FDF9F1'; }}
         onBlur={e => { e.currentTarget.style.borderColor = error ? '#DC2626' : C.borderSoft; e.currentTarget.style.background = C.cream; }}
         {...props}
       />

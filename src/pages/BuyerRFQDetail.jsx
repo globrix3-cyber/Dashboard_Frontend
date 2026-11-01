@@ -12,13 +12,13 @@ import { formatDate } from '../utils/helpers';
 
 /* ── Design tokens (matching SupplierPages palette) ─────────────────────────── */
 const C = {
-  saffron:    '#C8792C', saffronLt: '#FDF1E8',
+  saffron:    '#C8792C', saffronLt: '#FDF9F1',
   emerald:    '#1A7A4A', emeraldLt: '#EAF5EF',
-  navy:       '#1B3175', navyLt:    '#EEF2FB',
-  gold:       '#B8730A', goldLt:    '#FDF5E2',
+  navy:       '#5B4632', navyLt:    '#F0DCC0',
+  gold:       '#C8792C', goldLt:    '#FDF9F1',
   ink:        '#5B4632', inkSoft:   '#2B2016',
-  muted:      '#79634E', border:    '#D4C9B8',
-  borderSoft: '#E3D5C1', cream:     '#F0E8DA',
+  muted:      '#79634E', border:    '#E3D5C1',
+  borderSoft: '#E3D5C1', cream:     '#E3D5C1',
 };
 
 const field = (label, value, colSpan = 1) => ({ label, value, colSpan });
@@ -26,7 +26,7 @@ const field = (label, value, colSpan = 1) => ({ label, value, colSpan });
 function InfoCard({ children, accent = C.saffron }) {
   return (
     <div style={{
-      background: '#fff', borderRadius: 18,
+      background: '#FDF9F1', borderRadius: 18,
       border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden',
     }}>
       <div style={{ height: 3, background: accent }} />
@@ -56,10 +56,10 @@ function InputField({ label, type = 'text', value, onChange, placeholder, requir
       <Label>{label}{required && ' *'}</Label>
       {multiline
         ? <textarea rows={3} value={value} onChange={onChange} placeholder={placeholder} style={style}
-            onFocus={e => { e.currentTarget.style.borderColor = C.saffron; e.currentTarget.style.background = '#fff'; }}
+            onFocus={e => { e.currentTarget.style.borderColor = C.saffron; e.currentTarget.style.background = '#FDF9F1'; }}
             onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = C.cream; }} />
         : <input type={type} value={value} onChange={onChange} placeholder={placeholder} style={style}
-            onFocus={e => { e.currentTarget.style.borderColor = C.saffron; e.currentTarget.style.background = '#fff'; }}
+            onFocus={e => { e.currentTarget.style.borderColor = C.saffron; e.currentTarget.style.background = '#FDF9F1'; }}
             onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = C.cream; }} />
       }
     </div>
@@ -221,7 +221,7 @@ export default function BuyerRFQDetail() {
 
         {quotes.length === 0 ? (
           <div style={{
-            background: '#fff', borderRadius: 18, border: `1.5px solid ${C.borderSoft}`,
+            background: '#FDF9F1', borderRadius: 18, border: `1.5px solid ${C.borderSoft}`,
             padding: '32px 24px', textAlign: 'center', color: C.muted,
           }}>
             <FileText size={36} color={C.borderSoft} style={{ marginBottom: 10 }} />
@@ -233,7 +233,7 @@ export default function BuyerRFQDetail() {
               const isSelected = selectedQuote?.id === q.id;
               return (
                 <div key={q.id} style={{
-                  background: '#fff', borderRadius: 18, padding: '18px 22px',
+                  background: '#FDF9F1', borderRadius: 18, padding: '18px 22px',
                   border: `2px solid ${isSelected ? C.saffron : C.borderSoft}`,
                   transition: 'border-color 0.2s, box-shadow 0.2s',
                   boxShadow: isSelected ? `0 0 0 3px ${C.saffronLt}` : 'none',
@@ -299,7 +299,7 @@ export default function BuyerRFQDetail() {
                         <button onClick={() => handleSelectQuote(q)} style={{
                           display: 'flex', alignItems: 'center', gap: 6,
                           padding: '8px 16px', borderRadius: 100, border: 'none',
-                          background: C.saffron, color: '#fff', cursor: 'pointer',
+                          background: C.saffron, color: '#FDF9F1', cursor: 'pointer',
                           fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 12,
                         }}>
                           Select & Contract <ChevronRight size={12} />
@@ -451,7 +451,7 @@ export default function BuyerRFQDetail() {
               <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end', paddingTop: 8, borderTop: `1px solid ${C.borderSoft}` }}>
                 <button type="button" onClick={() => { setShowForm(false); setSelectedQuote(null); }} style={{
                   padding: '11px 24px', borderRadius: 100, border: `1.5px solid ${C.borderSoft}`,
-                  background: '#fff', color: C.muted, cursor: 'pointer',
+                  background: '#FDF9F1', color: C.muted, cursor: 'pointer',
                   fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 13,
                 }}>
                   Cancel
@@ -459,12 +459,12 @@ export default function BuyerRFQDetail() {
                 <button type="submit" disabled={submitting} style={{
                   display: 'flex', alignItems: 'center', gap: 8,
                   padding: '11px 28px', borderRadius: 100, border: 'none',
-                  background: C.saffron, color: '#fff', cursor: submitting ? 'not-allowed' : 'pointer',
+                  background: C.saffron, color: '#FDF9F1', cursor: submitting ? 'not-allowed' : 'pointer',
                   fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13,
                   opacity: submitting ? 0.75 : 1,
                 }}>
                   {submitting
-                    ? <span style={{ width: 14, height: 14, border: '2px solid rgba(255,255,255,.35)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 0.7s linear infinite', display: 'inline-block' }} />
+                    ? <span style={{ width: 14, height: 14, border: '2px solid rgba(253,249,241,.35)', borderTopColor: '#FDF9F1', borderRadius: '50%', animation: 'spin 0.7s linear infinite', display: 'inline-block' }} />
                     : <FileText size={14} />}
                   {submitting ? 'Creating…' : 'Create & Send Contract'}
                 </button>

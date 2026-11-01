@@ -10,13 +10,13 @@ import {
 
 /* ── Shared design tokens ────────────────────────────────────────────────── */
 const C = {
-  saffron: '#C8792C', saffronLt: '#FDF1E8', saffronMid: '#F0B48A',
+  saffron: '#C8792C', saffronLt: '#FDF9F1', saffronMid: '#F0DCC0',
   emerald: '#1A7A4A', emeraldLt: '#EAF5EF',
-  navy:    '#1B3175', navyLt:    '#EEF2FB',
-  gold:    '#B8730A', goldLt:    '#FDF5E2',
+  navy:    '#5B4632', navyLt:    '#F0DCC0',
+  gold:    '#C8792C', goldLt:    '#FDF9F1',
   ink:     '#5B4632', inkSoft:   '#2B2016',
   muted:   '#79634E', borderSoft:'#E3D5C1',
-  cream:   '#F0E8DA', warmWhite: '#FDF9F1',
+  cream:   '#E3D5C1', warmWhite: '#FDF9F1',
 };
 
 /* ── Shared layout wrapper ───────────────────────────────────────────────── */
@@ -30,24 +30,24 @@ function PublicLayout({ children }) {
       {/* Mini nav */}
       <div style={{ height: 3, display: 'flex' }}>
         <div style={{ flex: 1, background: C.saffron }} />
-        <div style={{ flex: 1, background: '#fff', borderBottom: `0.5px solid ${C.borderSoft}` }} />
+        <div style={{ flex: 1, background: '#FDF9F1', borderBottom: `0.5px solid ${C.borderSoft}` }} />
         <div style={{ flex: 1, background: C.emerald }} />
       </div>
-      <header style={{ background: '#fff', borderBottom: `1px solid ${C.borderSoft}`, padding: '0 48px', height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <header style={{ background: '#FDF9F1', borderBottom: `1px solid ${C.borderSoft}`, padding: '0 48px', height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <button onClick={() => navigate('/')} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
           <img src="/logo.png" alt="Globrixa" style={{ height: 52, width: 'auto', objectFit: 'contain' }} />
         </button>
         <div style={{ display: 'flex', gap: 10 }}>
           {userRole ? (
-            <button onClick={() => navigate(dashPath)} style={{ padding: '8px 18px', borderRadius: 100, border: 'none', background: C.saffron, color: '#fff', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
+            <button onClick={() => navigate(dashPath)} style={{ padding: '8px 18px', borderRadius: 100, border: 'none', background: C.saffron, color: '#FDF9F1', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
               Go to Dashboard
             </button>
           ) : (
             <>
-              <button onClick={() => dispatch(toggleLogin(true))} style={{ padding: '8px 18px', borderRadius: 100, border: `1.5px solid ${C.borderSoft}`, background: '#fff', color: C.inkSoft, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 13 }}>
+              <button onClick={() => dispatch(toggleLogin(true))} style={{ padding: '8px 18px', borderRadius: 100, border: `1.5px solid ${C.borderSoft}`, background: '#FDF9F1', color: C.inkSoft, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 13 }}>
                 Sign In
               </button>
-              <button onClick={() => dispatch(toggleLogin(true))} style={{ padding: '8px 18px', borderRadius: 100, border: 'none', background: C.saffron, color: '#fff', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
+              <button onClick={() => dispatch(toggleLogin(true))} style={{ padding: '8px 18px', borderRadius: 100, border: 'none', background: C.saffron, color: '#FDF9F1', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
                 Join Free
               </button>
             </>
@@ -99,7 +99,7 @@ export function AboutPage() {
           { icon: Shield,     color: C.navy,    title: 'Our Values',   text: 'Transparency, GST-compliance, fair trade, and technology that speaks Hindi and English.' },
           { icon: TrendingUp, color: C.gold,    title: 'Our Traction', text: '5,000+ suppliers · 50,000+ products · ₹250 Cr+ in monthly trade facilitated.' },
         ].map(({ icon: Icon, color, title, text }) => (
-          <div key={title} style={{ background: '#fff', borderRadius: 18, padding: '28px 26px', border: `1.5px solid ${C.borderSoft}`, borderTop: `3px solid ${color}` }}>
+          <div key={title} style={{ background: '#FDF9F1', borderRadius: 18, padding: '28px 26px', border: `1.5px solid ${C.borderSoft}`, borderTop: `3px solid ${color}` }}>
             <div style={{ width: 44, height: 44, borderRadius: 12, background: `${color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
               <Icon size={20} color={color} />
             </div>
@@ -111,9 +111,9 @@ export function AboutPage() {
 
       <div style={{ background: C.navy, borderRadius: 20, padding: '40px 36px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, opacity: 0.05, backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='50' cy='50' r='46' fill='none' stroke='%23fff' stroke-width='.5' stroke-dasharray='3 7'/%3E%3C/svg%3E")`, backgroundSize: '100px 100px', pointerEvents: 'none' }} />
-        <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 900, color: '#fff', margin: '0 0 12px' }}>Join the Globrixa Movement</h2>
-        <p style={{ color: 'rgba(255,255,255,0.7)', marginBottom: 28, fontSize: 14 }}>Be part of India's most trusted B2B trade platform.</p>
-        <button onClick={handleCta} style={{ padding: '12px 32px', borderRadius: 100, border: 'none', background: C.saffron, color: '#fff', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 14, boxShadow: '0 4px 16px rgba(217,96,10,0.4)' }}>
+        <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 900, color: '#FDF9F1', margin: '0 0 12px' }}>Join the Globrixa Movement</h2>
+        <p style={{ color: 'rgba(253,249,241,0.7)', marginBottom: 28, fontSize: 14 }}>Be part of India's most trusted B2B trade platform.</p>
+        <button onClick={handleCta} style={{ padding: '12px 32px', borderRadius: 100, border: 'none', background: C.saffron, color: '#FDF9F1', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 14, boxShadow: '0 4px 16px rgba(200,121,44,0.4)' }}>
           Get Started Free
         </button>
       </div>
@@ -142,8 +142,8 @@ export function BlogPage() {
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
         {BLOG_POSTS.map(p => (
-          <div key={p.id} style={{ background: '#fff', borderRadius: 18, border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden', cursor: 'pointer', transition: 'transform 0.2s, box-shadow 0.2s' }}
-            onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 8px 28px rgba(28,24,21,0.10)'; }}
+          <div key={p.id} style={{ background: '#FDF9F1', borderRadius: 18, border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden', cursor: 'pointer', transition: 'transform 0.2s, box-shadow 0.2s' }}
+            onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 8px 28px rgba(43,32,22,0.10)'; }}
             onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = 'none'; }}>
             <div style={{ height: 4, background: p.tagColor }} />
             <div style={{ padding: '22px 24px' }}>
@@ -187,7 +187,7 @@ export function CareersPage() {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 40 }}>
         {JOBS.map(j => (
-          <div key={j.title} style={{ background: '#fff', borderRadius: 14, border: `1.5px solid ${C.borderSoft}`, padding: '18px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, cursor: 'pointer', transition: 'border-color 0.15s, box-shadow 0.15s' }}
+          <div key={j.title} style={{ background: '#FDF9F1', borderRadius: 14, border: `1.5px solid ${C.borderSoft}`, padding: '18px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, cursor: 'pointer', transition: 'border-color 0.15s, box-shadow 0.15s' }}
             onMouseEnter={e => { e.currentTarget.style.borderColor = C.emerald; e.currentTarget.style.boxShadow = `0 4px 16px ${C.emerald}18`; }}
             onMouseLeave={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.boxShadow = 'none'; }}>
             <div>
@@ -208,7 +208,7 @@ export function CareersPage() {
       <div style={{ background: C.cream, borderRadius: 18, padding: '32px', textAlign: 'center' }}>
         <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, fontWeight: 700, color: C.ink, marginBottom: 8 }}>Don't see your role?</p>
         <p style={{ fontSize: 14, color: C.muted, marginBottom: 18 }}>We're always looking for talented people. Send us your CV.</p>
-        <a href="mailto:careers@globrixa.com" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '10px 24px', borderRadius: 100, background: C.saffron, color: '#fff', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13, textDecoration: 'none' }}>
+        <a href="mailto:careers@globrixa.com" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '10px 24px', borderRadius: 100, background: C.saffron, color: '#FDF9F1', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13, textDecoration: 'none' }}>
           <Mail size={14} /> careers@globrixa.com
         </a>
       </div>
@@ -235,7 +235,7 @@ export function ContactPage() {
           { icon: MapPin,   color: C.navy,    bg: C.navyLt,    label: 'Office',       value: 'Bandra Kurla Complex, Mumbai 400051', link: null            },
           { icon: HelpCircle,color:C.gold,    bg: C.goldLt,    label: 'Help Center',  value: 'docs.globrixa.com',      link: '#'                          },
         ].map(({ icon: Icon, color, bg, label, value, link }) => (
-          <div key={label} style={{ background: '#fff', borderRadius: 16, padding: '24px', border: `1.5px solid ${C.borderSoft}` }}>
+          <div key={label} style={{ background: '#FDF9F1', borderRadius: 16, padding: '24px', border: `1.5px solid ${C.borderSoft}` }}>
             <div style={{ width: 42, height: 42, borderRadius: 12, background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14 }}>
               <Icon size={19} color={color} />
             </div>
@@ -249,24 +249,24 @@ export function ContactPage() {
         ))}
       </div>
 
-      <div style={{ background: '#fff', borderRadius: 20, border: `1.5px solid ${C.borderSoft}`, padding: '32px 36px' }}>
+      <div style={{ background: '#FDF9F1', borderRadius: 20, border: `1.5px solid ${C.borderSoft}`, padding: '32px 36px' }}>
         <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, fontWeight: 800, color: C.ink, marginBottom: 24 }}>Send a Message</h3>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
           {[{ label: 'Your Name', ph: 'Rajesh Kumar' }, { label: 'Email', ph: 'you@company.com' }, { label: 'Subject', ph: 'GST verification query' }].map(f => (
             <div key={f.label}>
               <label style={{ display: 'block', fontSize: 11, fontWeight: 700, color: C.inkSoft, textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 7 }}>{f.label}</label>
               <input placeholder={f.ph} style={{ width: '100%', padding: '11px 14px', borderRadius: 12, border: `1.5px solid ${C.borderSoft}`, background: C.cream, fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: C.ink, outline: 'none', boxSizing: 'border-box' }}
-                onFocus={e => { e.currentTarget.style.borderColor = C.saffron; e.currentTarget.style.background = '#fff'; }}
+                onFocus={e => { e.currentTarget.style.borderColor = C.saffron; e.currentTarget.style.background = '#FDF9F1'; }}
                 onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = C.cream; }} />
             </div>
           ))}
           <div>
             <label style={{ display: 'block', fontSize: 11, fontWeight: 700, color: C.inkSoft, textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 7 }}>Message</label>
             <textarea rows={4} placeholder="How can we help you?" style={{ width: '100%', padding: '11px 14px', borderRadius: 12, border: `1.5px solid ${C.borderSoft}`, background: C.cream, fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: C.ink, outline: 'none', resize: 'vertical', boxSizing: 'border-box' }}
-              onFocus={e => { e.currentTarget.style.borderColor = C.saffron; e.currentTarget.style.background = '#fff'; }}
+              onFocus={e => { e.currentTarget.style.borderColor = C.saffron; e.currentTarget.style.background = '#FDF9F1'; }}
               onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = C.cream; }} />
           </div>
-          <button onClick={() => alert('Message sent! We\'ll get back to you within 24 hours.')} style={{ padding: '12px 0', borderRadius: 100, border: 'none', background: C.saffron, color: '#fff', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 14, boxShadow: '0 4px 16px rgba(217,96,10,0.28)' }}>
+          <button onClick={() => alert('Message sent! We\'ll get back to you within 24 hours.')} style={{ padding: '12px 0', borderRadius: 100, border: 'none', background: C.saffron, color: '#FDF9F1', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 14, boxShadow: '0 4px 16px rgba(200,121,44,0.28)' }}>
             Send Message
           </button>
         </div>
@@ -294,7 +294,7 @@ export function PrivacyPage() {
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
         {sections.map(s => (
-          <div key={s.title} style={{ background: '#fff', borderRadius: 16, padding: '24px 28px', border: `1.5px solid ${C.borderSoft}`, borderLeft: `4px solid ${C.navy}` }}>
+          <div key={s.title} style={{ background: '#FDF9F1', borderRadius: 16, padding: '24px 28px', border: `1.5px solid ${C.borderSoft}`, borderLeft: `4px solid ${C.navy}` }}>
             <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, fontWeight: 800, color: C.ink, marginBottom: 10 }}>{s.title}</h3>
             <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.75 }}>{s.body}</p>
           </div>
@@ -324,7 +324,7 @@ export function TermsPage() {
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
         {sections.map(s => (
-          <div key={s.title} style={{ background: '#fff', borderRadius: 16, padding: '22px 28px', border: `1.5px solid ${C.borderSoft}` }}>
+          <div key={s.title} style={{ background: '#FDF9F1', borderRadius: 16, padding: '22px 28px', border: `1.5px solid ${C.borderSoft}` }}>
             <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 16, fontWeight: 800, color: C.ink, marginBottom: 8 }}>{s.title}</h3>
             <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.75 }}>{s.body}</p>
           </div>
@@ -356,7 +356,7 @@ export function HelpCenterPage() {
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         {HELP.map(({ q, a }) => (
-          <div key={q} style={{ background: '#fff', borderRadius: 14, border: `1.5px solid ${C.borderSoft}`, padding: '20px 24px' }}>
+          <div key={q} style={{ background: '#FDF9F1', borderRadius: 14, border: `1.5px solid ${C.borderSoft}`, padding: '20px 24px' }}>
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
               <CheckCircle2 size={18} color={C.emerald} style={{ flexShrink: 0, marginTop: 1 }} />
               <div>
@@ -370,7 +370,7 @@ export function HelpCenterPage() {
       <div style={{ marginTop: 40, textAlign: 'center', background: C.cream, borderRadius: 18, padding: '32px' }}>
         <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, fontWeight: 700, color: C.ink, marginBottom: 8 }}>Still have questions?</p>
         <p style={{ fontSize: 14, color: C.muted, marginBottom: 20 }}>Our support team replies within 24 hours — in Hindi or English.</p>
-        <a href="mailto:support@globrixa.com" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '11px 26px', borderRadius: 100, background: C.emerald, color: '#fff', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13, textDecoration: 'none' }}>
+        <a href="mailto:support@globrixa.com" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '11px 26px', borderRadius: 100, background: C.emerald, color: '#FDF9F1', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13, textDecoration: 'none' }}>
           <Mail size={14} /> Email Support
         </a>
       </div>

@@ -36,7 +36,7 @@ export default function BuyerRFQsPage() {
           {rfqs.map((r) => (
             <div key={r.id}
               className="bg-white rounded-3xl border border-gray-200 p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:border-orange-200"
-              style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}
+              style={{ boxShadow: '0 1px 3px rgba(43,32,22,0.05)' }}
               onClick={() => navigate(`/buyer-dashboard/rfqs/${r.id}`)}>
               <div className="flex items-start justify-between gap-4 flex-wrap">
                 <div className="flex-1 min-w-0">
@@ -53,7 +53,7 @@ export default function BuyerRFQsPage() {
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="text-center">
-                    <div className="flex items-center gap-1.5 text-sm font-bold" style={{ color: '#FF6B00' }}>
+                    <div className="flex items-center gap-1.5 text-sm font-bold" style={{ color: '#C8792C' }}>
                       <MessageSquare size={14} /> {r.responses ?? 0}
                     </div>
                     <div className="text-xs text-gray-400">quotes</div>

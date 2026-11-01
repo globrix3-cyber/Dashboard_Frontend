@@ -14,11 +14,11 @@ import { useCurrency } from '../hooks/useCurrency';
 const T = {
   ink:    '#5B4632',
   muted:  '#79634E',
-  border: '#F0EAE0',
+  border: '#FDF9F1',
   cream:  '#FDF9F1',
   saffron:'#C8792C',
   emerald:'#1A7A4A',
-  navy:   '#1B3175',
+  navy:   '#5B4632',
 };
 
 /* ── Category card imagery — paired with real categories at render time ───── */
@@ -29,9 +29,9 @@ const CATEGORY_IMAGES = [
 
 /* ── Promo banners ─────────────────────────────────────────────────────────── */
 const BANNERS = [
-  { title: 'New arrivals this week', sub: 'Fresh stock from 200+ verified suppliers', cta: 'Shop new', bg: '#2C1810', img: IMG.artisanWeaving },
-  { title: 'Bulk order deals',       sub: 'Save up to 30% on orders above MOQ × 5',  cta: 'View deals', bg: '#1B3175', img: IMG.fabricRolls  },
-  { title: 'Export-ready products',  sub: 'GST invoices, quality certs, fast dispatch', cta: 'Explore', bg: '#1A4A2E', img: IMG.indiaFactoryWorkers },
+  { title: 'New arrivals this week', sub: 'Fresh stock from 200+ verified suppliers', cta: 'Shop new', bg: '#2B2016', img: IMG.artisanWeaving },
+  { title: 'Bulk order deals',       sub: 'Save up to 30% on orders above MOQ × 5',  cta: 'View deals', bg: '#5B4632', img: IMG.fabricRolls  },
+  { title: 'Export-ready products',  sub: 'GST invoices, quality certs, fast dispatch', cta: 'Explore', bg: '#2B2016', img: IMG.indiaFactoryWorkers },
 ];
 
 /* ── Favourite state (local only) ─────────────────────────────────────────── */
@@ -68,7 +68,7 @@ function CategoryCard({ cat, onClick }) {
         display: 'flex', alignItems: 'center', gap: 10,
         padding: '10px 12px', borderRadius: 12,
         border: `1.5px solid ${hov ? T.saffron : '#E3D5C1'}`,
-        background: hov ? T.cream : '#fff',
+        background: hov ? T.cream : '#FDF9F1',
         cursor: 'pointer', transition: 'all .15s',
       }}
     >
@@ -93,19 +93,19 @@ function PromoBanner({ b, onClick }) {
         borderRadius: 14, overflow: 'hidden', position: 'relative',
         background: b.bg, cursor: 'pointer',
         transform: hov ? 'translateY(-2px)' : 'none',
-        boxShadow: hov ? '0 8px 28px rgba(0,0,0,.18)' : '0 2px 8px rgba(0,0,0,.10)',
+        boxShadow: hov ? '0 8px 28px rgba(43,32,22,.18)' : '0 2px 8px rgba(43,32,22,.10)',
         transition: 'all .2s', display: 'flex', height: 140,
       }}
     >
       <div style={{ flex: 1, padding: '20px 20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', position: 'relative', zIndex: 1 }}>
         <div>
-          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 17, fontWeight: 700, color: '#fff', lineHeight: 1.25, marginBottom: 5 }}>{b.title}</div>
-          <div style={{ fontSize: 11.5, color: 'rgba(255,255,255,.65)', lineHeight: 1.5 }}>{b.sub}</div>
+          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 17, fontWeight: 700, color: '#FDF9F1', lineHeight: 1.25, marginBottom: 5 }}>{b.title}</div>
+          <div style={{ fontSize: 11.5, color: 'rgba(253,249,241,.65)', lineHeight: 1.5 }}>{b.sub}</div>
         </div>
         <button style={{
           alignSelf: 'flex-start', padding: '6px 14px', borderRadius: 6,
-          border: '1.5px solid rgba(255,255,255,.5)', background: 'transparent',
-          color: '#fff', fontSize: 12, fontWeight: 600, cursor: 'pointer',
+          border: '1.5px solid rgba(253,249,241,.5)', background: 'transparent',
+          color: '#FDF9F1', fontSize: 12, fontWeight: 600, cursor: 'pointer',
           fontFamily: "'DM Sans', sans-serif",
         }}>{b.cta} →</button>
       </div>
@@ -147,10 +147,10 @@ function SectionHeading({ title, cta, onCta, bp }) {
 function ProductCard({ p, isFav, onFav, onAction }) {
   const [hov, setHov] = useState(false);
   const { fmt } = useCurrency();
-  const badgeColor = p.badge === 'Trending' ? { bg: '#F3F0EB', color: '#5B4632' }
-    : p.badge === 'Export'   ? { bg: '#EEF2FB', color: '#1B3175' }
+  const badgeColor = p.badge === 'Trending' ? { bg: '#E3D5C1', color: '#5B4632' }
+    : p.badge === 'Export'   ? { bg: '#F0DCC0', color: '#5B4632' }
     : p.badge === 'Verified' ? { bg: '#EAF5EF', color: T.emerald }
-    : { bg: '#F3F0EB', color: '#5B4632' };
+    : { bg: '#E3D5C1', color: '#5B4632' };
 
   return (
     <Link
@@ -163,8 +163,8 @@ function ProductCard({ p, isFav, onFav, onAction }) {
       <div
         style={{
           position: 'relative', borderRadius: 12, overflow: 'hidden',
-          aspectRatio: '1 / 1', background: '#F5F0E8', marginBottom: 10,
-          border: `1px solid ${hov ? '#D4C9B8' : '#E3D5C1'}`, transition: 'border-color .15s',
+          aspectRatio: '1 / 1', background: '#FDF9F1', marginBottom: 10,
+          border: `1px solid ${hov ? '#E3D5C1' : '#E3D5C1'}`, transition: 'border-color .15s',
         }}
       >
         {p.img ? (
@@ -192,7 +192,7 @@ function ProductCard({ p, isFav, onFav, onAction }) {
           style={{
             position: 'absolute', top: 8, right: 8,
             width: 28, height: 28, borderRadius: '50%',
-            background: 'rgba(255,255,255,.85)', backdropFilter: 'blur(4px)',
+            background: 'rgba(253,249,241,.85)', backdropFilter: 'blur(4px)',
             border: 'none', cursor: 'pointer',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             opacity: hov || isFav ? 1 : 0, transition: 'opacity .15s',
@@ -208,10 +208,10 @@ function ProductCard({ p, isFav, onFav, onAction }) {
           style={{
             position: 'absolute', bottom: 8, right: 8,
             width: 28, height: 28, borderRadius: '50%',
-            background: '#fff', border: '1.5px solid #D4C9B8',
+            background: '#FDF9F1', border: '1.5px solid #E3D5C1',
             cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
             opacity: hov ? 1 : 0, transition: 'opacity .15s',
-            boxShadow: '0 2px 8px rgba(0,0,0,.1)',
+            boxShadow: '0 2px 8px rgba(43,32,22,.1)',
           }}
         >
           <Plus size={13} color={T.ink} />
@@ -257,7 +257,7 @@ export default function BuyerDashboard() {
   const goToCategory = (id) => navigate(`/categories?id=${encodeURIComponent(id)}`);
 
   return (
-    <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: '#fff' }}>
+    <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: '#FDF9F1' }}>
 
       {/* ── Content ─────────────────────────────────────────────────────────── */}
       <div style={{ padding: bp.isMobile ? '18px 14px' : bp.isTablet ? '22px 24px' : '28px 32px', maxWidth: 1400, margin: '0 auto' }}>
@@ -298,7 +298,7 @@ export default function BuyerDashboard() {
           ) : productsError ? (
             <div style={{ padding: 32, textAlign: 'center', color: T.muted }}>
               <p style={{ marginBottom: 12 }}>Could not load product ideas.</p>
-              <button onClick={() => window.location.reload()} style={{ padding: '8px 20px', borderRadius: 100, background: T.saffron, color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 700, fontFamily: "'DM Sans', sans-serif" }}>Retry</button>
+              <button onClick={() => window.location.reload()} style={{ padding: '8px 20px', borderRadius: 100, background: T.saffron, color: '#FDF9F1', border: 'none', cursor: 'pointer', fontWeight: 700, fontFamily: "'DM Sans', sans-serif" }}>Retry</button>
             </div>
           ) : products.length === 0 ? (
             <EmptyState icon={ShoppingBag} title="No products yet" desc="Check back soon — new supplier listings are added regularly." />
@@ -320,7 +320,7 @@ export default function BuyerDashboard() {
               {hasMore && (
                 <div style={{ textAlign: 'center', paddingTop: 24, paddingBottom: 16 }}>
                   <button onClick={() => setVisibleCount(v => v + 12)}
-                    style={{ padding: '10px 32px', borderRadius: 8, border: `1.5px solid #E3D5C1`, background: '#fff', color: T.ink, fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
+                    style={{ padding: '10px 32px', borderRadius: 8, border: `1.5px solid #E3D5C1`, background: '#FDF9F1', color: T.ink, fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
                     Load more
                   </button>
                 </div>

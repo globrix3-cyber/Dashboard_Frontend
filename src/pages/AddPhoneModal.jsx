@@ -39,15 +39,15 @@ export default function AddPhoneModal({ onDone }) {
   return (
     <div style={{
       position: 'fixed', inset: 0, zIndex: 1000,
-      background: 'rgba(28,24,21,0.55)', display: 'flex',
+      background: 'rgba(43,32,22,0.55)', display: 'flex',
       alignItems: 'center', justifyContent: 'center', padding: 20,
     }}>
       <div style={{
-        background: '#fff', borderRadius: 20, padding: 32, maxWidth: 420, width: '100%',
-        boxShadow: '0 24px 64px rgba(0,0,0,0.25)', fontFamily: "'DM Sans', sans-serif",
+        background: '#FDF9F1', borderRadius: 20, padding: 32, maxWidth: 420, width: '100%',
+        boxShadow: '0 24px 64px rgba(43,32,22,0.25)', fontFamily: "'DM Sans', sans-serif",
       }}>
         <div style={{
-          width: 48, height: 48, borderRadius: 14, background: '#FDF1E8',
+          width: 48, height: 48, borderRadius: 14, background: '#FDF9F1',
           display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 18,
         }}>
           <Phone size={22} color="#C8792C" />
@@ -76,14 +76,14 @@ export default function AddPhoneModal({ onDone }) {
           <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
             <button type="button" onClick={onDone} disabled={saving} style={{
               flex: 1, padding: '12px 0', borderRadius: 100, border: '1.5px solid #E3D5C1',
-              background: '#fff', color: '#79634E', cursor: 'pointer',
+              background: '#FDF9F1', color: '#79634E', cursor: 'pointer',
               fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 13.5,
             }}>
               Skip for now
             </button>
             <button type="submit" disabled={saving} style={{
               flex: 1, padding: '12px 0', borderRadius: 100, border: 'none',
-              background: '#C8792C', color: '#fff', cursor: saving ? 'default' : 'pointer',
+              background: '#C8792C', color: '#2B2016', cursor: saving ? 'default' : 'pointer',
               fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13.5,
               opacity: saving ? 0.7 : 1,
             }}>

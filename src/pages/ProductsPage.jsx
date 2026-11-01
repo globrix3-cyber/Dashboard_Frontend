@@ -100,7 +100,7 @@ export default function ProductsPage() {
   /* ── Sidebar panel (shared between desktop sidebar and mobile drawer) ── */
   const SidebarContent = () => (
     <>
-      <div style={{ fontSize: 12, fontWeight: 700, color: '#79634E', textTransform: 'uppercase', letterSpacing: '.07em', marginBottom: 12, paddingBottom: 10, borderBottom: '1px solid #EDE8E0' }}>
+      <div style={{ fontSize: 12, fontWeight: 700, color: '#79634E', textTransform: 'uppercase', letterSpacing: '.07em', marginBottom: 12, paddingBottom: 10, borderBottom: '1px solid #E3D5C1' }}>
         {search ? `"${search}"` : 'Categories'}
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -111,10 +111,10 @@ export default function ProductsPage() {
             fontFamily: "'DM Sans', sans-serif", fontSize: 13.5,
             fontWeight: cat === c ? 700 : 400,
             color: cat === c ? '#5B4632' : '#79634E',
-            background: cat === c ? '#EDE8E0' : 'transparent',
+            background: cat === c ? '#E3D5C1' : 'transparent',
             cursor: 'pointer', transition: 'background .1s, color .1s',
           }}
-            onMouseEnter={e => { if (cat !== c) { e.currentTarget.style.background = '#F5F2EE'; e.currentTarget.style.color = '#5B4632'; } }}
+            onMouseEnter={e => { if (cat !== c) { e.currentTarget.style.background = '#E3D5C1'; e.currentTarget.style.color = '#5B4632'; } }}
             onMouseLeave={e => { if (cat !== c) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#79634E'; } }}
           >
             {c}
@@ -137,8 +137,8 @@ export default function ProductsPage() {
           <div style={{ display: 'grid', gridTemplateColumns: bp.isMobile ? 'repeat(2, 1fr)' : bp.isTablet ? 'repeat(3, 1fr)' : 'repeat(4, 1fr)', gap: bp.isMobile ? 8 : 10 }}>
             {rootCats.slice(0, bp.isMobile ? 6 : 8).map((c, i) => (
               <div key={c.id} onClick={() => selectCat(c.name)}
-                style={{ display: 'flex', alignItems: 'center', background: '#F5F2EE', borderRadius: 10, overflow: 'hidden', cursor: 'pointer', border: '1px solid #EDE8E0', transition: 'box-shadow .15s, transform .15s' }}
-                onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 4px 16px rgba(28,24,21,.1)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+                style={{ display: 'flex', alignItems: 'center', background: '#E3D5C1', borderRadius: 10, overflow: 'hidden', cursor: 'pointer', border: '1px solid #E3D5C1', transition: 'box-shadow .15s, transform .15s' }}
+                onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 4px 16px rgba(43,32,22,.1)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
                 onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'none'; }}
               >
                 <div style={{ width: bp.isMobile ? 52 : 70, height: bp.isMobile ? 52 : 70, flexShrink: 0, overflow: 'hidden' }}>
@@ -157,21 +157,21 @@ export default function ProductsPage() {
         <div style={{ display: 'flex', gap: 8, marginBottom: 14 }}>
           <button
             onClick={e => { e.stopPropagation(); setShowMobileFilter(o => !o); }}
-            style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 14px', borderRadius: 8, border: `1.5px solid ${cat !== 'All' ? '#C8792C' : '#EDE8E0'}`, background: cat !== 'All' ? '#FDF3EB' : '#fff', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, color: cat !== 'All' ? '#C8792C' : '#5B4632', flex: 1 }}
+            style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 14px', borderRadius: 8, border: `1.5px solid ${cat !== 'All' ? '#C8792C' : '#E3D5C1'}`, background: cat !== 'All' ? '#FDF9F1' : '#FDF9F1', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, color: cat !== 'All' ? '#C8792C' : '#5B4632', flex: 1 }}
           >
             <SlidersHorizontal size={13} />
             {cat !== 'All' ? cat : 'All categories'}
           </button>
           <div style={{ position: 'relative' }} onClick={e => e.stopPropagation()}>
             <button onClick={() => setShowSort(o => !o)}
-              style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '8px 12px', borderRadius: 8, border: '1.5px solid #EDE8E0', background: '#fff', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 500, color: '#5B4632', whiteSpace: 'nowrap' }}>
+              style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '8px 12px', borderRadius: 8, border: '1.5px solid #E3D5C1', background: '#FDF9F1', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 500, color: '#5B4632', whiteSpace: 'nowrap' }}>
               Sort <ChevronDown size={12} />
             </button>
             {showSort && (
-              <div style={{ position: 'absolute', right: 0, top: 'calc(100% + 4px)', background: '#fff', border: '1.5px solid #EDE8E0', borderRadius: 10, overflow: 'hidden', zIndex: 50, minWidth: 180, boxShadow: '0 6px 24px rgba(28,24,21,.1)' }}>
+              <div style={{ position: 'absolute', right: 0, top: 'calc(100% + 4px)', background: '#FDF9F1', border: '1.5px solid #E3D5C1', borderRadius: 10, overflow: 'hidden', zIndex: 50, minWidth: 180, boxShadow: '0 6px 24px rgba(43,32,22,.1)' }}>
                 {SORT_OPTIONS.map(o => (
                   <button key={o.value} onClick={() => { setSort(o.value); setShowSort(false); }}
-                    style={{ display: 'block', width: '100%', textAlign: 'left', padding: '11px 14px', border: 'none', background: sort === o.value ? '#F5F2EE' : '#fff', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: sort === o.value ? 700 : 400, color: '#5B4632' }}>
+                    style={{ display: 'block', width: '100%', textAlign: 'left', padding: '11px 14px', border: 'none', background: sort === o.value ? '#E3D5C1' : '#FDF9F1', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: sort === o.value ? 700 : 400, color: '#5B4632' }}>
                     {o.label}
                   </button>
                 ))}
@@ -184,8 +184,8 @@ export default function ProductsPage() {
       {/* ── Mobile category drawer ───────────────────────────────────────── */}
       {bp.isMobile && showMobileFilter && (
         <>
-          <div onClick={() => setShowMobileFilter(false)} style={{ position: 'fixed', inset: 0, background: 'rgba(28,24,21,.4)', zIndex: 200 }} />
-          <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, background: '#fff', borderRadius: '20px 20px 0 0', padding: '20px 18px 32px', zIndex: 201, maxHeight: '70vh', overflowY: 'auto', boxShadow: '0 -8px 32px rgba(28,24,21,.15)' }}>
+          <div onClick={() => setShowMobileFilter(false)} style={{ position: 'fixed', inset: 0, background: 'rgba(43,32,22,.4)', zIndex: 200 }} />
+          <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, background: '#FDF9F1', borderRadius: '20px 20px 0 0', padding: '20px 18px 32px', zIndex: 201, maxHeight: '70vh', overflowY: 'auto', boxShadow: '0 -8px 32px rgba(43,32,22,.15)' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
               <span style={{ fontSize: 15, fontWeight: 700, color: '#5B4632' }}>Filter by category</span>
               <button onClick={() => setShowMobileFilter(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}>
@@ -218,14 +218,14 @@ export default function ProductsPage() {
               </span>
               <div style={{ position: 'relative' }} onClick={e => e.stopPropagation()}>
                 <button onClick={() => setShowSort(o => !o)}
-                  style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 14px', borderRadius: 8, border: '1.5px solid #EDE8E0', background: '#fff', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 500, color: '#5B4632' }}>
+                  style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 14px', borderRadius: 8, border: '1.5px solid #E3D5C1', background: '#FDF9F1', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 500, color: '#5B4632' }}>
                   {SORT_OPTIONS.find(o => o.value === sort)?.label} <ChevronDown size={13} />
                 </button>
                 {showSort && (
-                  <div style={{ position: 'absolute', right: 0, top: 'calc(100% + 4px)', background: '#fff', border: '1.5px solid #EDE8E0', borderRadius: 10, overflow: 'hidden', zIndex: 50, minWidth: 190, boxShadow: '0 6px 24px rgba(28,24,21,.1)' }}>
+                  <div style={{ position: 'absolute', right: 0, top: 'calc(100% + 4px)', background: '#FDF9F1', border: '1.5px solid #E3D5C1', borderRadius: 10, overflow: 'hidden', zIndex: 50, minWidth: 190, boxShadow: '0 6px 24px rgba(43,32,22,.1)' }}>
                     {SORT_OPTIONS.map(o => (
                       <button key={o.value} onClick={() => { setSort(o.value); setShowSort(false); }}
-                        style={{ display: 'block', width: '100%', textAlign: 'left', padding: '10px 14px', border: 'none', background: sort === o.value ? '#F5F2EE' : '#fff', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: sort === o.value ? 700 : 400, color: '#5B4632' }}>
+                        style={{ display: 'block', width: '100%', textAlign: 'left', padding: '10px 14px', border: 'none', background: sort === o.value ? '#E3D5C1' : '#FDF9F1', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: sort === o.value ? 700 : 400, color: '#5B4632' }}>
                         {o.label}
                       </button>
                     ))}
@@ -247,7 +247,7 @@ export default function ProductsPage() {
           {loading ? <Spinner /> : error ? (
             <div style={{ padding: 32, textAlign: 'center', color: '#79634E' }}>
               <p style={{ marginBottom: 12 }}>Could not load products.</p>
-              <button onClick={() => window.location.reload()} style={{ padding: '8px 20px', borderRadius: 100, background: '#C8792C', color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 700, fontFamily: "'DM Sans', sans-serif" }}>Retry</button>
+              <button onClick={() => window.location.reload()} style={{ padding: '8px 20px', borderRadius: 100, background: '#C8792C', color: '#2B2016', border: 'none', cursor: 'pointer', fontWeight: 700, fontFamily: "'DM Sans', sans-serif" }}>Retry</button>
             </div>
           ) : filtered.length === 0 ? (
             <EmptyState icon={ShoppingBag} title="No products found" desc="Try a different search or category." />
@@ -255,25 +255,25 @@ export default function ProductsPage() {
             <div style={{ display: 'grid', gridTemplateColumns: bp.isMobile ? 'repeat(2, 1fr)' : 'repeat(auto-fill, minmax(210px, 1fr))', gap: bp.isMobile ? 10 : 14 }}>
               {filtered.map(p => (
                 <Link key={p.id} to={`/products/${p.id}`}
-                  style={{ display: 'block', background: '#fff', borderRadius: bp.isMobile ? 10 : 12, border: '1px solid #EDE8E0', overflow: 'hidden', cursor: 'pointer', transition: 'box-shadow .18s, transform .18s', textDecoration: 'none', color: 'inherit' }}
-                  onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 6px 24px rgba(28,24,21,.1)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+                  style={{ display: 'block', background: '#FDF9F1', borderRadius: bp.isMobile ? 10 : 12, border: '1px solid #E3D5C1', overflow: 'hidden', cursor: 'pointer', transition: 'box-shadow .18s, transform .18s', textDecoration: 'none', color: 'inherit' }}
+                  onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 6px 24px rgba(43,32,22,.1)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
                   onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'none'; }}
                 >
                   {/* Image */}
-                  <div style={{ height: bp.isMobile ? 150 : 195, background: '#F5F2EE', position: 'relative', overflow: 'hidden' }}>
+                  <div style={{ height: bp.isMobile ? 150 : 195, background: '#E3D5C1', position: 'relative', overflow: 'hidden' }}>
                     {p.images?.[0]?.image_url
                       ? <img src={resolveImageUrl(p.images[0].image_url)} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                      : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><ShoppingBag size={40} color="#C8C0B8" /></div>
+                      : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><ShoppingBag size={40} color="#E3D5C1" /></div>
                     }
                     <div style={{ position: 'absolute', top: 8, left: 8, right: 8, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                       {p.status === 'active' && (
-                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, background: 'rgba(255,255,255,.92)', color: '#1A7A4A', fontSize: 9, fontWeight: 700, padding: '3px 7px', borderRadius: 100, backdropFilter: 'blur(4px)' }}>
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, background: 'rgba(253,249,241,.92)', color: '#1A7A4A', fontSize: 9, fontWeight: 700, padding: '3px 7px', borderRadius: 100, backdropFilter: 'blur(4px)' }}>
                           <BadgeCheck size={8} /> Verified
                         </span>
                       )}
                       <button onClick={e => toggleFav(e, p.id)}
                         aria-label={favs.has(p.id) ? 'Remove from wishlist' : 'Add to wishlist'}
-                        style={{ marginLeft: 'auto', width: 28, height: 28, borderRadius: '50%', border: 'none', background: 'rgba(255,255,255,.92)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', backdropFilter: 'blur(4px)' }}>
+                        style={{ marginLeft: 'auto', width: 28, height: 28, borderRadius: '50%', border: 'none', background: 'rgba(253,249,241,.92)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', backdropFilter: 'blur(4px)' }}>
                         <Heart size={13} fill={favs.has(p.id) ? '#C8792C' : 'none'} color={favs.has(p.id) ? '#C8792C' : '#79634E'} />
                       </button>
                     </div>
@@ -295,9 +295,9 @@ export default function ProductsPage() {
                         {p.moq_unit && !bp.isMobile && <div style={{ fontSize: 11, color: '#79634E', marginTop: 1 }}>MOQ {p.min_order_quantity} {p.moq_unit}</div>}
                       </div>
                       <button onClick={e => handleGetQuote(e, p)}
-                        style={{ flexShrink: 0, padding: bp.isMobile ? '5px 9px' : '6px 12px', borderRadius: 7, border: '1.5px solid #5B4632', background: '#fff', color: '#5B4632', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: bp.isMobile ? 11 : 12, transition: 'background .12s, color .12s' }}
-                        onMouseEnter={e => { e.currentTarget.style.background = '#5B4632'; e.currentTarget.style.color = '#fff'; }}
-                        onMouseLeave={e => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.color = '#5B4632'; }}>
+                        style={{ flexShrink: 0, padding: bp.isMobile ? '5px 9px' : '6px 12px', borderRadius: 7, border: '1.5px solid #5B4632', background: '#FDF9F1', color: '#5B4632', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: bp.isMobile ? 11 : 12, transition: 'background .12s, color .12s' }}
+                        onMouseEnter={e => { e.currentTarget.style.background = '#5B4632'; e.currentTarget.style.color = '#FDF9F1'; }}
+                        onMouseLeave={e => { e.currentTarget.style.background = '#FDF9F1'; e.currentTarget.style.color = '#5B4632'; }}>
                         Quote
                       </button>
                     </div>

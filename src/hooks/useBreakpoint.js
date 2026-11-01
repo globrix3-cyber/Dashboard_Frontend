@@ -28,3 +28,9 @@ export function rPad(bp) {
 
 // Responsive section width helper
 export const rW = { maxWidth: 1200, margin: '0 auto', width: '100%' };
+
+// Full-width page gutter used by the V3 homepage sections
+export function rGutter(bp) {
+  const side = bp.isMobile ? 18 : bp.isTablet ? 32 : 62;
+  return { maxWidth: 1440, margin: '0 auto', width: '100%', paddingLeft: side, paddingRight: side, boxSizing: 'border-box' };
+}

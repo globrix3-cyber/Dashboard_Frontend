@@ -13,14 +13,14 @@ import {
 import { formatDate } from '../utils/helpers';
 
 const C = {
-  navy: '#1B3175', navyLt: '#EEF2FB',
-  saffron: '#C8792C', saffronLt: '#FDF1E8',
+  navy: '#5B4632', navyLt: '#F0DCC0',
+  saffron: '#C8792C', saffronLt: '#FDF9F1',
   emerald: '#1A7A4A', emeraldLt: '#EAF5EF',
-  gold: '#B8730A', goldLt: '#FDF5E2',
+  gold: '#C8792C', goldLt: '#FDF9F1',
   red: '#DC2626', redLt: '#FEF2F2',
   ink: '#5B4632', inkSoft: '#2B2016',
-  muted: '#79634E', border: '#D4C9B8',
-  borderSoft: '#E3D5C1', cream: '#F0E8DA',
+  muted: '#79634E', border: '#E3D5C1',
+  borderSoft: '#E3D5C1', cream: '#E3D5C1',
 };
 
 /* ── Onboarding question label maps ────────────────────────────────────────── */
@@ -76,13 +76,13 @@ function UserDetailPanel({ userId, onClose }) {
   return (
     <>
       {/* Backdrop */}
-      <div onClick={onClose} style={{ position: 'fixed', inset: 0, background: 'rgba(28,25,21,.45)', zIndex: 1200, backdropFilter: 'blur(2px)' }} />
+      <div onClick={onClose} style={{ position: 'fixed', inset: 0, background: 'rgba(43,32,22,.45)', zIndex: 1200, backdropFilter: 'blur(2px)' }} />
 
       {/* Panel */}
       <div style={{
         position: 'fixed', top: 0, right: 0, bottom: 0, width: '100%', maxWidth: 500,
-        background: '#fff', zIndex: 1300, overflowY: 'auto',
-        boxShadow: '-8px 0 40px rgba(0,0,0,.18)',
+        background: '#FDF9F1', zIndex: 1300, overflowY: 'auto',
+        boxShadow: '-8px 0 40px rgba(43,32,22,.18)',
         display: 'flex', flexDirection: 'column',
       }}>
         {/* Header */}
@@ -99,7 +99,7 @@ function UserDetailPanel({ userId, onClose }) {
           <div style={{ padding: '24px', fontFamily: "'DM Sans', sans-serif" }}>
             {/* Avatar + name */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 22 }}>
-              <div style={{ width: 52, height: 52, borderRadius: 14, flexShrink: 0, background: user.role === 'supplier' ? C.emerald : C.navy, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 20, fontWeight: 900, fontFamily: "'Playfair Display', serif" }}>
+              <div style={{ width: 52, height: 52, borderRadius: 14, flexShrink: 0, background: user.role === 'supplier' ? C.emerald : C.navy, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FDF9F1', fontSize: 20, fontWeight: 900, fontFamily: "'Playfair Display', serif" }}>
                 {name[0]?.toUpperCase()}
               </div>
               <div>
@@ -186,7 +186,7 @@ function SearchBar({ value, onChange, placeholder }) {
       <input value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder}
         style={{
           width: '100%', paddingLeft: 36, paddingRight: 14, paddingTop: 10, paddingBottom: 10,
-          borderRadius: 10, border: `1.5px solid ${C.borderSoft}`, background: '#fff',
+          borderRadius: 10, border: `1.5px solid ${C.borderSoft}`, background: '#FDF9F1',
           fontSize: 13, color: C.ink, fontFamily: "'DM Sans', sans-serif", outline: 'none',
           boxSizing: 'border-box', transition: 'border-color 0.15s',
         }}
@@ -266,7 +266,7 @@ export function AdminUsersPage() {
         accentColor={C.navy}
         onBack={() => navigate('/admin-dashboard')}
         action={
-          <button onClick={() => toast.info('CSV export coming soon')} style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '10px 20px', borderRadius: 100, background: C.navy, color: '#fff', border: 'none', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
+          <button onClick={() => toast.info('CSV export coming soon')} style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '10px 20px', borderRadius: 100, background: C.navy, color: '#FDF9F1', border: 'none', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
             <Download size={13} /> Export
           </button>
         }
@@ -278,8 +278,8 @@ export function AdminUsersPage() {
           {['all', 'buyer', 'supplier', 'active', 'suspended'].map(f => (
             <button key={f} onClick={() => setFilter(f)} style={{
               padding: '8px 15px', borderRadius: 100, fontSize: 12, fontWeight: 600, cursor: 'pointer',
-              background: filter === f ? C.navy : '#fff',
-              color: filter === f ? '#fff' : C.inkSoft,
+              background: filter === f ? C.navy : '#FDF9F1',
+              color: filter === f ? '#FDF9F1' : C.inkSoft,
               border: `1.5px solid ${filter === f ? C.navy : C.borderSoft}`,
               textTransform: 'capitalize', transition: 'all 0.15s',
             }}>{f}</button>
@@ -290,7 +290,7 @@ export function AdminUsersPage() {
       {loading ? <Spinner /> : filtered.length === 0 ? (
         <EmptyState icon={Users} title="No users found" desc={search ? 'Try a different search term' : 'No users registered yet'} />
       ) : (
-        <div style={{ background: '#fff', borderRadius: 20, border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden' }}>
+        <div style={{ background: '#FDF9F1', borderRadius: 20, border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden' }}>
           <div style={{ borderTop: `3px solid ${C.navy}` }} />
           <div style={{ display: 'grid', gridTemplateColumns: '2fr 1.5fr 1.3fr 1fr 1fr auto', padding: '11px 22px', borderBottom: `1px solid ${C.borderSoft}`, background: C.cream }}>
             {['User', 'Company', 'Phone', 'Role', 'Status', 'Actions'].map(h => (
@@ -308,9 +308,9 @@ export function AdminUsersPage() {
                 alignItems: 'center', gap: 10, transition: 'background 0.12s',
               }}
                 onMouseEnter={e => { e.currentTarget.style.background = C.cream; }}
-                onMouseLeave={e => { e.currentTarget.style.background = '#fff'; }}>
+                onMouseLeave={e => { e.currentTarget.style.background = '#FDF9F1'; }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <div style={{ width: 34, height: 34, borderRadius: 10, flexShrink: 0, background: u.role === 'supplier' ? C.emerald : C.navy, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 13, fontWeight: 800, fontFamily: "'Playfair Display', serif" }}>
+                  <div style={{ width: 34, height: 34, borderRadius: 10, flexShrink: 0, background: u.role === 'supplier' ? C.emerald : C.navy, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FDF9F1', fontSize: 13, fontWeight: 800, fontFamily: "'Playfair Display', serif" }}>
                     {name[0]?.toUpperCase()}
                   </div>
                   <div>
@@ -328,12 +328,12 @@ export function AdminUsersPage() {
                 <span style={{ fontSize: 10, fontWeight: 700, padding: '3px 10px', borderRadius: 100, background: u.role === 'supplier' ? C.emeraldLt : C.navyLt, color: u.role === 'supplier' ? C.emerald : C.navy, textTransform: 'capitalize' }}>{u.role || '—'}</span>
                 <StatusBadge status={status} />
                 <div style={{ display: 'flex', gap: 6 }}>
-                  <button title="View user" onClick={() => setSelectedUserId(u.id)} style={{ width: 30, height: 30, borderRadius: 8, border: `1px solid ${C.borderSoft}`, background: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <button title="View user" onClick={() => setSelectedUserId(u.id)} style={{ width: 30, height: 30, borderRadius: 8, border: `1px solid ${C.borderSoft}`, background: '#FDF9F1', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Eye size={13} color={C.navy} />
                   </button>
                   <button title={isSusp ? 'Reactivate' : 'Suspend'} disabled={suspending === u.id}
                     onClick={() => handleSuspend(u.id)}
-                    style={{ width: 30, height: 30, borderRadius: 8, border: `1px solid ${C.borderSoft}`, background: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: suspending === u.id ? 0.5 : 1 }}>
+                    style={{ width: 30, height: 30, borderRadius: 8, border: `1px solid ${C.borderSoft}`, background: '#FDF9F1', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: suspending === u.id ? 0.5 : 1 }}>
                     {suspending === u.id ? <Loader2 size={13} style={{ animation: 'spin 0.7s linear infinite' }} /> : <Ban size={13} color={isSusp ? C.emerald : C.red} />}
                   </button>
                 </div>
@@ -370,7 +370,7 @@ export function AdminCompaniesPage() {
         accentColor={C.emerald}
         onBack={() => navigate('/admin-dashboard')}
         action={
-          <button onClick={() => toast.info('CSV export coming soon')} style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '10px 20px', borderRadius: 100, background: C.emerald, color: '#fff', border: 'none', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
+          <button onClick={() => toast.info('CSV export coming soon')} style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '10px 20px', borderRadius: 100, background: C.emerald, color: '#FDF9F1', border: 'none', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
             <Download size={13} /> Export
           </button>
         }
@@ -385,8 +385,8 @@ export function AdminCompaniesPage() {
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 16 }}>
           {filtered.map(co => (
-            <div key={co.id} style={{ background: '#fff', borderRadius: 18, border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden', transition: 'box-shadow 0.2s' }}
-              onMouseEnter={e => { e.currentTarget.style.boxShadow = `0 6px 20px rgba(27,49,117,0.10)`; }}
+            <div key={co.id} style={{ background: '#FDF9F1', borderRadius: 18, border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden', transition: 'box-shadow 0.2s' }}
+              onMouseEnter={e => { e.currentTarget.style.boxShadow = `0 6px 20px rgba(91,70,50,0.10)`; }}
               onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; }}>
               <div style={{ height: 3, background: co.verified_status === 'verified' ? C.emerald : C.gold }} />
               <div style={{ padding: '18px 20px' }}>
@@ -492,12 +492,12 @@ export function AdminVerificationsPage() {
         ].map(({ key, label, count, color, bg }) => (
           <button key={key} onClick={() => setFilter(key)} style={{
             display: 'flex', alignItems: 'center', gap: 8, padding: '9px 16px', borderRadius: 100,
-            background: filter === key ? color : '#fff', color: filter === key ? '#fff' : C.inkSoft,
+            background: filter === key ? color : '#FDF9F1', color: filter === key ? '#FDF9F1' : C.inkSoft,
             border: `1.5px solid ${filter === key ? color : C.borderSoft}`,
             cursor: 'pointer', fontSize: 13, fontWeight: 600, transition: 'all 0.15s',
           }}>
             {label}
-            <span style={{ padding: '1px 7px', borderRadius: 100, fontSize: 10, fontWeight: 700, background: filter === key ? 'rgba(255,255,255,0.25)' : bg, color: filter === key ? '#fff' : color }}>
+            <span style={{ padding: '1px 7px', borderRadius: 100, fontSize: 10, fontWeight: 700, background: filter === key ? 'rgba(253,249,241,0.25)' : bg, color: filter === key ? '#FDF9F1' : color }}>
               {count}
             </span>
           </button>
@@ -511,7 +511,7 @@ export function AdminVerificationsPage() {
           {filtered.map(v => {
             const isPending = v.status === 'pending' || v.status === 'under_review';
             return (
-              <div key={v.id} style={{ background: '#fff', borderRadius: 18, border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden' }}>
+              <div key={v.id} style={{ background: '#FDF9F1', borderRadius: 18, border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden' }}>
                 <div style={{ height: 3, background: v.status === 'verified' || v.status === 'approved' ? C.emerald : v.status === 'rejected' ? C.red : C.gold }} />
                 <div style={{ padding: '20px 24px', display: 'grid', gridTemplateColumns: '1fr auto', gap: 20, alignItems: 'start' }}>
                   <div>
@@ -544,7 +544,7 @@ export function AdminVerificationsPage() {
                     {isPending && (
                       <div style={{ display: 'flex', gap: 8 }}>
                         <button disabled={actingId === v.id} onClick={() => handleAction(v.id, 'approve')}
-                          style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 16px', borderRadius: 100, background: C.emerald, color: '#fff', border: 'none', cursor: 'pointer', fontSize: 12, fontWeight: 700, opacity: actingId === v.id ? 0.65 : 1 }}>
+                          style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 16px', borderRadius: 100, background: C.emerald, color: '#FDF9F1', border: 'none', cursor: 'pointer', fontSize: 12, fontWeight: 700, opacity: actingId === v.id ? 0.65 : 1 }}>
                           <CheckCircle2 size={13} /> {actingId === v.id ? '…' : 'Approve'}
                         </button>
                         <button disabled={actingId === v.id} onClick={() => handleAction(v.id, 'reject')}
@@ -587,7 +587,7 @@ export function AdminReportsPage() {
         accentColor={C.navy}
         onBack={() => navigate('/admin-dashboard')}
         action={
-          <button onClick={() => toast.info('Report download coming soon')} style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '10px 20px', borderRadius: 100, background: C.navy, color: '#fff', border: 'none', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
+          <button onClick={() => toast.info('Report download coming soon')} style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '10px 20px', borderRadius: 100, background: C.navy, color: '#FDF9F1', border: 'none', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
             <Download size={13} /> Download Report
           </button>
         }
@@ -598,7 +598,7 @@ export function AdminReportsPage() {
           {/* KPI grid */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 28 }}>
             {kpis.map(({ label, value, color, bg, icon: Icon }) => (
-              <div key={label} style={{ background: '#fff', borderRadius: 18, padding: '22px 22px', border: `1.5px solid ${C.borderSoft}`, position: 'relative', overflow: 'hidden', boxShadow: '0 1px 4px rgba(28,24,21,0.04)' }}>
+              <div key={label} style={{ background: '#FDF9F1', borderRadius: 18, padding: '22px 22px', border: `1.5px solid ${C.borderSoft}`, position: 'relative', overflow: 'hidden', boxShadow: '0 1px 4px rgba(43,32,22,0.04)' }}>
                 <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: 3, background: color }} />
                 <div style={{ width: 42, height: 42, borderRadius: 12, background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16, marginTop: 8 }}>
                   <Icon size={19} color={color} />
@@ -612,7 +612,7 @@ export function AdminReportsPage() {
           </div>
 
           {/* Coming soon panel */}
-          <div style={{ background: '#fff', borderRadius: 20, border: `1.5px solid ${C.borderSoft}`, padding: '48px 32px', textAlign: 'center' }}>
+          <div style={{ background: '#FDF9F1', borderRadius: 20, border: `1.5px solid ${C.borderSoft}`, padding: '48px 32px', textAlign: 'center' }}>
             <div style={{ width: 64, height: 64, borderRadius: 18, background: C.navyLt, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
               <BarChart2 size={30} color={C.navy} />
             </div>

@@ -22,7 +22,7 @@ const C = {
   cream:  '#FDF9F1',
   saffron:'#C8792C',
   emerald:'#1A7A4A',
-  navy:   '#1B3175',
+  navy:   '#5B4632',
 };
 
 const COUNTRY_NAMES = {
@@ -68,13 +68,13 @@ function MiniProductCard({ p, onClick, isLoggedIn }) {
     >
       <div style={{
         position: 'relative', borderRadius: 12, overflow: 'hidden', aspectRatio: '1 / 1',
-        background: C.cream, marginBottom: 8, border: `1px solid ${hov ? '#D4C9B8' : C.border}`,
+        background: C.cream, marginBottom: 8, border: `1px solid ${hov ? '#E3D5C1' : C.border}`,
         transition: 'border-color .15s',
       }}>
         {img
           ? <img src={img} alt={p.name} loading="lazy" decoding="async"
               style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transform: hov ? 'scale(1.04)' : 'scale(1)', transition: 'transform .35s ease' }} />
-          : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><ShoppingBag size={28} color="#D8CFC1" /></div>
+          : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><ShoppingBag size={28} color="#E3D5C1" /></div>
         }
       </div>
       <div style={{ fontSize: 13, fontWeight: 700, color: C.ink, marginBottom: 1 }}>
@@ -238,7 +238,7 @@ export default function ProductDetailPage() {
   };
 
   return (
-    <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: '#fff' }}>
+    <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: '#FDF9F1' }}>
       <div style={{ padding: bp.isMobile ? '16px 14px 40px' : bp.isTablet ? '22px 24px 48px' : '28px 40px 56px', maxWidth: 1280, margin: '0 auto' }}>
 
         {/* Back link */}
@@ -263,7 +263,7 @@ export default function ProductDetailPage() {
               {images[activeImg]?.image_url
                 ? <img src={resolveImageUrl(images[activeImg].image_url)} alt={images[activeImg].alt_text || product.name}
                     style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-                : <ShoppingBag size={64} color="#D8CFC1" />
+                : <ShoppingBag size={64} color="#E3D5C1" />
               }
             </div>
             {images.length > 1 && (
@@ -338,7 +338,7 @@ export default function ProductDetailPage() {
               </>
             ) : (
               <div style={{ display: 'flex', alignItems: 'center', gap: 14, background: '#FDF9F1', border: `1.5px solid ${C.border}`, borderRadius: 12, padding: '14px 18px', marginBottom: 22 }}>
-                <div style={{ width: 36, height: 36, borderRadius: 10, background: '#F0E4D4', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <div style={{ width: 36, height: 36, borderRadius: 10, background: '#F0DCC0', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   <Lock size={16} color={C.saffron} />
                 </div>
                 <div>
@@ -360,7 +360,7 @@ export default function ProductDetailPage() {
                     onChange={e => handleVariantChange(key, e.target.value)}
                     style={{
                       width: '100%', appearance: 'none', padding: '11px 36px 11px 14px',
-                      borderRadius: 10, border: `1.5px solid ${C.border}`, background: '#fff',
+                      borderRadius: 10, border: `1.5px solid ${C.border}`, background: '#FDF9F1',
                       fontFamily: "'DM Sans', sans-serif", fontSize: 13.5, color: C.ink, cursor: 'pointer', outline: 'none',
                     }}
                   >
@@ -376,8 +376,8 @@ export default function ProductDetailPage() {
               <label style={{ display: 'block', fontSize: 12.5, fontWeight: 700, color: C.ink, marginBottom: 6 }}>Quantity</label>
               <div style={{ display: 'inline-flex', alignItems: 'center', border: `1.5px solid ${C.border}`, borderRadius: 10, overflow: 'hidden' }}>
                 <button onClick={() => stepQty(-1)} disabled={qty <= moq} style={{
-                  width: 38, height: 40, border: 'none', background: '#fff', cursor: qty <= moq ? 'default' : 'pointer',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', color: qty <= moq ? '#D8CFC1' : C.ink,
+                  width: 38, height: 40, border: 'none', background: '#FDF9F1', cursor: qty <= moq ? 'default' : 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', color: qty <= moq ? '#E3D5C1' : C.ink,
                 }}>
                   <Minus size={14} />
                 </button>
@@ -394,8 +394,8 @@ export default function ProductDetailPage() {
                   }}
                 />
                 <button onClick={() => stepQty(1)} disabled={qty >= maxQty} style={{
-                  width: 38, height: 40, border: 'none', background: '#fff', cursor: qty >= maxQty ? 'default' : 'pointer',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', color: qty >= maxQty ? '#D8CFC1' : C.ink,
+                  width: 38, height: 40, border: 'none', background: '#FDF9F1', cursor: qty >= maxQty ? 'default' : 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', color: qty >= maxQty ? '#E3D5C1' : C.ink,
                 }}>
                   <Plus size={14} />
                 </button>
@@ -408,7 +408,7 @@ export default function ProductDetailPage() {
             {/* Add to cart */}
             <button onClick={handleAddToCart} disabled={addingToCart} style={{
               width: '100%', padding: '14px 20px', borderRadius: 10, border: 'none', cursor: addingToCart ? 'default' : 'pointer',
-              background: C.saffron, color: '#fff', fontFamily: "'DM Sans', sans-serif", fontSize: 14.5, fontWeight: 700,
+              background: C.saffron, color: '#FDF9F1', fontFamily: "'DM Sans', sans-serif", fontSize: 14.5, fontWeight: 700,
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 10,
               boxShadow: '0 4px 16px rgba(200,121,44,.28)', opacity: addingToCart ? 0.7 : 1,
             }}>
@@ -418,7 +418,7 @@ export default function ProductDetailPage() {
             {userRole === 'buyer' && (
               <button onClick={handleMessageSupplier} disabled={messaging} style={{
                 width: '100%', padding: '12px 20px', borderRadius: 10, cursor: messaging ? 'default' : 'pointer',
-                border: `1.5px solid ${C.border}`, background: '#fff', color: C.ink,
+                border: `1.5px solid ${C.border}`, background: '#FDF9F1', color: C.ink,
                 fontFamily: "'DM Sans', sans-serif", fontSize: 13.5, fontWeight: 600,
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 24, opacity: messaging ? .6 : 1,
               }}>
@@ -480,7 +480,7 @@ export default function ProductDetailPage() {
             {product.tags?.length > 0 && (
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 16 }}>
                 {product.tags.map(t => (
-                  <span key={t.id} style={{ fontSize: 11.5, fontWeight: 600, color: C.navy, background: '#EEF2FB', padding: '4px 10px', borderRadius: 100 }}>
+                  <span key={t.id} style={{ fontSize: 11.5, fontWeight: 600, color: C.navy, background: '#F0DCC0', padding: '4px 10px', borderRadius: 100 }}>
                     {t.name}
                   </span>
                 ))}
@@ -501,7 +501,7 @@ export default function ProductDetailPage() {
               </div>
               <div style={{ display: 'flex', gap: 8 }}>
                 <button onClick={() => navigate('/products')} style={{
-                  padding: '9px 18px', borderRadius: 100, border: `1.5px solid ${C.border}`, background: '#fff',
+                  padding: '9px 18px', borderRadius: 100, border: `1.5px solid ${C.border}`, background: '#FDF9F1',
                   color: C.ink, fontFamily: "'DM Sans', sans-serif", fontSize: 12.5, fontWeight: 700, cursor: 'pointer',
                 }}>
                   Shop all products
@@ -510,7 +510,7 @@ export default function ProductDetailPage() {
                   <button onClick={handleMessageSupplier} disabled={messaging} style={{
                     display: 'flex', alignItems: 'center', gap: 6,
                     padding: '9px 18px', borderRadius: 100, border: 'none', background: C.ink,
-                    color: '#fff', fontFamily: "'DM Sans', sans-serif", fontSize: 12.5, fontWeight: 700, cursor: messaging ? 'default' : 'pointer', opacity: messaging ? .6 : 1,
+                    color: '#FDF9F1', fontFamily: "'DM Sans', sans-serif", fontSize: 12.5, fontWeight: 700, cursor: messaging ? 'default' : 'pointer', opacity: messaging ? .6 : 1,
                   }}>
                     <MessageSquare size={12} /> Message brand
                   </button>
@@ -531,7 +531,7 @@ export default function ProductDetailPage() {
 
 function DetailRow({ label, value }) {
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, padding: '6px 0', borderBottom: `1px solid #F2EDE4` }}>
+    <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, padding: '6px 0', borderBottom: `1px solid #E3D5C1` }}>
       <span style={{ color: C.muted }}>{label}</span>
       <span style={{ color: C.ink, fontWeight: 600, textAlign: 'right' }}>{value}</span>
     </div>

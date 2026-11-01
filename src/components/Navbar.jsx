@@ -47,10 +47,10 @@ export default function Navbar({ socket }) {
     <header
       className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
       style={{
-        background: scrolled ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.8)',
+        background: scrolled ? 'rgba(253,249,241,0.95)' : 'rgba(253,249,241,0.8)',
         backdropFilter: 'blur(16px)',
         borderBottom: '1px solid rgba(229,231,235,0.8)',
-        boxShadow: scrolled ? '0 2px 20px rgba(0,0,0,0.06)' : 'none',
+        boxShadow: scrolled ? '0 2px 20px rgba(43,32,22,0.06)' : 'none',
       }}
     >
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
@@ -66,8 +66,8 @@ export default function Navbar({ socket }) {
             <button key={label} onClick={() => navigate(path)}
               className="px-4 py-2 rounded-xl text-sm font-medium transition-all"
               style={{
-                color: location.pathname.startsWith(path) ? '#FF6B00' : '#6B7280',
-                background: location.pathname.startsWith(path) ? '#FFF7ED' : 'transparent',
+                color: location.pathname.startsWith(path) ? '#C8792C' : '#79634E',
+                background: location.pathname.startsWith(path) ? '#FDF9F1' : 'transparent',
               }}>
               {label}
             </button>
@@ -84,7 +84,7 @@ export default function Navbar({ socket }) {
               <Bell size={18} className="text-gray-600" />
               {notifications.length > 0 && (
                 <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full"
-                  style={{ background: '#FF6B00' }} />
+                  style={{ background: '#C8792C' }} />
               )}
             </button>
 
@@ -113,7 +113,7 @@ export default function Navbar({ socket }) {
             <button onClick={() => { setProfileOpen(!profileOpen); setNotifOpen(false); }}
               className="flex items-center gap-2 px-3 py-1.5 rounded-xl transition-all hover:bg-gray-100">
               <div className="w-7 h-7 rounded-lg flex items-center justify-center text-white text-xs font-bold"
-                style={{ background: 'linear-gradient(135deg,#FF6B00,#FF8C00)' }}>
+                style={{ background: 'linear-gradient(135deg,#C8792C,#C8792C)' }}>
                 {userName?.[0]?.toUpperCase() || 'U'}
               </div>
               <div className="hidden sm:block text-left">

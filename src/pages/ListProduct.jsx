@@ -102,11 +102,11 @@ function StepBar({ current }) {
               <div style={{
                 width: 36, height: 36, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
                 border: `2px solid ${done ? 'var(--emerald)' : active ? 'var(--emerald)' : 'var(--border-soft)'}`,
-                background: done ? 'var(--emerald)' : active ? 'var(--emerald-lt)' : '#fff',
+                background: done ? 'var(--emerald)' : active ? 'var(--emerald-lt)' : '#FDF9F1',
                 transition: 'all .2s',
               }}>
                 {done
-                  ? <Check size={15} color="#fff" />
+                  ? <Check size={15} color="#FDF9F1" />
                   : <Icon size={14} color={active ? 'var(--emerald)' : 'var(--muted)'} />
                 }
               </div>
@@ -426,9 +426,9 @@ export default function ListProduct() {
 
       {/* Card */}
       <div style={{
-        background: '#fff', borderRadius: 20, padding: '28px 32px',
+        background: '#FDF9F1', borderRadius: 20, padding: '28px 32px',
         border: '1.5px solid var(--border-soft)',
-        boxShadow: '0 1px 4px rgba(28,24,21,.04)',
+        boxShadow: '0 1px 4px rgba(43,32,22,.04)',
         marginBottom: 20,
       }}>
 
@@ -539,10 +539,10 @@ export default function ListProduct() {
                   <button type="button" onClick={() => removeTier(i)} disabled={priceTiers.length === 1}
                     style={{
                       width: 32, height: 32, borderRadius: 8, border: 'none', cursor: priceTiers.length === 1 ? 'not-allowed' : 'pointer',
-                      background: priceTiers.length === 1 ? '#f3f4f6' : '#FEE2E2',
+                      background: priceTiers.length === 1 ? '#E3D5C1' : '#FEE2E2',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                     }}>
-                    <Trash2 size={13} color={priceTiers.length === 1 ? '#d1d5db' : '#EF4444'} />
+                    <Trash2 size={13} color={priceTiers.length === 1 ? '#E3D5C1' : '#EF4444'} />
                   </button>
                 </div>
               ))}
@@ -620,7 +620,7 @@ export default function ListProduct() {
             </div>
 
             {images.map((img, i) => (
-              <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: 10, padding: '14px', borderRadius: 12, border: '1.5px solid var(--border-soft)', background: img.image_url ? '#fff' : 'var(--warm-white)' }}>
+              <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: 10, padding: '14px', borderRadius: 12, border: '1.5px solid var(--border-soft)', background: img.image_url ? '#FDF9F1' : 'var(--warm-white)' }}>
                 <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
                   {/* Preview thumbnail — resolveImageUrl converts Google Drive share
                       links to lh3.googleusercontent.com so the browser can render them */}
@@ -629,7 +629,7 @@ export default function ListProduct() {
                       <img src={resolveImageUrl(img.image_url)} alt="preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         onError={() => setImgErrors(e => ({ ...e, [i]: true }))} />
                     ) : img.image_url && imgErrors[i] ? (
-                      <span style={{ fontSize: 10, color: '#B0A898', textAlign: 'center', padding: 4 }}>Preview unavailable</span>
+                      <span style={{ fontSize: 10, color: '#79634E', textAlign: 'center', padding: 4 }}>Preview unavailable</span>
                     ) : (
                       <Image size={22} color="var(--muted)" />
                     )}
@@ -646,10 +646,10 @@ export default function ListProduct() {
                     style={{
                       width: 32, height: 32, borderRadius: 8, border: 'none', marginTop: 2,
                       cursor: images.length === 1 ? 'not-allowed' : 'pointer',
-                      background: images.length === 1 ? '#f3f4f6' : '#FEE2E2',
+                      background: images.length === 1 ? '#E3D5C1' : '#FEE2E2',
                       display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
                     }}>
-                    <Trash2 size={13} color={images.length === 1 ? '#d1d5db' : '#EF4444'} />
+                    <Trash2 size={13} color={images.length === 1 ? '#E3D5C1' : '#EF4444'} />
                   </button>
                 </div>
               </div>
@@ -658,7 +658,7 @@ export default function ListProduct() {
             <button type="button" onClick={addImage}
               style={{
                 display: 'flex', alignItems: 'center', gap: 6, padding: '8px 16px',
-                borderRadius: 10, border: '1.5px dashed var(--border)', background: '#fafafa',
+                borderRadius: 10, border: '1.5px dashed var(--border)', background: '#FDF9F1',
                 color: 'var(--muted)', fontSize: 13, fontWeight: 600, cursor: 'pointer', width: 'fit-content',
               }}>
               <Plus size={13} /> Add Another Image
@@ -680,7 +680,7 @@ export default function ListProduct() {
                       style={{
                         padding: '5px 12px', borderRadius: 100, fontSize: 12, fontWeight: 600, cursor: 'pointer',
                         border: `1.5px solid ${selected ? 'var(--emerald)' : 'var(--border-soft)'}`,
-                        background: selected ? 'var(--emerald-lt)' : '#fff',
+                        background: selected ? 'var(--emerald-lt)' : '#FDF9F1',
                         color: selected ? 'var(--emerald)' : 'var(--muted)',
                         transition: 'all .15s',
                       }}>
@@ -703,7 +703,7 @@ export default function ListProduct() {
                 <button type="button" onClick={handleCreateTag}
                   style={{
                     padding: '10px 18px', borderRadius: 10, border: 'none', cursor: 'pointer',
-                    background: 'var(--emerald)', color: '#fff', fontWeight: 600, fontSize: 13,
+                    background: 'var(--emerald)', color: '#FDF9F1', fontWeight: 600, fontSize: 13,
                   }}>
                   Add
                 </button>
@@ -781,7 +781,7 @@ export default function ListProduct() {
         <button type="button" onClick={step === 0 ? () => navigate(-1) : prev}
           style={{
             display: 'flex', alignItems: 'center', gap: 6, padding: '10px 20px', borderRadius: 10,
-            border: '1.5px solid var(--border-soft)', background: '#fff', cursor: 'pointer',
+            border: '1.5px solid var(--border-soft)', background: '#FDF9F1', cursor: 'pointer',
             fontSize: 14, fontWeight: 600, color: 'var(--ink)',
           }}>
           <ChevronLeft size={15} /> {step === 0 ? 'Cancel' : 'Back'}
@@ -795,7 +795,7 @@ export default function ListProduct() {
                 <button type="button" onClick={() => handleSubmit(false)} disabled={submitting}
                   style={{
                     padding: '10px 22px', borderRadius: 10,
-                    border: '1.5px solid var(--border-soft)', background: '#fff',
+                    border: '1.5px solid var(--border-soft)', background: '#FDF9F1',
                     fontSize: 14, fontWeight: 600, color: 'var(--ink)', cursor: submitting ? 'not-allowed' : 'pointer',
                     opacity: submitting ? 0.6 : 1,
                   }}>
@@ -805,7 +805,7 @@ export default function ListProduct() {
               <button type="button" onClick={() => handleSubmit(!isEditMode)} disabled={submitting}
                 style={{
                   display: 'flex', alignItems: 'center', gap: 7, padding: '10px 22px', borderRadius: 10,
-                  border: 'none', background: 'var(--emerald)', color: '#fff',
+                  border: 'none', background: 'var(--emerald)', color: '#FDF9F1',
                   fontSize: 14, fontWeight: 700, cursor: submitting ? 'not-allowed' : 'pointer',
                   opacity: submitting ? 0.7 : 1,
                   boxShadow: '0 4px 14px rgba(16,185,129,0.3)',
@@ -824,7 +824,7 @@ export default function ListProduct() {
             <button type="button" onClick={next}
               style={{
                 display: 'flex', alignItems: 'center', gap: 6, padding: '10px 22px', borderRadius: 10,
-                border: 'none', background: 'var(--emerald)', color: '#fff',
+                border: 'none', background: 'var(--emerald)', color: '#FDF9F1',
                 fontSize: 14, fontWeight: 700, cursor: 'pointer',
                 boxShadow: '0 4px 14px rgba(16,185,129,0.3)',
               }}>

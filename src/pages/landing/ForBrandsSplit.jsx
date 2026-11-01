@@ -40,7 +40,7 @@ export default function ForBrandsSplit() {
             ))}
           </div>
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-            <button onClick={openLogin} onMouseEnter={() => setHovApply(true)} onMouseLeave={() => setHovApply(false)} style={{ ...btnPrimary, flex: bp.isMobile ? '1 1 auto' : 'none', justifyContent: 'center', ...(hovApply ? { background: `linear-gradient(135deg,${T.td},#8A5226)`, transform: 'translateY(-1px)' } : {}) }}>Apply as a brand</button>
+            <button onClick={openLogin} onMouseEnter={() => setHovApply(true)} onMouseLeave={() => setHovApply(false)} style={{ ...btnPrimary, flex: bp.isMobile ? '1 1 auto' : 'none', justifyContent: 'center', ...(hovApply ? { background: `linear-gradient(135deg,${T.td},#C8792C)`, transform: 'translateY(-1px)' } : {}) }}>Apply as a brand</button>
             <button onClick={openLogin} onMouseEnter={() => setHovLearn(true)} onMouseLeave={() => setHovLearn(false)} style={{ ...btnGhost, flex: bp.isMobile ? '1 1 auto' : 'none', justifyContent: 'center', border: `1.5px solid ${T.b}`, ...(hovLearn ? { borderColor: T.t, background: T.tl, color: T.t } : {}) }}>Learn more</button>
           </div>
         </div>
@@ -53,14 +53,14 @@ export default function ForBrandsSplit() {
             <div style={{ position: 'absolute', top: -120, right: -120, width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle,rgba(200,121,44,.18),transparent 70%)', pointerEvents: 'none' }} />
             <div style={{ position: 'relative', zIndex: 1, padding: bp.isTablet ? '40px 32px' : '80px 56px', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 12 }}>
               {BRAND_METRICS.map(m => (
-                <div key={m.num} onClick={openLogin} style={{ background: 'rgba(255,255,255,.06)', border: '1px solid rgba(255,255,255,.1)', borderRadius: 16, padding: '18px 20px', display: 'flex', alignItems: 'center', gap: 14, backdropFilter: 'blur(8px)', cursor: 'pointer', transition: 'background .2s' }}
-                  onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,.1)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,.06)'; }}
+                <div key={m.num} onClick={openLogin} style={{ background: 'rgba(253,249,241,.06)', border: '1px solid rgba(253,249,241,.1)', borderRadius: 16, padding: '18px 20px', display: 'flex', alignItems: 'center', gap: 14, backdropFilter: 'blur(8px)', cursor: 'pointer', transition: 'background .2s' }}
+                  onMouseEnter={e => { e.currentTarget.style.background = 'rgba(253,249,241,.1)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = 'rgba(253,249,241,.06)'; }}
                 >
                   <div style={{ width: 46, height: 46, background: 'rgba(200,121,44,.18)', borderRadius: 11, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0, border: '1px solid rgba(200,121,44,.25)' }}>{m.icon}</div>
                   <div>
-                    <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: 24, fontWeight: 700, color: '#fff', lineHeight: 1, marginBottom: 4 }}>{m.num}</div>
-                    <div style={{ fontSize: 11, color: 'rgba(255,255,255,.45)', lineHeight: 1.4 }}>{m.label}</div>
+                    <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: 24, fontWeight: 700, color: '#FDF9F1', lineHeight: 1, marginBottom: 4 }}>{m.num}</div>
+                    <div style={{ fontSize: 11, color: 'rgba(253,249,241,.45)', lineHeight: 1.4 }}>{m.label}</div>
                   </div>
                 </div>
               ))}

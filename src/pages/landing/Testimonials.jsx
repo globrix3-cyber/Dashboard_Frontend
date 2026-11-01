@@ -14,22 +14,22 @@ function TestiCard({ t, featured }) {
   const [hov, setHov] = useState(false);
 
   return (
-    <div onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)} style={{ background: featured ? `linear-gradient(145deg,${T.ink},#2A2320)` : T.w, borderRadius: 20, padding: 28, border: `1.5px solid ${hov ? 'rgba(200,121,44,.45)' : featured ? 'rgba(200,121,44,.2)' : T.bs}`, boxShadow: hov ? shadow.lg : featured ? '0 8px 32px rgba(28,25,21,.18)' : 'none', transition: '.22s', position: 'relative', overflow: 'hidden', transform: hov ? 'translateY(-4px)' : 'none' }}>
+    <div onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)} style={{ background: featured ? `linear-gradient(145deg,${T.ink},#2B2016)` : T.w, borderRadius: 20, padding: 28, border: `1.5px solid ${hov ? 'rgba(200,121,44,.45)' : featured ? 'rgba(200,121,44,.2)' : T.bs}`, boxShadow: hov ? shadow.lg : featured ? '0 8px 32px rgba(43,32,22,.18)' : 'none', transition: '.22s', position: 'relative', overflow: 'hidden', transform: hov ? 'translateY(-4px)' : 'none' }}>
       <div style={{ position: 'absolute', top: -14, right: -4, fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: 130, fontWeight: 900, lineHeight: 1, color: featured ? 'rgba(200,121,44,.12)' : 'rgba(200,121,44,.07)', pointerEvents: 'none', userSelect: 'none' }}>"</div>
       <div style={{ color: T.t, fontSize: 12, letterSpacing: 3, marginBottom: 16 }}>{t.rating}</div>
-      <p style={{ fontSize: 15, color: featured ? 'rgba(255,255,255,.85)' : T.is, lineHeight: 1.8, fontStyle: 'italic', marginBottom: 26, fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontWeight: 600, position: 'relative', zIndex: 1 }}>{t.quote}</p>
-      <div style={{ height: 1, background: featured ? 'rgba(255,255,255,.08)' : T.bs, marginBottom: 18 }} />
+      <p style={{ fontSize: 15, color: featured ? 'rgba(253,249,241,.85)' : T.is, lineHeight: 1.8, fontStyle: 'italic', marginBottom: 26, fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontWeight: 600, position: 'relative', zIndex: 1 }}>{t.quote}</p>
+      <div style={{ height: 1, background: featured ? 'rgba(253,249,241,.08)' : T.bs, marginBottom: 18 }} />
       <div style={{ display: 'flex', alignItems: 'center', gap: 13 }}>
         {TESTI_PHOTOS[t.name] ? (
           <div style={{ width: 48, height: 48, borderRadius: 12, overflow: 'hidden', flexShrink: 0, border: `2px solid ${featured ? 'rgba(200,121,44,.4)' : 'rgba(200,121,44,.2)'}` }}>
             <img src={TESTI_PHOTOS[t.name]} alt={t.name} loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
           </div>
         ) : (
-          <div style={{ width: 48, height: 48, borderRadius: 12, background: t.bg, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: 20, fontWeight: 700, flexShrink: 0 }}>{t.initial}</div>
+          <div style={{ width: 48, height: 48, borderRadius: 12, background: t.bg, color: '#FDF9F1', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: 20, fontWeight: 700, flexShrink: 0 }}>{t.initial}</div>
         )}
         <div>
-          <div style={{ fontSize: 14, fontWeight: 700, color: featured ? '#fff' : T.ink }}>{t.name}</div>
-          <div style={{ fontSize: 12, color: featured ? 'rgba(255,255,255,.45)' : T.mu, marginTop: 2 }}>{t.role}</div>
+          <div style={{ fontSize: 14, fontWeight: 700, color: featured ? '#FDF9F1' : T.ink }}>{t.name}</div>
+          <div style={{ fontSize: 12, color: featured ? 'rgba(253,249,241,.45)' : T.mu, marginTop: 2 }}>{t.role}</div>
         </div>
       </div>
     </div>

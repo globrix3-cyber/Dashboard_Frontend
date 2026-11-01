@@ -7,18 +7,18 @@ import { FileText, ChevronRight, CheckCircle2, Clock, AlertCircle, XCircle } fro
 import { formatDate } from '../utils/helpers';
 
 const C = {
-  saffron:    '#C8792C', saffronLt: '#FDF1E8',
+  saffron:    '#C8792C', saffronLt: '#FDF9F1',
   emerald:    '#1A7A4A', emeraldLt: '#EAF5EF',
-  navy:       '#1B3175', navyLt:    '#EEF2FB',
-  gold:       '#B8730A', goldLt:    '#FDF5E2',
+  navy:       '#5B4632', navyLt:    '#F0DCC0',
+  gold:       '#C8792C', goldLt:    '#FDF9F1',
   ink:        '#5B4632', inkSoft:   '#2B2016',
   muted:      '#79634E',
-  borderSoft: '#E3D5C1', cream:     '#F0E8DA',
+  borderSoft: '#E3D5C1', cream:     '#E3D5C1',
 };
 
 const STATUS_META = {
   pending_supplier: { label: 'Awaiting Supplier',  icon: Clock,        bg: C.goldLt,    color: C.gold    },
-  pending_buyer:    { label: 'Awaiting Your Sign',  icon: AlertCircle,  bg: '#FEF3C7',   color: '#D97706' },
+  pending_buyer:    { label: 'Awaiting Your Sign',  icon: AlertCircle,  bg: '#FEF3C7',   color: '#C8792C' },
   active:           { label: 'Active',              icon: CheckCircle2, bg: C.emeraldLt, color: C.emerald },
   completed:        { label: 'Completed',           icon: CheckCircle2, bg: '#F0FDF4',   color: '#15803D' },
   cancelled:        { label: 'Cancelled',           icon: XCircle,      bg: '#FEF2F2',   color: '#DC2626' },
@@ -80,12 +80,12 @@ export default function ContractsListPage() {
                 key={c.id}
                 onClick={() => navigate(`${base}/contracts/${c.id}`)}
                 style={{
-                  background: '#fff', borderRadius: 18, padding: '18px 22px',
+                  background: '#FDF9F1', borderRadius: 18, padding: '18px 22px',
                   border: `1.5px solid ${needsAction ? C.saffron : C.borderSoft}`,
                   cursor: 'pointer', transition: 'transform 0.18s, box-shadow 0.18s',
                   boxShadow: needsAction ? `0 0 0 3px ${C.saffronLt}` : 'none',
                 }}
-                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.08)'; }}
+                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(43,32,22,0.08)'; }}
                 onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = needsAction ? `0 0 0 3px ${C.saffronLt}` : 'none'; }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
@@ -98,7 +98,7 @@ export default function ContractsListPage() {
                       {needsAction && (
                         <span style={{
                           fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 100,
-                          background: C.saffron, color: '#fff',
+                          background: C.saffron, color: '#FDF9F1',
                         }}>
                           ACTION REQUIRED
                         </span>

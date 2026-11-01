@@ -12,13 +12,13 @@ import {
 import { formatDate } from '../utils/helpers';
 
 const C = {
-  navy:       '#1B3175', navyLt:     '#EEF2FB',
-  saffron:    '#C8792C', saffronLt:  '#FDF1E8',
+  navy:       '#5B4632', navyLt:     '#F0DCC0',
+  saffron:    '#C8792C', saffronLt:  '#FDF9F1',
   emerald:    '#1A7A4A', emeraldLt:  '#EAF5EF',
-  gold:       '#B8730A', goldLt:     '#FDF5E2',
+  gold:       '#C8792C', goldLt:     '#FDF9F1',
   ink:        '#5B4632', inkSoft:    '#2B2016',
-  muted:      '#79634E', border:     '#D4C9B8',
-  borderSoft: '#E3D5C1', cream:      '#F0E8DA',
+  muted:      '#79634E', border:     '#E3D5C1',
+  borderSoft: '#E3D5C1', cream:      '#E3D5C1',
   warmWhite:  '#FDF9F1',
 };
 
@@ -44,14 +44,14 @@ function parseBody(body, type) {
 function QuoteOfferCard({ data, isMine, onAccept, onCounter, accepting }) {
   return (
     <div style={{
-      background: isMine ? C.emeraldLt : '#fff',
+      background: isMine ? C.emeraldLt : '#FDF9F1',
       border: `2px solid ${C.emerald}`,
       borderRadius: 16, padding: '16px 18px', maxWidth: 320,
       boxShadow: '0 4px 16px rgba(26,122,74,0.12)',
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
         <div style={{ width: 28, height: 28, borderRadius: 8, background: C.emerald, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <ShieldCheck size={14} color="#fff" />
+          <ShieldCheck size={14} color="#FDF9F1" />
         </div>
         <span style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: 13, color: C.emerald }}>
           Quote Offer
@@ -68,7 +68,7 @@ function QuoteOfferCard({ data, isMine, onAccept, onCounter, accepting }) {
           { icon: Clock,       label: 'Lead Time',   val: data.lead_time_days ? `${data.lead_time_days} days` : '—' },
           { icon: Tag,         label: 'Currency',    val: data.currency || 'INR' },
         ].map(({ icon: Icon, label, val }) => (
-          <div key={label} style={{ background: 'rgba(255,255,255,0.7)', borderRadius: 8, padding: '8px 10px' }}>
+          <div key={label} style={{ background: 'rgba(253,249,241,0.7)', borderRadius: 8, padding: '8px 10px' }}>
             <div style={{ fontSize: 9, color: C.muted, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 3, display: 'flex', alignItems: 'center', gap: 4 }}>
               <Icon size={9} /> {label}
             </div>
@@ -78,7 +78,7 @@ function QuoteOfferCard({ data, isMine, onAccept, onCounter, accepting }) {
       </div>
 
       {data.notes && (
-        <p style={{ fontSize: 12, color: C.inkSoft, lineHeight: 1.6, marginBottom: 12, padding: '8px 10px', background: 'rgba(255,255,255,0.5)', borderRadius: 8 }}>
+        <p style={{ fontSize: 12, color: C.inkSoft, lineHeight: 1.6, marginBottom: 12, padding: '8px 10px', background: 'rgba(253,249,241,0.5)', borderRadius: 8 }}>
           {data.notes}
         </p>
       )}
@@ -88,7 +88,7 @@ function QuoteOfferCard({ data, isMine, onAccept, onCounter, accepting }) {
           <button onClick={onAccept} disabled={accepting}
             style={{
               flex: 1, padding: '8px 0', borderRadius: 100, border: 'none', cursor: 'pointer',
-              background: C.emerald, color: '#fff',
+              background: C.emerald, color: '#FDF9F1',
               fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 12,
               opacity: accepting ? 0.65 : 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
             }}>
@@ -129,7 +129,7 @@ function QuoteAcceptedCard({ data }) {
       <button onClick={() => navigate('/buyer-dashboard/orders')}
         style={{
           padding: '6px 14px', borderRadius: 100, border: 'none', cursor: 'pointer',
-          background: C.emerald, color: '#fff', fontSize: 11, fontWeight: 700,
+          background: C.emerald, color: '#FDF9F1', fontSize: 11, fontWeight: 700,
           fontFamily: "'DM Sans', sans-serif",
         }}>
         View Order
@@ -181,7 +181,7 @@ function QuoteOfferForm({ convId, onSent }) {
           <label style={{ display: 'block', fontSize: 10, fontWeight: 700, color: C.muted, textTransform: 'uppercase', letterSpacing: '.06em', marginBottom: 4 }}>{label}</label>
           <input type={type} value={form[key]} onChange={e => set(key, e.target.value)} placeholder={placeholder}
             style={{ width: '100%', padding: '8px 10px', borderRadius: 8, border: `1.5px solid ${C.borderSoft}`, background: C.cream, fontSize: 13, color: C.ink, fontFamily: "'DM Sans', sans-serif", outline: 'none', boxSizing: 'border-box' }}
-            onFocus={e => { e.currentTarget.style.borderColor = C.emerald; e.currentTarget.style.background = '#fff'; }}
+            onFocus={e => { e.currentTarget.style.borderColor = C.emerald; e.currentTarget.style.background = '#FDF9F1'; }}
             onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = C.cream; }} />
         </div>
       ))}
@@ -190,12 +190,12 @@ function QuoteOfferForm({ convId, onSent }) {
         <textarea value={form.notes} onChange={e => set('notes', e.target.value)} rows={2}
           placeholder="Quality, packaging, payment terms…"
           style={{ width: '100%', padding: '8px 10px', borderRadius: 8, border: `1.5px solid ${C.borderSoft}`, background: C.cream, fontSize: 12, color: C.ink, fontFamily: "'DM Sans', sans-serif", outline: 'none', resize: 'none', boxSizing: 'border-box' }}
-          onFocus={e => { e.currentTarget.style.borderColor = C.emerald; e.currentTarget.style.background = '#fff'; }}
+          onFocus={e => { e.currentTarget.style.borderColor = C.emerald; e.currentTarget.style.background = '#FDF9F1'; }}
           onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = C.cream; }} />
       </div>
       <button type="submit" disabled={sending} style={{
         padding: '9px 0', borderRadius: 100, border: 'none', cursor: 'pointer',
-        background: C.emerald, color: '#fff', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13,
+        background: C.emerald, color: '#FDF9F1', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13,
         opacity: sending ? 0.65 : 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
       }}>
         <ShieldCheck size={13} /> {sending ? 'Sending…' : 'Send Quote Offer'}
@@ -347,7 +347,7 @@ export default function MessagesPage() {
       <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '300px 1fr', gap: 16, minHeight: 0, padding: '0 32px 24px' }}>
 
         {/* ── LEFT: Conversation list ─────────────────────────────────────── */}
-        <div style={{ background: '#fff', borderRadius: 18, border: `1.5px solid ${C.borderSoft}`, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <div style={{ background: '#FDF9F1', borderRadius: 18, border: `1.5px solid ${C.borderSoft}`, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
           <div style={{ borderTop: `3px solid ${isSupplier ? C.emerald : isAdmin ? C.navy : C.saffron}` }} />
 
           {/* Search */}
@@ -370,7 +370,7 @@ export default function MessagesPage() {
                 <p style={{ fontSize: 13, color: C.muted }}>No conversations yet</p>
                 {!isAdmin && (
                   <button onClick={() => navigate(isSupplier ? '/supplier-dashboard/rfqs' : '/products')}
-                    style={{ marginTop: 10, padding: '7px 16px', borderRadius: 100, background: isSupplier ? C.emerald : C.saffron, color: '#fff', border: 'none', cursor: 'pointer', fontSize: 12, fontWeight: 700, fontFamily: "'DM Sans', sans-serif" }}>
+                    style={{ marginTop: 10, padding: '7px 16px', borderRadius: 100, background: isSupplier ? C.emerald : C.saffron, color: '#FDF9F1', border: 'none', cursor: 'pointer', fontSize: 12, fontWeight: 700, fontFamily: "'DM Sans', sans-serif" }}>
                     {isSupplier ? 'Browse RFQs' : 'Browse Suppliers'}
                   </button>
                 )}
@@ -391,17 +391,17 @@ export default function MessagesPage() {
                   style={{
                     padding: '12px 14px', borderBottom: `1px solid ${C.borderSoft}`,
                     cursor: 'pointer', transition: 'background 0.15s',
-                    background: isActive ? (isSupplier ? C.emeraldLt : isAdmin ? C.navyLt : C.saffronLt) : '#fff',
+                    background: isActive ? (isSupplier ? C.emeraldLt : isAdmin ? C.navyLt : C.saffronLt) : '#FDF9F1',
                     borderLeft: isActive ? `3px solid ${isSupplier ? C.emerald : isAdmin ? C.navy : C.saffron}` : '3px solid transparent',
                   }}
                   onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = C.cream; }}
-                  onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = '#fff'; }}>
+                  onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = '#FDF9F1'; }}>
                   <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
                     <div style={{
                       width: 36, height: 36, borderRadius: 10, flexShrink: 0,
                       background: isSupplier ? C.navy : isAdmin ? C.saffron : C.emerald,
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      color: '#fff', fontSize: 14, fontWeight: 800, fontFamily: "'Playfair Display', serif",
+                      color: '#FDF9F1', fontSize: 14, fontWeight: 800, fontFamily: "'Playfair Display', serif",
                     }}>
                       {party[0]?.toUpperCase() || '?'}
                     </div>
@@ -418,7 +418,7 @@ export default function MessagesPage() {
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 4 }}>
                         <span style={{ fontSize: 11, color: C.muted, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{preview}</span>
                         {unread > 0 && (
-                          <span style={{ width: 18, height: 18, borderRadius: '50%', background: C.saffron, color: '#fff', fontSize: 9, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                          <span style={{ width: 18, height: 18, borderRadius: '50%', background: C.saffron, color: '#FDF9F1', fontSize: 9, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                             {unread > 9 ? '9+' : unread}
                           </span>
                         )}
@@ -432,7 +432,7 @@ export default function MessagesPage() {
         </div>
 
         {/* ── RIGHT: Chat window ──────────────────────────────────────────── */}
-        <div style={{ background: '#fff', borderRadius: 18, border: `1.5px solid ${C.borderSoft}`, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <div style={{ background: '#FDF9F1', borderRadius: 18, border: `1.5px solid ${C.borderSoft}`, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
 
           {!activeConvId ? (
             /* Empty state */
@@ -454,7 +454,7 @@ export default function MessagesPage() {
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <div style={{ width: 38, height: 38, borderRadius: 10, background: isSupplier ? C.navy : isAdmin ? C.saffron : C.emerald, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 15, fontWeight: 800, fontFamily: "'Playfair Display', serif" }}>
+                  <div style={{ width: 38, height: 38, borderRadius: 10, background: isSupplier ? C.navy : isAdmin ? C.saffron : C.emerald, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FDF9F1', fontSize: 15, fontWeight: 800, fontFamily: "'Playfair Display', serif" }}>
                     {otherParty(activeConv)?.[0]?.toUpperCase() || '?'}
                   </div>
                   <div>
@@ -470,7 +470,7 @@ export default function MessagesPage() {
                   <button onClick={() => setShowQuoteForm(v => !v)}
                     style={{
                       display: 'flex', alignItems: 'center', gap: 6, padding: '7px 14px', borderRadius: 100,
-                      background: showQuoteForm ? C.emerald : C.emeraldLt, color: showQuoteForm ? '#fff' : C.emerald,
+                      background: showQuoteForm ? C.emerald : C.emeraldLt, color: showQuoteForm ? '#FDF9F1' : C.emerald,
                       border: `1.5px solid ${C.emerald}`, cursor: 'pointer',
                       fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 12, transition: 'all 0.15s',
                     }}>
@@ -521,10 +521,10 @@ export default function MessagesPage() {
                       ) : (
                         <div style={{
                           maxWidth: '72%', padding: '10px 14px', borderRadius: isMine ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
-                          background: isMine ? (isSupplier ? C.emerald : C.saffron) : '#fff',
-                          color: isMine ? '#fff' : C.ink,
+                          background: isMine ? (isSupplier ? C.emerald : C.saffron) : '#FDF9F1',
+                          color: isMine ? '#FDF9F1' : C.ink,
                           fontSize: 13, lineHeight: 1.65,
-                          boxShadow: '0 1px 4px rgba(28,24,21,0.06)',
+                          boxShadow: '0 1px 4px rgba(43,32,22,0.06)',
                           border: isMine ? 'none' : `1.5px solid ${C.borderSoft}`,
                         }}>
                           {msg.body}
@@ -543,7 +543,7 @@ export default function MessagesPage() {
 
               {/* Input bar — hidden for admin (read-only) */}
               {!isAdmin && (
-                <div style={{ padding: '12px 16px', borderTop: `1px solid ${C.borderSoft}`, background: '#fff' }}>
+                <div style={{ padding: '12px 16px', borderTop: `1px solid ${C.borderSoft}`, background: '#FDF9F1' }}>
                   <form onSubmit={sendMessage} style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
                     <input
                       ref={inputRef}
@@ -557,14 +557,14 @@ export default function MessagesPage() {
                         fontSize: 13, color: C.ink, fontFamily: "'DM Sans', sans-serif",
                         outline: 'none', transition: 'border-color 0.15s',
                       }}
-                      onFocus={e => { e.currentTarget.style.borderColor = isSupplier ? C.emerald : C.saffron; e.currentTarget.style.background = '#fff'; }}
+                      onFocus={e => { e.currentTarget.style.borderColor = isSupplier ? C.emerald : C.saffron; e.currentTarget.style.background = '#FDF9F1'; }}
                       onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = C.cream; }}
                     />
                     <button type="submit" disabled={sending || !msgText.trim()}
                       style={{
                         width: 42, height: 42, borderRadius: 12, border: 'none', cursor: 'pointer',
                         background: isSupplier ? C.emerald : C.saffron,
-                        color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        color: '#FDF9F1', display: 'flex', alignItems: 'center', justifyContent: 'center',
                         opacity: (sending || !msgText.trim()) ? 0.5 : 1,
                         transition: 'opacity 0.15s',
                         flexShrink: 0,

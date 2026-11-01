@@ -7,12 +7,12 @@ import { useCurrency } from '../hooks/useCurrency';
 import { resolveImageUrl } from '../utils/helpers';
 
 const C = {
-  saffron: '#C8792C', saffronLt: '#FDF1E8',
+  saffron: '#C8792C', saffronLt: '#FDF9F1',
   emerald: '#1A7A4A', emeraldLt: '#EAF5EF',
-  navy: '#1B3175', navyLt: '#EEF2FB',
-  gold: '#B8730A', goldLt: '#FDF5E2',
+  navy: '#5B4632', navyLt: '#F0DCC0',
+  gold: '#C8792C', goldLt: '#FDF9F1',
   ink: '#5B4632', inkSoft: '#2B2016',
-  muted: '#79634E', borderSoft: '#E3D5C1', cream: '#F0E8DA',
+  muted: '#79634E', borderSoft: '#E3D5C1', cream: '#E3D5C1',
   red: '#DC2626', redLt: '#FEF2F2',
 };
 
@@ -100,7 +100,7 @@ export default function SupplierCatalog() {
         </div>
         <button onClick={() => navigate('/supplier-dashboard/catalog/new')} style={{
           display: 'flex', alignItems: 'center', gap: 8, padding: '11px 22px', borderRadius: 100, border: 'none',
-          cursor: 'pointer', background: C.emerald, color: '#fff',
+          cursor: 'pointer', background: C.emerald, color: '#FDF9F1',
           fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13,
           boxShadow: '0 4px 14px rgba(26,122,74,0.28)', transition: 'transform 0.12s',
         }}
@@ -112,7 +112,7 @@ export default function SupplierCatalog() {
 
       {/* Filters */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '9px 14px', borderRadius: 12, border: `1.5px solid ${C.borderSoft}`, background: '#fff', flex: 1, maxWidth: 300 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '9px 14px', borderRadius: 12, border: `1.5px solid ${C.borderSoft}`, background: '#FDF9F1', flex: 1, maxWidth: 300 }}>
           <Search size={14} color={C.muted} />
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search products…"
             style={{ border: 'none', outline: 'none', fontSize: 13, color: C.ink, background: 'transparent', width: '100%', fontFamily: "'DM Sans', sans-serif" }} />
@@ -121,7 +121,7 @@ export default function SupplierCatalog() {
           <button key={f} onClick={() => setFilter(f)} style={{
             padding: '8px 16px', borderRadius: 100, cursor: 'pointer',
             border: `1.5px solid ${filter === f ? C.emerald : C.borderSoft}`,
-            background: filter === f ? C.emeraldLt : '#fff',
+            background: filter === f ? C.emeraldLt : '#FDF9F1',
             color: filter === f ? C.emerald : C.muted,
             fontSize: 12, fontWeight: 600, textTransform: 'capitalize', transition: 'all 0.15s',
           }}>{f}</button>
@@ -136,10 +136,10 @@ export default function SupplierCatalog() {
       ) : error ? (
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: 20, borderRadius: 14, background: C.redLt, color: C.red, fontSize: 14 }}>
           <AlertCircle size={16} /> {error}
-          <button onClick={load} style={{ marginLeft: 'auto', padding: '5px 14px', borderRadius: 8, border: `1.5px solid ${C.red}`, background: '#fff', color: C.red, fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>Retry</button>
+          <button onClick={load} style={{ marginLeft: 'auto', padding: '5px 14px', borderRadius: 8, border: `1.5px solid ${C.red}`, background: '#FDF9F1', color: C.red, fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>Retry</button>
         </div>
       ) : visible.length === 0 ? (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14, padding: '56px 24px', borderRadius: 20, border: `1.5px dashed ${C.borderSoft}`, background: '#fff', textAlign: 'center' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14, padding: '56px 24px', borderRadius: 20, border: `1.5px dashed ${C.borderSoft}`, background: '#FDF9F1', textAlign: 'center' }}>
           <div style={{ width: 56, height: 56, borderRadius: 16, background: C.emeraldLt, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Package size={26} color={C.emerald} />
           </div>
@@ -154,7 +154,7 @@ export default function SupplierCatalog() {
           {!search && filter === 'all' && (
             <button onClick={() => navigate('/supplier-dashboard/catalog/new')} style={{
               display: 'flex', alignItems: 'center', gap: 7, padding: '10px 22px', borderRadius: 100,
-              border: 'none', cursor: 'pointer', background: C.emerald, color: '#fff',
+              border: 'none', cursor: 'pointer', background: C.emerald, color: '#FDF9F1',
               fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13,
             }}>
               <Plus size={14} /> List Product
@@ -162,7 +162,7 @@ export default function SupplierCatalog() {
           )}
         </div>
       ) : (
-        <div style={{ background: '#fff', borderRadius: 18, border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden' }}>
+        <div style={{ background: '#FDF9F1', borderRadius: 18, border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden' }}>
           <div style={{ borderTop: `3px solid ${C.emerald}` }} />
           {/* Header row */}
           <div style={{ display: 'grid', gridTemplateColumns: '56px 2fr 1fr 1fr 1fr 110px', gap: 12, padding: '12px 22px', borderBottom: `1px solid ${C.borderSoft}`, background: C.cream }}>
@@ -180,7 +180,7 @@ export default function SupplierCatalog() {
               textDecoration: 'none', color: 'inherit',
             }}
               onMouseEnter={e => { e.currentTarget.style.background = C.cream; }}
-              onMouseLeave={e => { e.currentTarget.style.background = '#fff'; }}>
+              onMouseLeave={e => { e.currentTarget.style.background = '#FDF9F1'; }}>
               <div style={{ width: 44, height: 44, borderRadius: 8, overflow: 'hidden', background: C.cream, border: `1px solid ${C.borderSoft}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 {thumb
                   ? <img src={thumb} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />

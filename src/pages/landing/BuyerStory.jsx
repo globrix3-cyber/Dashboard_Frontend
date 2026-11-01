@@ -1,7 +1,7 @@
 import { IMG } from './images';
 import { useBreakpoint } from '../../hooks/useBreakpoint';
 
-const BG  = '#2C1810';
+const BG  = '#2B2016';
 const ACC = '#C8792C';
 
 export default function BuyerStory() {
@@ -17,10 +17,10 @@ export default function BuyerStory() {
         <h2 style={{ fontFamily: "'Cormorant Garamond','Playfair Display',Georgia,serif", fontSize: '32px', fontWeight: 900, color: ACC, lineHeight: 1.08, marginBottom: 8 }}>
           We're Globrixa.
         </h2>
-        <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',Georgia,serif", fontSize: '20px', fontWeight: 600, color: 'rgba(255,255,255,.75)', lineHeight: 1.25, marginBottom: 20 }}>
+        <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',Georgia,serif", fontSize: '20px', fontWeight: 600, color: 'rgba(253,249,241,.75)', lineHeight: 1.25, marginBottom: 20 }}>
           The platform for global buyers.
         </div>
-        <p style={{ fontSize: 15, color: 'rgba(255,255,255,.5)', lineHeight: 1.85, marginBottom: 32 }}>
+        <p style={{ fontSize: 15, color: 'rgba(253,249,241,.5)', lineHeight: 1.85, marginBottom: 32 }}>
           We make it easy for you to discover authentic products from Indian manufacturers and connect with suppliers that make your business stand out.
         </p>
 
@@ -28,9 +28,9 @@ export default function BuyerStory() {
         <div style={{ borderRadius: 20, overflow: 'hidden', position: 'relative', aspectRatio: '4/3' }}>
           <img src={IMG.artisanEmbroidery} alt="Indian artisan hand embroidery" loading="lazy" decoding="async"
             style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center center', display: 'block' }} />
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(44,24,16,.7) 0%, transparent 55%)' }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(43,32,22,.7) 0%, transparent 55%)' }} />
           <div style={{ position: 'absolute', bottom: 14, left: 16, right: 16 }}>
-            <span style={{ fontSize: 11, color: 'rgba(255,255,255,.8)', fontWeight: 500 }}>Indian artisan embroidery — handcrafted by verified suppliers on Globrixa</span>
+            <span style={{ fontSize: 11, color: 'rgba(253,249,241,.8)', fontWeight: 500 }}>Indian artisan embroidery — handcrafted by verified suppliers on Globrixa</span>
           </div>
         </div>
       </section>
@@ -61,13 +61,13 @@ export default function BuyerStory() {
             fontFamily: "'Cormorant Garamond','Playfair Display',Georgia,serif",
             fontSize: bp.isTablet ? '20px' : '26px',
             fontWeight: 600,
-            color: 'rgba(255,255,255,.7)',
+            color: 'rgba(253,249,241,.7)',
             lineHeight: 1.28, marginBottom: 28,
           }}>
             The platform for<br />global buyers.
           </div>
 
-          <p style={{ fontSize: bp.isTablet ? 15 : 16, color: 'rgba(255,255,255,.5)', lineHeight: 1.9, marginBottom: 40, maxWidth: 420 }}>
+          <p style={{ fontSize: bp.isTablet ? 15 : 16, color: 'rgba(253,249,241,.5)', lineHeight: 1.9, marginBottom: 40, maxWidth: 420 }}>
             We make it easy for you to discover authentic products from Indian manufacturers and connect with suppliers that make your business stand out.
           </p>
 
@@ -75,8 +75,8 @@ export default function BuyerStory() {
           <div style={{ display: 'flex', gap: 32 }}>
             {[['10+', 'Verified suppliers'], ['120+', 'Countries sourcing'], ['200+', 'Products listed']].map(([num, label]) => (
               <div key={label}>
-                <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: bp.isTablet ? 22 : 28, fontWeight: 900, color: '#fff', letterSpacing: -0.5 }}>{num}</div>
-                <div style={{ fontSize: 11, color: 'rgba(255,255,255,.4)', fontWeight: 500, marginTop: 2 }}>{label}</div>
+                <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: bp.isTablet ? 22 : 28, fontWeight: 900, color: '#FDF9F1', letterSpacing: -0.5 }}>{num}</div>
+                <div style={{ fontSize: 11, color: 'rgba(253,249,241,.4)', fontWeight: 500, marginTop: 2 }}>{label}</div>
               </div>
             ))}
           </div>
@@ -87,7 +87,7 @@ export default function BuyerStory() {
           {/* Decorative glow behind image */}
           <div style={{ position: 'absolute', inset: -20, background: `radial-gradient(ellipse at center, rgba(200,121,44,.15) 0%, transparent 70%)`, pointerEvents: 'none', zIndex: 0 }} />
 
-          <div style={{ position: 'relative', zIndex: 1, borderRadius: 24, overflow: 'hidden', boxShadow: '0 32px 80px rgba(0,0,0,.5)' }}>
+          <div style={{ position: 'relative', zIndex: 1, borderRadius: 24, overflow: 'hidden', boxShadow: '0 32px 80px rgba(43,32,22,.5)' }}>
             <img
               src={IMG.artisanEmbroidery}
               alt="Aerial view of Indian artisan hand embroidery"
@@ -96,12 +96,12 @@ export default function BuyerStory() {
               style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', objectPosition: 'center center', display: 'block' }}
             />
             {/* Gradient overlay */}
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(44,24,16,.75) 0%, transparent 55%)' }} />
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(43,32,22,.75) 0%, transparent 55%)' }} />
 
             {/* Caption */}
             <div style={{ position: 'absolute', bottom: 20, left: 20, right: 20, display: 'flex', alignItems: 'center', gap: 10 }}>
               <div style={{ width: 6, height: 6, borderRadius: '50%', background: ACC, flexShrink: 0 }} />
-              <span style={{ fontSize: 12, color: 'rgba(255,255,255,.82)', fontWeight: 500, lineHeight: 1.4 }}>
+              <span style={{ fontSize: 12, color: 'rgba(253,249,241,.82)', fontWeight: 500, lineHeight: 1.4 }}>
                 Indian artisan embroidery — handcrafted by verified suppliers on Globrixa
               </span>
             </div>
@@ -109,7 +109,7 @@ export default function BuyerStory() {
 
           {/* Floating badge */}
           <div style={{ position: 'absolute', top: -16, right: -16, zIndex: 2, background: ACC, borderRadius: 14, padding: '10px 16px', boxShadow: '0 8px 24px rgba(200,121,44,.4)' }}>
-            <div style={{ fontSize: 11, fontWeight: 800, color: '#fff', letterSpacing: '.06em', textTransform: 'uppercase' }}>🇮🇳 Made in India</div>
+            <div style={{ fontSize: 11, fontWeight: 800, color: '#FDF9F1', letterSpacing: '.06em', textTransform: 'uppercase' }}>🇮🇳 Made in India</div>
           </div>
         </div>
       </div>

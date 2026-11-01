@@ -1,50 +1,29 @@
-import { useState } from 'react';
 import LandingNavbar      from './landing/LandingNavbar';
 import HeroSection        from './landing/HeroSection';
-import SocialProofTicker  from './landing/SocialProofTicker';
-import CategoryNavBar     from './landing/CategoryNavBar';
-import ShopByCategory     from './landing/ShopByCategory';
-import FeaturedSuppliers  from './landing/FeaturedSuppliers';
+import BenefitsStrip      from './landing/BenefitsStrip';
+import CollectionsSection from './landing/CollectionsSection';
+import CraftBand          from './landing/CraftBand';
 import NewThisWeek        from './landing/NewThisWeek';
 import RetailAudience     from './landing/RetailAudience';
-import BrowseByRegion     from './landing/BrowseByRegion';
-import SourceConfidently  from './landing/SourceConfidently';
-import StatsSection       from './landing/StatsSection';
-import Testimonials       from './landing/Testimonials';
+import WhyGlobrixa        from './landing/WhyGlobrixa';
+import MakerStory         from './landing/MakerStory';
 import FaqSection         from './landing/FaqSection';
-import BuyerStory         from './landing/BuyerStory';
-import BuyerFeatures      from './landing/BuyerFeatures';
 import NewsletterSection  from './landing/NewsletterSection';
-import CtaBanner          from './landing/CtaBanner';
 import LandingFooter      from './landing/LandingFooter';
 
 export default function LandingPage() {
-  const [activeCategory, setActiveCategory] = useState('All');
-
-  const handleCategorySelect = (cat) => {
-    setActiveCategory(cat);
-    setTimeout(() => {
-      document.getElementById('shop-by-category')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 40);
-  };
-
   return (
-    <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: '#FDF9F1', minHeight: '100vh', overflowX: 'hidden' }}>
+    <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: '#FDF9F1', minHeight: '100vh', overflowX: 'clip' }}>
       <LandingNavbar />
       <HeroSection />
-      <CategoryNavBar activeCategory={activeCategory} onSelect={handleCategorySelect} />
-      <ShopByCategory activeCategory={activeCategory} onCategoryChange={handleCategorySelect} />
-      <FeaturedSuppliers />
+      <BenefitsStrip />
+      <CollectionsSection />
+      <CraftBand />
       <NewThisWeek />
       <RetailAudience />
-      <BrowseByRegion />
-      <SourceConfidently />
-      <StatsSection />
-      <Testimonials />
+      <WhyGlobrixa />
+      <MakerStory />
       <FaqSection />
-      <BuyerStory />
-      <BuyerFeatures />
-      <CtaBanner />
       <NewsletterSection />
       <LandingFooter />
     </div>

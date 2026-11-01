@@ -37,13 +37,13 @@ function MiniProdCard({ item, onAction }) {
         {photo ? (
           <>
             <img src={photo} alt={item.name} loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', transform: hov ? 'scale(1.10)' : 'scale(1)', transition: 'transform .45s ease', display: 'block' }} />
-            <div style={{ position: 'absolute', inset: 0, background: hov ? 'rgba(18,14,10,.14)' : 'rgba(18,14,10,.04)', transition: '.22s' }} />
+            <div style={{ position: 'absolute', inset: 0, background: hov ? 'rgba(43,32,22,.14)' : 'rgba(43,32,22,.04)', transition: '.22s' }} />
           </>
         ) : (
           <div style={{ width: '100%', height: '100%', background: item.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 32 }}>{item.emoji}</div>
         )}
         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: hov ? 1 : 0, transition: '.2s', pointerEvents: 'none' }}>
-          <span style={{ background: 'rgba(200,121,44,.92)', backdropFilter: 'blur(8px)', color: '#fff', fontSize: 9, fontWeight: 800, padding: '5px 12px', borderRadius: 20, letterSpacing: '.08em' }}>Get Quote →</span>
+          <span style={{ background: 'rgba(200,121,44,.92)', backdropFilter: 'blur(8px)', color: '#FDF9F1', fontSize: 9, fontWeight: 800, padding: '5px 12px', borderRadius: 20, letterSpacing: '.08em' }}>Get Quote →</span>
         </div>
       </div>
       <div style={{ padding: '9px 11px 11px' }}>

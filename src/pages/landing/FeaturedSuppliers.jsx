@@ -20,7 +20,7 @@ function BrandCard({ b, onAction }) {
   const photo = BRAND_PHOTOS[b.name];
 
   return (
-    <div onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)} style={{ background: T.w, borderRadius: 18, border: `1.5px solid ${hov ? 'rgba(200,121,44,.35)' : T.bs}`, overflow: 'hidden', cursor: 'pointer', transform: hov ? 'translateY(-6px)' : 'none', boxShadow: hov ? '0 20px 50px rgba(28,25,21,.13)' : shadow.sm, transition: '.25s cubic-bezier(.22,.68,0,1.2)' }}>
+    <div onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)} style={{ background: T.w, borderRadius: 18, border: `1.5px solid ${hov ? 'rgba(200,121,44,.35)' : T.bs}`, overflow: 'hidden', cursor: 'pointer', transform: hov ? 'translateY(-6px)' : 'none', boxShadow: hov ? '0 20px 50px rgba(43,32,22,.13)' : shadow.sm, transition: '.25s cubic-bezier(.22,.68,0,1.2)' }}>
 
       {/* Category label */}
       <div style={{ padding: '8px 18px 0', display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -32,7 +32,7 @@ function BrandCard({ b, onAction }) {
         {photo ? (
           <>
             <img src={photo} alt={`${b.name} — verified Indian supplier`} loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', transform: hov ? 'scale(1.07)' : 'scale(1)', transition: 'transform .5s ease', display: 'block' }} />
-            <div style={{ position: 'absolute', inset: 0, background: hov ? 'rgba(18,14,10,.2)' : 'rgba(18,14,10,.06)', transition: '.25s' }} />
+            <div style={{ position: 'absolute', inset: 0, background: hov ? 'rgba(43,32,22,.2)' : 'rgba(43,32,22,.06)', transition: '.25s' }} />
           </>
         ) : (
           <div style={{ width: '100%', height: '100%', background: b.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 44, transform: hov ? 'scale(1.04)' : 'scale(1)', transition: 'transform .4s ease' }}>{b.emoji}</div>
@@ -52,7 +52,7 @@ function BrandCard({ b, onAction }) {
         <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap', marginBottom: 13 }}>
           {b.tags.map(({ v, l }) => <span key={l} style={tag(v)}>{l}</span>)}
         </div>
-        <button onClick={onAction} style={{ width: '100%', padding: '10px 0', background: hov ? T.t : T.tl, color: hov ? '#fff' : T.t, border: `1.5px solid ${hov ? T.t : 'rgba(200,121,44,.3)'}`, borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', transition: '.18s', boxShadow: hov ? '0 4px 14px rgba(200,121,44,.3)' : 'none' }}>
+        <button onClick={onAction} style={{ width: '100%', padding: '10px 0', background: hov ? T.t : T.tl, color: hov ? '#FDF9F1' : T.t, border: `1.5px solid ${hov ? T.t : 'rgba(200,121,44,.3)'}`, borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', transition: '.18s', boxShadow: hov ? '0 4px 14px rgba(200,121,44,.3)' : 'none' }}>
           Explore Collection →
         </button>
       </div>
@@ -84,7 +84,7 @@ export default function FeaturedSuppliers() {
         {/* Category tabs */}
         <div style={{ display: 'flex', gap: 8, marginBottom: 24, flexWrap: 'wrap' }}>
           {ALL_CATEGORIES.map(cat => (
-            <button key={cat} onClick={() => setActiveTab(cat)} style={{ padding: '7px 16px', borderRadius: 20, fontSize: 12, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', border: `1.5px solid ${activeTab === cat ? T.t : T.bs}`, background: activeTab === cat ? T.t : T.w, color: activeTab === cat ? '#fff' : T.mu, transition: '.15s' }}>
+            <button key={cat} onClick={() => setActiveTab(cat)} style={{ padding: '7px 16px', borderRadius: 20, fontSize: 12, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', border: `1.5px solid ${activeTab === cat ? T.t : T.bs}`, background: activeTab === cat ? T.t : T.w, color: activeTab === cat ? '#FDF9F1' : T.mu, transition: '.15s' }}>
               {cat}
             </button>
           ))}

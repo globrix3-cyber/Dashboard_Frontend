@@ -14,19 +14,19 @@ import {
 import { formatDate } from '../utils/helpers';
 
 const C = {
-  saffron:    '#C8792C', saffronLt: '#FDF1E8',
+  saffron:    '#C8792C', saffronLt: '#FDF9F1',
   emerald:    '#1A7A4A', emeraldLt: '#EAF5EF',
-  navy:       '#1B3175', navyLt:    '#EEF2FB',
-  gold:       '#B8730A', goldLt:    '#FDF5E2',
+  navy:       '#5B4632', navyLt:    '#F0DCC0',
+  gold:       '#C8792C', goldLt:    '#FDF9F1',
   ink:        '#5B4632', inkSoft:   '#2B2016',
   muted:      '#79634E',
-  borderSoft: '#E3D5C1', cream:     '#F0E8DA',
+  borderSoft: '#E3D5C1', cream:     '#E3D5C1',
   red:        '#DC2626', redLt:     '#FEF2F2',
 };
 
 const STATUS_META = {
   pending_supplier: { label: 'Awaiting Supplier Signature', color: C.gold,    bg: C.goldLt,    icon: Clock        },
-  pending_buyer:    { label: 'Awaiting Buyer Signature',    color: '#D97706',  bg: '#FEF3C7',   icon: AlertTriangle },
+  pending_buyer:    { label: 'Awaiting Buyer Signature',    color: '#C8792C',  bg: '#FEF3C7',   icon: AlertTriangle },
   active:           { label: 'Active — Both Parties Signed',color: C.emerald,  bg: C.emeraldLt, icon: CheckCircle2 },
   completed:        { label: 'Completed — Order Placed',    color: '#15803D',  bg: '#F0FDF4',   icon: CheckCircle2 },
   cancelled:        { label: 'Cancelled',                   color: C.red,      bg: C.redLt,     icon: XCircle      },
@@ -35,7 +35,7 @@ const STATUS_META = {
 function SectionCard({ title, icon: Icon, accent = C.navy, children }) {
   return (
     <div style={{
-      background: '#fff', borderRadius: 16,
+      background: '#FDF9F1', borderRadius: 16,
       border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden', marginBottom: 16,
     }}>
       <div style={{ height: 3, background: accent }} />
@@ -98,12 +98,12 @@ function ConfirmModal({ message, onConfirm, onCancel, confirmLabel, confirmColor
   return (
     <div style={{
       position: 'fixed', inset: 0, zIndex: 1000,
-      background: 'rgba(0,0,0,0.45)', display: 'flex',
+      background: 'rgba(43,32,22,0.45)', display: 'flex',
       alignItems: 'center', justifyContent: 'center', padding: 20,
     }}>
       <div style={{
-        background: '#fff', borderRadius: 20, padding: 28, maxWidth: 400, width: '100%',
-        boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
+        background: '#FDF9F1', borderRadius: 20, padding: 28, maxWidth: 400, width: '100%',
+        boxShadow: '0 20px 60px rgba(43,32,22,0.2)',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
           <AlertTriangle size={20} color={confirmColor || C.saffron} />
@@ -115,12 +115,12 @@ function ConfirmModal({ message, onConfirm, onCancel, confirmLabel, confirmColor
         <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
           <button onClick={onCancel} style={{
             padding: '9px 20px', borderRadius: 100, border: `1.5px solid ${C.borderSoft}`,
-            background: '#fff', color: C.muted, cursor: 'pointer',
+            background: '#FDF9F1', color: C.muted, cursor: 'pointer',
             fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 13,
           }}>Cancel</button>
           <button onClick={onConfirm} style={{
             padding: '9px 20px', borderRadius: 100, border: 'none',
-            background: confirmColor || C.saffron, color: '#fff', cursor: 'pointer',
+            background: confirmColor || C.saffron, color: '#FDF9F1', cursor: 'pointer',
             fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13,
           }}>{confirmLabel || 'Confirm'}</button>
         </div>
@@ -247,14 +247,14 @@ export default function ContractPage() {
       {(canSign || canOrder || canCancel) && (
         <div style={{
           display: 'flex', gap: 10, flexWrap: 'wrap',
-          background: '#fff', borderRadius: 16, padding: '14px 18px',
+          background: '#FDF9F1', borderRadius: 16, padding: '14px 18px',
           border: `1.5px solid ${C.borderSoft}`, marginBottom: 20,
         }}>
           {canSign && (
             <button onClick={() => setModal('sign')} disabled={busy === 'sign'} style={{
               display: 'flex', alignItems: 'center', gap: 7,
               padding: '10px 22px', borderRadius: 100, border: 'none',
-              background: C.emerald, color: '#fff', cursor: 'pointer',
+              background: C.emerald, color: '#FDF9F1', cursor: 'pointer',
               fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13,
               opacity: busy === 'sign' ? 0.7 : 1,
             }}>
@@ -265,7 +265,7 @@ export default function ContractPage() {
             <button onClick={() => setModal('order')} disabled={busy === 'order'} style={{
               display: 'flex', alignItems: 'center', gap: 7,
               padding: '10px 22px', borderRadius: 100, border: 'none',
-              background: C.saffron, color: '#fff', cursor: 'pointer',
+              background: C.saffron, color: '#FDF9F1', cursor: 'pointer',
               fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13,
               opacity: busy === 'order' ? 0.7 : 1,
             }}>
@@ -276,7 +276,7 @@ export default function ContractPage() {
             <button onClick={() => setModal('cancel')} disabled={busy === 'cancel'} style={{
               display: 'flex', alignItems: 'center', gap: 7,
               padding: '10px 18px', borderRadius: 100,
-              border: `1.5px solid ${C.borderSoft}`, background: '#fff',
+              border: `1.5px solid ${C.borderSoft}`, background: '#FDF9F1',
               color: C.red, cursor: 'pointer',
               fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 13,
               opacity: busy === 'cancel' ? 0.7 : 1,

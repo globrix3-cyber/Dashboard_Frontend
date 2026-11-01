@@ -17,17 +17,17 @@ const C = {
   ink:        '#5B4632',
   inkSoft:    '#2B2016',
   muted:      '#79634E',
-  border:     '#EDE8E0',
-  bg:         '#F5F2EE',
-  white:      '#fff',
+  border:     '#E3D5C1',
+  bg:         '#E3D5C1',
+  white:      '#FDF9F1',
   emerald:    '#1A7A4A',
   emeraldLt:  '#EAF5EF',
-  navy:       '#1B3175',
-  navyLt:     '#EEF2FB',
+  navy:       '#5B4632',
+  navyLt:     '#F0DCC0',
   saffron:    '#C8792C',
-  saffronLt:  '#FDF1E8',
-  gold:       '#B8730A',
-  goldLt:     '#FDF5E2',
+  saffronLt:  '#FDF9F1',
+  gold:       '#C8792C',
+  goldLt:     '#FDF9F1',
   red:        '#DC2626',
   redLt:      '#FEF2F2',
 };
@@ -35,9 +35,9 @@ const C = {
 /* ── Stat card ──────────────────────────────────────────────────────────── */
 function StatCard({ icon: Icon, label, value, color, trend, badge }) {
   return (
-    <div style={{ background: C.white, borderRadius: 14, padding: '20px 22px 18px', border: `1px solid ${C.border}`, borderTop: `3px solid ${color}`, boxShadow: '0 1px 4px rgba(28,24,21,.04)', transition: 'box-shadow .15s, transform .15s' }}
-      onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 6px 20px rgba(28,24,21,.09)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
-      onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 1px 4px rgba(28,24,21,.04)'; e.currentTarget.style.transform = 'none'; }}
+    <div style={{ background: C.white, borderRadius: 14, padding: '20px 22px 18px', border: `1px solid ${C.border}`, borderTop: `3px solid ${color}`, boxShadow: '0 1px 4px rgba(43,32,22,.04)', transition: 'box-shadow .15s, transform .15s' }}
+      onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 6px 20px rgba(43,32,22,.09)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+      onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 1px 4px rgba(43,32,22,.04)'; e.currentTarget.style.transform = 'none'; }}
     >
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 16 }}>
         <div style={{ width: 40, height: 40, borderRadius: 10, background: `${color}14`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -142,7 +142,7 @@ export default function AdminDashboard() {
       {/* ── Page heading ─────────────────────────────────────────────────── */}
       <div style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: 16, padding: '24px 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap', marginBottom: 8 }}>
         <div>
-          <p style={{ fontSize: 11, fontWeight: 700, color: '#B0A89E', letterSpacing: '.1em', textTransform: 'uppercase', margin: '0 0 6px' }}>
+          <p style={{ fontSize: 11, fontWeight: 700, color: '#79634E', letterSpacing: '.1em', textTransform: 'uppercase', margin: '0 0 6px' }}>
             Globrixa · Admin Control
           </p>
           <h1 style={{ fontSize: 26, fontWeight: 700, margin: '0 0 5px', letterSpacing: '-0.5px', color: C.ink }}>
@@ -152,14 +152,14 @@ export default function AdminDashboard() {
         </div>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
           <button onClick={() => navigate('/admin-dashboard/verifications')}
-            style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', borderRadius: 9, background: C.ink, color: '#fff', border: 'none', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13, boxShadow: '0 2px 8px rgba(28,24,21,.2)', transition: 'transform .12s' }}
+            style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', borderRadius: 9, background: C.ink, color: '#FDF9F1', border: 'none', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13, boxShadow: '0 2px 8px rgba(43,32,22,.2)', transition: 'transform .12s' }}
             onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-1px)'}
             onMouseLeave={e => e.currentTarget.style.transform = 'none'}>
             <ShieldCheck size={14} /> Review KYC
           </button>
           <button onClick={() => navigate('/admin-dashboard/users')}
             style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', borderRadius: 9, background: C.white, color: C.ink, border: `1.5px solid ${C.border}`, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 13, transition: 'border-color .12s, background .12s' }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = '#C8C0B8'; e.currentTarget.style.background = C.bg; }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = '#E3D5C1'; e.currentTarget.style.background = C.bg; }}
             onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.background = C.white; }}>
             <Users size={14} /> Manage Users
           </button>
@@ -297,13 +297,13 @@ export default function AdminDashboard() {
             ].map(({ icon: Icon, label, path, color }) => (
               <button key={label} onClick={() => navigate(path)}
                 style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', borderRadius: 9, border: `1px solid ${C.border}`, background: C.white, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 500, color: C.ink, textAlign: 'left', transition: 'background .1s, border-color .1s' }}
-                onMouseEnter={e => { e.currentTarget.style.background = C.bg; e.currentTarget.style.borderColor = '#D4CFC8'; }}
+                onMouseEnter={e => { e.currentTarget.style.background = C.bg; e.currentTarget.style.borderColor = '#E3D5C1'; }}
                 onMouseLeave={e => { e.currentTarget.style.background = C.white; e.currentTarget.style.borderColor = C.border; }}>
                 <div style={{ width: 30, height: 30, borderRadius: 8, background: `${color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   <Icon size={14} color={color} />
                 </div>
                 <span style={{ flex: 1 }}>{label}</span>
-                <ArrowRight size={12} color="#C8C0B8" />
+                <ArrowRight size={12} color="#E3D5C1" />
               </button>
             ))}
           </div>

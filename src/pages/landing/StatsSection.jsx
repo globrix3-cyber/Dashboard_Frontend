@@ -9,19 +9,19 @@ export default function StatsSection() {
   const num  = bp.isMobile ? 36 : bp.isTablet ? 44 : 56;
 
   return (
-    <div style={{ position: 'relative', padding: pad, overflow: 'hidden', background: '#2C1810' }}>
+    <div style={{ position: 'relative', padding: pad, overflow: 'hidden', background: '#2B2016' }}>
       {/* Saffron glow orbs */}
       <div style={{ position: 'absolute', top: -200, right: -200, width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle,rgba(200,121,44,.14),transparent 70%)', pointerEvents: 'none' }} />
       <div style={{ position: 'absolute', bottom: -150, left: -150, width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle,rgba(61,122,52,.10),transparent 70%)', pointerEvents: 'none' }} />
 
       <div style={{ ...rW, position: 'relative', zIndex: 1 }}>
-        <div style={{ display: 'grid', gridTemplateColumns: cols, gap: 1, background: 'rgba(255,255,255,.07)', borderRadius: 18, overflow: 'hidden', backdropFilter: 'blur(6px)' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: cols, gap: 1, background: 'rgba(253,249,241,.07)', borderRadius: 18, overflow: 'hidden', backdropFilter: 'blur(6px)' }}>
           {STATS.map(s => (
-            <div key={s.label} style={{ padding: bp.isMobile ? '32px 16px' : '48px 36px', background: 'rgba(255,255,255,.03)', textAlign: 'center' }}>
-              <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: num, fontWeight: 900, color: '#fff', letterSpacing: -1.5, lineHeight: 1, marginBottom: 8 }}>
+            <div key={s.label} style={{ padding: bp.isMobile ? '32px 16px' : '48px 36px', background: 'rgba(253,249,241,.03)', textAlign: 'center' }}>
+              <div style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", fontSize: num, fontWeight: 900, color: '#FDF9F1', letterSpacing: -1.5, lineHeight: 1, marginBottom: 8 }}>
                 {s.num}<span style={{ color: T.t }}>{s.suf}</span>
               </div>
-              <div style={{ fontSize: bp.isMobile ? 11 : 13, color: 'rgba(255,255,255,.45)', fontWeight: 500 }}>{s.label}</div>
+              <div style={{ fontSize: bp.isMobile ? 11 : 13, color: 'rgba(253,249,241,.45)', fontWeight: 500 }}>{s.label}</div>
             </div>
           ))}
         </div>

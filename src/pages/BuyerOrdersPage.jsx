@@ -14,10 +14,10 @@ function OrderProgress({ status }) {
       {STATUS_STEPS.map((s, i) => (
         <div key={s} className="flex items-center gap-1 flex-1">
           <div className="w-2 h-2 rounded-full flex-shrink-0"
-            style={{ background: i <= idx ? '#FF6B00' : '#E5E7EB' }} />
+            style={{ background: i <= idx ? '#C8792C' : '#E3D5C1' }} />
           {i < STATUS_STEPS.length - 1 && (
             <div className="h-0.5 flex-1"
-              style={{ background: i < idx ? '#FF6B00' : '#E5E7EB' }} />
+              style={{ background: i < idx ? '#C8792C' : '#E3D5C1' }} />
           )}
         </div>
       ))}
@@ -40,7 +40,7 @@ export default function BuyerOrdersPage() {
           {orders.map((o) => (
             <div key={o.id}
               className="bg-white rounded-3xl border border-gray-200 p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:border-orange-200"
-              style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+              style={{ boxShadow: '0 1px 3px rgba(43,32,22,0.05)' }}>
               <div className="flex items-start justify-between gap-4 flex-wrap">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-2">

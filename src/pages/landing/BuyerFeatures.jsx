@@ -32,7 +32,7 @@ export default function BuyerFeatures() {
         <div style={{ borderRadius: 18, overflow: 'hidden', marginBottom: 36, position: 'relative', aspectRatio: '16/9' }}>
           <img src={IMG.womanArtisanMarket} alt="Indian artisan" loading="lazy" decoding="async"
             style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top', display: 'block' }} />
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(28,24,20,.6) 0%, transparent 50%)' }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(43,32,22,.6) 0%, transparent 50%)' }} />
         </div>
 
         <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '.14em', textTransform: 'uppercase', color: '#C8792C', marginBottom: 16 }}>For buyers</div>
@@ -53,7 +53,7 @@ export default function BuyerFeatures() {
         </div>
 
         <button onClick={() => dispatch(toggleLogin(true))}
-          style={{ padding: '13px 32px', borderRadius: 8, border: 'none', background: '#5B4632', color: '#fff', fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>
+          style={{ padding: '13px 32px', borderRadius: 8, border: 'none', background: '#5B4632', color: '#FDF9F1', fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>
           Start sourcing →
         </button>
       </section>
@@ -69,7 +69,7 @@ export default function BuyerFeatures() {
           {/* Subtle background blob */}
           <div style={{ position: 'absolute', inset: -24, background: 'radial-gradient(ellipse at 60% 50%, rgba(200,121,44,.08) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
 
-          <div style={{ position: 'relative', zIndex: 1, borderRadius: 24, overflow: 'hidden', boxShadow: '0 24px 64px rgba(28,24,20,.14)' }}>
+          <div style={{ position: 'relative', zIndex: 1, borderRadius: 24, overflow: 'hidden', boxShadow: '0 24px 64px rgba(43,32,22,.14)' }}>
             <img
               src={IMG.womanArtisanMarket}
               alt="Indian artisan crafting handmade products"
@@ -78,10 +78,10 @@ export default function BuyerFeatures() {
               style={{ width: '100%', aspectRatio: bp.isTablet ? '4/3' : '3/4', objectFit: 'cover', objectPosition: 'center top', display: 'block' }}
             />
             {/* Subtle gradient at bottom */}
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(28,24,20,.5) 0%, transparent 45%)' }} />
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(43,32,22,.5) 0%, transparent 45%)' }} />
 
             {/* Floating verified tag */}
-            <div style={{ position: 'absolute', bottom: 20, left: 20, display: 'flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,.92)', backdropFilter: 'blur(12px)', borderRadius: 30, padding: '8px 16px', boxShadow: '0 4px 16px rgba(0,0,0,.12)' }}>
+            <div style={{ position: 'absolute', bottom: 20, left: 20, display: 'flex', alignItems: 'center', gap: 8, background: 'rgba(253,249,241,.92)', backdropFilter: 'blur(12px)', borderRadius: 30, padding: '8px 16px', boxShadow: '0 4px 16px rgba(43,32,22,.12)' }}>
               <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#3D7A52' }} />
               <span style={{ fontSize: 12, fontWeight: 600, color: '#5B4632' }}>5,000+ verified suppliers</span>
             </div>
@@ -124,7 +124,7 @@ export default function BuyerFeatures() {
               borderRadius: 8,
               border: 'none',
               background: '#5B4632',
-              color: '#fff',
+              color: '#FDF9F1',
               fontSize: 14, fontWeight: 600,
               cursor: 'pointer', fontFamily: 'inherit',
               letterSpacing: '.02em',

@@ -14,12 +14,12 @@ import { formatCurrency, formatDate } from '../utils/helpers';
 /* ── Shared tokens ─────────────────────────────────────────────────────────── */
 const C = {
   emerald:    '#1A7A4A', emeraldLt: '#EAF5EF',
-  saffron:    '#C8792C', saffronLt: '#FDF1E8',
-  navy:       '#1B3175', navyLt:    '#EEF2FB',
-  gold:       '#B8730A', goldLt:    '#FDF5E2',
+  saffron:    '#C8792C', saffronLt: '#FDF9F1',
+  navy:       '#5B4632', navyLt:    '#F0DCC0',
+  gold:       '#C8792C', goldLt:    '#FDF9F1',
   ink:        '#5B4632', inkSoft:   '#2B2016',
-  muted:      '#79634E', border:    '#D4C9B8',
-  borderSoft: '#E3D5C1', cream:     '#F0E8DA',
+  muted:      '#79634E', border:    '#E3D5C1',
+  borderSoft: '#E3D5C1', cream:     '#E3D5C1',
 };
 
 function PageHeader({ title, subtitle, color = C.emerald, onBack, action }) {
@@ -80,7 +80,7 @@ export function SupplierRFQsPage() {
               placeholder="Search RFQs…"
               style={{
                 padding: '9px 14px', borderRadius: 10, border: `1.5px solid ${C.borderSoft}`,
-                background: '#fff', fontSize: 13, color: C.ink, outline: 'none', width: 240,
+                background: '#FDF9F1', fontSize: 13, color: C.ink, outline: 'none', width: 240,
                 fontFamily: "'DM Sans', sans-serif",
               }} />
           </div>
@@ -95,7 +95,7 @@ export function SupplierRFQsPage() {
             <div key={r.id}
               onClick={() => navigate(`/supplier-dashboard/rfqs/${r.id}`)}
               style={{
-                background: '#fff', borderRadius: 18, padding: '20px 24px',
+                background: '#FDF9F1', borderRadius: 18, padding: '20px 24px',
                 border: `1.5px solid ${C.borderSoft}`, cursor: 'pointer',
                 transition: 'transform 0.18s, box-shadow 0.18s, border-color 0.18s',
               }}
@@ -131,7 +131,7 @@ export function SupplierRFQsPage() {
                   <button style={{
                     display: 'flex', alignItems: 'center', gap: 6,
                     padding: '8px 16px', borderRadius: 100, border: 'none', cursor: 'pointer',
-                    background: C.emerald, color: '#fff',
+                    background: C.emerald, color: '#FDF9F1',
                     fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 12,
                   }}>
                     Quote Now <ChevronRight size={12} />
@@ -200,7 +200,7 @@ export function SupplierRFQDetail() {
       <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: 20 }}>
 
         {/* RFQ Details */}
-        <div style={{ background: '#fff', borderRadius: 18, border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden' }}>
+        <div style={{ background: '#FDF9F1', borderRadius: 18, border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden' }}>
           <div style={{ borderTop: `3px solid ${C.emerald}` }} />
           <div style={{ padding: '20px 24px' }}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
@@ -256,7 +256,7 @@ export function SupplierRFQDetail() {
         </div>
 
         {/* Submit Quote Form */}
-        <div style={{ background: '#fff', borderRadius: 18, border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden' }}>
+        <div style={{ background: '#FDF9F1', borderRadius: 18, border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden' }}>
           <div style={{ borderTop: `3px solid ${C.saffron}` }} />
           <div style={{ padding: '20px 24px' }}>
             <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, fontWeight: 800, color: C.ink, margin: '0 0 16px' }}>
@@ -270,7 +270,7 @@ export function SupplierRFQDetail() {
                   Your quote has been submitted. The buyer will review and respond.
                 </p>
                 <button onClick={() => navigate('/supplier-dashboard/quotes')} style={{
-                  padding: '10px 20px', borderRadius: 100, background: C.emerald, color: '#fff',
+                  padding: '10px 20px', borderRadius: 100, background: C.emerald, color: '#FDF9F1',
                   border: 'none', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13,
                 }}>
                   View My Quotes
@@ -293,7 +293,7 @@ export function SupplierRFQDetail() {
                         fontSize: 13, color: C.ink, fontFamily: "'DM Sans', sans-serif", outline: 'none',
                         boxSizing: 'border-box',
                       }}
-                      onFocus={e => { e.currentTarget.style.borderColor = C.emerald; e.currentTarget.style.background = '#fff'; }}
+                      onFocus={e => { e.currentTarget.style.borderColor = C.emerald; e.currentTarget.style.background = '#FDF9F1'; }}
                       onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = C.cream; }} />
                   </div>
                 ))}
@@ -307,18 +307,18 @@ export function SupplierRFQDetail() {
                       fontSize: 13, color: C.ink, fontFamily: "'DM Sans', sans-serif",
                       outline: 'none', resize: 'vertical', boxSizing: 'border-box',
                     }}
-                    onFocus={e => { e.currentTarget.style.borderColor = C.emerald; e.currentTarget.style.background = '#fff'; }}
+                    onFocus={e => { e.currentTarget.style.borderColor = C.emerald; e.currentTarget.style.background = '#FDF9F1'; }}
                     onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = C.cream; }} />
                 </div>
                 <button type="submit" disabled={submitting} style={{
                   display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
                   padding: '12px 0', borderRadius: 100, border: 'none', cursor: submitting ? 'not-allowed' : 'pointer',
-                  background: C.saffron, color: '#fff',
+                  background: C.saffron, color: '#FDF9F1',
                   fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 14,
                   opacity: submitting ? 0.75 : 1, transition: 'background 0.2s',
                 }}>
                   {submitting
-                    ? <span style={{ width: 16, height: 16, border: '2px solid rgba(255,255,255,.35)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 0.7s linear infinite', display: 'inline-block' }} />
+                    ? <span style={{ width: 16, height: 16, border: '2px solid rgba(253,249,241,.35)', borderTopColor: '#FDF9F1', borderRadius: '50%', animation: 'spin 0.7s linear infinite', display: 'inline-block' }} />
                     : <Send size={15} />}
                   {submitting ? 'Submitting…' : 'Submit Quote'}
                 </button>
@@ -358,7 +358,7 @@ export function SupplierQuotesPage() {
           desc="Browse open RFQs and submit competitive quotes"
           action={
             <button onClick={() => navigate('/supplier-dashboard/rfqs')} style={{
-              padding: '9px 20px', borderRadius: 100, background: C.emerald, color: '#fff',
+              padding: '9px 20px', borderRadius: 100, background: C.emerald, color: '#FDF9F1',
               border: 'none', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13,
             }}>
               Browse RFQs
@@ -371,7 +371,7 @@ export function SupplierQuotesPage() {
             const sc = statusColor(q.status);
             return (
               <div key={q.id} style={{
-                background: '#fff', borderRadius: 16, padding: '18px 22px',
+                background: '#FDF9F1', borderRadius: 16, padding: '18px 22px',
                 border: `1.5px solid ${C.borderSoft}`,
                 display: 'grid', gridTemplateColumns: '1fr auto', gap: 16, alignItems: 'center',
               }}>
@@ -481,7 +481,7 @@ export function SupplierOrdersPage() {
             const nextStatus = NEXT_STATUS[o.status];
             return (
               <div key={o.id} style={{
-                background: '#fff', borderRadius: 18, padding: '20px 24px',
+                background: '#FDF9F1', borderRadius: 18, padding: '20px 24px',
                 border: `1.5px solid ${C.borderSoft}`,
                 transition: 'box-shadow 0.2s',
               }}
@@ -520,13 +520,13 @@ export function SupplierOrdersPage() {
                       style={{
                         display: 'flex', alignItems: 'center', gap: 7,
                         padding: '9px 16px', borderRadius: 100, border: 'none', cursor: 'pointer',
-                        background: C.emerald, color: '#fff',
+                        background: C.emerald, color: '#FDF9F1',
                         fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 12,
                         opacity: updatingId === o.id ? 0.65 : 1,
                         flexShrink: 0,
                       }}>
                       {updatingId === o.id
-                        ? <span style={{ width: 12, height: 12, border: '2px solid rgba(255,255,255,.35)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 0.7s linear infinite' }} />
+                        ? <span style={{ width: 12, height: 12, border: '2px solid rgba(253,249,241,.35)', borderTopColor: '#FDF9F1', borderRadius: '50%', animation: 'spin 0.7s linear infinite' }} />
                         : <CheckCircle2 size={12} />}
                       Mark {nextStatus.replace('_', ' ')}
                     </button>

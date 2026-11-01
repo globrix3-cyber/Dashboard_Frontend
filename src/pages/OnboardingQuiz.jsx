@@ -126,7 +126,7 @@ function OptionRow({ label, selected, multi, onClick }) {
         display: 'flex', alignItems: 'center', gap: 12, width: '100%',
         padding: '13px 16px', borderRadius: 12,
         border: `1.5px solid ${selected ? ACCENT : '#E3D5C1'}`,
-        background: selected ? '#FDF3EB' : '#fff',
+        background: selected ? '#FDF9F1' : '#FDF9F1',
         cursor: 'pointer', textAlign: 'left',
         fontFamily: "'DM Sans', sans-serif", fontSize: 14.5, fontWeight: 600, color: '#5B4632',
         transition: 'border-color .15s, background .15s',
@@ -135,11 +135,11 @@ function OptionRow({ label, selected, multi, onClick }) {
       <span style={{
         width: 20, height: 20, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
         borderRadius: multi ? 6 : '50%',
-        border: `2px solid ${selected ? ACCENT : '#D5CCC0'}`,
+        border: `2px solid ${selected ? ACCENT : '#E3D5C1'}`,
         background: selected ? ACCENT : 'transparent',
         transition: 'border-color .15s, background .15s',
       }}>
-        {selected && <Check size={12} color="#fff" strokeWidth={3} />}
+        {selected && <Check size={12} color="#FDF9F1" strokeWidth={3} />}
       </span>
       {label}
     </button>
@@ -200,7 +200,7 @@ export default function OnboardingQuiz({ role, onComplete, onSkip, onBack }) {
             <ChevronLeft size={20} />
           </button>
         )}
-        <div style={{ flex: 1, height: 6, borderRadius: 3, background: '#F0E8DA', overflow: 'hidden' }}>
+        <div style={{ flex: 1, height: 6, borderRadius: 3, background: '#E3D5C1', overflow: 'hidden' }}>
           <div style={{ width: `${((step + 1) / questions.length) * 100}%`, height: '100%', background: ACCENT, borderRadius: 3, transition: 'width .25s ease' }} />
         </div>
         <span style={{ fontSize: 12, fontWeight: 700, color: '#79634E', whiteSpace: 'nowrap' }}>{step + 1} / {questions.length}</span>
@@ -219,7 +219,7 @@ export default function OnboardingQuiz({ role, onComplete, onSkip, onBack }) {
                 value={otherText}
                 onChange={e => setOtherTexts(t => ({ ...t, [q.id]: e.target.value }))}
                 placeholder="Tell us more…"
-                style={{ marginTop: 8, width: '100%', padding: '12px 14px', borderRadius: 10, border: `1.5px solid ${ACCENT}`, background: '#FDF3EB', fontSize: 14, color: '#5B4632', fontFamily: "'DM Sans', sans-serif", outline: 'none', boxSizing: 'border-box' }}
+                style={{ marginTop: 8, width: '100%', padding: '12px 14px', borderRadius: 10, border: `1.5px solid ${ACCENT}`, background: '#FDF9F1', fontSize: 14, color: '#5B4632', fontFamily: "'DM Sans', sans-serif", outline: 'none', boxSizing: 'border-box' }}
                 autoFocus
               />
             )}
@@ -235,7 +235,7 @@ export default function OnboardingQuiz({ role, onComplete, onSkip, onBack }) {
           type="button"
           onClick={next}
           disabled={!hasAnswer}
-          style={{ padding: '13px 30px', borderRadius: 10, border: 'none', background: hasAnswer ? '#5B4632' : '#C8C0B4', color: '#fff', fontSize: 14.5, fontWeight: 700, cursor: hasAnswer ? 'pointer' : 'not-allowed', fontFamily: 'inherit', transition: 'background .18s' }}
+          style={{ padding: '13px 30px', borderRadius: 10, border: 'none', background: hasAnswer ? '#5B4632' : '#E3D5C1', color: '#FDF9F1', fontSize: 14.5, fontWeight: 700, cursor: hasAnswer ? 'pointer' : 'not-allowed', fontFamily: 'inherit', transition: 'background .18s' }}
           onMouseEnter={e => { if (hasAnswer) e.currentTarget.style.background = '#2B2016'; }}
           onMouseLeave={e => { if (hasAnswer) e.currentTarget.style.background = '#5B4632'; }}
         >

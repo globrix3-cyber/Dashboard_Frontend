@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { toggleLogin } from '../features/auth/authSlice';
 
 const T = {
-  t: '#C8792C', td: '#A8611F', tl: '#FDF3EB',
+  t: '#C8792C', td: '#C8792C', tl: '#FDF9F1',
   ink: '#5B4632', is: '#5B4632', mu: '#79634E',
   b: '#E3D5C1', bs: '#E3D5C1', c: '#FDF9F1',
   g: '#3D7A52', gl: '#EBF4EE',
@@ -34,7 +34,7 @@ export default function OurStoryPage() {
       {/* Minimal nav */}
       <nav style={{ background: T.c, borderBottom: `1px solid ${T.bs}`, padding: '0 40px', height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 100 }}>
         <button onClick={() => navigate('/')} style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: "'DM Sans',sans-serif", fontSize: 15, fontWeight: 800, color: T.ink, letterSpacing: '0.18em', textTransform: 'uppercase' }}>GLOBRIXA</button>
-        <button onClick={handleCta} style={{ padding: '9px 22px', borderRadius: 100, border: 'none', background: T.t, color: '#fff', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13, fontWeight: 700 }}>Start sourcing</button>
+        <button onClick={handleCta} style={{ padding: '9px 22px', borderRadius: 100, border: 'none', background: T.t, color: '#2B2016', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13, fontWeight: 700 }}>Start sourcing</button>
       </nav>
 
       {/* Hero */}
@@ -42,7 +42,7 @@ export default function OurStoryPage() {
         <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '.16em', textTransform: 'uppercase', color: T.t, marginBottom: 18 }}>Our Story</div>
         <h1 style={{ fontFamily: "'Playfair Display',serif", fontSize: 'clamp(38px,6vw,70px)', fontWeight: 900, lineHeight: 1.04, letterSpacing: -2.5, color: T.ink, marginBottom: 24 }}>
           Born in India,<br/>
-          <em style={{ fontStyle: 'italic', background: `linear-gradient(135deg,${T.t},#E8A060)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>built for the world</em>
+          <em style={{ fontStyle: 'italic', background: `linear-gradient(135deg,${T.t},#C8792C)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>built for the world</em>
         </h1>
         <p style={{ fontSize: 18, color: T.is, lineHeight: 1.85, maxWidth: 580, margin: '0 auto' }}>
           India is home to 63 million small businesses — the world's most skilled artisans, manufacturers, and food producers. For decades, global buyers had no reliable way to reach them. We built Globrixa to change that.
@@ -53,10 +53,10 @@ export default function OurStoryPage() {
       <div style={{ width: '100%', maxWidth: 1100, margin: '0 auto 80px', padding: '0 28px' }}>
         <div style={{ borderRadius: 24, overflow: 'hidden', height: 440, position: 'relative' }}>
           <img src="/images/hero/artisan-weaving.jpg" alt="Indian artisan at work" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 30%' }} />
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(28,25,21,.6) 0%, transparent 60%)' }} />
-          <div style={{ position: 'absolute', bottom: 28, left: 36, color: '#fff' }}>
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(43,32,22,.6) 0%, transparent 60%)' }} />
+          <div style={{ position: 'absolute', bottom: 28, left: 36, color: '#FDF9F1' }}>
             <div style={{ fontFamily: "'Playfair Display',serif", fontSize: 20, fontWeight: 700 }}>Artisan weaver, Jaipur</div>
-            <div style={{ fontSize: 13, color: 'rgba(255,255,255,.65)', marginTop: 4 }}>One of 5,000+ verified suppliers on Globrixa</div>
+            <div style={{ fontSize: 13, color: 'rgba(253,249,241,.65)', marginTop: 4 }}>One of 5,000+ verified suppliers on Globrixa</div>
           </div>
         </div>
       </div>
@@ -78,7 +78,7 @@ export default function OurStoryPage() {
       </div>
 
       {/* Values */}
-      <div style={{ background: '#fff', borderTop: `1px solid ${T.bs}`, borderBottom: `1px solid ${T.bs}`, padding: '72px 28px' }}>
+      <div style={{ background: '#FDF9F1', borderTop: `1px solid ${T.bs}`, borderBottom: `1px solid ${T.bs}`, padding: '72px 28px' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 52 }}>
             <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '.14em', textTransform: 'uppercase', color: T.t, marginBottom: 12 }}>What we stand for</div>
@@ -104,8 +104,8 @@ export default function OurStoryPage() {
         </div>
         <div style={{ display: 'flex', gap: 20, justifyContent: 'center', flexWrap: 'wrap' }}>
           {TEAM.map(m => (
-            <div key={m.name} style={{ background: '#fff', borderRadius: 18, padding: '32px 40px', border: `1.5px solid ${T.bs}`, textAlign: 'center', minWidth: 220 }}>
-              <div style={{ width: 64, height: 64, borderRadius: 16, background: `linear-gradient(135deg,${T.t},${T.td})`, margin: '0 auto 16px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Playfair Display',serif", fontSize: 24, fontWeight: 900, color: '#fff' }}>{m.name[0]}</div>
+            <div key={m.name} style={{ background: '#FDF9F1', borderRadius: 18, padding: '32px 40px', border: `1.5px solid ${T.bs}`, textAlign: 'center', minWidth: 220 }}>
+              <div style={{ width: 64, height: 64, borderRadius: 16, background: `linear-gradient(135deg,${T.t},${T.td})`, margin: '0 auto 16px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Playfair Display',serif", fontSize: 24, fontWeight: 900, color: '#2B2016' }}>{m.name[0]}</div>
               <div style={{ fontSize: 17, fontWeight: 700, color: T.ink, marginBottom: 6 }}>{m.name}</div>
               <div style={{ fontSize: 13, color: T.mu }}>{m.role}</div>
             </div>
@@ -115,17 +115,17 @@ export default function OurStoryPage() {
 
       {/* CTA */}
       <div style={{ background: T.ink, padding: '72px 28px', textAlign: 'center' }}>
-        <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: 'clamp(28px,4vw,48px)', fontWeight: 900, color: '#fff', letterSpacing: -1.5, marginBottom: 16 }}>Ready to start sourcing?</h2>
-        <p style={{ fontSize: 16, color: 'rgba(255,255,255,.6)', marginBottom: 36, maxWidth: 420, margin: '0 auto 36px' }}>Join thousands of global buyers already sourcing from India's best manufacturers.</p>
-        <button onClick={handleCta} style={{ padding: '15px 40px', borderRadius: 100, border: 'none', background: T.t, color: '#fff', fontSize: 15, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', boxShadow: '0 8px 28px rgba(200,121,44,.4)' }}>
+        <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: 'clamp(28px,4vw,48px)', fontWeight: 900, color: '#FDF9F1', letterSpacing: -1.5, marginBottom: 16 }}>Ready to start sourcing?</h2>
+        <p style={{ fontSize: 16, color: 'rgba(253,249,241,.6)', marginBottom: 36, maxWidth: 420, margin: '0 auto 36px' }}>Join thousands of global buyers already sourcing from India's best manufacturers.</p>
+        <button onClick={handleCta} style={{ padding: '15px 40px', borderRadius: 100, border: 'none', background: T.t, color: '#2B2016', fontSize: 15, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', boxShadow: '0 8px 28px rgba(200,121,44,.4)' }}>
           Explore products →
         </button>
       </div>
 
       {/* Simple footer */}
-      <div style={{ background: '#000', padding: '20px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
-        <span style={{ fontSize: 12, color: 'rgba(255,255,255,.25)' }}>© 2026 Globrixa Technologies Pvt. Ltd.</span>
-        <button onClick={() => navigate('/')} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 12, color: 'rgba(255,255,255,.35)' }}>← Back to home</button>
+      <div style={{ background: '#2B2016', padding: '20px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
+        <span style={{ fontSize: 12, color: 'rgba(253,249,241,.25)' }}>© 2026 Globrixa Technologies Pvt. Ltd.</span>
+        <button onClick={() => navigate('/')} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 12, color: 'rgba(253,249,241,.35)' }}>← Back to home</button>
       </div>
     </div>
   );
