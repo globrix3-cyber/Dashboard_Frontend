@@ -87,7 +87,7 @@ export default function EditProfile() {
         <div style={{ display: 'flex', height: 3 }}>
           <div style={{ flex: 1, background: C.saffron }} />
           <div style={{ flex: 1, background: '#FDF9F1', borderTop: `0.5px solid ${C.borderSoft}`, borderBottom: `0.5px solid ${C.borderSoft}` }} />
-          <div style={{ flex: 1, background: C.emerald }} />
+          <div style={{ flex: 1, background: '#C8792C' }} />
         </div>
         <div style={{ padding: '32px 36px' }}>
           {/* Avatar */}
@@ -147,7 +147,7 @@ export default function EditProfile() {
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 9,
               padding: '13px 0', borderRadius: 100, border: 'none',
               cursor: (saving || fetching) ? 'not-allowed' : 'pointer',
-              background: C.saffron, color: '#FDF9F1',
+              background: C.saffron, color: '#2B2016',
               fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 14,
               opacity: (saving || fetching) ? 0.65 : 1,
               boxShadow: '0 4px 16px rgba(200,121,44,0.30)', transition: 'background 0.18s, transform 0.12s',

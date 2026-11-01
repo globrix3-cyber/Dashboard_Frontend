@@ -13,7 +13,7 @@ function CartRow({ item, onQtyChange, onRemove, removing, fmt }) {
   const unit     = item.moq_unit || 'pieces';
   const unitPrice = (Number(item.base_price) || 0) + (Number(item.price_modifier) || 0);
   const lineTotal = unitPrice * item.quantity;
-  const thumb     = resolveImageUrl(item.image_url);
+  const thumb     = resolveImageUrl(item.image_url, 200);
 
   const setExactQty = (raw) => {
     const n = Math.trunc(Number(raw));
@@ -27,7 +27,7 @@ function CartRow({ item, onQtyChange, onRemove, removing, fmt }) {
     }}>
       <div style={{ width: 56, height: 56, borderRadius: 10, overflow: 'hidden', background: '#E3D5C1', border: '1px solid #E3D5C1', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
         {thumb
-          ? <img src={thumb} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          ? <img loading="lazy" decoding="async" src={thumb} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           : <Package size={20} color="#79634E" />
         }
       </div>

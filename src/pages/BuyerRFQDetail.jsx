@@ -299,7 +299,7 @@ export default function BuyerRFQDetail() {
                         <button onClick={() => handleSelectQuote(q)} style={{
                           display: 'flex', alignItems: 'center', gap: 6,
                           padding: '8px 16px', borderRadius: 100, border: 'none',
-                          background: C.saffron, color: '#FDF9F1', cursor: 'pointer',
+                          background: C.saffron, color: '#2B2016', cursor: 'pointer',
                           fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 12,
                         }}>
                           Select & Contract <ChevronRight size={12} />
@@ -459,7 +459,7 @@ export default function BuyerRFQDetail() {
                 <button type="submit" disabled={submitting} style={{
                   display: 'flex', alignItems: 'center', gap: 8,
                   padding: '11px 28px', borderRadius: 100, border: 'none',
-                  background: C.saffron, color: '#FDF9F1', cursor: submitting ? 'not-allowed' : 'pointer',
+                  background: C.saffron, color: '#2B2016', cursor: submitting ? 'not-allowed' : 'pointer',
                   fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13,
                   opacity: submitting ? 0.75 : 1,
                 }}>

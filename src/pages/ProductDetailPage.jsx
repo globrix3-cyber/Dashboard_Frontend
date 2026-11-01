@@ -57,7 +57,7 @@ function Accordion({ title, defaultOpen = false, children }) {
 function MiniProductCard({ p, onClick, isLoggedIn }) {
   const [hov, setHov] = useState(false);
   const { fmt } = useCurrency();
-  const img = resolveImageUrl(p.images?.[0]?.image_url);
+  const img = resolveImageUrl(p.images?.[0]?.image_url, 480);
   return (
     <Link
       to={`/products/${p.id}`}
@@ -261,7 +261,7 @@ export default function ProductDetailPage() {
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
               {images[activeImg]?.image_url
-                ? <img src={resolveImageUrl(images[activeImg].image_url)} alt={images[activeImg].alt_text || product.name}
+                ? <img src={resolveImageUrl(images[activeImg].image_url, 1200)} alt={images[activeImg].alt_text || product.name}
                     style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                 : <ShoppingBag size={64} color="#E3D5C1" />
               }
@@ -274,7 +274,7 @@ export default function ProductDetailPage() {
                     border: `1.5px solid ${i === activeImg ? C.saffron : C.border}`,
                     background: C.cream,
                   }}>
-                    <img src={resolveImageUrl(img.image_url)} alt={img.alt_text || `${product.name} ${i + 1}`}
+                    <img loading="lazy" decoding="async" src={resolveImageUrl(img.image_url, 200)} alt={img.alt_text || `${product.name} ${i + 1}`}
                       style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                   </button>
                 ))}
@@ -292,7 +292,7 @@ export default function ProductDetailPage() {
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>
                 {product.supplier_logo_url
-                  ? <img src={resolveImageUrl(product.supplier_logo_url)} alt={brandName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  ? <img src={resolveImageUrl(product.supplier_logo_url, 160)} alt={brandName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   : <ShoppingBag size={16} color={C.muted} />
                 }
               </div>
@@ -408,7 +408,7 @@ export default function ProductDetailPage() {
             {/* Add to cart */}
             <button onClick={handleAddToCart} disabled={addingToCart} style={{
               width: '100%', padding: '14px 20px', borderRadius: 10, border: 'none', cursor: addingToCart ? 'default' : 'pointer',
-              background: C.saffron, color: '#FDF9F1', fontFamily: "'DM Sans', sans-serif", fontSize: 14.5, fontWeight: 700,
+              background: C.saffron, color: '#2B2016', fontFamily: "'DM Sans', sans-serif", fontSize: 14.5, fontWeight: 700,
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 10,
               boxShadow: '0 4px 16px rgba(200,121,44,.28)', opacity: addingToCart ? 0.7 : 1,
             }}>

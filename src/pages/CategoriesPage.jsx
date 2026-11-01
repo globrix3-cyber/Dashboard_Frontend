@@ -126,7 +126,7 @@ export default function CategoriesPage() {
       <div style={{ display: 'flex', height: 3, borderRadius: 2, overflow: 'hidden', marginBottom: 28 }}>
         <div style={{ flex: 1, background: C.saffron }} />
         <div style={{ flex: 1, background: '#FDF9F1', border: `0.5px solid ${C.borderSoft}` }} />
-        <div style={{ flex: 1, background: C.emerald }} />
+        <div style={{ flex: 1, background: '#C8792C' }} />
       </div>
 
       {loading ? <Spinner /> : (
@@ -321,7 +321,7 @@ function CategoryProducts({ category, meta, navigate, dispatch }) {
         </div>
         <button onClick={() => navigate('/buyer-dashboard/rfqs/new')} style={{
           display: 'flex', alignItems: 'center', gap: 7, padding: '10px 20px', borderRadius: 100,
-          border: 'none', background: C.saffron, color: '#FDF9F1', cursor: 'pointer',
+          border: 'none', background: C.saffron, color: '#2B2016', cursor: 'pointer',
           fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13,
           boxShadow: '0 4px 14px rgba(200,121,44,0.28)',
         }}>
@@ -346,7 +346,7 @@ function CategoryProducts({ category, meta, navigate, dispatch }) {
             desc="Be the first to list a product in this category, or post an RFQ to find suppliers."
             action={
               <div style={{ display: 'flex', gap: 10 }}>
-                <button onClick={() => navigate('/buyer-dashboard/rfqs/new')} style={{ padding: '9px 20px', borderRadius: 100, border: 'none', background: C.saffron, color: '#FDF9F1', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
+                <button onClick={() => navigate('/buyer-dashboard/rfqs/new')} style={{ padding: '9px 20px', borderRadius: 100, border: 'none', background: C.saffron, color: '#2B2016', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
                   Post RFQ
                 </button>
                 <button onClick={() => navigate('/supplier-dashboard/catalog/new')} style={{ padding: '9px 20px', borderRadius: 100, border: `1.5px solid ${C.borderSoft}`, background: '#FDF9F1', color: C.inkSoft, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 13 }}>
@@ -370,7 +370,7 @@ function CategoryProducts({ category, meta, navigate, dispatch }) {
 
                 <div style={{ height: 140, background: `linear-gradient(135deg, ${C.cream}, #F0DCC0)`, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
                   {p.images?.[0]?.image_url
-                    ? <img src={resolveImageUrl(p.images[0].image_url)} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    ? <img loading="lazy" decoding="async" src={resolveImageUrl(p.images[0].image_url, 480)} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     : <span style={{ fontSize: 36 }}>{meta?.emoji || '📦'}</span>
                   }
                   {p.status === 'active' && (

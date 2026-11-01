@@ -8,7 +8,7 @@ import { resolveImageUrl } from '../utils/helpers';
 
 const C = {
   saffron: '#C8792C', saffronLt: '#FDF9F1',
-  emerald: '#1A7A4A', emeraldLt: '#EAF5EF',
+  emerald: '#C8792C', emeraldLt: '#FDF9F1',
   navy: '#5B4632', navyLt: '#F0DCC0',
   gold: '#C8792C', goldLt: '#FDF9F1',
   ink: '#5B4632', inkSoft: '#2B2016',
@@ -17,7 +17,7 @@ const C = {
 };
 
 const STATUS = {
-  active:       { bg: C.emeraldLt, color: C.emerald, label: 'Active'      },
+  active:       { bg: '#EAF5EF', color: '#1A7A4A', label: 'Active'      },
   draft:        { bg: C.cream,     color: C.muted,   label: 'Draft'       },
   inactive:     { bg: C.goldLt,    color: C.gold,    label: 'Inactive'    },
   out_of_stock: { bg: C.redLt,     color: C.red,     label: 'Out of Stock'},
@@ -26,7 +26,7 @@ const STATUS = {
 function StatusBadge({ status }) {
   const s = STATUS[status] || STATUS.draft;
   return (
-    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 10, fontWeight: 700, padding: '3px 10px', borderRadius: 100, background: s.bg, color: s.color }}>
+    <span style={{ justifySelf: 'start', display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 10, fontWeight: 700, padding: '3px 10px', borderRadius: 100, background: s.bg, color: s.color }}>
       <span style={{ width: 5, height: 5, borderRadius: '50%', background: s.color }} /> {s.label}
     </span>
   );
@@ -100,7 +100,7 @@ export default function SupplierCatalog() {
         </div>
         <button onClick={() => navigate('/supplier-dashboard/catalog/new')} style={{
           display: 'flex', alignItems: 'center', gap: 8, padding: '11px 22px', borderRadius: 100, border: 'none',
-          cursor: 'pointer', background: C.emerald, color: '#FDF9F1',
+          cursor: 'pointer', background: '#C8792C', color: '#2B2016',
           fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13,
           boxShadow: '0 4px 14px rgba(26,122,74,0.28)', transition: 'transform 0.12s',
         }}
@@ -154,7 +154,7 @@ export default function SupplierCatalog() {
           {!search && filter === 'all' && (
             <button onClick={() => navigate('/supplier-dashboard/catalog/new')} style={{
               display: 'flex', alignItems: 'center', gap: 7, padding: '10px 22px', borderRadius: 100,
-              border: 'none', cursor: 'pointer', background: C.emerald, color: '#FDF9F1',
+              border: 'none', cursor: 'pointer', background: '#C8792C', color: '#2B2016',
               fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13,
             }}>
               <Plus size={14} /> List Product
@@ -171,7 +171,7 @@ export default function SupplierCatalog() {
             ))}
           </div>
           {visible.map((p, i) => {
-            const thumb = resolveImageUrl(p.images?.[0]?.image_url);
+            const thumb = resolveImageUrl(p.images?.[0]?.image_url, 120);
             return (
             <Link key={p.id} to={`/products/${p.id}`} style={{
               display: 'grid', gridTemplateColumns: '56px 2fr 1fr 1fr 1fr 110px', gap: 12,
@@ -183,7 +183,7 @@ export default function SupplierCatalog() {
               onMouseLeave={e => { e.currentTarget.style.background = '#FDF9F1'; }}>
               <div style={{ width: 44, height: 44, borderRadius: 8, overflow: 'hidden', background: C.cream, border: `1px solid ${C.borderSoft}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 {thumb
-                  ? <img src={thumb} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  ? <img loading="lazy" decoding="async" src={thumb} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   : <Package size={16} color={C.muted} />
                 }
               </div>

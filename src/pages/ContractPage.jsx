@@ -254,7 +254,7 @@ export default function ContractPage() {
             <button onClick={() => setModal('sign')} disabled={busy === 'sign'} style={{
               display: 'flex', alignItems: 'center', gap: 7,
               padding: '10px 22px', borderRadius: 100, border: 'none',
-              background: C.emerald, color: '#FDF9F1', cursor: 'pointer',
+              background: '#C8792C', color: '#2B2016', cursor: 'pointer',
               fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13,
               opacity: busy === 'sign' ? 0.7 : 1,
             }}>
@@ -265,7 +265,7 @@ export default function ContractPage() {
             <button onClick={() => setModal('order')} disabled={busy === 'order'} style={{
               display: 'flex', alignItems: 'center', gap: 7,
               padding: '10px 22px', borderRadius: 100, border: 'none',
-              background: C.saffron, color: '#FDF9F1', cursor: 'pointer',
+              background: C.saffron, color: '#2B2016', cursor: 'pointer',
               fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13,
               opacity: busy === 'order' ? 0.7 : 1,
             }}>

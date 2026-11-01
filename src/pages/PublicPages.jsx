@@ -31,7 +31,7 @@ function PublicLayout({ children }) {
       <div style={{ height: 3, display: 'flex' }}>
         <div style={{ flex: 1, background: C.saffron }} />
         <div style={{ flex: 1, background: '#FDF9F1', borderBottom: `0.5px solid ${C.borderSoft}` }} />
-        <div style={{ flex: 1, background: C.emerald }} />
+        <div style={{ flex: 1, background: '#C8792C' }} />
       </div>
       <header style={{ background: '#FDF9F1', borderBottom: `1px solid ${C.borderSoft}`, padding: '0 48px', height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <button onClick={() => navigate('/')} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
@@ -39,7 +39,7 @@ function PublicLayout({ children }) {
         </button>
         <div style={{ display: 'flex', gap: 10 }}>
           {userRole ? (
-            <button onClick={() => navigate(dashPath)} style={{ padding: '8px 18px', borderRadius: 100, border: 'none', background: C.saffron, color: '#FDF9F1', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
+            <button onClick={() => navigate(dashPath)} style={{ padding: '8px 18px', borderRadius: 100, border: 'none', background: C.saffron, color: '#2B2016', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
               Go to Dashboard
             </button>
           ) : (
@@ -47,7 +47,7 @@ function PublicLayout({ children }) {
               <button onClick={() => dispatch(toggleLogin(true))} style={{ padding: '8px 18px', borderRadius: 100, border: `1.5px solid ${C.borderSoft}`, background: '#FDF9F1', color: C.inkSoft, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 13 }}>
                 Sign In
               </button>
-              <button onClick={() => dispatch(toggleLogin(true))} style={{ padding: '8px 18px', borderRadius: 100, border: 'none', background: C.saffron, color: '#FDF9F1', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
+              <button onClick={() => dispatch(toggleLogin(true))} style={{ padding: '8px 18px', borderRadius: 100, border: 'none', background: C.saffron, color: '#2B2016', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
                 Join Free
               </button>
             </>
@@ -113,7 +113,7 @@ export function AboutPage() {
         <div style={{ position: 'absolute', inset: 0, opacity: 0.05, backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='50' cy='50' r='46' fill='none' stroke='%23fff' stroke-width='.5' stroke-dasharray='3 7'/%3E%3C/svg%3E")`, backgroundSize: '100px 100px', pointerEvents: 'none' }} />
         <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 900, color: '#FDF9F1', margin: '0 0 12px' }}>Join the Globrixa Movement</h2>
         <p style={{ color: 'rgba(253,249,241,0.7)', marginBottom: 28, fontSize: 14 }}>Be part of India's most trusted B2B trade platform.</p>
-        <button onClick={handleCta} style={{ padding: '12px 32px', borderRadius: 100, border: 'none', background: C.saffron, color: '#FDF9F1', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 14, boxShadow: '0 4px 16px rgba(200,121,44,0.4)' }}>
+        <button onClick={handleCta} style={{ padding: '12px 32px', borderRadius: 100, border: 'none', background: C.saffron, color: '#2B2016', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 14, boxShadow: '0 4px 16px rgba(200,121,44,0.4)' }}>
           Get Started Free
         </button>
       </div>
@@ -208,7 +208,7 @@ export function CareersPage() {
       <div style={{ background: C.cream, borderRadius: 18, padding: '32px', textAlign: 'center' }}>
         <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, fontWeight: 700, color: C.ink, marginBottom: 8 }}>Don't see your role?</p>
         <p style={{ fontSize: 14, color: C.muted, marginBottom: 18 }}>We're always looking for talented people. Send us your CV.</p>
-        <a href="mailto:careers@globrixa.com" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '10px 24px', borderRadius: 100, background: C.saffron, color: '#FDF9F1', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13, textDecoration: 'none' }}>
+        <a href="mailto:careers@globrixa.com" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '10px 24px', borderRadius: 100, background: C.saffron, color: '#2B2016', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13, textDecoration: 'none' }}>
           <Mail size={14} /> careers@globrixa.com
         </a>
       </div>
@@ -266,7 +266,7 @@ export function ContactPage() {
               onFocus={e => { e.currentTarget.style.borderColor = C.saffron; e.currentTarget.style.background = '#FDF9F1'; }}
               onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = C.cream; }} />
           </div>
-          <button onClick={() => alert('Message sent! We\'ll get back to you within 24 hours.')} style={{ padding: '12px 0', borderRadius: 100, border: 'none', background: C.saffron, color: '#FDF9F1', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 14, boxShadow: '0 4px 16px rgba(200,121,44,0.28)' }}>
+          <button onClick={() => alert('Message sent! We\'ll get back to you within 24 hours.')} style={{ padding: '12px 0', borderRadius: 100, border: 'none', background: C.saffron, color: '#2B2016', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 14, boxShadow: '0 4px 16px rgba(200,121,44,0.28)' }}>
             Send Message
           </button>
         </div>
@@ -370,7 +370,7 @@ export function HelpCenterPage() {
       <div style={{ marginTop: 40, textAlign: 'center', background: C.cream, borderRadius: 18, padding: '32px' }}>
         <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, fontWeight: 700, color: C.ink, marginBottom: 8 }}>Still have questions?</p>
         <p style={{ fontSize: 14, color: C.muted, marginBottom: 20 }}>Our support team replies within 24 hours — in Hindi or English.</p>
-        <a href="mailto:support@globrixa.com" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '11px 26px', borderRadius: 100, background: C.emerald, color: '#FDF9F1', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13, textDecoration: 'none' }}>
+        <a href="mailto:support@globrixa.com" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '11px 26px', borderRadius: 100, background: '#C8792C', color: '#2B2016', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13, textDecoration: 'none' }}>
           <Mail size={14} /> Email Support
         </a>
       </div>

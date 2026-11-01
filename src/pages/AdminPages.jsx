@@ -325,7 +325,7 @@ export function AdminUsersPage() {
                 <div style={{ fontSize: 12, color: u.phone_number ? C.inkSoft : C.muted, fontFamily: u.phone_number ? 'monospace' : "'DM Sans', sans-serif" }}>
                   {u.phone_number || '—'}
                 </div>
-                <span style={{ fontSize: 10, fontWeight: 700, padding: '3px 10px', borderRadius: 100, background: u.role === 'supplier' ? C.emeraldLt : C.navyLt, color: u.role === 'supplier' ? C.emerald : C.navy, textTransform: 'capitalize' }}>{u.role || '—'}</span>
+                <span style={{ justifySelf: 'start', fontSize: 10, fontWeight: 700, padding: '3px 10px', borderRadius: 100, background: u.role === 'supplier' ? C.emeraldLt : C.navyLt, color: u.role === 'supplier' ? C.emerald : C.navy, textTransform: 'capitalize' }}>{u.role || '—'}</span>
                 <StatusBadge status={status} />
                 <div style={{ display: 'flex', gap: 6 }}>
                   <button title="View user" onClick={() => setSelectedUserId(u.id)} style={{ width: 30, height: 30, borderRadius: 8, border: `1px solid ${C.borderSoft}`, background: '#FDF9F1', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -370,7 +370,7 @@ export function AdminCompaniesPage() {
         accentColor={C.emerald}
         onBack={() => navigate('/admin-dashboard')}
         action={
-          <button onClick={() => toast.info('CSV export coming soon')} style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '10px 20px', borderRadius: 100, background: C.emerald, color: '#FDF9F1', border: 'none', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
+          <button onClick={() => toast.info('CSV export coming soon')} style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '10px 20px', borderRadius: 100, background: '#C8792C', color: '#2B2016', border: 'none', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
             <Download size={13} /> Export
           </button>
         }
@@ -544,7 +544,7 @@ export function AdminVerificationsPage() {
                     {isPending && (
                       <div style={{ display: 'flex', gap: 8 }}>
                         <button disabled={actingId === v.id} onClick={() => handleAction(v.id, 'approve')}
-                          style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 16px', borderRadius: 100, background: C.emerald, color: '#FDF9F1', border: 'none', cursor: 'pointer', fontSize: 12, fontWeight: 700, opacity: actingId === v.id ? 0.65 : 1 }}>
+                          style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 16px', borderRadius: 100, background: '#C8792C', color: '#2B2016', border: 'none', cursor: 'pointer', fontSize: 12, fontWeight: 700, opacity: actingId === v.id ? 0.65 : 1 }}>
                           <CheckCircle2 size={13} /> {actingId === v.id ? '…' : 'Approve'}
                         </button>
                         <button disabled={actingId === v.id} onClick={() => handleAction(v.id, 'reject')}

@@ -38,7 +38,7 @@ function priceLabel(product) {
 function ProductCard({ product, isLoggedIn, onLoginRequired, bp }) {
   const [imgFailed, setImgFailed] = useState(false);
   const [fav, setFav]             = useState(false);
-  const imgUrl = resolveImageUrl(product.images?.[0]?.image_url);
+  const imgUrl = resolveImageUrl(product.images?.[0]?.image_url, 640);
   const moq    = Number(product.min_order_quantity);
 
   return (

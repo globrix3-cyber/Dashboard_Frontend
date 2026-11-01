@@ -126,12 +126,12 @@ export default function AdminDashboard() {
   };
 
   const statCards = [
-    { icon: Users,       label: 'Total Users',          value: stats?.totalUsers     ?? '—', color: C.navy,    trend: 8,    badge: null },
-    { icon: Building2,   label: 'Companies',            value: stats?.totalCompanies ?? '—', color: C.emerald, trend: 12,   badge: null },
-    { icon: ShoppingBag, label: 'Products Listed',      value: stats?.totalProducts  ?? '—', color: C.saffron, trend: 15,   badge: null },
-    { icon: DollarSign,  label: 'Monthly Revenue',      value: stats?.monthlyRevenue ?? '—', color: C.gold,    trend: 22,   badge: null },
+    { icon: Users,       label: 'Total Users',          value: stats?.totalUsers     ?? '—', color: C.navy,    trend: null,    badge: null },
+    { icon: Building2,   label: 'Companies',            value: stats?.totalCompanies ?? '—', color: C.emerald, trend: null,   badge: null },
+    { icon: ShoppingBag, label: 'Products Listed',      value: stats?.totalProducts  ?? '—', color: C.saffron, trend: null,   badge: null },
+    { icon: DollarSign,  label: 'Monthly Revenue',      value: stats?.monthlyRevenue ?? '—', color: C.gold,    trend: null,   badge: null },
     { icon: ShieldCheck, label: 'Pending KYC',          value: stats?.pendingKyc     ?? '—', color: C.gold,    trend: null, badge: (stats?.pendingKyc > 0) ? 'Needs review' : null },
-    { icon: Package,     label: 'Active Orders',        value: stats?.activeOrders   ?? '—', color: C.navy,    trend: 6,    badge: null },
+    { icon: Package,     label: 'Active Orders',        value: stats?.activeOrders   ?? '—', color: C.navy,    trend: null,    badge: null },
   ];
 
   const today = new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });

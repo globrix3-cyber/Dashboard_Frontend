@@ -626,7 +626,7 @@ export default function ListProduct() {
                       links to lh3.googleusercontent.com so the browser can render them */}
                   <div style={{ width: 72, height: 72, borderRadius: 8, overflow: 'hidden', background: 'var(--warm-white)', border: '1.5px solid var(--border-soft)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     {img.image_url && !imgErrors[i] ? (
-                      <img src={resolveImageUrl(img.image_url)} alt="preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      <img src={resolveImageUrl(img.image_url, 320)} alt="preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         onError={() => setImgErrors(e => ({ ...e, [i]: true }))} />
                     ) : img.image_url && imgErrors[i] ? (
                       <span style={{ fontSize: 10, color: '#79634E', textAlign: 'center', padding: 4 }}>Preview unavailable</span>

@@ -142,7 +142,7 @@ export default function ProductsPage() {
                 onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'none'; }}
               >
                 <div style={{ width: bp.isMobile ? 52 : 70, height: bp.isMobile ? 52 : 70, flexShrink: 0, overflow: 'hidden' }}>
-                  <img src={CATEGORY_IMAGES[i % CATEGORY_IMAGES.length]} alt={c.name}
+                  <img loading="lazy" decoding="async" src={CATEGORY_IMAGES[i % CATEGORY_IMAGES.length]} alt={c.name}
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
                 <span style={{ padding: bp.isMobile ? '0 10px' : '0 14px', fontSize: bp.isMobile ? 11.5 : 13, fontWeight: 600, lineHeight: 1.3 }}>{c.name}</span>
@@ -262,7 +262,7 @@ export default function ProductsPage() {
                   {/* Image */}
                   <div style={{ height: bp.isMobile ? 150 : 195, background: '#E3D5C1', position: 'relative', overflow: 'hidden' }}>
                     {p.images?.[0]?.image_url
-                      ? <img src={resolveImageUrl(p.images[0].image_url)} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      ? <img loading="lazy" decoding="async" src={resolveImageUrl(p.images[0].image_url, 480)} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                       : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><ShoppingBag size={40} color="#E3D5C1" /></div>
                     }
                     <div style={{ position: 'absolute', top: 8, left: 8, right: 8, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>

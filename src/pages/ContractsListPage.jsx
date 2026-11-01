@@ -98,7 +98,7 @@ export default function ContractsListPage() {
                       {needsAction && (
                         <span style={{
                           fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 100,
-                          background: C.saffron, color: '#FDF9F1',
+                          background: C.saffron, color: '#2B2016',
                         }}>
                           ACTION REQUIRED
                         </span>

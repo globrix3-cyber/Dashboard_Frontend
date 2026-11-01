@@ -15,7 +15,7 @@ const T = {
   muted:      '#79634E',
   borderSoft: '#E3D5C1',
   cream:      '#FDF9F1',
-  emerald:    '#1A7A4A', emeraldLt: '#EAF5EF',
+  emerald:    '#C8792C', emeraldLt: '#FDF9F1',
   saffron:    '#C8792C', saffronLt: '#FDF9F1',
   navy:       '#5B4632', navyLt:    '#F0DCC0',
   gold:       '#C8792C', goldLt:    '#FDF9F1',
@@ -23,7 +23,7 @@ const T = {
 };
 
 const PRODUCT_STATUS = {
-  active:       { bg: T.emeraldLt, color: T.emerald, label: 'Active'    },
+  active:       { bg: '#EAF5EF', color: '#1A7A4A', label: 'Active'    },
   draft:        { bg: T.cream,     color: T.muted,   label: 'Draft'     },
   inactive:     { bg: T.goldLt,    color: T.gold,    label: 'Inactive'  },
   out_of_stock: { bg: T.redLt,     color: T.red,     label: 'OOS'       },
@@ -102,7 +102,7 @@ function RFQCard({ r, onClick }) {
 /* ── Quote row ─────────────────────────────────────────────────────────────── */
 const QUOTE_COLORS = {
   pending:  { bg: T.goldLt,    color: T.gold    },
-  accepted: { bg: T.emeraldLt, color: T.emerald },
+  accepted: { bg: '#EAF5EF', color: '#1A7A4A' },
   rejected: { bg: T.redLt,     color: T.red     },
 };
 
@@ -122,7 +122,7 @@ function QuoteRow({ q }) {
 /* ── Catalog product row ───────────────────────────────────────────────────── */
 function CatalogRow({ p, onEdit }) {
   const st = PRODUCT_STATUS[p.status] || PRODUCT_STATUS.draft;
-  const imgUrl = resolveImageUrl(p.images?.[0]?.image_url);
+  const imgUrl = resolveImageUrl(p.images?.[0]?.image_url, 120);
   return (
     <div
       onMouseEnter={e => { e.currentTarget.style.background = T.cream; }}
@@ -130,7 +130,7 @@ function CatalogRow({ p, onEdit }) {
       style={{ padding: '12px 20px', borderBottom: `1px solid ${T.borderSoft}`, transition: 'background .15s', background: '#FDF9F1', display: 'flex', alignItems: 'center', gap: 12 }}>
       <div style={{ width: 44, height: 44, borderRadius: 8, overflow: 'hidden', background: T.cream, flexShrink: 0, border: `1px solid ${T.borderSoft}` }}>
         {imgUrl
-          ? <img src={imgUrl} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          ? <img loading="lazy" decoding="async" src={imgUrl} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Package size={18} color={T.muted} /></div>
         }
       </div>
@@ -192,7 +192,7 @@ export default function SupplierDashboard() {
             </button>
           )}
           <button onClick={() => navigate('/supplier-dashboard/rfqs')}
-            style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', borderRadius: 8, border: 'none', background: T.emerald, color: '#FDF9F1', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
+            style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', borderRadius: 8, border: 'none', background: '#C8792C', color: '#2B2016', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
             <FileSearch size={13} /> {bp.isMobile ? 'RFQs' : 'Browse RFQs'}
           </button>
         </div>
@@ -255,7 +255,7 @@ export default function SupplierDashboard() {
             <div style={{ fontSize: 14.5, fontWeight: 700, color: T.ink, marginBottom: 5 }}>No products listed yet</div>
             <div style={{ fontSize: 12.5, color: T.muted, marginBottom: 18 }}>List your first product to start reaching buyers on Globrixa</div>
             <button onClick={() => navigate('/supplier-dashboard/catalog/new')}
-              style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '10px 22px', borderRadius: 100, border: 'none', background: T.emerald, color: '#FDF9F1', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
+              style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '10px 22px', borderRadius: 100, border: 'none', background: '#C8792C', color: '#2B2016', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
               <Plus size={14} /> List your first product
             </button>
           </div>

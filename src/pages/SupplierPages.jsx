@@ -13,7 +13,7 @@ import { formatCurrency, formatDate } from '../utils/helpers';
 
 /* ── Shared tokens ─────────────────────────────────────────────────────────── */
 const C = {
-  emerald:    '#1A7A4A', emeraldLt: '#EAF5EF',
+  emerald:    '#C8792C', emeraldLt: '#FDF9F1',
   saffron:    '#C8792C', saffronLt: '#FDF9F1',
   navy:       '#5B4632', navyLt:    '#F0DCC0',
   gold:       '#C8792C', goldLt:    '#FDF9F1',
@@ -131,7 +131,7 @@ export function SupplierRFQsPage() {
                   <button style={{
                     display: 'flex', alignItems: 'center', gap: 6,
                     padding: '8px 16px', borderRadius: 100, border: 'none', cursor: 'pointer',
-                    background: C.emerald, color: '#FDF9F1',
+                    background: '#C8792C', color: '#2B2016',
                     fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 12,
                   }}>
                     Quote Now <ChevronRight size={12} />
@@ -270,7 +270,7 @@ export function SupplierRFQDetail() {
                   Your quote has been submitted. The buyer will review and respond.
                 </p>
                 <button onClick={() => navigate('/supplier-dashboard/quotes')} style={{
-                  padding: '10px 20px', borderRadius: 100, background: C.emerald, color: '#FDF9F1',
+                  padding: '10px 20px', borderRadius: 100, background: '#C8792C', color: '#2B2016',
                   border: 'none', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13,
                 }}>
                   View My Quotes
@@ -313,7 +313,7 @@ export function SupplierRFQDetail() {
                 <button type="submit" disabled={submitting} style={{
                   display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
                   padding: '12px 0', borderRadius: 100, border: 'none', cursor: submitting ? 'not-allowed' : 'pointer',
-                  background: C.saffron, color: '#FDF9F1',
+                  background: C.saffron, color: '#2B2016',
                   fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 14,
                   opacity: submitting ? 0.75 : 1, transition: 'background 0.2s',
                 }}>
@@ -358,7 +358,7 @@ export function SupplierQuotesPage() {
           desc="Browse open RFQs and submit competitive quotes"
           action={
             <button onClick={() => navigate('/supplier-dashboard/rfqs')} style={{
-              padding: '9px 20px', borderRadius: 100, background: C.emerald, color: '#FDF9F1',
+              padding: '9px 20px', borderRadius: 100, background: '#C8792C', color: '#2B2016',
               border: 'none', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13,
             }}>
               Browse RFQs
@@ -520,7 +520,7 @@ export function SupplierOrdersPage() {
                       style={{
                         display: 'flex', alignItems: 'center', gap: 7,
                         padding: '9px 16px', borderRadius: 100, border: 'none', cursor: 'pointer',
-                        background: C.emerald, color: '#FDF9F1',
+                        background: '#C8792C', color: '#2B2016',
                         fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 12,
                         opacity: updatingId === o.id ? 0.65 : 1,
                         flexShrink: 0,

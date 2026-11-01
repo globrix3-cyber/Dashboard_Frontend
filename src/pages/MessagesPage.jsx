@@ -50,7 +50,7 @@ function QuoteOfferCard({ data, isMine, onAccept, onCounter, accepting }) {
       boxShadow: '0 4px 16px rgba(26,122,74,0.12)',
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-        <div style={{ width: 28, height: 28, borderRadius: 8, background: C.emerald, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ width: 28, height: 28, borderRadius: 8, background: '#C8792C', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <ShieldCheck size={14} color="#FDF9F1" />
         </div>
         <span style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: 13, color: C.emerald }}>
@@ -88,7 +88,7 @@ function QuoteOfferCard({ data, isMine, onAccept, onCounter, accepting }) {
           <button onClick={onAccept} disabled={accepting}
             style={{
               flex: 1, padding: '8px 0', borderRadius: 100, border: 'none', cursor: 'pointer',
-              background: C.emerald, color: '#FDF9F1',
+              background: '#C8792C', color: '#2B2016',
               fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 12,
               opacity: accepting ? 0.65 : 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
             }}>
@@ -129,7 +129,7 @@ function QuoteAcceptedCard({ data }) {
       <button onClick={() => navigate('/buyer-dashboard/orders')}
         style={{
           padding: '6px 14px', borderRadius: 100, border: 'none', cursor: 'pointer',
-          background: C.emerald, color: '#FDF9F1', fontSize: 11, fontWeight: 700,
+          background: '#C8792C', color: '#2B2016', fontSize: 11, fontWeight: 700,
           fontFamily: "'DM Sans', sans-serif",
         }}>
         View Order
@@ -195,7 +195,7 @@ function QuoteOfferForm({ convId, onSent }) {
       </div>
       <button type="submit" disabled={sending} style={{
         padding: '9px 0', borderRadius: 100, border: 'none', cursor: 'pointer',
-        background: C.emerald, color: '#FDF9F1', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13,
+        background: '#C8792C', color: '#2B2016', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13,
         opacity: sending ? 0.65 : 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
       }}>
         <ShieldCheck size={13} /> {sending ? 'Sending…' : 'Send Quote Offer'}
@@ -418,7 +418,7 @@ export default function MessagesPage() {
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 4 }}>
                         <span style={{ fontSize: 11, color: C.muted, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{preview}</span>
                         {unread > 0 && (
-                          <span style={{ width: 18, height: 18, borderRadius: '50%', background: C.saffron, color: '#FDF9F1', fontSize: 9, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                          <span style={{ width: 18, height: 18, borderRadius: '50%', background: C.saffron, color: '#2B2016', fontSize: 9, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                             {unread > 9 ? '9+' : unread}
                           </span>
                         )}

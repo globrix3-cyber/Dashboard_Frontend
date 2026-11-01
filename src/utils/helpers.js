@@ -26,10 +26,11 @@ export const statusLabel = (status) =>
 // image bytes and works for publicly-shared files.
 // Input:  https://drive.google.com/file/d/FILE_ID/view?usp=sharing
 // Output: https://lh3.googleusercontent.com/d/FILE_ID
-export const resolveImageUrl = (url) => {
+// width requests a resized copy from Google's image host; other hosts are returned as is.
+export const resolveImageUrl = (url, width) => {
   if (!url) return url;
-  const m = url.match(/drive\.google\.com\/file\/d\/([^/?#]+)/);
-  if (m) return `https://lh3.googleusercontent.com/d/${m[1]}`;
+  const m = url.match(/drive\.google\.com\/file\/d\/([^/?#]+)/) || url.match(/lh3\.googleusercontent\.com\/d\/([^/?#=]+)/);
+  if (m) return `https://lh3.googleusercontent.com/d/${m[1]}${width ? `=w${width}` : ''}`;
   return url;
 };
 

@@ -52,7 +52,7 @@ const toCardProduct = (p) => ({
   rawPrice: Number(p.base_price) || 0,
   moq:   `MOQ ${Number(p.min_order_quantity || 1).toLocaleString('en-IN')}${p.moq_unit ? ` ${p.moq_unit}` : ''}`,
   brand: p.category_name || '',
-  img:   resolveImageUrl(p.images?.[0]?.image_url) || null,
+  img:   resolveImageUrl(p.images?.[0]?.image_url, 480) || null,
   badge: p.status === 'active' ? 'Verified' : null,
 });
 
@@ -298,7 +298,7 @@ export default function BuyerDashboard() {
           ) : productsError ? (
             <div style={{ padding: 32, textAlign: 'center', color: T.muted }}>
               <p style={{ marginBottom: 12 }}>Could not load product ideas.</p>
-              <button onClick={() => window.location.reload()} style={{ padding: '8px 20px', borderRadius: 100, background: T.saffron, color: '#FDF9F1', border: 'none', cursor: 'pointer', fontWeight: 700, fontFamily: "'DM Sans', sans-serif" }}>Retry</button>
+              <button onClick={() => window.location.reload()} style={{ padding: '8px 20px', borderRadius: 100, background: T.saffron, color: '#2B2016', border: 'none', cursor: 'pointer', fontWeight: 700, fontFamily: "'DM Sans', sans-serif" }}>Retry</button>
             </div>
           ) : products.length === 0 ? (
             <EmptyState icon={ShoppingBag} title="No products yet" desc="Check back soon — new supplier listings are added regularly." />
