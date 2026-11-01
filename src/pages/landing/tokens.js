@@ -49,7 +49,7 @@ export const tag = (variant = 't') => {
 export const btnPrimary = {
   padding: '11px 26px', borderRadius: 8, border: 'none',
   background: 'linear-gradient(135deg,#C8792C,#C8792C)',
-  color: '#FDF9F1', fontSize: 14, fontWeight: 700,
+  color: '#2B2016', fontSize: 14, fontWeight: 700,
   cursor: 'pointer', fontFamily: 'inherit',
   boxShadow: '0 8px 28px rgba(200,121,44,.38)',
   transition: '.18s', letterSpacing: '.01em',

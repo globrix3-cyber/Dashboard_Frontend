@@ -423,7 +423,7 @@ function TopBar({ role }) {
               </button>
               <button
                 onClick={openLogin}
-                style={{ height: 38, padding: '0 20px', borderRadius: 100, border: 'none', background: accent, color: '#FDF9F1', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 700, whiteSpace: 'nowrap' }}
+                style={{ height: 38, padding: '0 20px', borderRadius: 100, border: 'none', background: accent, color: '#2B2016', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 700, whiteSpace: 'nowrap' }}
               >
                 Sign up
               </button>
@@ -466,7 +466,7 @@ function TopBar({ role }) {
                 {role === 'buyer' && cartCount > 0 && (
                   <span style={{
                     position: 'absolute', top: -5, right: -5, minWidth: 17, height: 17, padding: '0 4px',
-                    borderRadius: 100, background: accent, color: '#FDF9F1', fontSize: 10, fontWeight: 700,
+                    borderRadius: 100, background: accent, color: '#2B2016', fontSize: 10, fontWeight: 700,
                     display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1.5px solid #FDF9F1',
                   }}>{cartCount > 99 ? '99+' : cartCount}</span>
                 )}
