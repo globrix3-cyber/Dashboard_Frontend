@@ -8,9 +8,10 @@ import { toast } from 'react-toastify';
 import {
   Users, Building2, ShoppingBag, DollarSign,
   ShieldCheck, Package, ArrowRight, TrendingUp,
-  BarChart2, Settings,
+  BarChart2, Settings, Mail, Download,
 } from 'lucide-react';
 import { formatDate } from '../utils/helpers';
+import { toCsv, downloadCsv, todayStamp } from '../utils/csv';
 
 /* ── Design tokens — Faire palette ─────────────────────────────────────── */
 const C = {
@@ -111,6 +112,18 @@ export default function AdminDashboard() {
   const { data: stats,             loading: sl } = useFetchData(() => api.admin.getStats());
   const { data: liveVerifications, loading: vl, refetch: refetchVerif } = useFetchData(() => api.admin.getVerifications());
   const { data: liveUsers }                      = useFetchData(() => api.admin.getUsers({ limit: 5 }));
+  const { data: subscribers, loading: nl, error: nlError } = useFetchData(() => api.admin.getNewsletterSubscribers());
+  const subscriberList = Array.isArray(subscribers) ? subscribers : [];
+
+  const handleExportSubscribers = () => {
+    if (!subscriberList.length) return;
+    const csv = toCsv(subscriberList, [
+      { header: 'Email',         value: r => r.email || '' },
+      { header: 'Subscribed At', value: r => (r.created_at ? new Date(r.created_at).toISOString() : '') },
+    ]);
+    downloadCsv(`globrixa-newsletter-subscribers-${todayStamp()}.csv`, csv);
+    toast.success(`Exported ${subscriberList.length} subscriber${subscriberList.length === 1 ? '' : 's'}`);
+  };
 
   const handleVerify = async (companyId, action) => {
     setVerifying({ id: companyId, action });
@@ -163,6 +176,20 @@ export default function AdminDashboard() {
             onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.background = C.white; }}>
             <Users size={14} /> Manage Users
           </button>
+          <div title="Active newsletter subscribers" style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '4px 4px 4px 14px', borderRadius: 9, border: `1.5px solid ${C.border}`, background: C.white }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 600, color: C.ink }}>
+              <Mail size={14} color={C.saffron} />
+              Newsletter
+              <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 100, background: `${C.saffron}18`, color: C.saffron }}>
+                {nl ? '…' : nlError ? '—' : subscriberList.length}
+              </span>
+            </span>
+            <button onClick={handleExportSubscribers} disabled={nl || !subscriberList.length}
+              title={subscriberList.length ? `Export ${subscriberList.length} subscribers as CSV` : 'No subscribers to export'}
+              style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '5px 12px', borderRadius: 7, background: C.saffron, color: C.inkSoft, border: 'none', cursor: nl || !subscriberList.length ? 'not-allowed' : 'pointer', opacity: nl || !subscriberList.length ? 0.5 : 1, fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 12 }}>
+              <Download size={12} /> Export subscribers
+            </button>
+          </div>
         </div>
       </div>
 

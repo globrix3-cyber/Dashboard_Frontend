@@ -11,9 +11,9 @@ const subNavLink = { display: 'flex', alignItems: 'center', fontSize: 12, color:
 
 function Logo({ size, onClick }) {
   return (
-    <button onClick={onClick} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, flexShrink: 0, display: 'flex', alignItems: 'center', gap: 12 }}>
+    <button onClick={onClick} aria-label="Globrixa home" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, flexShrink: 0, display: 'flex', alignItems: 'center', gap: 12 }}>
       <span style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: size, fontWeight: 600, color: '#5B4632', letterSpacing: '.14em', whiteSpace: 'nowrap' }}>GLOBRIXA</span>
-      <span style={{ color: '#C8792C', fontSize: size * .7 }}>✳</span>
+      <span aria-hidden="true" style={{ color: '#C8792C', fontSize: size * .7 }}>✳</span>
     </button>
   );
 }

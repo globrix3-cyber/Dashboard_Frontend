@@ -44,6 +44,13 @@ export default function LoginModal({ onSubmit }) {
 
   const close = () => dispatch(toggleLogin(false));
 
+  // Escape closes the dialog, like clicking the backdrop.
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') dispatch(toggleLogin(false)); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [dispatch]);
+
   const validate = () => {
     if (!form.email)    { toast.error('Email is required');    return false; }
     if (!form.password) { toast.error('Password is required'); return false; }
@@ -197,10 +204,10 @@ export default function LoginModal({ onSubmit }) {
       onClick={e => e.target === e.currentTarget && close()}
       style={{ position: 'fixed', inset: 0, zIndex: 1000, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '24px 16px', background: 'rgba(43,32,22,.5)', backdropFilter: 'blur(8px)', overflowY: 'auto' }}
     >
-      <div style={{ width: '100%', maxWidth: 460, background: '#FDF9F1', borderRadius: 20, overflow: 'hidden', boxShadow: '0 32px 80px rgba(43,32,22,.22)', position: 'relative', animation: 'modalIn .38s cubic-bezier(.22,.68,0,1.2) both', flexShrink: 0, marginBottom: 24 }}>
+      <div role="dialog" aria-modal="true" aria-labelledby="login-modal-title" style={{ width: '100%', maxWidth: 460, background: '#FDF9F1', borderRadius: 20, overflow: 'hidden', boxShadow: '0 32px 80px rgba(43,32,22,.22)', position: 'relative', animation: 'modalIn .38s cubic-bezier(.22,.68,0,1.2) both', flexShrink: 0, marginBottom: 24 }}>
 
         {/* Close */}
-        <button onClick={close} style={{ position: 'absolute', top: 14, right: 14, width: 30, height: 30, borderRadius: 8, border: '1.5px solid #E3D5C1', background: '#E3D5C1', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2 }}>
+        <button onClick={close} aria-label="Close" style={{ position: 'absolute', top: 14, right: 14, width: 30, height: 30, borderRadius: 8, border: '1.5px solid #E3D5C1', background: '#E3D5C1', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2 }}>
           <X size={14} color="#79634E" />
         </button>
 
@@ -222,7 +229,7 @@ export default function LoginModal({ onSubmit }) {
           <>
           {/* Headline */}
           <div style={{ textAlign: 'center', marginBottom: 26 }}>
-            <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: 28, fontWeight: 900, color: '#5B4632', letterSpacing: -0.5, lineHeight: 1.2, marginBottom: 10 }}>
+            <h2 id="login-modal-title" style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: 28, fontWeight: 900, color: '#5B4632', letterSpacing: -0.5, lineHeight: 1.2, marginBottom: 10 }}>
               {mode === 'login'
                 ? <>Source <span style={{ color: '#C8792C' }}>better,</span><br/>grow together.</>
                 : mode === 'register'
@@ -252,7 +259,7 @@ export default function LoginModal({ onSubmit }) {
             {mode === 'register' && (
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
                 {ROLES.map(r => (
-                  <button type="button" key={r.value} onClick={() => set('role', r.value)} style={{ padding: '12px', borderRadius: 12, border: `2px solid ${form.role === r.value ? '#C8792C' : '#E3D5C1'}`, background: form.role === r.value ? '#FDF9F1' : '#FDF9F1', cursor: 'pointer', textAlign: 'left', fontFamily: 'inherit', transition: '.15s' }}>
+                  <button type="button" key={r.value} onClick={() => set('role', r.value)} aria-pressed={form.role === r.value} style={{ padding: '12px', borderRadius: 12, border: `2px solid ${form.role === r.value ? '#C8792C' : '#E3D5C1'}`, background: form.role === r.value ? '#FDF9F1' : '#FDF9F1', cursor: 'pointer', textAlign: 'left', fontFamily: 'inherit', transition: '.15s' }}>
                     <div style={{ fontSize: 18, marginBottom: 4 }}>{r.icon}</div>
                     <div style={{ fontSize: 13, fontWeight: 700, color: '#5B4632' }}>{r.label}</div>
                     <div style={{ fontSize: 11, color: '#79634E' }}>{r.sub}</div>
@@ -265,16 +272,17 @@ export default function LoginModal({ onSubmit }) {
             {mode === 'register' && (
               <>
                 <div>
-                  <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>Full Name</label>
-                  <input value={form.name} onChange={e => set('name', e.target.value)} placeholder="Rajesh Kumar" style={INPUT}
+                  <label htmlFor="auth-name" style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>Full Name</label>
+                  <input id="auth-name" autoComplete="name" value={form.name} onChange={e => set('name', e.target.value)} placeholder="Rajesh Kumar" style={INPUT}
                     onFocus={e => { e.currentTarget.style.borderColor = '#C8792C'; e.currentTarget.style.background = '#FDF9F1'; }}
                     onBlur={e => { e.currentTarget.style.borderColor = '#E3D5C1'; e.currentTarget.style.background = '#FDF9F1'; }} />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>
+                  <label htmlFor="auth-company" style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>
                     {form.role === 'supplier' ? 'Brand / Business Name' : 'Company Name'}
                   </label>
                   <input
+                    id="auth-company" autoComplete="organization"
                     value={form.company}
                     onChange={e => set('company', e.target.value)}
                     placeholder={form.role === 'supplier' ? 'e.g. Jaipur Crafts Pvt Ltd' : 'e.g. Reliance Retail Ltd'}
@@ -283,14 +291,15 @@ export default function LoginModal({ onSubmit }) {
                     onBlur={e => { e.currentTarget.style.borderColor = '#E3D5C1'; e.currentTarget.style.background = '#FDF9F1'; }} />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>Phone Number</label>
+                  <label htmlFor="auth-phone" style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>Phone Number</label>
                   <div style={{ display: 'flex', gap: 8 }}>
-                    <select value={form.phoneDial} onChange={e => set('phoneDial', e.target.value)} style={{ ...INPUT, width: 110, cursor: 'pointer' }}>
+                    <select aria-label="Country dialling code" value={form.phoneDial} onChange={e => set('phoneDial', e.target.value)} style={{ ...INPUT, width: 110, cursor: 'pointer' }}>
                       {PHONE_COUNTRIES.map(c => (
                         <option key={c.iso} value={c.dial}>{c.iso} {c.dial}</option>
                       ))}
                     </select>
                     <input
+                      id="auth-phone" autoComplete="tel-national"
                       type="tel" inputMode="numeric" value={form.phoneNumber}
                       onChange={e => set('phoneNumber', e.target.value.replace(/[^\d\s]/g, ''))}
                       placeholder="98765 43210" style={{ ...INPUT, flex: 1 }}
@@ -311,8 +320,9 @@ export default function LoginModal({ onSubmit }) {
                   </button>
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>6-digit code</label>
+                  <label htmlFor="auth-otp" style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>6-digit code</label>
                   <input
+                    id="auth-otp" autoComplete="one-time-code"
                     autoFocus
                     value={otpInput}
                     onChange={e => setOtpInput(e.target.value.replace(/\D/g, '').slice(0, 6))}
@@ -333,8 +343,8 @@ export default function LoginModal({ onSubmit }) {
             {/* Business email — login & register */}
             {mode !== 'forgot' && mode !== 'verify-email' && (
               <div>
-                <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>Business email</label>
-                <input type="email" value={form.email} onChange={e => set('email', e.target.value)} placeholder="you@company.com" required style={INPUT}
+                <label htmlFor="auth-email" style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>Business email</label>
+                <input id="auth-email" autoComplete="email" type="email" value={form.email} onChange={e => set('email', e.target.value)} placeholder="you@company.com" required style={INPUT}
                   onFocus={e => { e.currentTarget.style.borderColor = '#C8792C'; e.currentTarget.style.background = '#FDF9F1'; }}
                   onBlur={e => { e.currentTarget.style.borderColor = '#E3D5C1'; e.currentTarget.style.background = '#FDF9F1'; }} />
               </div>
@@ -343,12 +353,12 @@ export default function LoginModal({ onSubmit }) {
             {/* Password — login & register */}
             {mode !== 'forgot' && mode !== 'verify-email' && (
               <div>
-                <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>Password</label>
+                <label htmlFor="auth-password" style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>Password</label>
                 <div style={{ position: 'relative' }}>
-                  <input type={showPwd ? 'text' : 'password'} value={form.password} onChange={e => set('password', e.target.value)} placeholder="••••••••" required style={{ ...INPUT, paddingRight: 52 }}
+                  <input id="auth-password" autoComplete={mode === 'login' ? 'current-password' : 'new-password'} type={showPwd ? 'text' : 'password'} value={form.password} onChange={e => set('password', e.target.value)} placeholder="••••••••" required style={{ ...INPUT, paddingRight: 52 }}
                     onFocus={e => { e.currentTarget.style.borderColor = '#C8792C'; e.currentTarget.style.background = '#FDF9F1'; }}
                     onBlur={e => { e.currentTarget.style.borderColor = '#E3D5C1'; e.currentTarget.style.background = '#FDF9F1'; }} />
-                  <button type="button" onClick={() => setShowPwd(s => !s)} style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#79634E', fontSize: 12, fontFamily: 'inherit', fontWeight: 600 }}>
+                  <button type="button" onClick={() => setShowPwd(s => !s)} aria-label={showPwd ? 'Hide password' : 'Show password'} style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#79634E', fontSize: 12, fontFamily: 'inherit', fontWeight: 600 }}>
                     {showPwd ? 'Hide' : 'Show'}
                   </button>
                 </div>
@@ -367,8 +377,8 @@ export default function LoginModal({ onSubmit }) {
             {/* Step 1 — request PIN */}
             {mode === 'forgot' && resetStep === 'request' && (
               <div>
-                <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>Registered email</label>
-                <input type="email" value={form.email} onChange={e => set('email', e.target.value)} placeholder="you@company.com" required style={INPUT}
+                <label htmlFor="auth-reset-email" style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>Registered email</label>
+                <input id="auth-reset-email" autoComplete="email" type="email" value={form.email} onChange={e => set('email', e.target.value)} placeholder="you@company.com" required style={INPUT}
                   onFocus={e => { e.currentTarget.style.borderColor = '#C8792C'; e.currentTarget.style.background = '#FDF9F1'; }}
                   onBlur={e => { e.currentTarget.style.borderColor = '#E3D5C1'; e.currentTarget.style.background = '#FDF9F1'; }} />
               </div>
@@ -384,19 +394,19 @@ export default function LoginModal({ onSubmit }) {
                   </button>
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>6-digit PIN</label>
-                  <input value={pin} onChange={e => setPin(e.target.value.replace(/\D/g, '').slice(0, 6))} placeholder="••••••" inputMode="numeric" required
+                  <label htmlFor="auth-pin" style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>6-digit PIN</label>
+                  <input id="auth-pin" autoComplete="one-time-code" value={pin} onChange={e => setPin(e.target.value.replace(/\D/g, '').slice(0, 6))} placeholder="••••••" inputMode="numeric" required
                     style={{ ...INPUT, letterSpacing: '0.4em', fontWeight: 700, textAlign: 'center' }}
                     onFocus={e => { e.currentTarget.style.borderColor = '#C8792C'; e.currentTarget.style.background = '#FDF9F1'; }}
                     onBlur={e => { e.currentTarget.style.borderColor = '#E3D5C1'; e.currentTarget.style.background = '#FDF9F1'; }} />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>New password</label>
+                  <label htmlFor="auth-new-password" style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>New password</label>
                   <div style={{ position: 'relative' }}>
-                    <input type={showNewPwd ? 'text' : 'password'} value={newPassword} onChange={e => setNewPassword(e.target.value)} placeholder="••••••••" required style={{ ...INPUT, paddingRight: 52 }}
+                    <input id="auth-new-password" autoComplete="new-password" type={showNewPwd ? 'text' : 'password'} value={newPassword} onChange={e => setNewPassword(e.target.value)} placeholder="••••••••" required style={{ ...INPUT, paddingRight: 52 }}
                       onFocus={e => { e.currentTarget.style.borderColor = '#C8792C'; e.currentTarget.style.background = '#FDF9F1'; }}
                       onBlur={e => { e.currentTarget.style.borderColor = '#E3D5C1'; e.currentTarget.style.background = '#FDF9F1'; }} />
-                    <button type="button" onClick={() => setShowNewPwd(s => !s)} style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#79634E', fontSize: 12, fontFamily: 'inherit', fontWeight: 600 }}>
+                    <button type="button" onClick={() => setShowNewPwd(s => !s)} aria-label={showNewPwd ? 'Hide password' : 'Show password'} style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#79634E', fontSize: 12, fontFamily: 'inherit', fontWeight: 600 }}>
                       {showNewPwd ? 'Hide' : 'Show'}
                     </button>
                   </div>

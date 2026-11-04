@@ -329,6 +329,8 @@ export const api = {
     getVerifications: ()            => get('/api/admin/verifications'),
     verifyCompany:    (id, status, notes) => patch(`/api/admin/companies/${id}/verify`, { status, notes }),
     getStats:         ()            => get('/api/admin/stats'),
+    // Resolves to the subscriber array [{ email, created_at }] (get() unwraps json.data)
+    getNewsletterSubscribers: ()    => get('/api/newsletter/subscribers'),
   },
 };
 

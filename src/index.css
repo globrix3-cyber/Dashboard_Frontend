@@ -9,6 +9,14 @@
    Brand: Cream / Saffron #C8792C / Emerald #1A7A4A / Navy #5B4632
 ────────────────────────────────────────────────────────────────────────────── */
 
+/* ── Keyboard focus ──────────────────────────────────────────────────────────
+   Visible ring for keyboard users only. !important so it wins over inline
+   `outline: none` styles used on many inputs/buttons. */
+:focus-visible {
+  outline: 2px solid #C8792C !important;
+  outline-offset: 2px;
+}
+
 /* ── Variables ───────────────────────────────────────────────────────────── */
 :root {
   --cream:        #E3D5C1;

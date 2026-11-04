@@ -11,6 +11,7 @@ import {
   Package, DollarSign, Loader2, X, ClipboardList,
 } from 'lucide-react';
 import { formatDate } from '../utils/helpers';
+import { toCsv, downloadCsv, todayStamp, csvDate } from '../utils/csv';
 
 const C = {
   navy: '#5B4632', navyLt: '#F0DCC0',
@@ -245,6 +246,22 @@ export function AdminUsersPage() {
     return matchQ && matchF;
   });
 
+  const handleExport = () => {
+    if (!filtered.length) return;
+    const csv = toCsv(filtered, [
+      { header: 'Name',       value: u => u.full_name || '' },
+      { header: 'Email',      value: u => u.email || '' },
+      { header: 'Phone',      value: u => u.phone_number || '' },
+      { header: 'Role',       value: u => u.role || '' },
+      { header: 'Status',     value: u => (u.is_active === false ? 'suspended' : 'active') },
+      { header: 'Company',    value: u => u.company || '' },
+      { header: 'City',       value: u => u.city || '' },
+      { header: 'Registered', value: u => csvDate(u.created_at) },
+    ]);
+    downloadCsv(`globrixa-users-${todayStamp()}.csv`, csv);
+    toast.success(`Exported ${filtered.length} user${filtered.length === 1 ? '' : 's'}`);
+  };
+
   const handleSuspend = async (id) => {
     setSuspending(id);
     try {
@@ -266,7 +283,7 @@ export function AdminUsersPage() {
         accentColor={C.navy}
         onBack={() => navigate('/admin-dashboard')}
         action={
-          <button onClick={() => toast.info('CSV export coming soon')} style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '10px 20px', borderRadius: 100, background: C.navy, color: '#FDF9F1', border: 'none', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
+          <button onClick={handleExport} disabled={loading || !filtered.length} title={filtered.length ? `Export ${filtered.length} users as CSV` : 'Nothing to export'} style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '10px 20px', borderRadius: 100, background: C.navy, color: '#FDF9F1', border: 'none', cursor: loading || !filtered.length ? 'not-allowed' : 'pointer', opacity: loading || !filtered.length ? 0.5 : 1, fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
             <Download size={13} /> Export
           </button>
         }
@@ -362,6 +379,24 @@ export function AdminCompaniesPage() {
     c.city?.toLowerCase().includes(search.toLowerCase())
   );
 
+  const handleExport = () => {
+    if (!filtered.length) return;
+    const csv = toCsv(filtered, [
+      { header: 'Company',             value: c => c.legal_name || '' },
+      { header: 'Brand',               value: c => c.brand_name || '' },
+      { header: 'Type',                value: c => [c.is_supplier && 'Supplier', c.is_buyer && 'Buyer'].filter(Boolean).join(' & ') },
+      { header: 'Verification Status', value: c => c.verified_status || 'pending' },
+      { header: 'City',                value: c => c.city || '' },
+      { header: 'State',               value: c => c.state_province || '' },
+      { header: 'Country',             value: c => c.country || '' },
+      { header: 'Owner Email',         value: c => c.owner_email || '' },
+      { header: 'Active Products',     value: c => c.product_count ?? '' },
+      { header: 'Registered',          value: c => csvDate(c.created_at) },
+    ]);
+    downloadCsv(`globrixa-companies-${todayStamp()}.csv`, csv);
+    toast.success(`Exported ${filtered.length} compan${filtered.length === 1 ? 'y' : 'ies'}`);
+  };
+
   return (
     <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
       <PageHeader
@@ -370,7 +405,7 @@ export function AdminCompaniesPage() {
         accentColor={C.emerald}
         onBack={() => navigate('/admin-dashboard')}
         action={
-          <button onClick={() => toast.info('CSV export coming soon')} style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '10px 20px', borderRadius: 100, background: '#C8792C', color: '#2B2016', border: 'none', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
+          <button onClick={handleExport} disabled={loading || !filtered.length} title={filtered.length ? `Export ${filtered.length} companies as CSV` : 'Nothing to export'} style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '10px 20px', borderRadius: 100, background: '#C8792C', color: '#2B2016', border: 'none', cursor: loading || !filtered.length ? 'not-allowed' : 'pointer', opacity: loading || !filtered.length ? 0.5 : 1, fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
             <Download size={13} /> Export
           </button>
         }
@@ -579,6 +614,16 @@ export function AdminReportsPage() {
     { label: 'Pending Verifications',value: stats.pendingKyc     ?? '—', color: C.gold,    bg: C.goldLt,    icon: ShieldCheck },
   ] : [];
 
+  const handleDownload = () => {
+    if (!kpis.length) return;
+    const csv = toCsv(kpis, [
+      { header: 'Metric', value: k => k.label },
+      { header: 'Value',  value: k => k.value },
+    ]);
+    downloadCsv(`globrixa-platform-report-${todayStamp()}.csv`, csv);
+    toast.success(`Exported ${kpis.length} metrics`);
+  };
+
   return (
     <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
       <PageHeader
@@ -587,7 +632,7 @@ export function AdminReportsPage() {
         accentColor={C.navy}
         onBack={() => navigate('/admin-dashboard')}
         action={
-          <button onClick={() => toast.info('Report download coming soon')} style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '10px 20px', borderRadius: 100, background: C.navy, color: '#FDF9F1', border: 'none', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
+          <button onClick={handleDownload} disabled={loading || !kpis.length} title={kpis.length ? 'Download platform metrics as CSV' : 'Nothing to export'} style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '10px 20px', borderRadius: 100, background: C.navy, color: '#FDF9F1', border: 'none', cursor: loading || !kpis.length ? 'not-allowed' : 'pointer', opacity: loading || !kpis.length ? 0.5 : 1, fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13 }}>
             <Download size={13} /> Download Report
           </button>
         }

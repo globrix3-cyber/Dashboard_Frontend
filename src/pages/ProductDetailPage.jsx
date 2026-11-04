@@ -8,6 +8,7 @@ import { Spinner, EmptyState } from '../components/UI';
 import { useBreakpoint } from '../hooks/useBreakpoint';
 import { resolveImageUrl, imageProps } from '../utils/helpers';
 import { useCurrency } from '../hooks/useCurrency';
+import usePageMeta from '../hooks/usePageMeta';
 import { toggleLogin } from '../features/auth/authSlice';
 import {
   ChevronLeft, ChevronDown, ShoppingBag, Truck, MapPin, RotateCcw,
@@ -39,6 +40,7 @@ function Accordion({ title, defaultOpen = false, children }) {
     <div style={{ borderTop: `1px solid ${C.border}` }}>
       <button
         onClick={() => setOpen(o => !o)}
+        aria-expanded={open}
         style={{
           width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: '16px 0', background: 'none', border: 'none', cursor: 'pointer',
@@ -72,7 +74,7 @@ function MiniProductCard({ p, onClick, isLoggedIn }) {
         transition: 'border-color .15s',
       }}>
         {img
-          ? <img src={img} alt={p.name} loading="lazy" decoding="async"
+          ? <img src={img} alt="" loading="lazy" decoding="async"
               style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transform: hov ? 'scale(1.04)' : 'scale(1)', transition: 'transform .35s ease' }} />
           : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><ShoppingBag size={28} color="#E3D5C1" /></div>
         }
@@ -164,6 +166,31 @@ export default function ProductDetailPage() {
     const cap = tierMaxes.length ? Math.max(...tierMaxes) : Infinity;
     setQty(Math.min(cap, moqValue));
   }, [product]);
+
+  // Per-product SEO: title, description, og:image and Product JSON-LD. Prices
+  // are hidden from logged-out visitors (and crawlers), so no `offers` block.
+  const metaImage  = resolveImageUrl(product?.images?.[0]?.image_url, 1200) || undefined;
+  const metaSeller = product ? (product.supplier_brand_name || product.supplier_legal_name || null) : null;
+  const metaDesc   = product
+    ? (product.description?.trim() || `Buy ${product.name} wholesale${metaSeller ? ` from ${metaSeller}` : ''} on Globrixa — verified Indian suppliers, bulk orders and quotes.`)
+    : undefined;
+  usePageMeta({
+    title:       product?.name ? `${product.name}${metaSeller ? ` by ${metaSeller}` : ''} — Wholesale` : undefined,
+    description: metaDesc,
+    image:       metaImage,
+    path:        `/products/${id}`,
+    type:        product ? 'product' : undefined,
+    jsonLd: product ? {
+      '@context': 'https://schema.org',
+      '@type': 'Product',
+      name: product.name,
+      ...(metaImage && { image: (product.images || []).map(im => resolveImageUrl(im.image_url, 1200)).filter(Boolean) }),
+      ...(metaDesc && { description: metaDesc.slice(0, 5000) }),
+      ...(product.category_name && { category: product.category_name }),
+      url: `https://www.globrixa.com/products/${id}`,
+      ...(metaSeller && { brand: { '@type': 'Brand', name: metaSeller } }),
+    } : null,
+  });
 
   if (loading) return <div style={{ padding: 32 }}><Spinner /></div>;
   if (error || !product) {
@@ -269,12 +296,12 @@ export default function ProductDetailPage() {
             {images.length > 1 && (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 8 }}>
                 {images.slice(0, 5).map((img, i) => (
-                  <button key={img.id || i} onClick={() => setActiveImg(i)} style={{
+                  <button key={img.id || i} onClick={() => setActiveImg(i)} aria-pressed={i === activeImg} style={{
                     aspectRatio: '1 / 1', borderRadius: 9, overflow: 'hidden', cursor: 'pointer', padding: 0,
                     border: `1.5px solid ${i === activeImg ? C.saffron : C.border}`,
                     background: C.cream,
                   }}>
-                    <img loading="lazy" decoding="async" {...imageProps(img.image_url, 120)} alt={img.alt_text || `${product.name} ${i + 1}`}
+                    <img loading="lazy" decoding="async" {...imageProps(img.image_url, 120)} alt={`Show image ${i + 1}: ${img.alt_text || product.name}`}
                       style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                   </button>
                 ))}
@@ -292,7 +319,7 @@ export default function ProductDetailPage() {
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>
                 {product.supplier_logo_url
-                  ? <img src={resolveImageUrl(product.supplier_logo_url, 160)} alt={brandName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  ? <img src={resolveImageUrl(product.supplier_logo_url, 160)} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   : <ShoppingBag size={16} color={C.muted} />
                 }
               </div>
@@ -304,7 +331,7 @@ export default function ProductDetailPage() {
                   <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 17, fontWeight: 700, color: C.ink, lineHeight: 1.1 }}>
                     {brandName}
                   </span>
-                  {isVerifiedSupplier && <BadgeCheck size={15} color={C.emerald} />}
+                  {isVerifiedSupplier && <BadgeCheck size={15} color={C.emerald} role="img" aria-label="Verified supplier" />}
                 </div>
                 {supplierLocation && (
                   <div style={{ fontSize: 12, color: C.muted, marginTop: 1 }}>{supplierLocation}</div>
@@ -353,9 +380,10 @@ export default function ProductDetailPage() {
             {/* Variant dropdowns */}
             {variantKeys.map(key => (
               <div key={key} style={{ marginBottom: 14 }}>
-                <label style={{ display: 'block', fontSize: 12.5, fontWeight: 700, color: C.ink, marginBottom: 6 }}>{key}</label>
+                <label htmlFor={`variant-${key}`} style={{ display: 'block', fontSize: 12.5, fontWeight: 700, color: C.ink, marginBottom: 6 }}>{key}</label>
                 <div style={{ position: 'relative' }}>
                   <select
+                    id={`variant-${key}`}
                     value={variantChoice[key] ?? variantGroups[key][0]}
                     onChange={e => handleVariantChange(key, e.target.value)}
                     style={{
@@ -373,15 +401,16 @@ export default function ProductDetailPage() {
 
             {/* Quantity stepper */}
             <div style={{ marginBottom: 18 }}>
-              <label style={{ display: 'block', fontSize: 12.5, fontWeight: 700, color: C.ink, marginBottom: 6 }}>Quantity</label>
+              <label htmlFor="product-qty" style={{ display: 'block', fontSize: 12.5, fontWeight: 700, color: C.ink, marginBottom: 6 }}>Quantity</label>
               <div style={{ display: 'inline-flex', alignItems: 'center', border: `1.5px solid ${C.border}`, borderRadius: 10, overflow: 'hidden' }}>
-                <button onClick={() => stepQty(-1)} disabled={qty <= moq} style={{
+                <button onClick={() => stepQty(-1)} disabled={qty <= moq} aria-label="Decrease quantity" style={{
                   width: 38, height: 40, border: 'none', background: '#FDF9F1', cursor: qty <= moq ? 'default' : 'pointer',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', color: qty <= moq ? '#E3D5C1' : C.ink,
                 }}>
                   <Minus size={14} />
                 </button>
                 <input
+                  id="product-qty"
                   type="text"
                   inputMode="numeric"
                   pattern="[0-9]*"
@@ -393,7 +422,7 @@ export default function ProductDetailPage() {
                     fontFamily: "'DM Sans', sans-serif", border: 'none', outline: 'none', background: 'transparent',
                   }}
                 />
-                <button onClick={() => stepQty(1)} disabled={qty >= maxQty} style={{
+                <button onClick={() => stepQty(1)} disabled={qty >= maxQty} aria-label="Increase quantity" style={{
                   width: 38, height: 40, border: 'none', background: '#FDF9F1', cursor: qty >= maxQty ? 'default' : 'pointer',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', color: qty >= maxQty ? '#E3D5C1' : C.ink,
                 }}>

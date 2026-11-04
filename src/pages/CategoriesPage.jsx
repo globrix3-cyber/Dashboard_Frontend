@@ -10,6 +10,7 @@ import {
   Package, Star, BadgeCheck, Filter, MapPin, Zap,
 } from 'lucide-react';
 import { formatDate, imageProps } from '../utils/helpers';
+import usePageMeta from '../hooks/usePageMeta';
 
 /* ── Design tokens ───────────────────────────────────────────────────────── */
 const C = {
@@ -71,6 +72,14 @@ export default function CategoriesPage() {
   const selectedCat   = selected ? roots.find(r => r.id === selected) : null;
   const selectedSubs  = selected ? subs.filter(s => s.parent_id === selected) : [];
   const selectedMeta  = selectedCat ? getMeta(selectedCat.slug) : null;
+
+  usePageMeta({
+    title: selectedCat ? `${selectedCat.name} — Wholesale Category` : 'Shop Wholesale by Category',
+    description: selectedCat
+      ? `Browse wholesale ${selectedCat.name} from verified Indian makers and suppliers on Globrixa.`
+      : 'Explore wholesale categories on Globrixa — home décor, furniture, textiles, kitchenware, jewellery and more from verified Indian suppliers.',
+    path: '/categories',
+  });
 
   return (
     <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>

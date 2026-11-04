@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toggleLogin } from '../features/auth/authSlice';
+import usePageMeta from '../hooks/usePageMeta';
 import {
   Globe, ArrowRight, Mail, Phone, MapPin,
   Shield, FileText, HelpCircle, Users, Rocket,
@@ -74,6 +75,7 @@ function SectionTag({ text, color = C.saffron, bg = C.saffronLt }) {
 
 /* ════════════════════════ ABOUT PAGE ══════════════════════════════════════ */
 export function AboutPage() {
+  usePageMeta({ title: 'About Globrixa', description: "Globrixa is India's B2B wholesale marketplace connecting retailers and businesses with verified Indian makers, artisans and suppliers." });
   const dispatch  = useDispatch();
   const navigate  = useNavigate();
   const userRole  = useSelector(s => s.auth.userRole);
@@ -132,6 +134,7 @@ const BLOG_POSTS = [
 ];
 
 export function BlogPage() {
+  usePageMeta({ title: 'Blog — Wholesale Sourcing Insights', description: "Guides, trends and stories on wholesale sourcing, Indian craft and running a retail business, from the Globrixa team." });
   return (
     <PublicLayout>
       <div style={{ textAlign: 'center', marginBottom: 48 }}>
@@ -175,6 +178,7 @@ const JOBS = [
 ];
 
 export function CareersPage() {
+  usePageMeta({ title: 'Careers at Globrixa', description: "Join the Globrixa team and help build India's B2B wholesale marketplace for makers, suppliers and retailers." });
   return (
     <PublicLayout>
       <div style={{ textAlign: 'center', marginBottom: 52 }}>
@@ -218,6 +222,7 @@ export function CareersPage() {
 
 /* ════════════════════════ CONTACT PAGE ════════════════════════════════════ */
 export function ContactPage() {
+  usePageMeta({ title: 'Contact Globrixa', description: "Get in touch with the Globrixa team for help with buying, selling, partnerships or press enquiries." });
   return (
     <PublicLayout>
       <div style={{ textAlign: 'center', marginBottom: 52 }}>
@@ -277,6 +282,7 @@ export function ContactPage() {
 
 /* ════════════════════════ PRIVACY PAGE ════════════════════════════════════ */
 export function PrivacyPage() {
+  usePageMeta({ title: 'Privacy Policy', description: "How Globrixa collects, uses, stores and protects your personal data, and the rights you have over it." });
   const sections = [
     { title: 'Data We Collect', body: 'We collect information you provide during registration (name, email, company details, GST number) and usage data (pages visited, RFQs posted, products viewed). We never sell your data to third parties.' },
     { title: 'How We Use Data', body: 'Your data is used to operate and improve the Globrixa platform — matching buyers with suppliers, processing payments, sending transactional emails, and complying with Indian tax regulations (GST Act 2017).' },
@@ -306,6 +312,7 @@ export function PrivacyPage() {
 
 /* ════════════════════════ TERMS PAGE ══════════════════════════════════════ */
 export function TermsPage() {
+  usePageMeta({ title: 'Terms of Service', description: "The terms that govern using the Globrixa B2B wholesale marketplace as a buyer or supplier." });
   const sections = [
     { title: '1. Acceptance',         body: 'By using Globrixa, you agree to these Terms of Service. If you do not agree, please do not use the platform. These terms are governed by Indian law and the jurisdiction of Mumbai courts.' },
     { title: '2. User Accounts',      body: 'You must be 18+ and provide accurate GST/PAN information. You are responsible for all activity under your account. Globrixa may suspend accounts found to be fraudulent or in violation of these terms.' },
@@ -347,6 +354,7 @@ const HELP = [
 ];
 
 export function HelpCenterPage() {
+  usePageMeta({ title: 'Help Center', description: "Answers to common questions about buying, selling, orders, payments and accounts on Globrixa." });
   return (
     <PublicLayout>
       <div style={{ textAlign: 'center', marginBottom: 48 }}>

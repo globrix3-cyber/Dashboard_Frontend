@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin-dashboard
+Disallow: /buyer-dashboard
+Disallow: /supplier-dashboard
+Disallow: /edit-profile
+
+Sitemap: https://www.globrixa.com/sitemap.xml

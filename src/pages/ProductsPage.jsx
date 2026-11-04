@@ -11,6 +11,7 @@ import { imageProps } from '../utils/helpers';
 import { useCurrency } from '../hooks/useCurrency';
 import { useBreakpoint } from '../hooks/useBreakpoint';
 import { useWishlist } from '../hooks/useWishlist';
+import usePageMeta from '../hooks/usePageMeta';
 
 const CATEGORY_IMAGES = [
   IMG.jaipurTextiles, IMG.blueCeramicVases, IMG.wovenBaskets, IMG.ceramicKitchenware,
@@ -111,6 +112,15 @@ export default function ProductsPage() {
 
   const showCategoryTiles = cat === 'All' && !search && rootCats.length > 0;
 
+  const metaTitle = [search && `"${search}"`, cat !== 'All' && cat].filter(Boolean).join(' in ');
+  usePageMeta({
+    title: metaTitle ? `${metaTitle} — Wholesale Products` : 'Wholesale Products from Verified Indian Suppliers',
+    description: cat !== 'All'
+      ? `Browse wholesale ${cat} from verified Indian makers and suppliers on Globrixa. Request quotes and order in bulk.`
+      : 'Browse wholesale home décor, furniture, textiles and lifestyle products from verified Indian makers and suppliers on Globrixa.',
+    path: '/products',
+  });
+
   /* ── Sidebar panel (shared between desktop sidebar and mobile drawer) ── */
   const renderSidebar = () => (
     <>
@@ -119,7 +129,7 @@ export default function ProductsPage() {
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         {sideItems.map(c => (
-          <button key={c} onClick={() => selectCat(c)} style={{
+          <button key={c} onClick={() => selectCat(c)} aria-pressed={cat === c} style={{
             display: 'block', width: '100%', textAlign: 'left',
             padding: '9px 12px', borderRadius: 8, border: 'none',
             fontFamily: "'DM Sans', sans-serif", fontSize: 13.5,
@@ -151,12 +161,14 @@ export default function ProductsPage() {
           <div style={{ display: 'grid', gridTemplateColumns: bp.isMobile ? 'repeat(2, 1fr)' : bp.isTablet ? 'repeat(3, 1fr)' : 'repeat(4, 1fr)', gap: bp.isMobile ? 8 : 10 }}>
             {rootCats.slice(0, bp.isMobile ? 6 : 8).map((c, i) => (
               <div key={c.id} onClick={() => selectCat(c.name)}
+                role="button" tabIndex={0}
+                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectCat(c.name); } }}
                 style={{ display: 'flex', alignItems: 'center', background: '#E3D5C1', borderRadius: 10, overflow: 'hidden', cursor: 'pointer', border: '1px solid #E3D5C1', transition: 'box-shadow .15s, transform .15s' }}
                 onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 4px 16px rgba(43,32,22,.1)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
                 onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'none'; }}
               >
                 <div style={{ width: bp.isMobile ? 52 : 70, height: bp.isMobile ? 52 : 70, flexShrink: 0, overflow: 'hidden' }}>
-                  <img loading="lazy" decoding="async" src={CATEGORY_IMAGES[i % CATEGORY_IMAGES.length]} alt={c.name}
+                  <img loading="lazy" decoding="async" src={CATEGORY_IMAGES[i % CATEGORY_IMAGES.length]} alt=""
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
                 <span style={{ padding: bp.isMobile ? '0 10px' : '0 14px', fontSize: bp.isMobile ? 11.5 : 13, fontWeight: 600, lineHeight: 1.3 }}>{c.name}</span>
@@ -171,13 +183,14 @@ export default function ProductsPage() {
         <div style={{ display: 'flex', gap: 8, marginBottom: 14 }}>
           <button
             onClick={e => { e.stopPropagation(); setShowMobileFilter(o => !o); }}
+            aria-expanded={showMobileFilter}
             style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 14px', borderRadius: 8, border: `1.5px solid ${cat !== 'All' ? '#C8792C' : '#E3D5C1'}`, background: cat !== 'All' ? '#FDF9F1' : '#FDF9F1', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, color: cat !== 'All' ? '#C8792C' : '#5B4632', flex: 1 }}
           >
             <SlidersHorizontal size={13} />
             {cat !== 'All' ? cat : 'All categories'}
           </button>
           <div style={{ position: 'relative' }} onClick={e => e.stopPropagation()}>
-            <button onClick={() => setShowSort(o => !o)}
+            <button onClick={() => setShowSort(o => !o)} aria-haspopup="true" aria-expanded={showSort}
               style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '8px 12px', borderRadius: 8, border: '1.5px solid #E3D5C1', background: '#FDF9F1', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 500, color: '#5B4632', whiteSpace: 'nowrap' }}>
               Sort <ChevronDown size={12} />
             </button>
@@ -202,7 +215,7 @@ export default function ProductsPage() {
           <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, background: '#FDF9F1', borderRadius: '20px 20px 0 0', padding: '20px 18px 32px', zIndex: 201, maxHeight: '70vh', overflowY: 'auto', boxShadow: '0 -8px 32px rgba(43,32,22,.15)' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
               <span style={{ fontSize: 15, fontWeight: 700, color: '#5B4632' }}>Filter by category</span>
-              <button onClick={() => setShowMobileFilter(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}>
+              <button onClick={() => setShowMobileFilter(false)} aria-label="Close filters" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}>
                 <X size={18} color="#79634E" />
               </button>
             </div>
@@ -231,7 +244,7 @@ export default function ProductsPage() {
                 <strong style={{ color: '#5B4632' }}>{filtered.length}</strong> product{filtered.length !== 1 ? 's' : ''}
               </span>
               <div style={{ position: 'relative' }} onClick={e => e.stopPropagation()}>
-                <button onClick={() => setShowSort(o => !o)}
+                <button onClick={() => setShowSort(o => !o)} aria-haspopup="true" aria-expanded={showSort}
                   style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 14px', borderRadius: 8, border: '1.5px solid #E3D5C1', background: '#FDF9F1', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 500, color: '#5B4632' }}>
                   {SORT_OPTIONS.find(o => o.value === sort)?.label} <ChevronDown size={13} />
                 </button>
@@ -308,7 +321,7 @@ export default function ProductsPage() {
                         </div>
                         {p.moq_unit && !bp.isMobile && <div style={{ fontSize: 11, color: '#79634E', marginTop: 1 }}>MOQ {p.min_order_quantity} {p.moq_unit}</div>}
                       </div>
-                      <button onClick={handleGetQuote}
+                      <button onClick={handleGetQuote} aria-label={`Request a quote for ${p.name}`}
                         style={{ flexShrink: 0, padding: bp.isMobile ? '5px 9px' : '6px 12px', borderRadius: 7, border: '1.5px solid #5B4632', background: '#FDF9F1', color: '#5B4632', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: bp.isMobile ? 11 : 12, transition: 'background .12s, color .12s' }}
                         onMouseEnter={e => { e.currentTarget.style.background = '#5B4632'; e.currentTarget.style.color = '#FDF9F1'; }}
                         onMouseLeave={e => { e.currentTarget.style.background = '#FDF9F1'; e.currentTarget.style.color = '#5B4632'; }}>

@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toggleLogin } from '../features/auth/authSlice';
+import usePageMeta from '../hooks/usePageMeta';
 
 const T = {
   t: '#C8792C', td: '#C8792C', tl: '#FDF9F1',
@@ -22,6 +23,7 @@ const TEAM = [
 ];
 
 export default function OurStoryPage() {
+  usePageMeta({ title: 'Our Story', description: "The story behind Globrixa — why we're building India's B2B wholesale marketplace for makers, artisans, suppliers and the retailers who stock them." });
   const dispatch  = useDispatch();
   const navigate  = useNavigate();
   const userRole  = useSelector(s => s.auth.userRole);

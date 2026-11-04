@@ -5,6 +5,9 @@ import { BrowserRouter } from 'react-router-dom';
 import { store } from './app/store';
 import ErrorBoundary from './components/ErrorBoundary';
 import App from './App';
+import { initMonitoring } from './utils/monitoring';
+
+initMonitoring();
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
