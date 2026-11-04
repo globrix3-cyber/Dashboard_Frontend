@@ -272,11 +272,8 @@ export const api = {
   updateOrderStatus: (id, status) => patch(`/api/orders/${id}/status`, { status }),
 
   // ── Products ─────────────────────────────────────────────────────────────
-  uploadImages:  (files) => {
-    const form = new FormData();
-    files.forEach(f => form.append('images', f));
-    return post('/api/uploads/images', form);
-  },
+  // Signed params for direct browser → Cloudinary uploads (see utils/imageUpload.js)
+  getUploadSignature: () => post('/api/uploads/signature', {}),
   getProducts:   (params = {}) => get(`/api/products?${new URLSearchParams(params)}`),
   getProduct:    (id)          => get(`/api/products/${id}`),
   createProduct: (body)        => post('/api/products', body),
