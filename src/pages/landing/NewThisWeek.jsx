@@ -6,16 +6,12 @@ import { toggleLogin } from '../../features/auth/authSlice';
 import { useBreakpoint, rGutter } from '../../hooks/useBreakpoint';
 import { api } from '../../services/api';
 import { resolveImageUrl } from '../../utils/helpers';
+import { CATEGORY_LINKS, useCategoryCounts, hasProducts } from './categoryLinks';
+import { useWishlist } from '../../hooks/useWishlist';
 
 const INK   = '#5B4632';
 const SERIF = "'Cormorant Garamond', Georgia, serif";
 
-const FILTERS = [
-  { label: 'Home & Living',         to: '/products?category=Home%20%26%20Garden' },
-  { label: 'Fashion & Accessories', to: '/products?category=Apparel%20%26%20Textiles' },
-  { label: 'Beauty & Wellness',     to: '/products?category=Beauty%20%26%20Personal%20Care' },
-  { label: 'Gifts & Lifestyle',     to: '/products?category=Handicrafts%20%26%20Gifts' },
-];
 
 const pill = { padding: '10px 18px', borderRadius: 100, border: '1px solid #E3D5C1', fontSize: 11, textDecoration: 'none', whiteSpace: 'nowrap' };
 
@@ -35,9 +31,8 @@ function priceLabel(product) {
   return product.currency === 'USD' ? `$${price.toFixed(2)}` : `₹${price.toLocaleString('en-IN')}`;
 }
 
-function ProductCard({ product, isLoggedIn, onLoginRequired, bp }) {
+function ProductCard({ product, isLoggedIn, onLoginRequired, isFav, onFav, bp }) {
   const [imgFailed, setImgFailed] = useState(false);
-  const [fav, setFav]             = useState(false);
   const imgUrl = resolveImageUrl(product.images?.[0]?.image_url, 640);
   const moq    = Number(product.min_order_quantity);
 
@@ -49,10 +44,10 @@ function ProductCard({ product, isLoggedIn, onLoginRequired, bp }) {
             style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
         )}
         <button
-          onClick={e => { e.preventDefault(); if (isLoggedIn) setFav(f => !f); else onLoginRequired(); }}
-          aria-label={fav ? 'Remove from wishlist' : 'Add to wishlist'}
+          onClick={e => { e.preventDefault(); e.stopPropagation(); onFav(); }}
+          aria-label={isFav ? 'Remove from wishlist' : 'Add to wishlist'}
           style={{ position: 'absolute', top: 12, right: 12, width: 30, height: 30, borderRadius: '50%', border: 'none', background: '#FDF9F1', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-          <Heart size={15} color={INK} fill={fav ? '#C8792C' : 'none'} />
+          <Heart size={15} color={INK} fill={isFav ? '#C8792C' : 'none'} />
         </button>
       </div>
       <div style={{ marginTop: 20, fontSize: 9, letterSpacing: '.16em', textTransform: 'uppercase', color: '#79634E' }}>{product.category_name || 'Uncategorized'}</div>
@@ -78,6 +73,8 @@ export default function NewThisWeek() {
   const bp         = useBreakpoint();
   const isLoggedIn = !!useSelector(s => s.auth.token);
   const openLogin  = () => dispatch(toggleLogin(true));
+  const counts     = useCategoryCounts();
+  const wishlist   = useWishlist();
 
   const [products, setProducts] = useState([]);
   const [loading,  setLoading]  = useState(true);
@@ -117,7 +114,7 @@ export default function NewThisWeek() {
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, overflowX: 'auto', scrollbarWidth: 'none', margin: '30px 0 32px' }}>
           <span style={{ ...pill, background: INK, borderColor: INK, color: '#FDF9F1' }}>All discoveries</span>
-          {FILTERS.map(f => <Link key={f.label} to={f.to} style={{ ...pill, color: INK }}>{f.label}</Link>)}
+          {CATEGORY_LINKS.filter(f => hasProducts(counts, f.root)).map(f => <Link key={f.label} to={f.to} style={{ ...pill, color: INK }}>{f.label}</Link>)}
           {!loading && <span style={{ marginLeft: 'auto', paddingLeft: 12, flexShrink: 0, fontSize: 10, color: INK }}>{products.length} discoveries</span>}
         </div>
 
@@ -127,7 +124,7 @@ export default function NewThisWeek() {
           <div style={{ display: 'grid', gridTemplateColumns: bp.isMobile ? 'repeat(2,1fr)' : 'repeat(4,1fr)', gap: bp.isMobile ? '32px 12px' : '40px 20px' }}>
             {loading
               ? Array.from({ length: 8 }).map((_, i) => <CardSkeleton key={i} />)
-              : sorted.map(p => <ProductCard key={p.id} product={p} bp={bp} isLoggedIn={isLoggedIn} onLoginRequired={openLogin} />)}
+              : sorted.map(p => <ProductCard key={p.id} product={p} bp={bp} isLoggedIn={isLoggedIn} onLoginRequired={openLogin} isFav={wishlist.has(p.id)} onFav={() => wishlist.toggle(p.id)} />)}
           </div>
         )}
 

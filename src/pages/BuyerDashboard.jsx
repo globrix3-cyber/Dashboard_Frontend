@@ -9,6 +9,7 @@ import { useBreakpoint } from '../hooks/useBreakpoint';
 import { Spinner, EmptyState } from '../components/UI';
 import { resolveImageUrl } from '../utils/helpers';
 import { useCurrency } from '../hooks/useCurrency';
+import { useWishlist } from '../hooks/useWishlist';
 
 /* ── Design tokens ─────────────────────────────────────────────────────────── */
 const T = {
@@ -33,17 +34,6 @@ const BANNERS = [
   { title: 'Bulk order deals',       sub: 'Save up to 30% on orders above MOQ × 5',  cta: 'View deals', bg: '#5B4632', img: IMG.fabricRolls  },
   { title: 'Export-ready products',  sub: 'GST invoices, quality certs, fast dispatch', cta: 'Explore', bg: '#2B2016', img: IMG.indiaFactoryWorkers },
 ];
-
-/* ── Favourite state (local only) ─────────────────────────────────────────── */
-const useFavourites = () => {
-  const [favs, setFavs] = useState(new Set());
-  const toggle = (id) => setFavs(prev => {
-    const next = new Set(prev);
-    next.has(id) ? next.delete(id) : next.add(id);
-    return next;
-  });
-  return [favs, toggle];
-};
 
 /* ── Map a real product record onto the card's display shape ──────────────── */
 const toCardProduct = (p) => ({
@@ -239,7 +229,7 @@ export default function BuyerDashboard() {
   const { userName }  = useSelector((s) => s.auth);
   const navigate      = useNavigate();
   const bp            = useBreakpoint();
-  const [favs, toggleFav] = useFavourites();
+  const wishlist      = useWishlist();
   const [visibleCount, setVisibleCount] = useState(12);
 
   const { data: rawProducts = [], loading: productsLoading, error: productsError } = useFetchData(() => api.getProducts());
@@ -309,8 +299,8 @@ export default function BuyerDashboard() {
                   <ProductCard
                     key={p.id}
                     p={p}
-                    isFav={favs.has(p.id)}
-                    onFav={() => toggleFav(p.id)}
+                    isFav={wishlist.has(p.id)}
+                    onFav={() => wishlist.toggle(p.id)}
                     onAction={() => navigate(`/products/${p.id}`)}
                   />
                 ))}

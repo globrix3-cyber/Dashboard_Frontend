@@ -274,6 +274,7 @@ export const api = {
   // ── Products ─────────────────────────────────────────────────────────────
   // Signed params for direct browser → Cloudinary uploads (see utils/imageUpload.js)
   getUploadSignature: (opts = {}) => post('/api/uploads/signature', opts),
+  subscribeNewsletter: (email) => post('/api/newsletter/subscribe', { email }),
   getProducts:   (params = {}) => get(`/api/products?${new URLSearchParams(params)}`),
   getProduct:    (id)          => get(`/api/products/${id}`),
   createProduct: (body)        => post('/api/products', body),
@@ -313,6 +314,11 @@ export const api = {
   updateCartItem: (id, quantity)  => patch(`/api/cart/${id}`, { quantity }),
   removeCartItem: (id)            => del(`/api/cart/${id}`),
   clearCart:      ()              => del('/api/cart'),
+
+  // ── Wishlist ─────────────────────────────────────────────────────────────
+  getWishlist:        ()   => get('/api/wishlist'),
+  addToWishlist:      (id) => post(`/api/wishlist/${id}`),
+  removeFromWishlist: (id) => del(`/api/wishlist/${id}`),
 
   // ── Admin ────────────────────────────────────────────────────────────────
   admin: {

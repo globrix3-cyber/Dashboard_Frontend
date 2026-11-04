@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { api } from '../services/api';
@@ -10,6 +10,7 @@ import { IMG } from './landing/images';
 import { resolveImageUrl } from '../utils/helpers';
 import { useCurrency } from '../hooks/useCurrency';
 import { useBreakpoint } from '../hooks/useBreakpoint';
+import { useWishlist } from '../hooks/useWishlist';
 
 const CATEGORY_IMAGES = [
   IMG.jaipurTextiles, IMG.blueCeramicVases, IMG.wovenBaskets, IMG.ceramicKitchenware,
@@ -23,6 +24,8 @@ const SORT_OPTIONS = [
   { label: 'Price: high → low', value: 'price_desc' },
 ];
 
+const PAGE_SIZE = 24;
+
 export default function ProductsPage() {
   const navigate                         = useNavigate();
   const [searchParams, setSearchParams]  = useSearchParams();
@@ -34,10 +37,21 @@ export default function ProductsPage() {
   const [sort, setSort]                  = useState('featured');
   const [showSort, setShowSort]          = useState(false);
   const [showMobileFilter, setShowMobileFilter] = useState(false);
-  const [favs, setFavs]                  = useState(new Set());
+  const wishlist                         = useWishlist();
+  const [paging, setPaging]              = useState({ key: '', count: PAGE_SIZE });
+  const [prevParams, setPrevParams]      = useState(searchParams);
 
-  useEffect(() => { setSearch(searchParams.get('search') || ''); }, [searchParams]);
-  useEffect(() => { setCat(searchParams.get('category') || 'All'); }, [searchParams]);
+  // Keep search/category in sync with the URL (adjust-state-during-render pattern).
+  if (searchParams !== prevParams) {
+    setPrevParams(searchParams);
+    setSearch(searchParams.get('search') || '');
+    setCat(searchParams.get('category') || 'All');
+  }
+
+  // Paging resets to PAGE_SIZE whenever category/search/sort changes.
+  const pageKey      = `${cat}|${search}|${sort}`;
+  const visibleCount = paging.key === pageKey ? paging.count : PAGE_SIZE;
+  const showMore     = () => setPaging({ key: pageKey, count: visibleCount + PAGE_SIZE });
 
   const selectCat = (c) => {
     setCat(c);
@@ -50,7 +64,7 @@ export default function ProductsPage() {
   const toggleFav = (e, id) => {
     e.preventDefault();
     e.stopPropagation();
-    setFavs(prev => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n; });
+    wishlist.toggle(id);
   };
 
   const { data: raw = [], loading, error } = useFetchData(() => api.getProducts());
@@ -87,7 +101,7 @@ export default function ProductsPage() {
   if (sort === 'price_desc') filtered = [...filtered].sort((a, b) => (Number(b.base_price) || 0) - (Number(a.base_price) || 0));
   if (sort === 'newest')     filtered = [...filtered].sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
 
-  const handleGetQuote = (e, p) => {
+  const handleGetQuote = (e) => {
     e.preventDefault();
     e.stopPropagation();
     if (userRole === 'buyer') navigate('/buyer-dashboard/rfqs/new');
@@ -98,7 +112,7 @@ export default function ProductsPage() {
   const showCategoryTiles = cat === 'All' && !search && rootCats.length > 0;
 
   /* ── Sidebar panel (shared between desktop sidebar and mobile drawer) ── */
-  const SidebarContent = () => (
+  const renderSidebar = () => (
     <>
       <div style={{ fontSize: 12, fontWeight: 700, color: '#79634E', textTransform: 'uppercase', letterSpacing: '.07em', marginBottom: 12, paddingBottom: 10, borderBottom: '1px solid #E3D5C1' }}>
         {search ? `"${search}"` : 'Categories'}
@@ -192,7 +206,7 @@ export default function ProductsPage() {
                 <X size={18} color="#79634E" />
               </button>
             </div>
-            <SidebarContent />
+            {renderSidebar()}
           </div>
         </>
       )}
@@ -203,7 +217,7 @@ export default function ProductsPage() {
         {/* Sidebar — desktop & tablet only */}
         {!bp.isMobile && (
           <div style={{ width: bp.isTablet ? 160 : 196, flexShrink: 0 }}>
-            <SidebarContent />
+            {renderSidebar()}
           </div>
         )}
 
@@ -253,7 +267,7 @@ export default function ProductsPage() {
             <EmptyState icon={ShoppingBag} title="No products found" desc="Try a different search or category." />
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: bp.isMobile ? 'repeat(2, 1fr)' : 'repeat(auto-fill, minmax(210px, 1fr))', gap: bp.isMobile ? 10 : 14 }}>
-              {filtered.map(p => (
+              {filtered.slice(0, visibleCount).map(p => (
                 <Link key={p.id} to={`/products/${p.id}`}
                   style={{ display: 'block', background: '#FDF9F1', borderRadius: bp.isMobile ? 10 : 12, border: '1px solid #E3D5C1', overflow: 'hidden', cursor: 'pointer', transition: 'box-shadow .18s, transform .18s', textDecoration: 'none', color: 'inherit' }}
                   onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 6px 24px rgba(43,32,22,.1)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
@@ -272,9 +286,9 @@ export default function ProductsPage() {
                         </span>
                       )}
                       <button onClick={e => toggleFav(e, p.id)}
-                        aria-label={favs.has(p.id) ? 'Remove from wishlist' : 'Add to wishlist'}
+                        aria-label={wishlist.has(p.id) ? 'Remove from wishlist' : 'Add to wishlist'}
                         style={{ marginLeft: 'auto', width: 28, height: 28, borderRadius: '50%', border: 'none', background: 'rgba(253,249,241,.92)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', backdropFilter: 'blur(4px)' }}>
-                        <Heart size={13} fill={favs.has(p.id) ? '#C8792C' : 'none'} color={favs.has(p.id) ? '#C8792C' : '#79634E'} />
+                        <Heart size={13} fill={wishlist.has(p.id) ? '#C8792C' : 'none'} color={wishlist.has(p.id) ? '#C8792C' : '#79634E'} />
                       </button>
                     </div>
                   </div>
@@ -294,7 +308,7 @@ export default function ProductsPage() {
                         </div>
                         {p.moq_unit && !bp.isMobile && <div style={{ fontSize: 11, color: '#79634E', marginTop: 1 }}>MOQ {p.min_order_quantity} {p.moq_unit}</div>}
                       </div>
-                      <button onClick={e => handleGetQuote(e, p)}
+                      <button onClick={handleGetQuote}
                         style={{ flexShrink: 0, padding: bp.isMobile ? '5px 9px' : '6px 12px', borderRadius: 7, border: '1.5px solid #5B4632', background: '#FDF9F1', color: '#5B4632', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: bp.isMobile ? 11 : 12, transition: 'background .12s, color .12s' }}
                         onMouseEnter={e => { e.currentTarget.style.background = '#5B4632'; e.currentTarget.style.color = '#FDF9F1'; }}
                         onMouseLeave={e => { e.currentTarget.style.background = '#FDF9F1'; e.currentTarget.style.color = '#5B4632'; }}>
@@ -304,6 +318,23 @@ export default function ProductsPage() {
                   </div>
                 </Link>
               ))}
+            </div>
+          )}
+
+          {/* Show more */}
+          {!loading && !error && filtered.length > 0 && (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, marginTop: bp.isMobile ? 22 : 30 }}>
+              <span style={{ fontSize: 12.5, color: '#79634E' }}>
+                Showing <strong style={{ color: '#5B4632' }}>{Math.min(visibleCount, filtered.length)}</strong> of <strong style={{ color: '#5B4632' }}>{filtered.length}</strong>
+              </span>
+              {visibleCount < filtered.length && (
+                <button onClick={showMore}
+                  style={{ padding: bp.isMobile ? '10px 22px' : '11px 28px', borderRadius: 100, border: '1.5px solid #5B4632', background: '#FDF9F1', color: '#5B4632', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13, transition: 'background .12s, color .12s' }}
+                  onMouseEnter={e => { e.currentTarget.style.background = '#5B4632'; e.currentTarget.style.color = '#FDF9F1'; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = '#FDF9F1'; e.currentTarget.style.color = '#5B4632'; }}>
+                  Show more products
+                </button>
+              )}
             </div>
           )}
         </div>
