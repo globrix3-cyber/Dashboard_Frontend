@@ -7,25 +7,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { api } from '../services/api';
 import { resolveImageUrl } from '../utils/helpers';
-import { compressImage, uploadToCloudinary } from '../utils/imageUpload';
+import PhotoManager from '../components/PhotoManager';
 import {
   ChevronRight, ChevronLeft, Check, Package, DollarSign,
-  Tag, Image, Eye, Plus, Trash2, Loader2, AlertCircle, UploadCloud, X, RotateCw,
+  Tag, Image, Eye, Plus, Trash2, Loader2, AlertCircle,
 } from 'lucide-react';
 
 /* ─── Upload settings ────────────────────────────────────────────────────── */
-const MAX_UPLOAD_BYTES     = 8 * 1024 * 1024;   // checked on the original, before compression
-const MAX_PARALLEL_UPLOADS = 3;
-const SIG_MAX_AGE_MS       = 50 * 60 * 1000;    // re-sign batches older than this on retry
-const isBusyStatus = s => s === 'queued' || s === 'compressing' || s === 'uploading';
-const uploadStatusText = u => ({
-  queued:      'Waiting…',
-  compressing: 'Compressing…',
-  uploading:   `Uploading ${u.progress}%`,
-  done:        'Done ✓',
-  failed:      `Failed — ${u.error}`,
-}[u.status] || '');
-
 /* ─── Tiny shared primitives ─────────────────────────────────────────────── */
 const Label = ({ children, required }) => (
   <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--ink-soft)', textTransform: 'uppercase', letterSpacing: '.06em', marginBottom: 6 }}>
@@ -201,7 +189,7 @@ export default function ListProduct() {
 
   const [specValues, setSpecValues] = useState({});
   const [images,     setImages]     = useState([{ image_url: '', alt_text: '' }]);
-  const [imgErrors,  setImgErrors]  = useState({});
+  const [photosBusy, setPhotosBusy] = useState(false);
   const [tagIds,     setTagIds]     = useState([]);
   const [newTag,     setNewTag]     = useState('');
 
@@ -301,161 +289,6 @@ export default function ListProduct() {
   const addTier    = () => setPriceTiers(t => [...t, { min_qty: '', max_qty: '', price: '' }]);
   const removeTier = (i) => setPriceTiers(t => t.filter((_, idx) => idx !== i));
 
-  const updateImage = (i, k, v) => {
-    setImages(imgs => imgs.map((img, idx) => idx === i ? { ...img, [k]: v } : img));
-    if (k === 'image_url') setImgErrors(e => { const next = { ...e }; delete next[i]; return next; });
-  };
-  const addImage    = () => setImages(i => [...i, { image_url: '', alt_text: '' }]);
-  const removeImage = (i) => setImages(imgs => imgs.filter((_, idx) => idx !== i));
-
-  // Device uploads go straight from the browser to Cloudinary using a signature from our API.
-  // Each selected file reserves an image slot up front (so the final order matches the
-  // selection order), is compressed, uploaded (3 at a time), then fills its reserved slot.
-  const fileInputRef = useRef(null);
-  const [dragOver, setDragOver] = useState(false);
-  const [uploads,  setUploads]  = useState([]);    // render state: [{ id, name, thumb, status, progress, error }]
-  const jobsRef   = useRef(new Map());              // id → { file, batchId, thumb, status, abort, timer }
-  const sigsRef   = useRef(new Map());              // job id → { promise, at }
-  const nextIdRef = useRef(0);
-  const uploadsBusy = uploads.some(u => isBusyStatus(u.status));
-
-  const patchUpload = (id, patch) => setUploads(list => list.map(u => (u.id === id ? { ...u, ...patch } : u)));
-
-  // One single-use signature per photo; re-fetched on retry if it expired or failed.
-  // HEIC/HEIF can't be decoded in most browsers, so ask Cloudinary to store those as JPG.
-  const getSignature = (batchId) => {
-    const cached = sigsRef.current.get(batchId);
-    if (cached && Date.now() - cached.at < SIG_MAX_AGE_MS) return cached.promise;
-    const orig = jobsRef.current.get(batchId)?.file;
-    const heic = !!orig && (/^image\/hei[cf]$/i.test(orig.type) || /\.hei[cf]$/i.test(orig.name || ''));
-    const entry = { promise: api.getUploadSignature(heic ? { heic: true } : {}), at: Date.now() };
-    sigsRef.current.set(batchId, entry);
-    entry.promise.catch(err => {
-      if (sigsRef.current.get(batchId) === entry) sigsRef.current.delete(batchId);
-      toast.error(err.message || 'Could not start the upload. Please try again.');
-    });
-    return entry.promise;
-  };
-
-  const fillSlot = (slotId, url) => setImages(imgs => {
-    const idx = imgs.findIndex(img => img._slot === slotId);
-    if (idx !== -1 && !imgs[idx].image_url.trim()) {
-      return imgs.map((img, i) => (i === idx ? { image_url: url, alt_text: img.alt_text } : img));
-    }
-    // Slot was removed or the user pasted a link into it — use the first free slot, else append.
-    const next = imgs.map(img => (img._slot === slotId ? { image_url: img.image_url, alt_text: img.alt_text } : img));
-    const free = next.findIndex(img => !img.image_url.trim() && !img._slot);
-    if (free !== -1) return next.map((img, i) => (i === free ? { ...img, image_url: url } : img));
-    return [...next, { image_url: url, alt_text: '' }];
-  });
-
-  const releaseSlot = (slotId) => setImages(imgs => {
-    const next = imgs
-      .filter(img => !(img._slot === slotId && !img.image_url.trim()))
-      .map(img => (img._slot === slotId ? { image_url: img.image_url, alt_text: img.alt_text } : img));
-    return next.length ? next : [{ image_url: '', alt_text: '' }];
-  });
-
-  const pump = () => {
-    const jobs = [...jobsRef.current.entries()];
-    let active = jobs.filter(([, j]) => j.status === 'compressing' || j.status === 'uploading').length;
-    for (const [id, j] of jobs) {
-      if (active >= MAX_PARALLEL_UPLOADS) break;
-      if (j.status === 'queued') { active += 1; runUpload(id); }
-    }
-  };
-
-  const runUpload = async (id) => {
-    const job = jobsRef.current.get(id);
-    if (!job) return;
-    job.status = 'compressing';                     // set synchronously so pump() counts it
-    patchUpload(id, { status: 'compressing', progress: 0, error: '' });
-    try {
-      const [sig, file] = await Promise.all([getSignature(id), compressImage(job.file)]);
-      if (!jobsRef.current.has(id)) return;         // dismissed meanwhile
-      job.status = 'uploading';
-      patchUpload(id, { status: 'uploading', progress: 0 });
-      const { promise, abort } = uploadToCloudinary(file, sig, p => patchUpload(id, { progress: p }));
-      job.abort = abort;
-      const url = await promise;
-      job.abort = null;
-      if (!jobsRef.current.has(id)) return;
-      fillSlot(id, url);
-      job.status = 'done';
-      patchUpload(id, { status: 'done', progress: 100 });
-      job.timer = setTimeout(() => removeUpload(id), 2000);
-    } catch (err) {
-      job.abort = null;
-      if (jobsRef.current.has(id)) {
-        job.status = 'failed';
-        patchUpload(id, { status: 'failed', error: err.message || 'Upload failed' });
-      }
-    } finally {
-      pump();
-    }
-  };
-
-  const removeUpload = (id) => {
-    const job = jobsRef.current.get(id);
-    if (!job) return;
-    jobsRef.current.delete(id);
-    job.abort?.();
-    clearTimeout(job.timer);
-    URL.revokeObjectURL(job.thumb);
-    if (job.status !== 'done') releaseSlot(id);
-    setUploads(list => list.filter(u => u.id !== id));
-    pump();
-  };
-
-  const retryUpload = (id) => {
-    const job = jobsRef.current.get(id);
-    if (!job || job.status !== 'failed') return;
-    job.status = 'queued';
-    patchUpload(id, { status: 'queued', progress: 0, error: '' });
-    pump();
-  };
-
-  const handleFiles = (fileList) => {
-    const files = Array.from(fileList || []);
-    if (fileInputRef.current) fileInputRef.current.value = '';
-    if (!files.length) return;
-    const okType = f => /^image\/(jpeg|png|webp|heic|heif)$/.test(f.type) || /\.(heic|heif)$/i.test(f.name);
-    const bad    = files.filter(f => !okType(f));
-    const big    = files.filter(f => okType(f) && f.size > MAX_UPLOAD_BYTES);
-    if (bad.length) toast.error(`${bad.length} file(s) skipped: only JPG, PNG, WEBP or HEIC images`);
-    if (big.length) toast.error(`${big.length} file(s) skipped: each image must be 8 MB or smaller`);
-    const good = files.filter(f => okType(f) && f.size <= MAX_UPLOAD_BYTES).slice(0, 8);
-    if (files.length - bad.length - big.length > 8) toast.info('Only the first 8 images were uploaded. Add the rest in another batch.');
-    if (!good.length) return;
-
-    const batchId = `b${++nextIdRef.current}`;
-    const added = good.map(file => {
-      const id    = `u${++nextIdRef.current}`;
-      const thumb = URL.createObjectURL(file);
-      jobsRef.current.set(id, { file, batchId, thumb, status: 'queued', abort: null, timer: null });
-      return { id, name: file.name, thumb, status: 'queued', progress: 0, error: '' };
-    });
-    setUploads(list => [...list, ...added]);
-    setImages(imgs => {
-      const ids  = added.map(a => a.id);
-      const next = imgs.map(img => {
-        if (ids.length && !img.image_url.trim() && !img._slot) return { ...img, _slot: ids.shift() };
-        return img;
-      });
-      return [...next, ...ids.map(id => ({ image_url: '', alt_text: '', _slot: id }))];
-    });
-    pump();
-  };
-
-  // Cancel in-flight uploads and free thumbnails when leaving the page.
-  useEffect(() => {
-    const jobs = jobsRef.current;
-    return () => {
-      jobs.forEach(j => { j.abort?.(); clearTimeout(j.timer); URL.revokeObjectURL(j.thumb); });
-      jobs.clear();
-    };
-  }, []);
-
   const toggleTag = (id) => setTagIds(ids =>
     ids.includes(id) ? ids.filter(x => x !== id) : [...ids, id]
   );
@@ -482,25 +315,23 @@ export default function ListProduct() {
     if (step === 1) {
       if (!pricing.base_price)         { toast.error('Base price is required');           return false; }
       if (!pricing.min_order_quantity) { toast.error('Min order quantity is required');   return false; }
-      for (const [i, t] of priceTiers.entries()) {
-        if (!t.price) { toast.error(`Price in tier ${i + 1} is required`); return false; }
-      }
+      // Tiers are optional: a tier left without a price is simply not saved.
     }
     if (step === 3) {
       if (!images.some(img => img.image_url.trim())) {
-        toast.error('Add at least one product image');
+        toast.error('Add at least one product photo');
         return false;
       }
     }
     return true;
-  }, [step, basic, pricing, priceTiers, images]);
+  }, [step, basic, pricing, images]);
 
-  const next = () => { if (!uploadsBusy && validateStep()) setStep(s => s + 1); };
+  const next = () => { if (!photosBusy && validateStep()) setStep(s => s + 1); };
   const prev = () => setStep(s => s - 1);
 
   /* ── Final submit ────────────────────────────────────────────────────────── */
   const handleSubmit = async (publish = false) => {
-    if (uploadsBusy) { toast.info('Please wait for photo uploads to finish'); return; }
+    if (photosBusy) { toast.info('Please wait for photo uploads to finish'); return; }
     setSubmitting(true);
     try {
       const variants = priceTiers
@@ -534,7 +365,7 @@ export default function ListProduct() {
         base_price:         Number(pricing.base_price),
         min_order_quantity: Number(pricing.min_order_quantity),
         lead_time_days:     basic.lead_time_days ? Number(basic.lead_time_days) : null,
-        images:  images.filter(i => i.image_url.trim()).map(({ image_url, alt_text }) => ({ image_url, alt_text })),
+        images:  images.filter(i => i.image_url.trim()).map(({ image_url, alt_text }, n) => ({ image_url, alt_text: alt_text || `${basic.name.trim()} — photo ${n + 1}` })),
         variants,
         specs,
         tag_ids: tagIds,
@@ -778,126 +609,11 @@ export default function ListProduct() {
             <div>
               <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--ink)' }}>Product Images</h2>
               <p style={{ margin: '4px 0 0', fontSize: 13, color: 'var(--muted)' }}>
-                Upload photos from your device or paste image links. The first image is the main thumbnail.
+                Add up to 10 photos. The first one is the main photo buyers see.
               </p>
             </div>
 
-            <div
-              role="button" tabIndex={0} aria-label="Upload product photos"
-              onClick={() => fileInputRef.current?.click()}
-              onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInputRef.current?.click(); } }}
-              onDragOver={e => { e.preventDefault(); setDragOver(true); }}
-              onDragLeave={() => setDragOver(false)}
-              onDrop={e => { e.preventDefault(); setDragOver(false); handleFiles(e.dataTransfer.files); }}
-              style={{
-                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, padding: '28px 16px', textAlign: 'center',
-                borderRadius: 12, border: `2px dashed ${dragOver ? '#C8792C' : 'var(--border)'}`, background: dragOver ? '#F0DCC0' : '#FDF9F1',
-                cursor: 'pointer', transition: 'background .15s, border-color .15s',
-              }}>
-              <UploadCloud size={26} color="#C8792C" />
-              <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--ink)' }}>
-                Click to upload or drag photos here
-              </div>
-              <div style={{ fontSize: 12, color: 'var(--muted)' }}>JPG, PNG, WEBP or HEIC · up to 8 MB each · 8 at a time</div>
-              <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif" multiple hidden
-                onChange={e => handleFiles(e.target.files)} />
-            </div>
-
-            {uploads.length > 0 && (
-              <ul aria-live="polite" style={{ listStyle: 'none', margin: '-12px 0 0', padding: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
-                {uploads.map(u => {
-                  const failed = u.status === 'failed';
-                  const done   = u.status === 'done';
-                  const busy   = isBusyStatus(u.status);
-                  return (
-                    <li key={u.id} style={{
-                      display: 'flex', alignItems: 'center', gap: 10, padding: '8px 10px', borderRadius: 10, minWidth: 0,
-                      border: `1.5px solid ${failed ? '#FCA5A5' : '#E3D5C1'}`,
-                      background: failed ? '#FEF2F2' : done ? '#EAF5EF' : '#FDF9F1',
-                    }}>
-                      <div style={{ position: 'relative', width: 40, height: 40, borderRadius: 6, overflow: 'hidden', flexShrink: 0, background: '#F0DCC0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Image size={16} color="#79634E" />
-                        <img src={u.thumb} alt="" onError={e => { e.currentTarget.style.display = 'none'; }}
-                          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
-                      </div>
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div title={u.name} style={{ fontSize: 13, fontWeight: 600, color: '#2B2016', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                          {u.name}
-                        </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginTop: 2, fontSize: 12, overflowWrap: 'anywhere', color: failed ? '#DC2626' : done ? '#1A7A4A' : '#79634E' }}>
-                          {u.status === 'compressing' && <Loader2 size={11} style={{ animation: 'spin .8s linear infinite', flexShrink: 0 }} />}
-                          {uploadStatusText(u)}
-                        </div>
-                        {u.status === 'uploading' && (
-                          <div style={{ marginTop: 5, height: 3, borderRadius: 3, background: '#E3D5C1', overflow: 'hidden' }}>
-                            <div style={{ width: `${u.progress}%`, height: '100%', background: '#C8792C', transition: 'width .2s' }} />
-                          </div>
-                        )}
-                      </div>
-                      {failed && (
-                        <button type="button" onClick={() => retryUpload(u.id)}
-                          style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '5px 10px', borderRadius: 8, border: '1.5px solid #C8792C', background: '#FDF9F1', color: '#5B4632', fontSize: 12, fontWeight: 700, cursor: 'pointer', flexShrink: 0 }}>
-                          <RotateCw size={12} /> Retry
-                        </button>
-                      )}
-                      <button type="button" onClick={() => removeUpload(u.id)}
-                        aria-label={busy ? `Cancel upload of ${u.name}` : `Dismiss ${u.name}`}
-                        title={busy ? 'Cancel' : 'Dismiss'}
-                        style={{ width: 28, height: 28, borderRadius: 8, border: 'none', background: 'transparent', color: '#79634E', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <X size={14} />
-                      </button>
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
-
-            {images.map((img, i) => (
-              <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: 10, padding: '14px', borderRadius: 12, border: '1.5px solid var(--border-soft)', background: img.image_url ? '#FDF9F1' : 'var(--warm-white)' }}>
-                <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-                  {/* Preview thumbnail — resolveImageUrl converts Google Drive share
-                      links to lh3.googleusercontent.com so the browser can render them */}
-                  <div style={{ width: 72, height: 72, borderRadius: 8, overflow: 'hidden', background: 'var(--warm-white)', border: '1.5px solid var(--border-soft)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    {img.image_url && !imgErrors[i] ? (
-                      <img src={resolveImageUrl(img.image_url, 320)} alt="preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                        onError={() => setImgErrors(e => ({ ...e, [i]: true }))} />
-                    ) : img.image_url && imgErrors[i] ? (
-                      <span style={{ fontSize: 10, color: '#79634E', textAlign: 'center', padding: 4 }}>Preview unavailable</span>
-                    ) : img._slot ? (
-                      <Loader2 size={20} color="#C8792C" style={{ animation: 'spin 1s linear infinite' }} />
-                    ) : (
-                      <Image size={22} color="var(--muted)" />
-                    )}
-                  </div>
-                  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8 }}>
-                    <Field label={i === 0 ? 'Image (Main) *' : `Image ${i + 1}`} required={i === 0}>
-                      <Input value={img.image_url} onChange={e => updateImage(i, 'image_url', e.target.value)} placeholder={img._slot ? 'Uploading… (or paste an image link)' : 'Uploaded automatically, or paste an image link'} type="url" />
-                    </Field>
-                    <Field label="Alt Text">
-                      <Input value={img.alt_text} onChange={e => updateImage(i, 'alt_text', e.target.value)} placeholder="e.g. Front view of the product" />
-                    </Field>
-                  </div>
-                  <button type="button" onClick={() => removeImage(i)} disabled={images.length === 1}
-                    style={{
-                      width: 32, height: 32, borderRadius: 8, border: 'none', marginTop: 2,
-                      cursor: images.length === 1 ? 'not-allowed' : 'pointer',
-                      background: images.length === 1 ? '#E3D5C1' : '#FEE2E2',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-                    }}>
-                    <Trash2 size={13} color={images.length === 1 ? '#E3D5C1' : '#EF4444'} />
-                  </button>
-                </div>
-              </div>
-            ))}
-
-            <button type="button" onClick={addImage}
-              style={{
-                display: 'flex', alignItems: 'center', gap: 6, padding: '8px 16px',
-                borderRadius: 10, border: '1.5px dashed var(--border)', background: '#FDF9F1',
-                color: 'var(--muted)', fontSize: 13, fontWeight: 600, cursor: 'pointer', width: 'fit-content',
-              }}>
-              <Plus size={13} /> Add Another Image
-            </button>
+            <PhotoManager value={images} onChange={setImages} onBusyChange={setPhotosBusy} />
 
             {/* Tags */}
             <div style={{ borderTop: '1px solid var(--border-soft)', paddingTop: 20 }}>
@@ -989,10 +705,15 @@ export default function ListProduct() {
             )}
 
             {/* Images */}
-            <ReviewSection title="Images">
-              {images.filter(i => i.image_url).map((img, i) => (
-                <ReviewRow key={i} label={i === 0 ? 'Main' : `Image ${i + 1}`} value={img.image_url} truncate />
-              ))}
+            <ReviewSection title="Photos">
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, padding: '4px 0' }}>
+                {images.filter(i => i.image_url).map((img, i) => (
+                  <div key={i} style={{ position: 'relative', width: 72, height: 72, borderRadius: 8, overflow: 'hidden', border: `2px solid ${i === 0 ? '#C8792C' : '#E3D5C1'}` }}>
+                    <img src={resolveImageUrl(img.image_url, 160)} alt={img.alt_text || `Photo ${i + 1}`} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    {i === 0 && <span style={{ position: 'absolute', left: 3, bottom: 3, background: '#C8792C', color: '#2B2016', fontSize: 8, fontWeight: 800, padding: '1px 5px', borderRadius: 4 }}>MAIN</span>}
+                  </div>
+                ))}
+              </div>
             </ReviewSection>
 
             {/* Tags */}
@@ -1012,7 +733,7 @@ export default function ListProduct() {
       </div>
 
       {/* Navigation */}
-      {uploadsBusy && (
+      {photosBusy && (
         <p role="status" style={{ margin: '0 0 10px', fontSize: 12, color: '#79634E', textAlign: 'right' }}>
           Waiting for photo uploads to finish…
         </p>
@@ -1032,22 +753,22 @@ export default function ListProduct() {
             <>
               {/* In edit mode "Save as Draft" still lets them set status=draft */}
               {!isEditMode && (
-                <button type="button" onClick={() => handleSubmit(false)} disabled={submitting || uploadsBusy}
+                <button type="button" onClick={() => handleSubmit(false)} disabled={submitting || photosBusy}
                   style={{
                     padding: '10px 22px', borderRadius: 10,
                     border: '1.5px solid var(--border-soft)', background: '#FDF9F1',
-                    fontSize: 14, fontWeight: 600, color: 'var(--ink)', cursor: submitting || uploadsBusy ? 'not-allowed' : 'pointer',
-                    opacity: submitting || uploadsBusy ? 0.6 : 1,
+                    fontSize: 14, fontWeight: 600, color: 'var(--ink)', cursor: submitting || photosBusy ? 'not-allowed' : 'pointer',
+                    opacity: submitting || photosBusy ? 0.6 : 1,
                   }}>
                   Save as Draft
                 </button>
               )}
-              <button type="button" onClick={() => handleSubmit(!isEditMode)} disabled={submitting || uploadsBusy}
+              <button type="button" onClick={() => handleSubmit(!isEditMode)} disabled={submitting || photosBusy}
                 style={{
                   display: 'flex', alignItems: 'center', gap: 7, padding: '10px 22px', borderRadius: 10,
                   border: 'none', background: 'var(--emerald)', color: '#FDF9F1',
-                  fontSize: 14, fontWeight: 700, cursor: submitting || uploadsBusy ? 'not-allowed' : 'pointer',
-                  opacity: submitting || uploadsBusy ? 0.7 : 1,
+                  fontSize: 14, fontWeight: 700, cursor: submitting || photosBusy ? 'not-allowed' : 'pointer',
+                  opacity: submitting || photosBusy ? 0.7 : 1,
                   boxShadow: '0 4px 14px rgba(16,185,129,0.3)',
                 }}>
                 {submitting
@@ -1061,12 +782,12 @@ export default function ListProduct() {
               </button>
             </>
           ) : (
-            <button type="button" onClick={next} disabled={uploadsBusy}
+            <button type="button" onClick={next} disabled={photosBusy}
               style={{
                 display: 'flex', alignItems: 'center', gap: 6, padding: '10px 22px', borderRadius: 10,
                 border: 'none', background: 'var(--emerald)', color: '#FDF9F1',
-                fontSize: 14, fontWeight: 700, cursor: uploadsBusy ? 'not-allowed' : 'pointer',
-                opacity: uploadsBusy ? 0.7 : 1,
+                fontSize: 14, fontWeight: 700, cursor: photosBusy ? 'not-allowed' : 'pointer',
+                opacity: photosBusy ? 0.7 : 1,
                 boxShadow: '0 4px 14px rgba(16,185,129,0.3)',
               }}>
               Continue <ChevronRight size={15} />

@@ -6,7 +6,7 @@ import { api } from '../services/api';
 import { useFetchData } from '../hooks/useFetchData';
 import { Spinner, EmptyState } from '../components/UI';
 import { useBreakpoint } from '../hooks/useBreakpoint';
-import { resolveImageUrl } from '../utils/helpers';
+import { resolveImageUrl, imageProps } from '../utils/helpers';
 import { useCurrency } from '../hooks/useCurrency';
 import { toggleLogin } from '../features/auth/authSlice';
 import {
@@ -261,7 +261,7 @@ export default function ProductDetailPage() {
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
               {images[activeImg]?.image_url
-                ? <img src={resolveImageUrl(images[activeImg].image_url, 1200)} alt={images[activeImg].alt_text || product.name}
+                ? <img fetchPriority="high" {...imageProps(images[activeImg].image_url, 800)} alt={images[activeImg].alt_text || product.name}
                     style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                 : <ShoppingBag size={64} color="#E3D5C1" />
               }
@@ -274,7 +274,7 @@ export default function ProductDetailPage() {
                     border: `1.5px solid ${i === activeImg ? C.saffron : C.border}`,
                     background: C.cream,
                   }}>
-                    <img loading="lazy" decoding="async" src={resolveImageUrl(img.image_url, 200)} alt={img.alt_text || `${product.name} ${i + 1}`}
+                    <img loading="lazy" decoding="async" {...imageProps(img.image_url, 120)} alt={img.alt_text || `${product.name} ${i + 1}`}
                       style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                   </button>
                 ))}

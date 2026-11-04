@@ -5,7 +5,7 @@ import { Heart } from 'lucide-react';
 import { toggleLogin } from '../../features/auth/authSlice';
 import { useBreakpoint, rGutter } from '../../hooks/useBreakpoint';
 import { api } from '../../services/api';
-import { resolveImageUrl } from '../../utils/helpers';
+import { imageProps } from '../../utils/helpers';
 import { CATEGORY_LINKS, useCategoryCounts, hasProducts } from './categoryLinks';
 import { useWishlist } from '../../hooks/useWishlist';
 
@@ -33,14 +33,15 @@ function priceLabel(product) {
 
 function ProductCard({ product, isLoggedIn, onLoginRequired, isFav, onFav, bp }) {
   const [imgFailed, setImgFailed] = useState(false);
-  const imgUrl = resolveImageUrl(product.images?.[0]?.image_url, 640);
+  const photo  = imageProps(product.images?.[0]?.image_url, 320);
+  const imgUrl = photo.src;
   const moq    = Number(product.min_order_quantity);
 
   return (
     <Link to={`/products/${product.id}`} style={{ display: 'block', textDecoration: 'none', color: INK }}>
       <div style={{ position: 'relative', aspectRatio: '314 / 280', background: '#E3D5C1', overflow: 'hidden' }}>
         {imgUrl && !imgFailed && (
-          <img src={imgUrl} alt={product.name} loading="lazy" decoding="async" onError={() => setImgFailed(true)}
+          <img {...photo} alt={product.name} loading="lazy" decoding="async" onError={() => setImgFailed(true)}
             style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
         )}
         <button

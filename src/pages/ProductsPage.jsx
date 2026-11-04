@@ -7,7 +7,7 @@ import { Spinner, EmptyState } from '../components/UI';
 import { ShoppingBag, BadgeCheck, Heart, ChevronDown, SlidersHorizontal, X } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { IMG } from './landing/images';
-import { resolveImageUrl } from '../utils/helpers';
+import { imageProps } from '../utils/helpers';
 import { useCurrency } from '../hooks/useCurrency';
 import { useBreakpoint } from '../hooks/useBreakpoint';
 import { useWishlist } from '../hooks/useWishlist';
@@ -276,7 +276,7 @@ export default function ProductsPage() {
                   {/* Image */}
                   <div style={{ height: bp.isMobile ? 150 : 195, background: '#E3D5C1', position: 'relative', overflow: 'hidden' }}>
                     {p.images?.[0]?.image_url
-                      ? <img loading="lazy" decoding="async" src={resolveImageUrl(p.images[0].image_url, 480)} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      ? <img loading="lazy" decoding="async" {...imageProps(p.images[0].image_url, 300)} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                       : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><ShoppingBag size={40} color="#E3D5C1" /></div>
                     }
                     <div style={{ position: 'absolute', top: 8, left: 8, right: 8, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>

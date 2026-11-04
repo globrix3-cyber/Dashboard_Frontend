@@ -9,7 +9,7 @@ import {
   Search, ShoppingBag, ChevronRight, ArrowRight,
   Package, Star, BadgeCheck, Filter, MapPin, Zap,
 } from 'lucide-react';
-import { formatDate, resolveImageUrl } from '../utils/helpers';
+import { formatDate, imageProps } from '../utils/helpers';
 
 /* ── Design tokens ───────────────────────────────────────────────────────── */
 const C = {
@@ -370,7 +370,7 @@ function CategoryProducts({ category, meta, navigate, dispatch }) {
 
                 <div style={{ height: 140, background: `linear-gradient(135deg, ${C.cream}, #F0DCC0)`, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
                   {p.images?.[0]?.image_url
-                    ? <img loading="lazy" decoding="async" src={resolveImageUrl(p.images[0].image_url, 480)} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    ? <img loading="lazy" decoding="async" {...imageProps(p.images[0].image_url, 300)} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     : <span style={{ fontSize: 36 }}>{meta?.emoji || '📦'}</span>
                   }
                   {p.status === 'active' && (

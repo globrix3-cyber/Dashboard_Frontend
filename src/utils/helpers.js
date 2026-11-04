@@ -38,6 +38,14 @@ export const resolveImageUrl = (url, width) => {
   return url;
 };
 
+// src + 2x srcSet for a photo shown about `width` CSS pixels wide: normal screens download
+// the small file, high-density (retina/phone) screens the sharp one.
+export const imageProps = (url, width) => {
+  const src = resolveImageUrl(url, width);
+  const hi  = resolveImageUrl(url, Math.min(width * 2, 2400));
+  return src && hi && hi !== src ? { src, srcSet: `${src} 1x, ${hi} 2x` } : { src };
+};
+
 export const countryFlag = (code) => {
   if (!code) return '';
   return code.toUpperCase().replace(/./g, (c) =>
