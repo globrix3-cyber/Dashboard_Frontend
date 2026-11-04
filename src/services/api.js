@@ -273,7 +273,7 @@ export const api = {
 
   // ── Products ─────────────────────────────────────────────────────────────
   // Signed params for direct browser → Cloudinary uploads (see utils/imageUpload.js)
-  getUploadSignature: () => post('/api/uploads/signature', {}),
+  getUploadSignature: (opts = {}) => post('/api/uploads/signature', opts),
   getProducts:   (params = {}) => get(`/api/products?${new URLSearchParams(params)}`),
   getProduct:    (id)          => get(`/api/products/${id}`),
   createProduct: (body)        => post('/api/products', body),

@@ -322,10 +322,13 @@ export default function ListProduct() {
   const patchUpload = (id, patch) => setUploads(list => list.map(u => (u.id === id ? { ...u, ...patch } : u)));
 
   // One single-use signature per photo; re-fetched on retry if it expired or failed.
+  // HEIC/HEIF can't be decoded in most browsers, so ask Cloudinary to store those as JPG.
   const getSignature = (batchId) => {
     const cached = sigsRef.current.get(batchId);
     if (cached && Date.now() - cached.at < SIG_MAX_AGE_MS) return cached.promise;
-    const entry = { promise: api.getUploadSignature(), at: Date.now() };
+    const orig = jobsRef.current.get(batchId)?.file;
+    const heic = !!orig && (/^image\/hei[cf]$/i.test(orig.type) || /\.hei[cf]$/i.test(orig.name || ''));
+    const entry = { promise: api.getUploadSignature(heic ? { heic: true } : {}), at: Date.now() };
     sigsRef.current.set(batchId, entry);
     entry.promise.catch(err => {
       if (sigsRef.current.get(batchId) === entry) sigsRef.current.delete(batchId);
