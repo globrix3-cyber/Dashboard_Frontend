@@ -31,6 +31,10 @@ export const resolveImageUrl = (url, width) => {
   if (!url) return url;
   const m = url.match(/drive\.google\.com\/file\/d\/([^/?#]+)/) || url.match(/lh3\.googleusercontent\.com\/d\/([^/?#=]+)/);
   if (m) return `https://lh3.googleusercontent.com/d/${m[1]}${width ? `=w${width}` : ''}`;
+  if (url.includes('res.cloudinary.com/') && url.includes('/image/upload/')) {
+    const size = width ? `,w_${width},c_limit` : '';
+    return url.replace('/image/upload/', `/image/upload/f_auto,q_auto${size}/`);
+  }
   return url;
 };
 

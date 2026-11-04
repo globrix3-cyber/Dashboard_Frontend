@@ -9,7 +9,7 @@ import { api } from '../services/api';
 import { resolveImageUrl } from '../utils/helpers';
 import {
   ChevronRight, ChevronLeft, Check, Package, DollarSign,
-  Tag, Image, Eye, Plus, Trash2, Loader2, AlertCircle,
+  Tag, Image, Eye, Plus, Trash2, Loader2, AlertCircle, UploadCloud,
 } from 'lucide-react';
 
 /* ─── Tiny shared primitives ─────────────────────────────────────────────── */
@@ -294,6 +294,40 @@ export default function ListProduct() {
   const addImage    = () => setImages(i => [...i, { image_url: '', alt_text: '' }]);
   const removeImage = (i) => setImages(imgs => imgs.filter((_, idx) => idx !== i));
 
+  // Device uploads: validate, send to the backend, then fill empty slots before adding new ones.
+  const fileInputRef = useRef(null);
+  const [uploading, setUploading] = useState(false);
+  const [dragOver,  setDragOver]  = useState(false);
+  const handleFiles = async (fileList) => {
+    const files = Array.from(fileList || []);
+    if (!files.length || uploading) return;
+    const okType = f => /^image\/(jpeg|png|webp|heic|heif)$/.test(f.type) || /\.(heic|heif)$/i.test(f.name);
+    const bad    = files.filter(f => !okType(f));
+    const big    = files.filter(f => okType(f) && f.size > 8 * 1024 * 1024);
+    if (bad.length) toast.error(`${bad.length} file(s) skipped: only JPG, PNG, WEBP or HEIC images`);
+    if (big.length) toast.error(`${big.length} file(s) skipped: each image must be 8 MB or smaller`);
+    const good = files.filter(f => okType(f) && f.size <= 8 * 1024 * 1024).slice(0, 8);
+    if (files.length - bad.length - big.length > 8) toast.info('Only the first 8 images were uploaded. Add the rest in another batch.');
+    if (!good.length) return;
+    setUploading(true);
+    try {
+      const uploaded = await api.uploadImages(good);
+      const urls = (Array.isArray(uploaded) ? uploaded : []).map(u => u.image_url).filter(Boolean);
+      setImages(imgs => {
+        const next = imgs.map(img => ({ ...img }));
+        const queue = [...urls];
+        next.forEach(img => { if (!img.image_url.trim() && queue.length) img.image_url = queue.shift(); });
+        return [...next, ...queue.map(url => ({ image_url: url, alt_text: '' }))];
+      });
+      toast.success(`${urls.length} image${urls.length === 1 ? '' : 's'} uploaded`);
+    } catch (err) {
+      toast.error(err.message || 'Image upload failed. Please try again.');
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
   const toggleTag = (id) => setTagIds(ids =>
     ids.includes(id) ? ids.filter(x => x !== id) : [...ids, id]
   );
@@ -326,7 +360,7 @@ export default function ListProduct() {
     }
     if (step === 3) {
       if (!images.some(img => img.image_url.trim())) {
-        toast.error('At least one product image URL is required');
+        toast.error('Add at least one product image');
         return false;
       }
     }
@@ -615,8 +649,29 @@ export default function ListProduct() {
             <div>
               <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--ink)' }}>Product Images</h2>
               <p style={{ margin: '4px 0 0', fontSize: 13, color: 'var(--muted)' }}>
-                Add image URLs. First image is the main thumbnail.
+                Upload photos from your device or paste image links. The first image is the main thumbnail.
               </p>
+            </div>
+
+            <div
+              role="button" tabIndex={0}
+              onClick={() => !uploading && fileInputRef.current?.click()}
+              onKeyDown={e => { if ((e.key === 'Enter' || e.key === ' ') && !uploading) { e.preventDefault(); fileInputRef.current?.click(); } }}
+              onDragOver={e => { e.preventDefault(); setDragOver(true); }}
+              onDragLeave={() => setDragOver(false)}
+              onDrop={e => { e.preventDefault(); setDragOver(false); handleFiles(e.dataTransfer.files); }}
+              style={{
+                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, padding: '28px 16px', textAlign: 'center',
+                borderRadius: 12, border: `2px dashed ${dragOver ? '#C8792C' : 'var(--border)'}`, background: dragOver ? '#F0DCC0' : '#FDF9F1',
+                cursor: uploading ? 'wait' : 'pointer', transition: 'background .15s, border-color .15s',
+              }}>
+              {uploading ? <Loader2 size={26} color="#C8792C" style={{ animation: 'spin 1s linear infinite' }} /> : <UploadCloud size={26} color="#C8792C" />}
+              <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--ink)' }}>
+                {uploading ? 'Uploading…' : 'Click to upload or drag photos here'}
+              </div>
+              <div style={{ fontSize: 12, color: 'var(--muted)' }}>JPG, PNG, WEBP or HEIC · up to 8 MB each · 8 at a time</div>
+              <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif" multiple hidden
+                onChange={e => handleFiles(e.target.files)} />
             </div>
 
             {images.map((img, i) => (
@@ -635,8 +690,8 @@ export default function ListProduct() {
                     )}
                   </div>
                   <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8 }}>
-                    <Field label={i === 0 ? 'Image URL (Main) *' : `Image URL ${i + 1}`} required={i === 0}>
-                      <Input value={img.image_url} onChange={e => updateImage(i, 'image_url', e.target.value)} placeholder="https://example.com/product.jpg" type="url" />
+                    <Field label={i === 0 ? 'Image (Main) *' : `Image ${i + 1}`} required={i === 0}>
+                      <Input value={img.image_url} onChange={e => updateImage(i, 'image_url', e.target.value)} placeholder="Uploaded automatically, or paste an image link" type="url" />
                     </Field>
                     <Field label="Alt Text">
                       <Input value={img.alt_text} onChange={e => updateImage(i, 'alt_text', e.target.value)} placeholder="e.g. Front view of the product" />

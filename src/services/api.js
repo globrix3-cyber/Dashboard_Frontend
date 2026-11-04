@@ -113,7 +113,10 @@ async function attemptTokenRefresh() {
 async function request(method, path, body) {
   const url = `${BASE_URL}${path.startsWith('/') ? '' : '/'}${path}`;
 
-  const headers = { 'Content-Type': 'application/json' };
+  // FormData (file uploads) sets its own multipart Content-Type with the boundary.
+  const isForm  = typeof FormData !== 'undefined' && body instanceof FormData;
+  const payload = isForm ? body : (body ? JSON.stringify(body) : undefined);
+  const headers = isForm ? {} : { 'Content-Type': 'application/json' };
   const token = getToken();
   if (token) headers.Authorization = `Bearer ${token}`;
 
@@ -122,7 +125,7 @@ async function request(method, path, body) {
     res = await fetch(url, {
       method,
       headers,
-      body: body ? JSON.stringify(body) : undefined,
+      body: payload,
     });
   } catch (err) {
     toast.error("Cannot connect to server. Please check your connection.");
@@ -139,7 +142,7 @@ async function request(method, path, body) {
         refreshQueue.push({ resolve, reject });
       }).then((newToken) => {
         headers.Authorization = `Bearer ${newToken}`;
-        return fetch(url, { method, headers, body: body ? JSON.stringify(body) : undefined })
+        return fetch(url, { method, headers, body: payload })
           .then(r => {
             if (r.status === 401) {
               clearTokens();
@@ -173,7 +176,7 @@ async function request(method, path, body) {
       if (freshToken && freshToken !== token) {
         processQueue(null, freshToken);
         headers.Authorization = `Bearer ${freshToken}`;
-        res = await fetch(url, { method, headers, body: body ? JSON.stringify(body) : undefined });
+        res = await fetch(url, { method, headers, body: payload });
       } else {
         processQueue(refreshError);
         clearTokens();
@@ -186,7 +189,7 @@ async function request(method, path, body) {
       res = await fetch(url, {
         method,
         headers,
-        body: body ? JSON.stringify(body) : undefined,
+        body: payload,
       });
     }
 
@@ -269,6 +272,11 @@ export const api = {
   updateOrderStatus: (id, status) => patch(`/api/orders/${id}/status`, { status }),
 
   // ── Products ─────────────────────────────────────────────────────────────
+  uploadImages:  (files) => {
+    const form = new FormData();
+    files.forEach(f => form.append('images', f));
+    return post('/api/uploads/images', form);
+  },
   getProducts:   (params = {}) => get(`/api/products?${new URLSearchParams(params)}`),
   getProduct:    (id)          => get(`/api/products/${id}`),
   createProduct: (body)        => post('/api/products', body),
