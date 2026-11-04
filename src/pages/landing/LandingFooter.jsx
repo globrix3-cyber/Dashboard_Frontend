@@ -31,6 +31,7 @@ export default function LandingFooter() {
           <div>
             <h5 style={heading}>LET’S BUILD SOMETHING</h5>
             <p style={{ fontSize: 12, lineHeight: 1.6, margin: '0 0 12px' }}>A considered marketplace.<br />For independent businesses.</p>
+            <Link to="/our-story" style={linkStyle}>Our Story</Link>
             <Link to="/contact" style={linkStyle}>Contact us ↗</Link>
           </div>
         </div>

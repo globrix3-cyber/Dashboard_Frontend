@@ -4,13 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Heart, ShoppingBag, Search } from 'lucide-react';
 import { toggleLogin } from '../../features/auth/authSlice';
 import { useBreakpoint } from '../../hooks/useBreakpoint';
+import { CATEGORY_LINKS, useCategoryCounts, hasProducts } from './categoryLinks';
 
-const NAV_ITEMS = [
-  { label: 'Home & Living',         to: '/products?category=Home%20%26%20Garden' },
-  { label: 'Fashion & Accessories', to: '/products?category=Apparel%20%26%20Textiles' },
-  { label: 'Beauty & Wellness',     to: '/products?category=Beauty%20%26%20Personal%20Care' },
-  { label: 'Gifts & Lifestyle',     to: '/products?category=Handicrafts%20%26%20Gifts' },
-];
 
 const subNavLink = { display: 'flex', alignItems: 'center', fontSize: 12, color: '#5B4632', textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0 };
 
@@ -57,6 +52,8 @@ export default function LandingNavbar() {
   const navigate   = useNavigate();
   const bp         = useBreakpoint();
   const isLoggedIn = !!useSelector(s => s.auth.token);
+  const counts     = useCategoryCounts();
+  const NAV_ITEMS  = CATEGORY_LINKS.filter(c => hasProducts(counts, c.root));
   const [menuOpen, setMenuOpen] = useState(false);
   const [query, setQuery]       = useState('');
 
@@ -108,6 +105,7 @@ export default function LandingNavbar() {
             {NAV_ITEMS.map(item => <Link key={item.label} to={item.to} style={subNavLink}>{item.label}</Link>)}
             {!bp.isTablet && (
               <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 40 }}>
+                <Link to="/our-story" style={subNavLink}>Our Story</Link>
                 <a href="/#makers" style={{ ...subNavLink, gap: 18 }}>Meet the makers <span>↗</span></a>
                 <span style={{ fontSize: 9, letterSpacing: '.16em', color: '#5B4632', whiteSpace: 'nowrap' }}>INDIA, WITH LOVE <span style={{ color: '#C8792C', fontSize: 13 }}>✳</span></span>
               </div>

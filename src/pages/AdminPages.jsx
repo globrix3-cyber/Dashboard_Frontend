@@ -571,7 +571,7 @@ export function AdminReportsPage() {
   const { data: stats, loading } = useFetchData(() => api.admin.getStats());
 
   const kpis = stats ? [
-    { label: 'Total Users',          value: stats.totalUsers     ?? '—', color: C.navy,    bg: C.navyLt,    icon: Users       },
+    { label: 'Active Users',          value: stats.totalUsers     ?? '—', color: C.navy,    bg: C.navyLt,    icon: Users       },
     { label: 'Active Companies',     value: stats.totalCompanies ?? '—', color: C.emerald, bg: C.emeraldLt, icon: Building2   },
     { label: 'Products Listed',      value: stats.totalProducts  ?? '—', color: C.saffron, bg: C.saffronLt, icon: ShoppingBag },
     { label: 'Monthly Revenue',      value: stats.monthlyRevenue ?? '—', color: C.gold,    bg: C.goldLt,    icon: DollarSign  },

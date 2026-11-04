@@ -126,7 +126,7 @@ export default function AdminDashboard() {
   };
 
   const statCards = [
-    { icon: Users,       label: 'Total Users',          value: stats?.totalUsers     ?? '—', color: C.navy,    trend: null,    badge: null },
+    { icon: Users,       label: 'Active Users',          value: stats?.totalUsers     ?? '—', color: C.navy,    trend: null,    badge: null },
     { icon: Building2,   label: 'Companies',            value: stats?.totalCompanies ?? '—', color: C.emerald, trend: null,   badge: null },
     { icon: ShoppingBag, label: 'Products Listed',      value: stats?.totalProducts  ?? '—', color: C.saffron, trend: null,   badge: null },
     { icon: DollarSign,  label: 'Monthly Revenue',      value: stats?.monthlyRevenue ?? '—', color: C.gold,    trend: null,   badge: null },

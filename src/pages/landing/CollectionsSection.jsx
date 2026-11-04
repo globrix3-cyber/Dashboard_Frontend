@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useBreakpoint, rGutter } from '../../hooks/useBreakpoint';
+import { CATEGORY_LINKS, useCategoryCounts, hasProducts } from './categoryLinks';
 
 const SERIF = "'Cormorant Garamond', Georgia, serif";
 
-const COLLECTIONS = [
-  { name: 'Home & Living',         body: 'Everyday objects, beautifully considered.', img: '/images/v3/ceramics.jpg',              to: '/products?category=Home%20%26%20Garden' },
-  { name: 'Fashion & Accessories', body: 'Small details. A signature style.',         img: '/images/v3/bags.jpg', to: '/products?category=Apparel%20%26%20Textiles' },
-  { name: 'Beauty & Wellness',     body: 'A little ritual goes a long way.',          img: '/images/v3/skincare.jpg',              to: '/products?category=Beauty%20%26%20Personal%20Care' },
-  { name: 'Gifts & Lifestyle',     body: 'Thoughtful things, waiting to be found.',   img: '/images/v3/decor.jpg',                 to: '/products?category=Handicrafts%20%26%20Gifts' },
-];
+const DETAILS = {
+  'Home & Living':         { body: 'Everyday objects, beautifully considered.', img: '/images/v3/ceramics.jpg' },
+  'Fashion & Accessories': { body: 'Small details. A signature style.',         img: '/images/v3/bags.jpg' },
+  'Beauty & Wellness':     { body: 'A little ritual goes a long way.',          img: '/images/v3/skincare.jpg' },
+  'Gifts & Lifestyle':     { body: 'Thoughtful things, waiting to be found.',   img: '/images/v3/decor.jpg' },
+};
+const COLLECTIONS = CATEGORY_LINKS.map(c => ({ name: c.label, root: c.root, to: c.to, ...DETAILS[c.label] }));
 
 function CollectionCard({ item, index, bp }) {
   const [hov, setHov] = useState(false);
@@ -29,7 +31,9 @@ function CollectionCard({ item, index, bp }) {
 }
 
 export default function CollectionsSection() {
-  const bp = useBreakpoint();
+  const bp     = useBreakpoint();
+  const counts = useCategoryCounts();
+  const shown  = COLLECTIONS.filter(c => hasProducts(counts, c.root));
   return (
     <section id="collections" style={{ scrollMarginTop: 90, background: '#FDF9F1', padding: bp.isMobile ? '44px 0' : '66px 0 60px' }}>
       <div style={rGutter(bp)}>
@@ -42,8 +46,8 @@ export default function CollectionsSection() {
             Explore all products <span>↗</span>
           </Link>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: bp.isMobile ? 'repeat(2,1fr)' : 'repeat(4,1fr)', gap: bp.isMobile ? '28px 12px' : 22 }}>
-          {COLLECTIONS.map((item, i) => <CollectionCard key={item.name} item={item} index={i} bp={bp} />)}
+        <div style={{ display: 'grid', gridTemplateColumns: bp.isMobile ? 'repeat(2,1fr)' : `repeat(${Math.max(shown.length, 3)},1fr)`, gap: bp.isMobile ? '28px 12px' : 22 }}>
+          {shown.map((item, i) => <CollectionCard key={item.name} item={item} index={i} bp={bp} />)}
         </div>
       </div>
     </section>
