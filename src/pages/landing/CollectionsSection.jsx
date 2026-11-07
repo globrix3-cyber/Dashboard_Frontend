@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useBreakpoint, rGutter } from '../../hooks/useBreakpoint';
 
-const SERIF = "'Cormorant Garamond', Georgia, serif";
+const SERIF = "'Canela', 'Cormorant Garamond', Georgia, serif";
 const INK   = '#5B4632';
 
 const COLLECTIONS = [
@@ -15,7 +15,8 @@ const COLLECTIONS = [
 
 function CollectionCard({ item, style, bp, big }) {
   const [hov, setHov] = useState(false);
-  const labelSize = bp.isMobile ? (big ? 30 : 22) : 30;
+  // Reference: 27.4px desktop; mobile 28px (wide first tile) / 21px.
+  const labelSize = bp.isMobile ? (big ? 28 : 21) : bp.isTablet ? 24 : 27.4;
   return (
     <Link
       to={item.to}
@@ -30,7 +31,7 @@ function CollectionCard({ item, style, bp, big }) {
         display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8,
         background: '#FDF9F1', borderRadius: 6, padding: bp.isMobile ? '8px 10px' : '10px 16px',
         boxShadow: '0 6px 18px rgba(43,32,22,.08)',
-        fontFamily: SERIF, fontSize: labelSize, fontWeight: 400, lineHeight: 1.1, color: INK,
+        fontFamily: SERIF, fontSize: labelSize, fontWeight: 300, lineHeight: 1.1, color: INK,
       }}>
         {item.name} <span style={{ fontSize: 11, flexShrink: 0 }}>↗</span>
       </span>
@@ -48,10 +49,10 @@ export default function CollectionsSection() {
     <section id="collections" style={{ scrollMarginTop: 90, background: '#FDF9F1', padding: bp.isMobile ? '56px 0 44px' : '76px 0 66px' }}>
       <div style={rGutter(bp)}>
         <div style={{ display: 'flex', alignItems: bp.isMobile ? 'flex-start' : 'flex-end', justifyContent: 'space-between', gap: 16, marginBottom: bp.isMobile ? 26 : 30 }}>
-          <h2 style={{ fontFamily: SERIF, fontSize: bp.isMobile ? 34 : 58, fontWeight: 300, color: INK, margin: 0, lineHeight: 1.08, letterSpacing: '-.01em' }}>
+          <h2 style={{ fontFamily: SERIF, fontSize: bp.isMobile ? 35 : bp.isTablet ? 46 : 57.6, fontWeight: 300, color: INK, margin: 0, lineHeight: 1.08, letterSpacing: '-1px' }}>
             Find your next collection.
           </h2>
-          <Link to="/products" style={{ display: 'flex', gap: 16, flexShrink: 0, marginTop: bp.isMobile ? 14 : 0, marginBottom: bp.isMobile ? 0 : 6, fontSize: 9, letterSpacing: '.14em', color: INK, textDecoration: 'none', borderBottom: `1px solid ${INK}`, paddingBottom: 6 }}>
+          <Link to="/products" style={{ display: 'flex', gap: 16, flexShrink: 0, marginTop: bp.isMobile ? 14 : 0, marginBottom: bp.isMobile ? 0 : 6, fontSize: bp.isMobile ? 8 : 10, letterSpacing: bp.isMobile ? '1px' : '1.4px', fontWeight: 400, color: INK, textDecoration: 'none', borderBottom: `1px solid ${INK}`, paddingBottom: 6 }}>
             VIEW ALL <span>↗</span>
           </Link>
         </div>

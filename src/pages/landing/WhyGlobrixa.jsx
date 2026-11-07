@@ -1,4 +1,4 @@
-import { useBreakpoint, rGutter } from '../../hooks/useBreakpoint';
+import { useBreakpoint } from '../../hooks/useBreakpoint';
 
 const REASONS = [
   { icon: 'crafted-character.png',    title: 'Crafted character',      body: 'Discover pieces inspired by traditional skills and thoughtful design.' },
@@ -9,18 +9,22 @@ const REASONS = [
 
 export default function WhyGlobrixa() {
   const bp = useBreakpoint();
-  const iconSize = bp.isMobile ? 52 : 64;
+  const m = bp.isMobile;
+  const iconSize = m ? 74 : 86;
+  // Reference layout: 1440px → 458px tall, 4 equal columns inside a 57.6px gutter;
+  // 390px → 582px tall, 2x2 grid inside a 15.6px gutter.
+  const gutter = m ? 15.6 : bp.isTablet ? 32 : 57.6;
   return (
-    <section style={{ background: '#FDF9F1', padding: bp.isMobile ? '48px 0 44px' : '52px 0 58px' }}>
-      <div style={rGutter(bp)}>
-        <h2 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: bp.isMobile ? 36 : 54, fontWeight: 300, lineHeight: 1.1, color: '#5B4632', textAlign: 'center', margin: `0 0 ${bp.isMobile ? 32 : 76}px` }}>WHY GLOBRIXA?</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: bp.isMobile ? 'repeat(2,1fr)' : 'repeat(4,1fr)', rowGap: 32 }}>
-          {REASONS.map((r, i) => (
-            <div key={r.title} style={{ textAlign: 'center', padding: bp.isMobile ? '0 10px' : bp.isTablet ? '0 16px' : '0 28px', borderLeft: i && (!bp.isMobile || i % 2) ? '1px solid #E3D5C1' : 'none', color: '#5B4632' }}>
+    <section style={{ background: '#FDF9F1', padding: m ? `40px ${gutter}px` : `64px ${gutter}px 55px` }}>
+      <div style={{ maxWidth: 1440, margin: '0 auto' }}>
+        <h2 style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: m ? 33 : bp.isTablet ? 40 : 47.5, fontWeight: 300, lineHeight: 1.1, letterSpacing: '0.3px', color: '#5B4632', textAlign: 'center', margin: `0 0 ${m ? 34 : 72}px` }}>WHY GLOBRIXA?</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: m ? 'repeat(2,minmax(0,1fr))' : 'repeat(4,minmax(0,1fr))', rowGap: 30 }}>
+          {REASONS.map(r => (
+            <div key={r.title} style={{ textAlign: 'center', padding: m ? '0 10px' : bp.isTablet ? '0 16px' : '0 28px', color: '#5B4632' }}>
               <img src={`/images/v3/why-icons/${r.icon}`} alt="" width={iconSize} height={iconSize} loading="lazy" decoding="async"
-                style={{ display: 'block', width: iconSize, height: iconSize, objectFit: 'contain', margin: `0 auto ${bp.isMobile ? 20 : 46}px` }} />
-              <h3 style={{ margin: `0 0 ${bp.isMobile ? 14 : 26}px`, fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: bp.isMobile ? 11 : 13, fontWeight: 500, letterSpacing: '.08em', textTransform: 'uppercase' }}>{r.title}</h3>
-              <p style={{ margin: '0 auto', maxWidth: 270, fontSize: bp.isMobile ? 12 : 15, lineHeight: 1.75, color: '#79634E' }}>{r.body}</p>
+                style={{ display: 'block', width: iconSize, height: iconSize, objectFit: 'contain', margin: `0 auto ${m ? 19 : 35}px` }} />
+              <h3 style={{ width: 'fit-content', maxWidth: '100%', minHeight: m ? 33 : 20, margin: `0 auto ${m ? 12 : 22}px`, fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: m ? 11 : 13.5, lineHeight: m ? '16.5px' : '20px', fontWeight: 600, letterSpacing: m ? '0.45px' : '0.65px', textTransform: 'uppercase' }}>{r.title}</h3>
+              <p style={{ margin: '0 auto', maxWidth: m ? 155 : 270, fontSize: m ? 12 : 14.4, lineHeight: m ? 1.75 : '26px', color: '#5B4632' }}>{r.body}</p>
             </div>
           ))}
         </div>
