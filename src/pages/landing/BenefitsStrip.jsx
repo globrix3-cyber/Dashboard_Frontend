@@ -1,24 +1,22 @@
 import { useBreakpoint, rGutter } from '../../hooks/useBreakpoint';
 
 const BENEFITS = [
-  { icon: '◈', title: 'Discover something different', body: 'Products with a point of view' },
-  { icon: '⌑', title: 'Buy for your business',        body: 'Explore prices & minimum orders' },
-  { icon: '↔', title: 'Connect with the makers',      body: 'Start a wholesale conversation' },
-  { icon: '✳', title: 'Grow your own way',            body: 'For stores with their own story' },
+  { img: '/images/v3/benefits-discovery.png', lines: ['Discover distinctive', 'products'] },
+  { img: '/images/v3/benefits-trade.png',     lines: ['Made for', 'trade buyers'] },
+  { img: '/images/v3/benefits-enquiry.png',   lines: ['Source quality', 'products'] },
 ];
 
 export default function BenefitsStrip() {
-  const bp = useBreakpoint();
+  const bp   = useBreakpoint();
+  const icon = bp.isMobile ? 48 : 60;
   return (
-    <section style={{ background: '#FDF9F1', borderBottom: '1px solid #E3D5C1', padding: '24px 0' }}>
-      <div style={{ ...rGutter(bp), display: 'grid', gridTemplateColumns: bp.isDesktop ? 'repeat(4,1fr)' : 'repeat(2,1fr)', rowGap: 20 }}>
-        {BENEFITS.map((b, i) => (
-          <div key={b.title} style={{ display: 'flex', alignItems: 'center', justifyContent: bp.isDesktop ? 'center' : 'flex-start', gap: bp.isMobile ? 10 : 18, padding: bp.isMobile ? '0 6px' : '0 14px', borderLeft: i && (bp.isDesktop || i % 2) ? '1px solid #E3D5C1' : 'none', color: '#5B4632' }}>
-            <span style={{ fontSize: 22, flexShrink: 0 }}>{b.icon}</span>
-            <div>
-              <div style={{ fontSize: 12 }}>{b.title}</div>
-              <div style={{ fontSize: 10, marginTop: 8, color: '#79634E' }}>{b.body}</div>
-            </div>
+    <section style={{ background: '#FDF9F1', borderBottom: '1px solid #E3D5C1', padding: bp.isMobile ? '24px 0' : '30px 0 20px' }}>
+      {/* Mobile: two on the first row, the third centred below (as in the reference). */}
+      <div style={{ ...rGutter(bp), display: 'flex', flexWrap: 'wrap', justifyContent: 'center', rowGap: 22 }}>
+        {BENEFITS.map(b => (
+          <div key={b.img} style={{ flex: bp.isMobile ? '0 0 50%' : '1 1 0', textAlign: 'center', color: '#5B4632', fontSize: bp.isMobile ? 13 : 17, lineHeight: 1.6 }}>
+            <img src={b.img} alt="" loading="lazy" decoding="async" style={{ width: icon, height: icon, objectFit: 'contain', display: 'block', margin: '0 auto 12px' }} />
+            {b.lines[0]}<br />{b.lines[1]}
           </div>
         ))}
       </div>

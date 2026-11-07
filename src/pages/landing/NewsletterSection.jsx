@@ -35,14 +35,12 @@ export default function NewsletterSection() {
   };
 
   return (
-    <section style={{ display: 'grid', gridTemplateColumns: bp.isMobile ? '1fr' : '1fr 1fr', background: '#FDF9F1' }}>
-      <img src="/images/v3/newsletter-coffee-table.jpeg" alt="Natural wooden coffee table in a warm living room" loading="lazy" decoding="async"
-        style={{ width: '100%', height: bp.isMobile ? 280 : '100%', minHeight: bp.isMobile ? 0 : 560, maxHeight: bp.isMobile ? 280 : 720, objectFit: 'cover', display: 'block' }} />
-      <div style={{ padding: bp.isMobile ? '36px 18px' : '0 58px', display: 'flex', flexDirection: 'column', justifyContent: 'center', color: INK }}>
-        <div style={{ fontSize: 26, lineHeight: 1 }}>✳</div>
-        <div style={{ fontSize: 9, letterSpacing: '.22em', margin: '16px 0 14px' }}>THE GLOBRIXA EDIT</div>
-        <h2 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: bp.isMobile ? 42 : 62, fontWeight: 600, margin: 0, lineHeight: 1.1 }}>Stay inspired.</h2>
-        <p style={{ fontSize: 15, lineHeight: 1.7, margin: '16px 0 28px', maxWidth: 520 }}>
+    <section style={{ display: 'grid', gridTemplateColumns: bp.isMobile ? '1fr' : '1fr 1fr', background: '#F0DCC0' }}>
+      <div style={{ padding: bp.isMobile ? '40px 18px 36px' : bp.isTablet ? '40px 32px' : '30px 48px', display: 'flex', flexDirection: 'column', justifyContent: 'center', color: INK }}>
+        <div aria-hidden="true" style={{ fontSize: 24, lineHeight: 1, color: '#C8792C', fontWeight: 300 }}>✳</div>
+        <div style={{ fontSize: 9, fontWeight: 500, letterSpacing: '.22em', margin: '14px 0 12px' }}>THE GLOBRIXA EDIT</div>
+        <h2 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: bp.isMobile ? 42 : 58, fontWeight: 300, letterSpacing: '-.015em', margin: 0, lineHeight: 1.05 }}>Stay inspired.</h2>
+        <p style={{ fontSize: bp.isMobile ? 13 : 15, lineHeight: 1.65, margin: '18px 0 26px', maxWidth: 510 }}>
           Discover fresh finds, homeware trends and the latest from Globrixa. Inspiration for your store’s next chapter, delivered to your inbox.
         </p>
         {subscribed ? (
@@ -56,16 +54,18 @@ export default function NewsletterSection() {
             <input id="newsletter-company" type="text" name="company" tabIndex={-1} autoComplete="off" value={company} onChange={e => setCompany(e.target.value)} />
           </div>
           <label htmlFor="newsletter-email" style={{ display: 'block', fontSize: 12, marginBottom: 8 }}>Your business email</label>
-          <div style={{ display: 'flex', flexDirection: bp.isMobile ? 'column' : 'row', maxWidth: 605 }}>
+          <div style={{ display: 'flex', flexDirection: bp.isMobile ? 'column' : 'row', maxWidth: 625 }}>
             <input id="newsletter-email" type="email" required value={email} onChange={e => setEmail(e.target.value)} placeholder="you@yourbusiness.com"
-              style={{ flex: 1, minWidth: 0, minHeight: 49, padding: '0 13px', border: `1px solid ${INK}`, background: '#FDF9F1', color: INK, fontSize: 14, fontFamily: 'inherit', outline: 'none', boxSizing: 'border-box' }} />
-            <button type="submit" disabled={submitting} aria-busy={submitting} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 18, minHeight: 49, padding: '0 16px', background: INK, color: '#FDF9F1', fontSize: 12, border: 'none', cursor: submitting ? 'wait' : 'pointer', opacity: submitting ? 0.7 : 1, fontFamily: 'inherit', whiteSpace: 'nowrap' }}>
+              style={{ flex: 1, minWidth: 0, minHeight: 46, padding: '0 13px', border: `1px solid ${INK}`, background: '#FDF9F1', color: INK, fontSize: 14, fontFamily: 'inherit', outline: 'none', boxSizing: 'border-box' }} />
+            <button type="submit" disabled={submitting} aria-busy={submitting} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 18, minHeight: 46, padding: '0 16px', background: INK, color: '#F4D9A0', fontSize: 12, border: 'none', cursor: submitting ? 'wait' : 'pointer', opacity: submitting ? 0.7 : 1, fontFamily: 'inherit', whiteSpace: 'nowrap' }}>
               {submitting ? 'Signing you up…' : <>Sign up to our newsletter <span>↗</span></>}
             </button>
           </div>
         </form>
         )}
       </div>
+      <img src="/images/v3/newsletter-coffee-table.jpeg" alt="Natural wooden coffee table in a warm living room" loading="lazy" decoding="async"
+        style={{ width: '100%', height: bp.isMobile ? 260 : '100%', minHeight: bp.isMobile ? 0 : 343, maxHeight: bp.isMobile ? 260 : 345, objectFit: 'cover', display: 'block' }} />
     </section>
   );
 }

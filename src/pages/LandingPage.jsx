@@ -7,8 +7,7 @@ import WhyGlobrixa        from './landing/WhyGlobrixa';
 import MakerStory         from './landing/MakerStory';
 import CraftBand          from './landing/CraftBand';
 import RetailAudience     from './landing/RetailAudience';
-import FreshWay           from './landing/FreshWay';
-import SellerBanner       from './landing/SellerBanner';
+import FaqSection         from './landing/FaqSection';
 import NewsletterSection  from './landing/NewsletterSection';
 import LandingFooter      from './landing/LandingFooter';
 import usePageMeta        from '../hooks/usePageMeta';
@@ -35,13 +34,12 @@ export default function LandingPage() {
       <HeroSection />
       <BenefitsStrip />
       <CollectionsSection />
+      <CraftBand />
       <NewThisWeek />
+      <RetailAudience />
       <WhyGlobrixa />
       <MakerStory />
-      <CraftBand />
-      <RetailAudience />
-      <FreshWay />
-      <SellerBanner />
+      <FaqSection />
       <NewsletterSection />
       <LandingFooter />
     </div>

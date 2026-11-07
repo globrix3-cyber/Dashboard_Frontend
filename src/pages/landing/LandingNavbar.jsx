@@ -9,11 +9,20 @@ import { CATEGORY_LINKS, useCategoryCounts, hasProducts } from './categoryLinks'
 
 const subNavLink = { display: 'flex', alignItems: 'center', fontSize: 12, color: '#5B4632', textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0 };
 
-function Logo({ size, onClick }) {
+const aboutLink = { display: 'flex', alignItems: 'center', alignSelf: 'center', background: '#F5ECDC', border: '1px solid rgba(91,70,50,.31)', borderRadius: 3, padding: '8px 12px', fontSize: 11, fontWeight: 500, color: '#5B4632', textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0 };
+
+// Logo pill: { fontSize, padding } scale down on smaller screens.
+const LOGO_SIZES = {
+  desktop: { fontSize: 26, letterSpacing: 5, padding: '13px 20px 14px 25px', borderRadius: 15 },
+  tablet:  { fontSize: 21, letterSpacing: 4, padding: '10px 16px 11px 20px', borderRadius: 13 },
+  mobile:  { fontSize: 17, letterSpacing: 3, padding: '7px 11px 8px 14px',   borderRadius: 10 },
+};
+
+function Logo({ variant, onClick }) {
+  const s = LOGO_SIZES[variant];
   return (
-    <button onClick={onClick} aria-label="Globrixa home" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, flexShrink: 0, display: 'flex', alignItems: 'center', gap: 12 }}>
-      <span style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: size, fontWeight: 600, color: '#5B4632', letterSpacing: '.14em', whiteSpace: 'nowrap' }}>GLOBRIXA</span>
-      <span aria-hidden="true" style={{ color: '#C8792C', fontSize: size * .7 }}>✳</span>
+    <button onClick={onClick} aria-label="Globrixa home" style={{ background: '#5B4632', color: '#FDF9F1', border: 'none', cursor: 'pointer', padding: s.padding, borderRadius: s.borderRadius, flexShrink: 0, display: 'flex', alignItems: 'center', fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: s.fontSize, fontWeight: 600, letterSpacing: s.letterSpacing, lineHeight: 1, whiteSpace: 'nowrap' }}>
+      GLOBRIXA
     </button>
   );
 }
@@ -84,7 +93,7 @@ export default function LandingNavbar() {
         <AnnouncementBar bp={bp} />
         <nav style={{ background: '#FDF9F1', borderBottom: '1px solid #E3D5C1', position: 'sticky', top: 0, zIndex: 1000 }}>
           <div style={{ maxWidth: 1440, margin: '0 auto', height: bp.isTablet ? 76 : 90, display: 'flex', alignItems: 'center', gap: bp.isTablet ? 16 : 44, padding: `0 ${side}px`, boxSizing: 'border-box' }}>
-            <Logo size={bp.isTablet ? 21 : 26} onClick={() => navigate('/')} />
+            <Logo variant={bp.isTablet ? 'tablet' : 'desktop'} onClick={() => navigate('/')} />
             {searchBox(42)}
             <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: bp.isTablet ? 12 : 28, flexShrink: 0 }}>
               {!bp.isTablet && <TextButton onClick={openSupplierRegister}>Sell on Globrixa</TextButton>}
@@ -101,6 +110,7 @@ export default function LandingNavbar() {
         </nav>
         <div style={{ background: '#FDF9F1', borderBottom: '1px solid #E3D5C1' }}>
           <div style={{ maxWidth: 1440, margin: '0 auto', height: 56, display: 'flex', alignItems: 'stretch', gap: 30, padding: `0 ${side}px`, boxSizing: 'border-box', overflowX: 'auto', scrollbarWidth: 'none' }}>
+            <Link to="/about" style={aboutLink}>About us</Link>
             <Link to="/" style={{ ...subNavLink, fontWeight: 600, borderBottom: '2px solid #5B4632' }}>Discover</Link>
             {NAV_ITEMS.map(item => <Link key={item.label} to={item.to} style={subNavLink}>{item.label}</Link>)}
             {!bp.isTablet && (
@@ -118,6 +128,7 @@ export default function LandingNavbar() {
 
   /* ── Mobile ─────────────────────────────────────────────────────────── */
   const menuLinks = [
+    ['About us', () => { navigate('/about'); setMenuOpen(false); }],
     ...NAV_ITEMS.map(item => [item.label, () => { navigate(item.to); setMenuOpen(false); }]),
     ['Sell on Globrixa', openSupplierRegister],
     ['Our Story', () => { navigate('/our-story'); setMenuOpen(false); }],
@@ -127,7 +138,7 @@ export default function LandingNavbar() {
     <>
       <AnnouncementBar bp={bp} />
       <nav style={{ background: '#FDF9F1', borderBottom: '1px solid #E3D5C1', height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 16px', position: 'sticky', top: 0, zIndex: 1000 }}>
-        <Logo size={22} onClick={() => navigate('/')} />
+        <Logo variant="mobile" onClick={() => navigate('/')} />
         <button onClick={() => setMenuOpen(o => !o)} aria-label="Menu" aria-expanded={menuOpen}
           style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 6, display: 'flex', flexDirection: 'column', gap: 5 }}>
           {[0, 1, 2].map(i => (
