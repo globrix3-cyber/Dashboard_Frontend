@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { useBreakpoint, rGutter } from '../../hooks/useBreakpoint';
 
 const SERIF       = "'Canela', 'Cormorant Garamond', Georgia, serif";
-const LEFT_IMAGE  = '/images/v3/boutique-studio-portrait.jpg';
-const RIGHT_IMAGE = '/images/v3/furniture-shop-portrait.jpg';
+const LEFT_IMAGE  = '/images/v3/retailer-shop-cottonbro.jpg';
+const RIGHT_IMAGE = '/images/v3/retailer-packing-kampus.jpg';
 
 export default function RetailAudience() {
   const bp = useBreakpoint();
@@ -12,8 +12,8 @@ export default function RetailAudience() {
 
   // Square portraits, as in the reference (406px desktop, 169px mobile)
   const imgStyle = { width: '100%', aspectRatio: '1 / 1', objectFit: 'cover', display: 'block', background: '#79634E' };
-  const left  = <img src={LEFT_IMAGE}  alt="Boutique owner standing in her clothing studio" loading="lazy" decoding="async" style={imgStyle} />;
-  const right = <img src={RIGHT_IMAGE} alt="Furniture shop owner seated in her store"       loading="lazy" decoding="async" style={imgStyle} />;
+  const left  = <img src={LEFT_IMAGE}  alt="Shop owner behind the counter of her lifestyle store" loading="lazy" decoding="async" style={imgStyle} />;
+  const right = <img src={RIGHT_IMAGE} alt="Retailer holding a packed shipping box"       loading="lazy" decoding="async" style={imgStyle} />;
 
   const text = (
     <div style={{ textAlign: 'center', padding: bp.isMobile ? '0 14px' : bp.isTablet ? '0 8px' : '0 39px' }}>

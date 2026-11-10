@@ -1,7 +1,4 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { toggleLogin } from '../../features/auth/authSlice';
 import { FAQS } from './data';
 import { useBreakpoint, rGutter } from '../../hooks/useBreakpoint';
 
@@ -31,16 +28,7 @@ function FaqItem({ faq, idx, open, onToggle, bp }) {
 
 export default function FaqSection() {
   const bp       = useBreakpoint();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const token    = useSelector(s => s.auth.token);
   const [openIdx, setOpenIdx] = useState(-1);
-
-  const startBrief = (e) => {
-    e.preventDefault();
-    if (token) navigate('/buyer-dashboard/rfqs/new');
-    else dispatch(toggleLogin(true));
-  };
 
   return (
     // Reference layout: 1440px → 702px tall (80px top/bottom, 6 x 82px items + 10px gaps, accordion at x=575 w=779;
@@ -48,18 +36,8 @@ export default function FaqSection() {
     // 390px → 875px tall (43px top, 20px sides, accordion starts at +295).
     <section style={{ background: '#FDF9F1', padding: bp.isMobile ? '43px 0 50px' : '80px 0' }}>
       <div style={{ ...rGutter(bp), ...(bp.isDesktop ? { paddingLeft: 86, paddingRight: 86 } : bp.isMobile ? { paddingLeft: 20, paddingRight: 20 } : {}), display: 'grid', gridTemplateColumns: bp.isMobile ? '1fr' : bp.isTablet ? '1fr 1.4fr' : '403px 1fr', columnGap: bp.isTablet ? 32 : 86, rowGap: 28, alignItems: 'start' }}>
-        <div style={{ paddingTop: bp.isMobile ? 0 : 8, paddingBottom: bp.isMobile ? 0 : 9, ...(bp.isMobile ? {} : { position: 'sticky', top: 110 }) }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 9, fontWeight: 600, letterSpacing: '2px', color: INK, marginBottom: bp.isMobile ? 14 : 22 }}>
-            <span aria-hidden="true" style={{ width: 22, height: 1, background: INK }} />A LITTLE CLARITY
-          </div>
+        <div style={{ paddingTop: bp.isMobile ? 16 : 29, paddingBottom: bp.isMobile ? 19 : 0, ...(bp.isMobile ? {} : { position: 'sticky', top: 110 }) }}>
           <h2 style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: bp.isMobile ? 43 : bp.isTablet ? 50 : 59, fontWeight: 300, lineHeight: 0.98, letterSpacing: '-1px', color: INK, margin: 0 }}>Frequently asked questions.</h2>
-          <p style={{ margin: bp.isMobile ? '19px 0 20px' : '22px 0 28px', maxWidth: bp.isMobile ? 350 : 300, fontSize: bp.isMobile ? 13 : 14, lineHeight: 1.8, color: MUTED }}>
-            The details behind your next collection. Explore the essentials of sourcing with Globrixa.
-          </p>
-          <a href={token ? '/buyer-dashboard/rfqs/new' : '/'} onClick={startBrief}
-            style={{ display: 'inline-flex', alignItems: 'center', gap: 22, paddingBottom: 5, borderBottom: `1px solid ${INK}`, fontSize: 11, color: INK, textDecoration: 'none' }}>
-            Create your sourcing brief <span aria-hidden="true">↗</span>
-          </a>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           {FAQS.map((faq, i) => (

@@ -22,7 +22,7 @@ const ROLES = [
 export default function LoginModal({ onSubmit }) {
   const dispatch    = useDispatch();
   const loginIntent = useSelector(s => s.auth.loginIntent);
-  const [mode, setMode]       = useState(() => loginIntent === 'supplier' ? 'register' : 'login');
+  const [mode, setMode]       = useState(() => (loginIntent === 'supplier' || loginIntent === 'register') ? 'register' : 'login');
   const [loading, setLoading] = useState(false);
   const [showPwd, setShowPwd] = useState(false);
   const [form, setForm] = useState({ email: '', password: '', name: '', company: '', role: loginIntent === 'supplier' ? 'supplier' : 'buyer', phoneDial: DEFAULT_PHONE_COUNTRY.dial, phoneNumber: '' });

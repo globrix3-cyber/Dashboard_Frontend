@@ -1,188 +1,220 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import { Heart, ShoppingBag, Search } from 'lucide-react';
+import { useDispatch } from 'react-redux';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Search } from 'lucide-react';
 import { toggleLogin } from '../../features/auth/authSlice';
 import { useBreakpoint } from '../../hooks/useBreakpoint';
 import { CATEGORY_LINKS, useCategoryCounts, hasProducts } from './categoryLinks';
-import { useWishlist } from '../../hooks/useWishlist';
-import { api } from '../../services/api';
 
+const MOCHA = '#5B4632';
+const CREAM = '#FDF9F1';
+const CHAMPAGNE = '#F4D9A0';
+const SERIF = "'Cormorant Garamond', Georgia, serif";
 
-const subNavLink = { display: 'flex', alignItems: 'center', fontSize: 11, fontWeight: 400, color: '#5B4632', textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0 };
+// Placeholder colour/size can't be set inline.
+const SEARCH_CSS = `
+.gx-nav-search::placeholder{color:rgba(91,70,50,.74);opacity:1}
+.gx-nav-search--m::placeholder{font-size:11px}
+`;
 
-const aboutLink = { display: 'flex', alignItems: 'center', alignSelf: 'center', background: '#F5ECDC', border: '1px solid rgba(91,70,50,.31)', borderRadius: 3, padding: '8px 12px', fontSize: 11, fontWeight: 600, color: '#5B4632', textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0 };
+const reset = { background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer', fontFamily: 'inherit', color: MOCHA };
 
-// Logo pill: { fontSize, padding } scale down on smaller screens.
-const LOGO_SIZES = {
-  desktop: { fontSize: 26, letterSpacing: 5, padding: '13px 20px 14px 25px', borderRadius: 15 },
-  tablet:  { fontSize: 22, letterSpacing: 4, padding: '10px 16px 11px 20px', borderRadius: 13 },
-  mobile:  { fontSize: 18, letterSpacing: 3.2, padding: '11px 14px 12px 17px', borderRadius: 11 },
-};
+const outlinedBtn = { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box', border: '1px solid rgba(91,70,50,.4)', borderRadius: 3, fontSize: 11, fontWeight: 500, letterSpacing: '.1px', color: MOCHA, textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0 };
 
-function Logo({ variant, onClick }) {
-  const s = LOGO_SIZES[variant];
+const createBtn = { ...reset, display: 'flex', alignItems: 'center', boxSizing: 'border-box', height: 42, background: MOCHA, border: `1px solid ${MOCHA}`, borderRadius: 3, color: CREAM, fontSize: 11, fontWeight: 500, letterSpacing: '.1px', whiteSpace: 'nowrap', flexShrink: 0 };
+
+const navLink = { display: 'flex', alignItems: 'center', height: '100%', fontSize: 11, fontWeight: 400, letterSpacing: '.05px', color: MOCHA, textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0 };
+
+function Arrow({ style }) {
   return (
-    <button onClick={onClick} aria-label="Globrixa home" style={{ background: '#5B4632', color: '#FDF9F1', border: 'none', cursor: 'pointer', padding: s.padding, borderRadius: s.borderRadius, flexShrink: 0, display: 'flex', alignItems: 'center', fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: s.fontSize, fontWeight: 600, letterSpacing: s.letterSpacing, lineHeight: 1, whiteSpace: 'nowrap' }}>
-      GLOBRIXA
-    </button>
+    <svg width="11" height="8" viewBox="0 0 11 8" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flexShrink: 0, ...style }}>
+      <path d="M.6 4h9.8M7 .7 10.4 4 7 7.3" />
+    </svg>
   );
 }
 
-function AnnouncementBar({ bp }) {
-  const goToCollections = (e) => {
-    e.preventDefault();
-    document.getElementById('collections')?.scrollIntoView({ behavior: 'smooth' });
-  };
+function SmallArrow() {
   return (
-    <div style={{ background: '#5B4632', color: '#F4D9A0', fontSize: bp.isMobile ? 9 : 11, fontWeight: 400, letterSpacing: '.3px', lineHeight: bp.isMobile ? 1.6 : 'normal', padding: bp.isMobile ? '7px 16px' : '11px 16px', display: bp.isMobile ? 'block' : 'flex', justifyContent: 'center', gap: 22, textAlign: 'center' }}>
-      <span>Made for independent businesses. Inspired by the extraordinary.</span>
-      <a href="/#collections" onClick={goToCollections} style={{ color: '#F4D9A0', textDecoration: 'underline', textUnderlineOffset: 3, marginLeft: bp.isMobile ? 10 : 0 }}>Find your next best seller ↗</a>
+    <svg width="9" height="7" viewBox="0 0 9 7" fill="none" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flexShrink: 0, marginRight: 3 }}>
+      <path d="M.5 3.5h8M5.6.6l2.9 2.9-2.9 2.9" />
+    </svg>
+  );
+}
+
+function AnnouncementBar({ isMobile, side }) {
+  return (
+    <div style={{ background: MOCHA, color: CHAMPAGNE, fontSize: isMobile ? 9 : 10, fontWeight: 400, letterSpacing: '.25px', lineHeight: isMobile ? '14px' : '15px' }}>
+      <div style={{ maxWidth: 1440, margin: '0 auto', padding: `8px ${side}px`, boxSizing: 'border-box', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
+        <span style={{ whiteSpace: 'nowrap' }}>Indian design. Global perspective.</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 18, whiteSpace: 'nowrap' }}>
+          {!isMobile && (
+            <>
+              <Link to="/products" style={{ color: CHAMPAGNE, textDecoration: 'none' }}>For trade buyers</Link>
+              <span aria-hidden="true" style={{ width: 1, height: 11, background: 'rgba(244,217,160,.314)' }} />
+            </>
+          )}
+          <span>India · INR ₹</span>
+        </div>
+      </div>
     </div>
   );
 }
 
-function TextButton({ onClick, children }) {
-  return (
-    <button onClick={onClick} style={{ padding: 0, fontSize: 12, fontWeight: 400, color: '#5B4632', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>
-      {children}
-    </button>
-  );
-}
-
-// Small count above the heart/cart icon, as in the reference header.
-function CountBadge({ n }) {
-  return <span aria-hidden="true" style={{ position: 'absolute', top: -6, right: -7, fontSize: 9, lineHeight: 1, color: '#5B4632', fontWeight: 400 }}>{n}</span>;
-}
-
-// Items in the signed-in buyer's cart; 0 when signed out.
-function useCartCount(isLoggedIn) {
-  const [count, setCount] = useState(0);
-  useEffect(() => {
-    if (!isLoggedIn) return;
-    let alive = true;
-    api.getCart()
-      .then(res => {
-        const items = Array.isArray(res) ? res : (res?.items ?? res?.data ?? []);
-        if (alive) setCount(Array.isArray(items) ? items.length : 0);
-      })
-      .catch(() => { if (alive) setCount(0); });
-    return () => { alive = false; };
-  }, [isLoggedIn]);
-  return isLoggedIn ? count : 0;
-}
-
-function IconButton({ label, onClick, children }) {
-  return (
-    <button onClick={onClick} aria-label={label} style={{ padding: 0, display: 'flex', color: '#5B4632', background: 'none', border: 'none', cursor: 'pointer' }}>
-      {children}
-    </button>
-  );
-}
-
 export default function LandingNavbar() {
-  const dispatch   = useDispatch();
-  const navigate   = useNavigate();
-  const bp         = useBreakpoint();
-  const isLoggedIn = !!useSelector(s => s.auth.token);
-  const counts     = useCategoryCounts();
-  const NAV_ITEMS  = CATEGORY_LINKS.filter(c => hasProducts(counts, c.root));
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const bp       = useBreakpoint();
+  const counts   = useCategoryCounts();
+  const NAV_ITEMS = CATEGORY_LINKS.filter(c => hasProducts(counts, c.root));
   const [query, setQuery]       = useState('');
-  const savedCount = useWishlist().ids.size;
-  const cartCount  = useCartCount(isLoggedIn);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  const openLogin            = () => { dispatch(toggleLogin(true)); };
-  const openSupplierRegister = () => { dispatch(toggleLogin({ show: true, intent: 'supplier' })); };
-  const goToBuyerPage        = (path) => { if (isLoggedIn) navigate(path); else openLogin(); };
+  const closeMenu            = () => setMenuOpen(false);
+  const openLogin            = () => { closeMenu(); dispatch(toggleLogin(true)); };
+  const openRegister         = () => { closeMenu(); dispatch(toggleLogin({ show: true, intent: 'register' })); };
+  const openSupplierRegister = () => { closeMenu(); dispatch(toggleLogin({ show: true, intent: 'supplier' })); };
   const handleSearch = (e) => {
     e.preventDefault();
+    closeMenu();
     const q = query.trim();
     navigate(q ? `/products?search=${encodeURIComponent(q)}` : '/products');
   };
+  const goToMakers = (e) => {
+    e.preventDefault();
+    closeMenu();
+    if (location.pathname === '/') document.getElementById('makers')?.scrollIntoView({ behavior: 'smooth' });
+    else navigate('/#makers');
+  };
 
-  const searchBox = (height) => (
-    <form onSubmit={handleSearch} style={{ flex: 1, maxWidth: bp.isMobile ? 'none' : 490, display: 'flex', alignItems: 'center', gap: 12, background: '#F0DCC0', height, padding: '0 18px', marginBottom: bp.isMobile ? 16 : 0 }}>
-      <Search size={16} color="#5B4632" style={{ flexShrink: 0 }} />
-      <input type="text" value={query} onChange={e => setQuery(e.target.value)} aria-label="Search products"
-        placeholder="Try ‘ceramics’, ‘linen’ or ‘gifts’"
-        style={{ flex: 1, minWidth: 0, border: 'none', outline: 'none', background: 'transparent', fontSize: 13, color: '#5B4632', fontFamily: 'inherit' }} />
-    </form>
+  // Arriving at '/#makers' from another page: scroll once the section has rendered.
+  useEffect(() => {
+    if (location.pathname !== '/' || location.hash !== '#makers') return;
+    let tries = 0;
+    const id = setInterval(() => {
+      const el = document.getElementById('makers');
+      if (el || ++tries > 20) { clearInterval(id); el?.scrollIntoView({ behavior: 'smooth' }); }
+    }, 100);
+    return () => clearInterval(id);
+  }, [location.pathname, location.hash]);
+
+  // Escape closes the mobile menu.
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e) => { if (e.key === 'Escape') setMenuOpen(false); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [menuOpen]);
+
+  // Leaving mobile layout closes the menu.
+  if (!bp.isMobile && menuOpen) setMenuOpen(false);
+
+  const searchInput = (mobile) => (
+    <input type="text" value={query} onChange={e => setQuery(e.target.value)} aria-label="Search products"
+      placeholder="Search products, materials and collections"
+      className={mobile ? 'gx-nav-search gx-nav-search--m' : 'gx-nav-search'}
+      style={{ flex: 1, minWidth: 0, height: mobile ? 40 : 42, border: 'none', outline: 'none', background: 'transparent', padding: 0, fontSize: mobile ? 16 : 12, color: MOCHA, fontFamily: 'inherit' }} />
   );
+  const submitBtn = (
+    <button type="submit" aria-label="Submit product search" style={{ ...reset, width: 32, height: 32, borderRadius: 3, display: 'grid', placeItems: 'center', flexShrink: 0 }}>
+      <Arrow />
+    </button>
+  );
+  const searchBox = { display: 'flex', alignItems: 'center', boxSizing: 'border-box', background: '#F5F0E7', border: '1px solid #DED7CC', borderRadius: 3 };
 
   /* ── Desktop / Tablet ───────────────────────────────────────────────── */
   if (!bp.isMobile) {
-    const side = bp.isTablet ? 24 : 62;
+    const side = bp.isTablet ? 24 : 65;
     return (
       <>
-        <AnnouncementBar bp={bp} />
-        <nav style={{ background: '#FDF9F1', borderBottom: '1px solid #E3D5C1', position: 'sticky', top: 0, zIndex: 1000 }}>
-          <div style={{ maxWidth: 1440, margin: '0 auto', height: bp.isTablet ? 76 : 101, display: 'flex', alignItems: 'center', gap: bp.isTablet ? 16 : 44, padding: `0 ${side}px`, boxSizing: 'border-box' }}>
-            <Logo variant={bp.isTablet ? 'tablet' : 'desktop'} onClick={() => navigate('/')} />
-            {searchBox(42)}
-            <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: bp.isTablet ? 12 : 28, flexShrink: 0 }}>
-              {!bp.isTablet && <TextButton onClick={openSupplierRegister}>Sell on Globrixa</TextButton>}
-              <TextButton onClick={openLogin}>Sign in</TextButton>
-              <IconButton label={`Wishlist, ${savedCount} saved`} onClick={() => goToBuyerPage('/buyer-dashboard')}><span style={{ position: 'relative', display: 'flex' }}><Heart size={20} /><CountBadge n={savedCount} /></span></IconButton>
-              <IconButton label={`Cart, ${cartCount} items`} onClick={() => goToBuyerPage('/buyer-dashboard/cart')}><span style={{ position: 'relative', display: 'flex' }}><ShoppingBag size={20} /><CountBadge n={cartCount} /></span></IconButton>
-              <button onClick={() => navigate('/products')}
-                style={{ display: 'flex', gap: bp.isTablet ? 12 : 26, padding: '13px 18px', background: '#5B4632', color: '#F4D9A0', fontSize: 11, fontWeight: 500, border: 'none', cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap', transition: 'background .15s' }}
-                onMouseEnter={e => { e.currentTarget.style.background = '#2B2016'; }}
-                onMouseLeave={e => { e.currentTarget.style.background = '#5B4632'; }}
-              >Start sourcing <span>↗</span></button>
+        <style>{SEARCH_CSS}</style>
+        <AnnouncementBar isMobile={false} side={side} />
+        <header style={{ background: CREAM, borderBottom: '1px solid #E7E0D7', position: 'sticky', top: 0, zIndex: 1000 }}>
+          <div style={{ borderBottom: '1px solid #EFEAE1' }}>
+            <div style={{ maxWidth: 1440, margin: '0 auto', height: 88, display: 'flex', alignItems: 'center', padding: `0 ${side}px`, boxSizing: 'border-box' }}>
+              <Link to="/" aria-label="Globrixa home" style={{ fontFamily: SERIF, fontSize: bp.isTablet ? 22 : 26, fontWeight: 600, letterSpacing: bp.isTablet ? 3 : 4, lineHeight: '31px', color: MOCHA, textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0 }}>
+                GLOBRIXA
+              </Link>
+              <form role="search" onSubmit={handleSearch} style={{ ...searchBox, flex: '0 1 620px', minWidth: 0, height: 44, marginLeft: bp.isTablet ? 20 : 51, padding: '0 6px 0 16px', gap: 14 }}>
+                <Search size={14} color={MOCHA} strokeWidth={2} style={{ flexShrink: 0 }} aria-hidden="true" />
+                {searchInput(false)}
+                {submitBtn}
+              </form>
+              <div style={{ marginLeft: 'auto', paddingLeft: bp.isTablet ? 16 : 24, display: 'flex', alignItems: 'center', gap: bp.isTablet ? 14 : 20, flexShrink: 0 }}>
+                {!bp.isTablet && <Link to="/about" style={{ ...outlinedBtn, height: 42, padding: '11px 18px' }}>About us</Link>}
+                <button onClick={openLogin} style={{ ...reset, padding: '10px 0', fontSize: 12, fontWeight: 500, whiteSpace: 'nowrap' }}>Sign in</button>
+                <button onClick={openRegister} style={{ ...createBtn, width: bp.isTablet ? 'auto' : 154, gap: 20, justifyContent: 'space-between', padding: '12px 17px' }}>
+                  Create account <SmallArrow />
+                </button>
+              </div>
             </div>
           </div>
-        </nav>
-        <div style={{ background: '#FDF9F1', borderBottom: '1px solid #E3D5C1' }}>
-          <div style={{ maxWidth: 1440, margin: '0 auto', height: 55, display: 'flex', alignItems: 'stretch', gap: 30, padding: `0 ${side}px`, boxSizing: 'border-box', overflowX: 'auto', scrollbarWidth: 'none' }}>
-            <Link to="/about" style={aboutLink}>About us</Link>
-            <Link to="/" style={{ ...subNavLink, fontWeight: 600, borderBottom: '2px solid #5B4632' }}>Discover</Link>
-            {NAV_ITEMS.map(item => <Link key={item.label} to={item.to} style={subNavLink}>{item.label}</Link>)}
-            {!bp.isTablet && (
-              <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 40 }}>
-                <Link to="/our-story" style={subNavLink}>Our Story</Link>
-                <a href="/#makers" style={{ ...subNavLink, gap: 18 }}>Meet the makers <span>↗</span></a>
-                <span style={{ fontSize: 9, fontWeight: 400, letterSpacing: '1.3px', color: '#5B4632', whiteSpace: 'nowrap' }}>INDIA, WITH LOVE <span style={{ color: '#C8792C', fontSize: 13 }}>✳</span></span>
-              </div>
-            )}
-          </div>
-        </div>
+          <nav aria-label="Categories" style={{ maxWidth: 1440, margin: '0 auto', height: 46, display: 'flex', alignItems: 'stretch', padding: `0 ${side}px`, boxSizing: 'border-box', overflowX: 'auto', scrollbarWidth: 'none' }}>
+            <div style={{ display: 'flex', alignItems: 'stretch', gap: 26.5 }}>
+              <Link to="/" aria-current={location.pathname === '/' ? 'page' : undefined} style={{ ...navLink, boxShadow: `inset 0 -2px 0 ${MOCHA}` }}>Discover</Link>
+              {NAV_ITEMS.map(item => <Link key={item.label} to={item.to} style={navLink}>{item.label}</Link>)}
+            </div>
+            <div style={{ marginLeft: 'auto', paddingLeft: 24, display: 'flex', alignItems: 'stretch', gap: 23 }}>
+              <Link to="/blog" style={navLink}>Journal</Link>
+              <a href="/#makers" onClick={goToMakers} style={navLink}>Meet the makers</a>
+            </div>
+          </nav>
+        </header>
       </>
     );
   }
 
-  /* ── Mobile: same rows as the reference — logo + icons + Start sourcing, search, category row ── */
-  const mobileIcon = { padding: '1px 6px', display: 'flex', color: '#5B4632', background: 'none', border: 'none', cursor: 'pointer' };
+  /* ── Mobile ─────────────────────────────────────────────────────────── */
+  const menuLink = { display: 'flex', alignItems: 'center', height: 48, fontSize: 13, fontWeight: 400, color: MOCHA, textDecoration: 'none' };
+  const menuInline = { ...menuLink, height: 'auto', whiteSpace: 'nowrap' };
   return (
     <>
-      <AnnouncementBar bp={bp} />
-      <header style={{ background: '#FDF9F1', borderBottom: '1px solid #E3D5C1' }}>
-        <div style={{ padding: '17px 19.5px', boxSizing: 'border-box' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <Logo variant="mobile" onClick={() => navigate('/')} />
-            <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 6 }}>
-              <button onClick={() => goToBuyerPage('/buyer-dashboard')} aria-label={`Wishlist, ${savedCount} saved`} style={mobileIcon}><span style={{ position: 'relative', display: 'flex' }}><Heart size={22} strokeWidth={1.6} /><CountBadge n={savedCount} /></span></button>
-              <button onClick={() => goToBuyerPage('/buyer-dashboard/cart')} aria-label={`Cart, ${cartCount} items`} style={mobileIcon}><span style={{ position: 'relative', display: 'flex' }}><ShoppingBag size={22} strokeWidth={1.6} /><CountBadge n={cartCount} /></span></button>
-              <button onClick={() => navigate('/products')}
-                style={{ padding: 10, marginLeft: 4, background: '#5B4632', color: '#F4D9A0', border: '1px solid #5B4632', fontSize: 10, fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>
-                Start sourcing
+      <style>{SEARCH_CSS}</style>
+      <AnnouncementBar isMobile side={20} />
+      <header style={{ background: CREAM, borderBottom: '1px solid #E7E1D7', position: 'relative', zIndex: 1000 }}>
+        <div style={{ padding: '14px 20px 16px', boxSizing: 'border-box' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr auto', alignItems: 'center', height: 36 }}>
+            <button type="button" onClick={() => setMenuOpen(o => !o)} aria-expanded={menuOpen} aria-controls="gx-mobile-menu"
+              aria-label={menuOpen ? 'Close navigation' : 'Open navigation'}
+              style={{ ...reset, width: 36, height: 36, boxSizing: 'border-box', border: '1px solid rgba(91,70,50,.13)', borderRadius: 3, display: 'grid', placeItems: 'center' }}>
+              <svg width="13" height="9" viewBox="0 0 13 9" fill="none" stroke="currentColor" strokeWidth="1.2" aria-hidden="true">
+                <path d="M0 .6h13M0 4.5h13M0 8.4h13" />
+              </svg>
+            </button>
+            <Link to="/" onClick={closeMenu} aria-label="Globrixa home" style={{ justifySelf: 'center', fontFamily: SERIF, fontSize: 25, fontWeight: 600, letterSpacing: 4, lineHeight: '30px', color: MOCHA, textDecoration: 'none', whiteSpace: 'nowrap' }}>
+              GLOBRIXA
+            </Link>
+            <Link to="/about" onClick={closeMenu} style={{ ...outlinedBtn, height: 36, padding: '8px 12px' }}>About us</Link>
+          </div>
+          <form role="search" onSubmit={handleSearch} style={{ ...searchBox, marginTop: 15, height: 42, padding: '0 6px 0 12px', gap: 13 }}>
+            <Search size={14} color={MOCHA} strokeWidth={2} style={{ flexShrink: 0 }} aria-hidden="true" />
+            {searchInput(true)}
+            {submitBtn}
+          </form>
+        </div>
+
+        {menuOpen && (
+          <div id="gx-mobile-menu" style={{ position: 'absolute', top: '100%', left: 0, right: 0, background: CREAM, borderBottom: '1px solid rgba(91,70,50,.15)', boxShadow: '0 18px 28px rgba(91,70,50,.12)', padding: '14px 20px 26px', boxSizing: 'border-box' }}>
+            <nav aria-label="Main navigation">
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', columnGap: 23 }}>
+                <Link to="/" onClick={closeMenu} style={{ ...menuLink, fontWeight: 600 }}>Discover</Link>
+                {NAV_ITEMS.map(item => <Link key={item.label} to={item.to} onClick={closeMenu} style={menuLink}>{item.label}</Link>)}
+              </div>
+              <div style={{ height: 1, background: 'rgba(91,70,50,.13)', marginTop: 14 }} />
+              <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', columnGap: 28, minHeight: 48, marginTop: 7 }}>
+                <Link to="/blog" onClick={closeMenu} style={menuInline}>Journal</Link>
+                <a href="/#makers" onClick={goToMakers} style={menuInline}>Meet the makers</a>
+                <button type="button" onClick={openSupplierRegister} style={{ ...reset, ...menuInline }}>Become a seller</button>
+              </div>
+            </nav>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 1, marginTop: 18 }}>
+              <button type="button" onClick={openLogin} style={{ ...reset, fontSize: 12, fontWeight: 400, textDecoration: 'underline', textUnderlineOffset: 3, whiteSpace: 'nowrap' }}>Sign in</button>
+              <button type="button" onClick={openRegister} style={{ ...createBtn, width: 300, maxWidth: '100%', justifyContent: 'center', gap: 23, padding: '0 17px' }}>
+                Create account <SmallArrow />
               </button>
             </div>
           </div>
-          <form onSubmit={handleSearch} style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 15, height: 40, padding: '10px 13px', background: '#F5ECDC', border: '1px solid transparent', boxSizing: 'border-box' }}>
-            <Search size={18} color="#5B4632" style={{ flexShrink: 0 }} />
-            <input type="text" value={query} onChange={e => setQuery(e.target.value)} aria-label="Search products"
-              placeholder="Try ‘ceramics’, ‘linen’ or ‘gifts’"
-              style={{ flex: 1, minWidth: 0, border: 'none', outline: 'none', background: 'transparent', fontSize: 12, color: '#5B4632', fontFamily: 'inherit' }} />
-          </form>
-        </div>
-        <nav aria-label="Categories" style={{ height: 48, display: 'flex', alignItems: 'stretch', gap: 25, padding: '0 19.5px', overflowX: 'auto', scrollbarWidth: 'none', borderTop: '1px solid #E3D5C1' }}>
-          <Link to="/about" style={{ ...aboutLink, fontSize: 10, fontWeight: 600 }}>About us</Link>
-          <Link to="/" style={{ ...subNavLink, fontSize: 10, fontWeight: 600, borderBottom: '2px solid #5B4632' }}>Discover</Link>
-          {NAV_ITEMS.map(item => <Link key={item.label} to={item.to} style={{ ...subNavLink, fontSize: 10 }}>{item.label}</Link>)}
-          <button onClick={openLogin} style={{ ...subNavLink, fontSize: 10, background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontFamily: 'inherit' }}>Sign in</button>
-          <button onClick={openSupplierRegister} style={{ ...subNavLink, fontSize: 10, background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontFamily: 'inherit' }}>Sell on Globrixa</button>
-          <Link to="/our-story" style={{ ...subNavLink, fontSize: 10, paddingRight: 19.5 }}>Our Story</Link>
-        </nav>
+        )}
       </header>
     </>
   );

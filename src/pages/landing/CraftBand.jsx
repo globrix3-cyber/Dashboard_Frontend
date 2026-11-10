@@ -1,8 +1,8 @@
 import { useBreakpoint } from '../../hooks/useBreakpoint';
 
 const SERIF = "'Canela', 'Cormorant Garamond', Georgia, serif";
-const IMAGE = '/images/v3/hands-of-heritage-craftsmanship.jpg';
-const ALT   = 'Hands shaping a wooden chair, carving an intricate pattern and stitching a leather bag';
+const IMAGE = '/images/v3/craftsmanship-workshop-triptych.jpg';
+const ALT   = 'Craftspeople at work: cutting timber, chiselling wood and stamping a leather wallet';
 
 // Full-bleed band, no outer margins: it sits flush between the collections
 // grid (cream) and Standout Finds (cream), as in the reference.
