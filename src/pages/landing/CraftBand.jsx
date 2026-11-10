@@ -11,12 +11,12 @@ export default function CraftBand() {
 
   if (bp.isMobile) {
     // Reference mobile: stacked headings, left-aligned, split by a hairline.
-    const h = { margin: 0, fontFamily: SERIF, fontWeight: 300, fontSize: 33.2, lineHeight: 1.05, letterSpacing: '-.6px', color: '#FDF9F1' };
+    const h = { margin: 0, fontFamily: SERIF, fontWeight: 300, fontSize: 33.2, lineHeight: 1.05, letterSpacing: '-.6px', color: '#FDF9F1', textShadow: '0 1px 2px rgba(43,32,22,.45), 0 2px 20px rgba(43,32,22,.5)' };
     return (
       <section style={{ position: 'relative', minHeight: 415, overflow: 'hidden', background: '#5B4632', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '0 27px 42px', boxSizing: 'border-box' }}>
         <img src={IMAGE} alt={ALT} loading="lazy" decoding="async"
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
-        <div aria-hidden style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(43,32,22,.15) 0%, rgba(43,32,22,.7) 100%)' }} />
+        <div aria-hidden style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(43,32,22,.2) 0%, rgba(43,32,22,.35) 40%, rgba(43,32,22,.78) 100%)' }} />
         <div style={{ position: 'relative' }}>
           <h2 style={h}>Hands behind the craft.</h2>
           <div style={{ height: 1, background: 'rgba(244,217,160,.35)', margin: '34px 0 30px' }} />
@@ -27,11 +27,13 @@ export default function CraftBand() {
   }
 
   const side = bp.isTablet ? 32 : 62;
-  const h = { position: 'absolute', margin: 0, fontFamily: SERIF, fontWeight: 300, fontSize: bp.isTablet ? 44 : 52.6, lineHeight: 1, letterSpacing: '-.6px', color: '#FDF9F1', textShadow: '0 2px 18px rgba(43,32,22,.35)' };
+  const h = { position: 'absolute', margin: 0, fontFamily: SERIF, fontWeight: 300, fontSize: bp.isTablet ? 44 : 52.6, lineHeight: 1, letterSpacing: '-.6px', color: '#FDF9F1', textShadow: '0 1px 2px rgba(43,32,22,.45), 0 2px 24px rgba(43,32,22,.55)' };
   return (
     <section style={{ position: 'relative', height: bp.isTablet ? 460 : 616, overflow: 'hidden', background: '#2B2016' }}>
       <img src={IMAGE} alt={ALT} loading="lazy" decoding="async"
         style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+      {/* Corner scrims keep the light headings legible over bright areas of the photo (sawdust, sunlight). */}
+      <div aria-hidden style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 55% at 18% 10%, rgba(43,32,22,.55) 0%, rgba(43,32,22,.25) 55%, rgba(43,32,22,0) 100%), radial-gradient(ellipse 45% 50% at 88% 90%, rgba(43,32,22,.5) 0%, rgba(43,32,22,.2) 55%, rgba(43,32,22,0) 100%)' }} />
       <h2 style={{ ...h, top: bp.isTablet ? 40 : 56, left: side }}>
         Hands behind the craft.
       </h2>
