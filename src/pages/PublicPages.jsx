@@ -94,7 +94,7 @@ export function AboutPage() {
         </p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 48 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(240px, 100%), 1fr))', gap: 20, marginBottom: 48 }}>
         {[
           { icon: Rocket,     color: C.saffron, title: 'Our Mission',  text: 'Make Indian B2B trade as easy as buying from Amazon — fast, verified, and trust-backed.' },
           { icon: Globe,      color: C.emerald, title: 'Our Vision',   text: 'To be the platform where every Indian MSME finds their first international buyer.' },
@@ -143,7 +143,7 @@ export function BlogPage() {
         <p style={{ fontSize: 15, color: C.muted, maxWidth: 480, margin: '0 auto', lineHeight: 1.7 }}>Trade tips, platform news, success stories and guides for India's growing global commerce community.</p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(240px, 100%), 1fr))', gap: 20 }}>
         {BLOG_POSTS.map(p => (
           <div key={p.id} style={{ background: '#FDF9F1', borderRadius: 18, border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden', cursor: 'pointer', transition: 'transform 0.2s, box-shadow 0.2s' }}
             onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 8px 28px rgba(43,32,22,0.10)'; }}
@@ -233,12 +233,12 @@ export function ContactPage() {
         </p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 40 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(240px, 100%), 1fr))', gap: 20, marginBottom: 40 }}>
         {[
           { icon: Mail,     color: C.saffron, bg: C.saffronLt, label: 'Email',        value: 'support@globrixa.com',  link: 'mailto:support@globrixa.com' },
           { icon: Phone,    color: C.emerald, bg: C.emeraldLt, label: 'Phone',        value: '+91 98765 00000',        link: 'tel:+919876500000'          },
           { icon: MapPin,   color: C.navy,    bg: C.navyLt,    label: 'Office',       value: 'Bandra Kurla Complex, Mumbai 400051', link: null            },
-          { icon: HelpCircle,color:C.gold,    bg: C.goldLt,    label: 'Help Center',  value: 'docs.globrixa.com',      link: '#'                          },
+          { icon: HelpCircle,color:C.gold,    bg: C.goldLt,    label: 'Help Center',  value: 'Browse help articles',   link: '/help'                      },
         ].map(({ icon: Icon, color, bg, label, value, link }) => (
           <div key={label} style={{ background: '#FDF9F1', borderRadius: 16, padding: '24px', border: `1.5px solid ${C.borderSoft}` }}>
             <div style={{ width: 42, height: 42, borderRadius: 12, background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14 }}>

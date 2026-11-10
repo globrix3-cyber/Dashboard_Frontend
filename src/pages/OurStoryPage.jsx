@@ -55,10 +55,10 @@ export default function OurStoryPage() {
       <div style={{ width: '100%', maxWidth: 1100, margin: '0 auto 80px', padding: '0 28px' }}>
         <div style={{ borderRadius: 24, overflow: 'hidden', height: 440, position: 'relative' }}>
           <img src="/images/hero/artisan-weaving.jpg" alt="Indian artisan at work" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 30%' }} />
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(43,32,22,.6) 0%, transparent 60%)' }} />
-          <div style={{ position: 'absolute', bottom: 28, left: 36, color: '#FDF9F1' }}>
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(43,32,22,.85) 0%, rgba(43,32,22,.55) 30%, transparent 65%)' }} />
+          <div style={{ position: 'absolute', bottom: 28, left: 36, right: 24, color: '#FDF9F1', textShadow: '0 1px 3px rgba(43,32,22,.5)' }}>
             <div style={{ fontFamily: "'Playfair Display',serif", fontSize: 20, fontWeight: 700 }}>Artisan weaver, Jaipur</div>
-            <div style={{ fontSize: 13, color: 'rgba(253,249,241,.65)', marginTop: 4 }}>One of 5,000+ verified suppliers on Globrixa</div>
+            <div style={{ fontSize: 13, color: 'rgba(253,249,241,.92)', marginTop: 4 }}>One of 5,000+ verified suppliers on Globrixa</div>
           </div>
         </div>
       </div>

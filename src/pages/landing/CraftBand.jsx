@@ -16,7 +16,7 @@ export default function CraftBand() {
       <section style={{ position: 'relative', minHeight: 415, overflow: 'hidden', background: '#5B4632', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '0 27px 42px', boxSizing: 'border-box' }}>
         <img src={IMAGE} alt={ALT} loading="lazy" decoding="async"
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
-        <div aria-hidden style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(43,32,22,.2) 0%, rgba(43,32,22,.35) 40%, rgba(43,32,22,.78) 100%)' }} />
+        <div aria-hidden style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(43,32,22,.25) 0%, rgba(43,32,22,.45) 40%, rgba(43,32,22,.82) 100%)' }} />
         <div style={{ position: 'relative' }}>
           <h2 style={h}>Hands behind the craft.</h2>
           <div style={{ height: 1, background: 'rgba(244,217,160,.35)', margin: '34px 0 30px' }} />
@@ -33,7 +33,7 @@ export default function CraftBand() {
       <img src={IMAGE} alt={ALT} loading="lazy" decoding="async"
         style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
       {/* Corner scrims keep the light headings legible over bright areas of the photo (sawdust, sunlight). */}
-      <div aria-hidden style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 55% at 18% 10%, rgba(43,32,22,.55) 0%, rgba(43,32,22,.25) 55%, rgba(43,32,22,0) 100%), radial-gradient(ellipse 45% 50% at 88% 90%, rgba(43,32,22,.5) 0%, rgba(43,32,22,.2) 55%, rgba(43,32,22,0) 100%)' }} />
+      <div aria-hidden style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(43,32,22,.42) 0%, rgba(43,32,22,.18) 26%, rgba(43,32,22,0) 42%), radial-gradient(ellipse 55% 45% at 22% 12%, rgba(43,32,22,.4) 0%, rgba(43,32,22,0) 100%), radial-gradient(ellipse 45% 50% at 88% 90%, rgba(43,32,22,.5) 0%, rgba(43,32,22,.2) 55%, rgba(43,32,22,0) 100%)' }} />
       <h2 style={{ ...h, top: bp.isTablet ? 40 : 56, left: side }}>
         Hands behind the craft.
       </h2>

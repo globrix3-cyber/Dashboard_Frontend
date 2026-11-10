@@ -294,8 +294,8 @@ export default function ProductsPage() {
                     }
                     <div style={{ position: 'absolute', top: 8, left: 8, right: 8, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                       {p.status === 'active' && (
-                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, background: 'rgba(253,249,241,.92)', color: '#1A7A4A', fontSize: 9, fontWeight: 700, padding: '3px 7px', borderRadius: 100, backdropFilter: 'blur(4px)' }}>
-                          <BadgeCheck size={8} /> Verified
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, background: '#FDF9F1', color: '#14663D', fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 100, boxShadow: '0 1px 3px rgba(43,32,22,.18)' }}>
+                          <BadgeCheck size={10} /> Verified
                         </span>
                       )}
                       <button onClick={e => toggleFav(e, p.id)}

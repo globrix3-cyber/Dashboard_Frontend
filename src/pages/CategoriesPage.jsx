@@ -383,8 +383,8 @@ function CategoryProducts({ category, meta, navigate, dispatch }) {
                     : <span style={{ fontSize: 36 }}>{meta?.emoji || '📦'}</span>
                   }
                   {p.status === 'active' && (
-                    <span style={{ position: 'absolute', top: 8, right: 8, fontSize: 9, fontWeight: 700, padding: '2px 8px', borderRadius: 100, background: C.emeraldLt, color: C.emerald, display: 'flex', alignItems: 'center', gap: 3 }}>
-                      <BadgeCheck size={9} /> Verified
+                    <span style={{ position: 'absolute', top: 8, right: 8, fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 100, background: '#FDF9F1', color: '#14663D', boxShadow: '0 1px 3px rgba(43,32,22,.18)', display: 'flex', alignItems: 'center', gap: 3 }}>
+                      <BadgeCheck size={10} /> Verified
                     </span>
                   )}
                 </div>
