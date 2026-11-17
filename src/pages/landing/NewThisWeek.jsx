@@ -1,12 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Heart, Eye } from 'lucide-react';
-import { toggleLogin } from '../../features/auth/authSlice';
-import { useBreakpoint, rGutter } from '../../hooks/useBreakpoint';
+import { useBreakpoint } from '../../hooks/useBreakpoint';
 import { api } from '../../services/api';
 import { imageProps } from '../../utils/helpers';
-import { useWishlist } from '../../hooks/useWishlist';
 
 const INK   = '#5B4632';
 const MUTED = '#79634E';
@@ -15,76 +11,41 @@ const SERIF = "'Canela', 'Cormorant Garamond', Georgia, serif";
 function CardSkeleton({ bp }) {
   return (
     <div>
-      <div style={{ aspectRatio: '4 / 5', background: 'linear-gradient(90deg,#F0DCC0 25%,#E3D5C1 50%,#F0DCC0 75%)', backgroundSize: '200% 100%', animation: 'shimmer 1.4s infinite' }} />
-      <div style={{ height: 9, width: '40%', margin: `${bp.isMobile ? 16 : 22}px auto 0`, background: '#E3D5C1' }} />
-      <div style={{ height: 14, width: '70%', margin: '14px auto 0', background: '#E3D5C1' }} />
-      <div style={{ height: 14, width: '30%', margin: '14px auto 0', background: '#E3D5C1' }} />
+      <div style={{ aspectRatio: '3 / 4', borderRadius: bp.isMobile ? 19 : 30, background: 'linear-gradient(90deg,#F0DCC0 25%,#E3D5C1 50%,#F0DCC0 75%)', backgroundSize: '200% 100%', animation: 'shimmer 1.4s infinite' }} />
+      <div style={{ height: 9, width: '40%', margin: `${bp.isMobile ? 22 : 26}px auto 0`, background: '#E3D5C1' }} />
+      <div style={{ height: 14, width: '70%', margin: '12px auto 0', background: '#E3D5C1' }} />
     </div>
   );
 }
 
-function priceLabel(product) {
-  const price = Number(product.base_price);
-  if (!price) return 'Price on request';
-  return product.currency === 'USD' ? `$${price.toFixed(2)}` : `₹${price.toLocaleString('en-IN')}`;
-}
-
-function ProductCard({ product, isLoggedIn, onLoginRequired, isFav, onFav, bp }) {
+function ProductCard({ product, bp }) {
   const [imgFailed, setImgFailed] = useState(false);
-  const photo  = imageProps(product.images?.[0]?.image_url, bp.isMobile ? 200 : 320);
-  const imgUrl = photo.src;
-  const moq    = Number(product.min_order_quantity);
-  const unit   = product.moq_unit || 'unit';
-
+  const m      = bp.isMobile;
+  const photo  = imageProps(product.images?.[0]?.image_url, m ? 200 : 340);
   const href   = `/products/${product.id}`;
-  const btn    = bp.isMobile ? 29 : 34;
-  const inset  = bp.isMobile ? 9 : 13;
-  const round  = { position: 'absolute', top: inset, width: btn, height: btn, borderRadius: '50%', border: 'none', background: '#FDF9F1', boxShadow: '0 2px 10px rgba(43,32,22,.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', padding: 0, boxSizing: 'border-box', color: INK };
 
+  // Reference card: 3:4 photo with 30px (desktop) / 19px (mobile) corners, "View details" pill 12px
+  // above the bottom edge, then a tiny uppercase category and the uppercase product name, centred.
   return (
     <div className="sf-card" style={{ position: 'relative', color: INK, textAlign: 'center' }}>
-      {/* Portrait 4:5 frame; the photo is contained inside it, as in the reference */}
-      <div style={{ position: 'relative', aspectRatio: '4 / 5' }}>
-        <Link to={href} tabIndex={-1} style={{ display: 'block', width: '100%', height: '100%', background: imgUrl && !imgFailed ? 'transparent' : '#E3D5C1' }}>
-          {imgUrl && !imgFailed && (
-            <img {...photo} alt={product.name} loading="lazy" decoding="async" onError={() => setImgFailed(true)}
-              style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
-          )}
-        </Link>
-        <button
-          type="button"
-          onClick={e => { e.preventDefault(); e.stopPropagation(); onFav(); }}
-          aria-label={isFav ? 'Remove from wishlist' : 'Add to wishlist'}
-          aria-pressed={isFav}
-          style={{ ...round, left: inset }}>
-          <Heart size={bp.isMobile ? 13 : 15} color={INK} strokeWidth={1.6} fill={isFav ? '#C8792C' : 'none'} />
-        </button>
-        <Link to={href} aria-label="View product" style={{ ...round, right: bp.isMobile ? 10 : 14 }}>
-          <Eye size={bp.isMobile ? 14 : 16} color={INK} strokeWidth={1.6} />
-        </Link>
-        <Link to={href} className="sf-pill"
-          style={{ position: 'absolute', left: '50%', bottom: bp.isMobile ? 13 : 12, transform: 'translateX(-50%)', width: bp.isMobile ? 94 : 116, height: bp.isMobile ? 33 : 38, boxSizing: 'border-box', borderRadius: 999, background: 'rgba(91,70,50,.94)', color: '#FDF9F1', fontFamily: "'DM Sans', sans-serif", fontSize: bp.isMobile ? 10 : 11, fontWeight: 400, letterSpacing: '.4px', display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none', whiteSpace: 'nowrap', transition: 'opacity .2s ease' }}>
-          View details
-        </Link>
-      </div>
-
-      <Link to={href} style={{ display: 'block', textDecoration: 'none', color: INK }}>
-        <div style={{ marginTop: bp.isMobile ? 16 : 22, fontSize: bp.isMobile ? 8 : 9, fontWeight: 400, letterSpacing: bp.isMobile ? '1px' : '1.6px', textTransform: 'uppercase', color: MUTED }}>{product.category_name || 'Uncategorized'}</div>
-        <div style={{ margin: '10px 0 8px', fontSize: bp.isMobile ? 12 : bp.isTablet ? 14 : 15, fontWeight: 500, letterSpacing: '.25px', lineHeight: 1.4, textTransform: 'uppercase', color: INK, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{product.name}</div>
-        {isLoggedIn ? (
-          <>
-            <div style={{ fontSize: bp.isMobile ? 15 : 16, fontWeight: 400, color: INK }}>{priceLabel(product)}</div>
-            <div style={{ marginTop: 6, fontSize: bp.isMobile ? 9 : 10, fontWeight: 400, color: MUTED }}>/ {unit}, indicative</div>
-          </>
-        ) : (
-          <button type="button" onClick={e => { e.preventDefault(); e.stopPropagation(); onLoginRequired(); }}
-            style={{ padding: 0, background: 'none', border: 'none', fontSize: 12, color: INK, cursor: 'pointer', fontFamily: 'inherit' }}>
-            🔒 Sign in to see price
-          </button>
+      <Link to={href} aria-label={`View details: ${product.name}`}
+        style={{ position: 'relative', display: 'block', aspectRatio: '313 / 417', overflow: 'hidden', borderRadius: m ? 19 : 30, background: photo.src && !imgFailed ? '#FDF9F1' : '#E3D5C1', isolation: 'isolate' }}>
+        {photo.src && !imgFailed && (
+          <img {...photo} alt="" loading="lazy" decoding="async" onError={() => setImgFailed(true)}
+            className="sf-img" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'transform .5s ease' }} />
         )}
-        {moq > 0 && <div style={{ marginTop: 10, fontSize: bp.isMobile ? 9 : 10, fontWeight: 400, color: MUTED }}>Min. order {moq} {product.moq_unit || 'units'}</div>}
-        <div style={{ marginTop: 14 }}>
-          <span style={{ fontSize: bp.isMobile ? 10 : 11, fontWeight: 500, color: INK, borderBottom: `1px solid ${INK}`, paddingBottom: 4 }}>Request quote +</span>
+        <span aria-hidden="true" className="sf-pill"
+          style={{ position: 'absolute', left: '50%', bottom: 12, transform: 'translateX(-50%)', borderRadius: 30, background: INK, color: '#FDF9F1', fontSize: m ? 10 : 11, lineHeight: m ? '13px' : '14px', fontWeight: 400, letterSpacing: '.4px', padding: m ? '10px 17px' : '12px 25px', whiteSpace: 'nowrap', transition: 'opacity .25s ease, transform .25s ease' }}>
+          View details
+        </span>
+      </Link>
+
+      <Link to={href} style={{ display: 'block', textDecoration: 'none', color: INK, padding: '0 5px' }}>
+        <div style={{ marginTop: m ? 22 : 26, fontSize: m ? 8 : 9, lineHeight: m ? '10px' : '12px', fontWeight: 400, letterSpacing: m ? '1px' : '1.6px', textTransform: 'uppercase', color: MUTED }}>
+          {product.category_name || 'Uncategorized'}
+        </div>
+        <div style={{ marginTop: m ? 9 : 10, fontSize: m ? 12 : 15, fontWeight: 500, letterSpacing: '.25px', lineHeight: 1.5, textTransform: 'uppercase', color: INK, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+          {product.name}
         </div>
       </Link>
     </div>
@@ -92,11 +53,8 @@ function ProductCard({ product, isLoggedIn, onLoginRequired, isFav, onFav, bp })
 }
 
 export default function NewThisWeek() {
-  const dispatch   = useDispatch();
-  const bp         = useBreakpoint();
-  const isLoggedIn = !!useSelector(s => s.auth.token);
-  const openLogin  = () => dispatch(toggleLogin(true));
-  const wishlist   = useWishlist();
+  const bp = useBreakpoint();
+  const m  = bp.isMobile;
 
   const [products, setProducts] = useState([]);
   const [loading,  setLoading]  = useState(true);
@@ -117,14 +75,11 @@ export default function NewThisWeek() {
     return sort === 'low' ? diff : -diff;
   });
 
-  // Reference gutters: 61.9px desktop, 19.5px mobile
-  const side = bp.isMobile ? 19.5 : 61.9;
-
   const sortControl = (
-    <label style={{ display: 'flex', flexDirection: bp.isMobile ? 'column' : 'row', alignItems: bp.isMobile ? 'flex-start' : 'center', gap: bp.isMobile ? 6 : 14, flexShrink: 0, fontSize: bp.isMobile ? 9 : 10, fontWeight: 400, color: MUTED }}>
+    <label style={{ display: 'flex', flexDirection: m ? 'column' : 'row', alignItems: m ? 'flex-start' : 'center', flexShrink: 0, fontSize: m ? 9 : 10, fontWeight: 400, color: MUTED, marginTop: m ? 0 : 49 }}>
       Sort by
       <select value={sort} onChange={e => setSort(e.target.value)} aria-label="Sort products"
-        style={{ border: 'none', background: 'transparent', color: INK, fontSize: 11, fontFamily: 'inherit', padding: '4px 0', minWidth: bp.isMobile ? 96 : 120, cursor: 'pointer' }}>
+        style={{ border: 'none', background: 'transparent', color: INK, fontSize: m ? 10 : 11, fontFamily: 'inherit', padding: m ? '7px 0' : 9, width: m ? 99 : 124, cursor: 'pointer', marginTop: m ? 6 : 0 }}>
         <option value="featured">Featured</option>
         <option value="low">Price: low to high</option>
         <option value="high">Price: high to low</option>
@@ -132,36 +87,30 @@ export default function NewThisWeek() {
     </label>
   );
 
+  // Reference: 1440px → 1346px tall (313x417 cards, 21px column gap, 45px row gap);
+  // 390px → 1614px tall (169x225 cards, 13px column gap, 37px row gap).
   return (
-    <section id="products" style={{ scrollMarginTop: 90, background: '#FDF9F1', padding: bp.isMobile ? '40px 0 42px' : '58px 0 65px' }}>
-      <div style={{ ...rGutter(bp), ...(bp.isTablet ? {} : { paddingLeft: side, paddingRight: side }) }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 16 }}>
-          <h2 style={{ flex: bp.isTablet ? '0 1 auto' : `0 1 ${bp.isMobile ? 237 : 760}px`, fontFamily: SERIF, fontSize: bp.isMobile ? 36 : bp.isTablet ? 46 : 57.6, fontWeight: 300, color: INK, margin: 0, lineHeight: 1.05, letterSpacing: '-.8px' }}>STANDOUT FINDS</h2>
-          {bp.isMobile && sortControl}
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 24, marginTop: bp.isMobile ? 18 : 23 }}>
-          <p style={{ margin: 0, maxWidth: bp.isMobile ? 237 : 760, fontSize: bp.isMobile ? 12 : 15, lineHeight: 1.8, color: INK }}>
-            Source distinctive furniture and home accessories for your business. Explore wholesale prices and minimum quantities to build your next order.
-          </p>
-          {!bp.isMobile && sortControl}
-        </div>
-        <div style={{ margin: bp.isMobile ? '14px 0 12px' : '22px 0 19px', minHeight: 12, lineHeight: '12px', fontSize: 10, fontWeight: 400, color: MUTED }}>
-          {!loading && products.length > 0 && `${products.length} ${products.length === 1 ? 'discovery' : 'discoveries'}`}
+    <section id="products" style={{ scrollMarginTop: 90, background: '#FDF9F1', padding: m ? '40px 19.5px 42px' : bp.isTablet ? '56px 32px 60px' : '58px 61.9px 65px' }}>
+      <div style={{ maxWidth: 1316, margin: '0 auto' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 16, marginBottom: m ? 43 : 28 }}>
+          <h2 style={{ maxWidth: m ? 237 : 'none', fontFamily: SERIF, fontSize: m ? 36 : bp.isTablet ? 46 : 57.6, fontWeight: 300, color: INK, margin: 0, lineHeight: 1.1, letterSpacing: '-.8px' }}>STANDOUT FINDS</h2>
+          {sortControl}
         </div>
 
         {!loading && products.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '40px 0', color: MUTED, fontSize: 14 }}>No products listed yet — check back soon!</div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: bp.isMobile ? 'repeat(2,1fr)' : 'repeat(4,1fr)', gap: bp.isMobile ? '37px 13px' : bp.isTablet ? '40px 18px' : '29px 21px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: m ? 'repeat(2,minmax(0,1fr))' : 'repeat(4,minmax(0,1fr))', gap: m ? '37px 13px' : bp.isTablet ? '40px 18px' : '45px 21px' }}>
             {loading
               ? Array.from({ length: 8 }).map((_, i) => <CardSkeleton key={i} bp={bp} />)
-              : sorted.map(p => <ProductCard key={p.id} product={p} bp={bp} isLoggedIn={isLoggedIn} onLoginRequired={openLogin} isFav={wishlist.has(p.id)} onFav={() => wishlist.toggle(p.id)} />)}
+              : sorted.map(p => <ProductCard key={p.id} product={p} bp={bp} />)}
           </div>
         )}
 
-        <div style={{ textAlign: 'center', marginTop: bp.isMobile ? 38 : 28 }}>
-          <Link to="/products" style={{ display: 'inline-flex', justifyContent: 'space-between', gap: 38, minWidth: 180, boxSizing: 'border-box', padding: '13px 22px', border: `1px solid ${INK}`, color: INK, fontSize: 11, fontWeight: 400, textDecoration: 'none' }}>
-            View all products <span>↗</span>
+        <div style={{ textAlign: 'center', marginTop: 48 }}>
+          <Link to="/products" className="sf-all"
+            style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 176, height: 44, boxSizing: 'border-box', padding: '0 16px', borderRadius: 3, background: INK, color: '#FDF9F1', fontSize: 13, fontWeight: 600, letterSpacing: '.1px', textDecoration: 'none', transition: 'background .2s ease' }}>
+            View all products
           </Link>
         </div>
       </div>
@@ -170,9 +119,11 @@ export default function NewThisWeek() {
           0%   { background-position: 200% 0; }
           100% { background-position: -200% 0; }
         }
+        .sf-all:hover { background: #4A3828 !important; }
         @media (hover: hover) and (min-width: 640px) {
-          .sf-card .sf-pill { opacity: 0; }
-          .sf-card:hover .sf-pill, .sf-card .sf-pill:focus-visible { opacity: 1; }
+          .sf-card .sf-pill { opacity: 0; transform: translate(-50%, 8px) !important; }
+          .sf-card:hover .sf-pill, .sf-card a:focus-visible .sf-pill { opacity: 1; transform: translateX(-50%) !important; }
+          .sf-card:hover .sf-img { transform: scale(1.03); }
         }
       `}</style>
     </section>

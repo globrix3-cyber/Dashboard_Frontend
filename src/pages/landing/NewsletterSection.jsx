@@ -8,8 +8,11 @@ const INK = '#5B4632';
 // Off-screen but still in the DOM, so bots fill it while people never see it.
 const HONEYPOT_STYLE = { position: 'absolute', left: '-10000px', top: 'auto', width: 1, height: 1, overflow: 'hidden' };
 
+// Reference layout: 1440px → 161px tall (1200px inner band, 28px / 43.2px padding, text left, form right);
+// 390px → 281px tall (stacked; the button sits under the input inside one bordered box).
 export default function NewsletterSection() {
   const bp = useBreakpoint();
+  const m  = bp.isMobile;
   const [email, setEmail]         = useState('');
   const [company, setCompany]     = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -35,37 +38,36 @@ export default function NewsletterSection() {
   };
 
   return (
-    <section style={{ display: 'grid', gridTemplateColumns: bp.isMobile ? '1fr' : '1fr 1fr', background: '#F0DCC0' }}>
-      <div style={{ padding: bp.isMobile ? '27px 23.4px 32px' : bp.isTablet ? '40px 32px' : '30px 48px', display: 'flex', flexDirection: 'column', justifyContent: 'center', color: INK }}>
-        <div aria-hidden="true" style={{ fontSize: 24, lineHeight: 1, color: '#C8792C', fontWeight: 300 }}>✳</div>
-        <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: '2px', margin: '14px 0 12px' }}>THE GLOBRIXA EDIT</div>
-        <h2 style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: bp.isMobile ? 44 : 52, fontWeight: 300, letterSpacing: '-1px', margin: 0, lineHeight: 1.05 }}>Stay inspired.</h2>
-        <p style={{ fontSize: 14, lineHeight: 1.65, margin: '18px 0 26px', maxWidth: 510 }}>
-          Discover fresh finds, homeware trends and the latest from Globrixa. Inspiration for your store’s next chapter, delivered to your inbox.
-        </p>
+    <section style={{ background: '#F0DCC0', color: INK }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', boxSizing: 'border-box', padding: m ? '28px 23.4px 30px' : bp.isTablet ? '28px 32px' : '28px 43.2px', display: 'grid', gridTemplateColumns: m ? '1fr' : '1fr 1fr', columnGap: 48, rowGap: 20, alignItems: 'center' }}>
+        <div>
+          <h2 style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: m ? 36 : 44, fontWeight: 300, lineHeight: 1.08, letterSpacing: '-0.6px', margin: 0 }}>Stay in the loop</h2>
+          <p style={{ fontSize: 14.3, lineHeight: 1.65, margin: '10px 0 0', maxWidth: 440 }}>
+            Get our latest updates delivered straight to your inbox. No spam, ever.
+          </p>
+        </div>
         {subscribed ? (
-          <p role="status" style={{ fontSize: 15, lineHeight: 1.7, margin: 0, maxWidth: 520 }}>
-            Thank you — you’re on the list. Look out for the Globrixa Edit in your inbox.
+          <p role="status" style={{ fontSize: 14.3, lineHeight: 1.65, margin: 0 }}>
+            Thank you — you’re on the list. Look out for Globrixa updates in your inbox.
           </p>
         ) : (
-        <form onSubmit={handleSubmit} style={{ position: 'relative' }}>
-          <div aria-hidden="true" style={HONEYPOT_STYLE}>
-            <label htmlFor="newsletter-company">Company</label>
-            <input id="newsletter-company" type="text" name="company" tabIndex={-1} autoComplete="off" value={company} onChange={e => setCompany(e.target.value)} />
-          </div>
-          <label htmlFor="newsletter-email" style={{ display: 'block', fontSize: 11, fontWeight: 500, marginBottom: 8 }}>Your business email</label>
-          <div style={{ display: 'flex', flexDirection: bp.isMobile ? 'column' : 'row', maxWidth: 625 }}>
-            <input id="newsletter-email" type="email" required value={email} onChange={e => setEmail(e.target.value)} placeholder="you@yourbusiness.com"
-              style={{ flex: 1, minWidth: 0, minHeight: 46, padding: '0 13px', border: `1px solid ${INK}`, background: '#FDF9F1', color: INK, fontSize: 14, fontFamily: 'inherit', outline: 'none', boxSizing: 'border-box' }} />
-            <button type="submit" disabled={submitting} aria-busy={submitting} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 18, minHeight: 46, padding: '0 16px', background: INK, color: '#F4D9A0', fontSize: bp.isMobile ? 12 : 11, border: 'none', cursor: submitting ? 'wait' : 'pointer', opacity: submitting ? 0.7 : 1, fontFamily: 'inherit', whiteSpace: 'nowrap' }}>
-              {submitting ? 'Signing you up…' : <>Sign up to our newsletter <span>↗</span></>}
-            </button>
-          </div>
-        </form>
+          <form onSubmit={handleSubmit} style={{ position: 'relative' }}>
+            <div aria-hidden="true" style={HONEYPOT_STYLE}>
+              <label htmlFor="newsletter-company">Company</label>
+              <input id="newsletter-company" type="text" name="company" tabIndex={-1} autoComplete="off" value={company} onChange={e => setCompany(e.target.value)} />
+            </div>
+            <label htmlFor="newsletter-email" style={{ display: 'block', fontSize: 11, lineHeight: '14px', fontWeight: 500, marginBottom: 6 }}>Your business email</label>
+            <div style={{ display: 'flex', flexDirection: m ? 'column' : 'row', border: `1px solid ${INK}`, background: '#FDF9F1' }}>
+              <input id="newsletter-email" type="email" required autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="you@yourbusiness.com"
+                style={{ flex: m ? 'none' : 1, minWidth: 0, height: m ? 46 : 40, padding: '0 12px', border: 'none', background: '#FDF9F1', color: INK, fontSize: m ? 16 : 12, fontFamily: 'inherit', boxSizing: 'border-box' }} />
+              <button type="submit" disabled={submitting} aria-busy={submitting}
+                style={{ height: m ? 39 : 40, padding: m ? '0 13px' : '0 14px', background: INK, color: '#F4D9A0', fontSize: 11, lineHeight: '16.5px', fontWeight: 700, border: 'none', cursor: submitting ? 'wait' : 'pointer', opacity: submitting ? 0.7 : 1, fontFamily: 'inherit', whiteSpace: 'nowrap' }}>
+                {submitting ? 'Signing you up…' : 'Sign up to our newsletter'}
+              </button>
+            </div>
+          </form>
         )}
       </div>
-      <img src="/images/v3/newsletter-coffee-table.jpeg" alt="Natural wooden coffee table in a warm living room" loading="lazy" decoding="async"
-        style={{ width: '100%', height: bp.isMobile ? 244 : '100%', minHeight: bp.isMobile ? 0 : 343, maxHeight: bp.isMobile ? 244 : 345, objectFit: 'cover', display: 'block' }} />
     </section>
   );
 }

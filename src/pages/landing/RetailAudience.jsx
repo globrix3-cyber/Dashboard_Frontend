@@ -18,7 +18,8 @@ export default function RetailAudience() {
   const text = (
     <div style={{ textAlign: 'center', padding: bp.isMobile ? '0 14px' : bp.isTablet ? '0 8px' : '0 39px' }}>
       <h2 style={{ fontFamily: SERIF, fontWeight: 300, fontSize: bp.isMobile ? 33 : bp.isTablet ? 33 : 33.1, lineHeight: 1.05, letterSpacing: bp.isMobile ? '-.5px' : '-.4px', color: '#F4D9A0', margin: bp.isMobile ? '0 0 25px' : '0 0 22px' }}>
-        From Local Shops to Growing Retail Businesses
+        {/* Reference breaks after "to" on wider screens; phones wrap naturally. */}
+        From Local Shops to{bp.isMobile ? ' ' : <br />}Growing Retail Businesses
       </h2>
       <p style={{ fontSize: bp.isMobile ? 16 : 17, fontWeight: 400, lineHeight: 1.65, color: '#F0DCC0', maxWidth: bp.isDesktop ? 390 : 'none', margin: bp.isMobile ? '0 auto 27px' : '0 auto 19px' }}>
         Globrixa helps retailers, importers, and online sellers source distinctive furniture and home accessories their customers will love.
@@ -27,9 +28,9 @@ export default function RetailAudience() {
         to="/products"
         onMouseEnter={() => setBtnHov(true)}
         onMouseLeave={() => setBtnHov(false)}
-        style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'space-between', width: bp.isMobile ? 164 : 162, height: 48, boxSizing: 'border-box', padding: '0 22px', background: btnHov ? '#D68A3C' : '#C8792C', color: '#2B2016', fontSize: 13, fontWeight: 500, letterSpacing: 'normal', textDecoration: 'none', transition: 'background .2s ease' }}
+        style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 176, height: 44, boxSizing: 'border-box', padding: '0 16px', borderRadius: 3, background: btnHov ? '#F0DCC0' : '#E3D5C1', color: '#5B4632', fontSize: 13, fontWeight: 600, letterSpacing: '.1px', textDecoration: 'none', transition: 'background .2s ease' }}
       >
-        Start sourcing <span style={{ fontSize: 11 }}>↗</span>
+        Start sourcing
       </Link>
     </div>
   );

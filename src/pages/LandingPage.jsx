@@ -4,7 +4,10 @@ import BenefitsStrip      from './landing/BenefitsStrip';
 import CollectionsSection from './landing/CollectionsSection';
 import NewThisWeek        from './landing/NewThisWeek';
 import WhyGlobrixa        from './landing/WhyGlobrixa';
-import MakerStory         from './landing/MakerStory';
+import AboutBanner        from './landing/AboutBanner';
+import CustomisationSection from './landing/CustomisationSection';
+import VideoStories       from './landing/VideoStories';
+import TalkToTeamBanner   from './landing/TalkToTeamBanner';
 import CraftBand          from './landing/CraftBand';
 import RetailAudience     from './landing/RetailAudience';
 import FaqSection         from './landing/FaqSection';
@@ -33,13 +36,16 @@ export default function LandingPage() {
       <LandingNavbar />
       <HeroSection />
       <BenefitsStrip />
+      <AboutBanner />
       <CollectionsSection />
-      <CraftBand />
-      <NewThisWeek />
       <RetailAudience />
+      <NewThisWeek />
+      <CraftBand />
       <WhyGlobrixa />
-      <MakerStory />
+      <CustomisationSection />
+      <VideoStories />
       <FaqSection />
+      <TalkToTeamBanner />
       <NewsletterSection />
       <LandingFooter />
     </div>

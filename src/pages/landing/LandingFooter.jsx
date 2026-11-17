@@ -1,54 +1,78 @@
-import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { toggleLogin } from '../../features/auth/authSlice';
+import { MapPin, Mail, Phone } from 'lucide-react';
 import { useBreakpoint, rGutter } from '../../hooks/useBreakpoint';
 
-// Layout matched to the reference: 283px tall at 1440, 563px at 390. Link line boxes are 14px on a 27px pitch.
-const linkStyle = { display: 'block', marginBottom: 13, fontSize: 11, fontWeight: 400, lineHeight: '14px', color: '#F4D9A0', textDecoration: 'none' };
-const lastLink  = { ...linkStyle, marginBottom: 0 };
-const heading   = { margin: '11px 0 23px', fontFamily: 'inherit', fontSize: 9, fontWeight: 700, lineHeight: '12px', letterSpacing: '1px', color: '#F4D9A0' };
-const bottomLink = { color: '#F0DCC0', textDecoration: 'none' };
+const CREAM = '#F0DCC0';
+const GOLD  = '#F4D9A0';
 
+const QUICK_LINKS = [
+  { to: '/',         label: 'Home' },
+  { to: '/about',    label: 'About us' },
+  { to: '/products', label: 'Products' },
+  { to: '/blog',     label: 'Blogs' },
+  { to: '/contact',  label: 'Contact Us' },
+];
+// No dedicated shipping page exists yet; shipping terms live in the Terms & Conditions.
+const POLICIES = [
+  { to: '/terms',   label: 'Terms & Conditions' },
+  { to: '/terms',   label: 'Shipping Policy' },
+  { to: '/privacy', label: 'Privacy Policy' },
+  { href: '#faq',   label: 'FAQs' },
+];
+
+// Reference layout: 1440px → 396px tall (4 columns 409/255/255/307 with 30px gaps, 62px sides);
+// 390px → 730px tall (brand, then Quick Links | Policies, then Address; 16.8px sides).
 export default function LandingFooter() {
-  const dispatch = useDispatch();
-  const bp       = useBreakpoint();
-  const side     = bp.isMobile ? 17 : bp.isTablet ? 32 : 62;
+  const bp   = useBreakpoint();
+  const m    = bp.isMobile;
+  const side = m ? 16.8 : bp.isTablet ? 32 : 62;
+  const link = { display: 'block', fontSize: 11, fontWeight: 400, lineHeight: '19.8px', color: CREAM, textDecoration: 'none' };
+  const heading = { margin: `0 0 ${m ? 20 : 24}px`, fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: m ? 25 : 26, fontWeight: 300, lineHeight: 1.2, letterSpacing: 'normal', color: GOLD };
+  const list = { display: 'flex', flexDirection: 'column', gap: m ? 14.75 : 16, margin: 0, padding: 0, listStyle: 'none' };
+  const colTop = m ? 0 : 6;
+  const icon = { flexShrink: 0, marginTop: 2 };
   return (
-    <footer style={{ background: '#5B4632', color: '#FDF9F1', padding: '54px 0 0' }}>
+    <footer style={{ background: '#5B4632', color: CREAM, padding: '54px 0 0' }}>
       <div style={{ ...rGutter(bp), paddingLeft: side, paddingRight: side }}>
-        <div style={{ display: 'grid', gridTemplateColumns: bp.isMobile ? '1fr 1fr' : bp.isTablet ? '1.3fr 1fr 1fr 1.2fr' : '409fr 255fr 255fr 307fr', gap: bp.isMobile ? '35px 25px' : 30 }}>
-          <div style={{ gridColumn: bp.isMobile ? '1 / -1' : 'auto', paddingTop: bp.isMobile ? 5 : 6 }}>
-            <Link to="/" aria-label="Globrixa home" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: bp.isMobile ? 37 : bp.isTablet ? 40 : 43, fontWeight: 600, letterSpacing: '-2.2px', lineHeight: 1, color: '#F4D9A0', textDecoration: 'none' }}>
-              globrixa<span aria-hidden="true" style={{ color: '#C8792C', fontSize: '.75em', letterSpacing: 0, verticalAlign: 'top' }}>✳</span>
+        <div style={{ display: 'grid', gridTemplateColumns: m ? '1fr 1fr' : bp.isTablet ? '1.3fr 1fr 1fr 1.2fr' : '409fr 255fr 255fr 307fr', columnGap: m ? 25 : 30, rowGap: 41 }}>
+          <div style={{ gridColumn: m ? '1 / -1' : 'auto', paddingTop: 1 }}>
+            <Link to="/" aria-label="Globrixa home" style={{ display: 'inline-block', lineHeight: 'normal', fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: m ? 27 : 30, fontWeight: 600, letterSpacing: m ? '2.5px' : '3px', color: GOLD, textDecoration: 'none' }}>
+              GLOBRIXA
             </Link>
-            <p style={{ fontSize: 11, lineHeight: '20px', margin: '15px 0 0', color: '#F0DCC0' }}>Good finds. Better business.<br />A new perspective on wholesale.</p>
+            <p style={{ fontSize: 11, lineHeight: '19.8px', margin: '11px 0 0', color: CREAM }}>Crafted with character.<br />Sourced for your store.</p>
           </div>
-          <div>
-            <h5 style={heading}>FOR BUYERS</h5>
-            <Link to="/products" style={linkStyle}>Explore products</Link>
-            <Link to="/categories" style={linkStyle}>Shop by category</Link>
-            <Link to="/buyer-dashboard/rfqs/new" style={lastLink}>Your buyer brief</Link>
-          </div>
-          <div>
-            <h5 style={heading}>FOR BRANDS</h5>
-            <button onClick={() => dispatch(toggleLogin({ show: true, intent: 'supplier' }))} style={{ ...linkStyle, padding: 0, background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left' }}>Become a seller</button>
-            <Link to="/about" style={linkStyle}>About us</Link>
-            <Link to="/our-story" style={lastLink}>Our approach</Link>
-          </div>
-          <div style={{ marginTop: bp.isMobile ? 2 : 0 }}>
-            <h5 style={heading}>LET’S BUILD SOMETHING</h5>
-            <p style={{ fontSize: 11, lineHeight: '20px', margin: `0 0 ${bp.isMobile ? 10 : 11}px`, color: '#F0DCC0' }}>A considered marketplace.<br />For independent businesses.</p>
-            <Link to="/our-story" style={linkStyle}>Our Story</Link>
-            <Link to="/contact" style={lastLink}>Contact us <span aria-hidden="true">↗</span></Link>
+          <nav aria-label="Quick links" style={{ paddingTop: colTop }}>
+            <h2 style={heading}>Quick Links</h2>
+            <ul style={list}>
+              {QUICK_LINKS.map(l => <li key={l.label}><Link to={l.to} style={link}>{l.label}</Link></li>)}
+            </ul>
+          </nav>
+          <nav aria-label="Policies" style={{ paddingTop: colTop }}>
+            <h2 style={heading}>Policies</h2>
+            <ul style={list}>
+              {POLICIES.map(l => <li key={l.label}>{l.href ? <a href={l.href} style={link}>{l.label}</a> : <Link to={l.to} style={link}>{l.label}</Link>}</li>)}
+            </ul>
+          </nav>
+          <div style={{ paddingTop: colTop, marginTop: m ? 4 : 0 }}>
+            <h2 style={heading}>Address</h2>
+            <ul style={{ ...list, gap: m ? 14 : 16 }}>
+              <li style={{ ...link, display: 'flex', gap: m ? 9 : 10 }}>
+                <MapPin size={15} strokeWidth={1.5} aria-hidden="true" style={icon} /><span>Address details coming soon.</span>
+              </li>
+              <li>
+                <a href="mailto:support@globrixa.com" style={{ ...link, display: 'flex', gap: m ? 9 : 10 }}>
+                  <Mail size={15} strokeWidth={1.5} aria-hidden="true" style={icon} /><span>support@globrixa.com</span>
+                </a>
+              </li>
+              <li style={{ ...link, display: 'flex', gap: m ? 9 : 10 }}>
+                <Phone size={15} strokeWidth={1.5} aria-hidden="true" style={icon} /><span>Phone number coming soon.</span>
+              </li>
+            </ul>
           </div>
         </div>
-        <div style={{ marginTop: bp.isMobile ? 32 : 34, padding: '22px 0', borderTop: '1px solid rgba(244,217,160,.3)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12, fontSize: bp.isMobile ? 8 : 9, lineHeight: '12px', color: '#F0DCC0' }}>
-          <span>© 2026 Globrixa Technologies Pvt. Ltd.</span>
+        <div style={{ marginTop: 60, padding: '22px 0', borderTop: '1px solid rgba(244,217,160,.27)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12, fontSize: m ? 8 : 9, lineHeight: '12px', color: CREAM }}>
+          <span>© 2026 Globrixa</span>
           <span>India · English · INR ₹</span>
-          <span style={{ display: 'flex', gap: 16 }}>
-            <Link to="/privacy" style={bottomLink}>Privacy</Link>
-            <Link to="/terms" style={bottomLink}>Terms</Link>
-          </span>
         </div>
       </div>
     </footer>
