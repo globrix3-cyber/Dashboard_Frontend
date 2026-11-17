@@ -277,7 +277,24 @@ export default function ProductsPage() {
               <button onClick={() => window.location.reload()} style={{ padding: '8px 20px', borderRadius: 100, background: '#C8792C', color: '#2B2016', border: 'none', cursor: 'pointer', fontWeight: 700, fontFamily: "'DM Sans', sans-serif" }}>Retry</button>
             </div>
           ) : filtered.length === 0 ? (
-            <EmptyState icon={ShoppingBag} title="No products found" desc="Try a different search or category." />
+            // Never a dead end: homepage tiles can point at searches the catalogue doesn't cover yet.
+            <EmptyState
+              icon={ShoppingBag}
+              title={search ? `We don't have “${search}” listed yet` : 'No products found'}
+              desc={search ? "New makers join regularly. Tell us what you're looking for and our team will help you source it." : 'Try a different search or category.'}
+              action={
+                <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center', marginTop: 18 }}>
+                  <button type="button" onClick={() => navigate('/contact')}
+                    style={{ padding: '12px 22px', background: '#5B4632', color: '#FDF9F1', border: 'none', borderRadius: 4, fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>
+                    Talk to our team
+                  </button>
+                  <button type="button" onClick={() => navigate('/products')}
+                    style={{ padding: '11px 21px', background: 'transparent', color: '#5B4632', border: '1px solid #5B4632', borderRadius: 4, fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>
+                    Browse all products
+                  </button>
+                </div>
+              }
+            />
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: bp.isMobile ? 'repeat(2, 1fr)' : 'repeat(auto-fill, minmax(210px, 1fr))', gap: bp.isMobile ? 10 : 14 }}>
               {filtered.slice(0, visibleCount).map(p => (
