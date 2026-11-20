@@ -1,5 +1,7 @@
 import { useBreakpoint } from '../../hooks/useBreakpoint';
 
+const SERIF = "'Canela', 'Cormorant Garamond', Georgia, serif";
+const MOCHA = '#5B4632';
 const REASONS = [
   { icon: 'crafted-character.png',    title: 'Crafted character',      body: 'Discover pieces inspired by traditional skills and thoughtful design.' },
   { icon: 'considered-materials.png', title: 'Considered materials',   body: 'Explore textures and finishes that bring depth to your collection.' },
@@ -7,27 +9,34 @@ const REASONS = [
   { icon: 'your-store.png',           title: 'Your store, your style', body: 'Build a distinctive shortlist around your customers and your style.' },
 ];
 
+// Mirrors the reference #why-globrixa.why-reference rules (breakpoints 1100 / 900 /
+// 480 / 340px): 4 columns, 2 up to 900px, 1 below 340px; Canela titles in bold.
 export default function WhyGlobrixa() {
-  const bp = useBreakpoint();
-  const m = bp.isMobile;
-  const iconSize = m ? 74 : 86;
-  // Reference layout: 1440px → 458px tall, 4 equal columns inside a 57.6px gutter;
-  // 390px → 582px tall, 2x2 grid inside a 15.6px gutter.
-  const gutter = m ? 15.6 : bp.isTablet ? 32 : 57.6;
+  const { width: w } = useBreakpoint();
+  const le1100 = w <= 1100, le900 = w <= 900, le480 = w <= 480, le340 = w <= 340;
+  const icon = le480 ? 74 : le900 ? 82 : 'clamp(80px, 6vw, 100px)';
   return (
-    <section style={{ background: '#FDF9F1', padding: m ? `40px ${gutter}px` : `64px ${gutter}px 55px` }}>
-      <div style={{ maxWidth: 1440, margin: '0 auto' }}>
-        <h2 style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: m ? 33 : bp.isTablet ? 40 : 47.5, fontWeight: 300, lineHeight: 1.1, letterSpacing: '0.3px', color: '#5B4632', textAlign: 'center', margin: `0 0 ${m ? 34 : 72}px` }}>WHY GLOBRIXA?</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: m ? 'repeat(2,minmax(0,1fr))' : 'repeat(4,minmax(0,1fr))', rowGap: 30 }}>
-          {REASONS.map(r => (
-            <div key={r.title} style={{ textAlign: 'center', padding: m ? '0 10px' : bp.isTablet ? '0 16px' : '0 28px', color: '#5B4632' }}>
-              <img src={`/images/v3/why-icons/${r.icon}`} alt="" width={iconSize} height={iconSize} loading="lazy" decoding="async"
-                style={{ display: 'block', width: iconSize, height: iconSize, objectFit: 'contain', margin: `0 auto ${m ? 19 : 35}px` }} />
-              <h3 style={{ width: 'fit-content', maxWidth: '100%', minHeight: m ? 33 : 20, margin: `0 auto ${m ? 12 : 22}px`, fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: m ? 11 : 13.5, lineHeight: m ? '16.5px' : '20px', fontWeight: 600, letterSpacing: m ? '0.45px' : '0.65px', textTransform: 'uppercase' }}>{r.title}</h3>
-              <p style={{ margin: '0 auto', maxWidth: m ? 155 : 270, fontSize: m ? 12 : 14.4, lineHeight: m ? 1.75 : '26px', color: '#5B4632' }}>{r.body}</p>
-            </div>
-          ))}
-        </div>
+    <section id="why-globrixa" style={{ background: '#FDF9F1', color: MOCHA, textAlign: 'center', padding: le480 ? '40px 4%' : le900 ? '48px 5%' : '64px 4% 52px', boxSizing: 'border-box' }}>
+      <h2 style={{ fontFamily: SERIF, fontWeight: 300, lineHeight: 1.1, letterSpacing: '.3px', color: MOCHA, margin: `0 0 ${le480 ? 34 : le900 ? 42 : 68}px`, fontSize: le480 ? 33 : le900 ? 38 : 'clamp(36px, 3.3vw, 52px)' }}>
+        WHY GLOBRIXA?
+      </h2>
+      <div style={{ display: 'grid', gridTemplateColumns: le340 ? '1fr' : le900 ? 'repeat(2, minmax(0, 1fr))' : 'repeat(4, minmax(0, 1fr))', gap: le480 ? '30px 0' : le900 ? '36px 0' : 0, alignItems: 'stretch' }}>
+        {REASONS.map(r => (
+          <article key={r.title} style={{ minWidth: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: le480 ? '0 12px' : le1100 ? '4px 18px 3px' : '4px 26px 3px' }}>
+            <img src={`/images/v3/why-icons/${r.icon}`} alt="" loading="lazy" decoding="async"
+              style={{ display: 'block', width: icon, height: icon, objectFit: 'contain', flexShrink: 0, margin: `0 0 ${le480 ? 19 : le900 ? 24 : 34}px` }} />
+            <h3 style={{
+              fontFamily: SERIF, fontWeight: 700, fontStyle: 'normal', fontSynthesis: 'weight', lineHeight: 1.5, textTransform: 'uppercase', color: MOCHA,
+              fontSize: le480 ? 11.55 : le1100 ? 12.6 : 'clamp(12.6px, .987vw, 16.8px)', letterSpacing: le480 ? '.45px' : '.65px',
+              minHeight: le480 && !le340 ? 33 : 0, margin: `0 0 ${le480 ? 12 : le900 ? 14 : 22}px`,
+            }}>
+              {r.title}
+            </h3>
+            <p style={{ fontSize: le480 ? 12 : le1100 ? 13 : 'clamp(13px, 1vw, 16px)', fontWeight: 400, lineHeight: le480 ? 1.75 : 1.8, maxWidth: 270, color: MOCHA, margin: 0 }}>
+              {r.body}
+            </p>
+          </article>
+        ))}
       </div>
     </section>
   );

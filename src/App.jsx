@@ -21,6 +21,7 @@ import "./index.css";
 const GUEST_BROWSABLE_PREFIXES = [
   '/products', '/categories', '/about', '/blog', '/careers',
   '/contact', '/privacy', '/terms', '/help', '/our-story',
+  '/policies', '/shipping', '/faqs',
 ];
 const isGuestBrowsable = (path) =>
   path === '/' || GUEST_BROWSABLE_PREFIXES.some(p => path === p || path.startsWith(p + '/'));
@@ -142,7 +143,8 @@ export default function App() {
       return p === currentPath;
     });
 
-    const PUBLIC_PATHS = ['/about', '/blog', '/careers', '/contact', '/privacy', '/terms', '/help'];
+    // Keep in sync with GUEST_BROWSABLE_PREFIXES (minus the catalogue, which signed-in roles reach via their own routes).
+    const PUBLIC_PATHS = ['/about', '/blog', '/careers', '/contact', '/privacy', '/terms', '/help', '/our-story', '/policies', '/shipping', '/faqs'];
     const isPublic = PUBLIC_PATHS.some(p => currentPath === p || currentPath.startsWith(p + '/'));
 
     if (isPublic) return; // always allow public pages regardless of role

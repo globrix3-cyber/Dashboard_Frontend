@@ -1,0 +1,10 @@
+/* Blog page — ported from the client's reference (style.css, .blog-* rules). */
+.blog-welcome{display:grid;grid-template-columns:1fr 1fr;background:#FDF9F1;color:#5B4632}
+.blog-welcome-copy{align-self:center;padding:clamp(34px,5vw,80px)}
+.blog-welcome h1{font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:clamp(43px,4.8vw,70px);line-height:1.05;letter-spacing:-1px;margin:24px 0}
+.blog-welcome-copy>p{font-size:15px;line-height:1.8;max-width:420px}
+.blog-coming{max-width:420px;margin:28px 0;padding-top:22px;border-top:1px solid #E3D5C1}
+.blog-coming>span{font-size:10px;letter-spacing:1.8px;font-weight:600}
+.blog-coming p{font-size:13px;line-height:1.8;color:#79634E;margin:12px 0 0}
+.blog-welcome>img{width:100%;height:auto;align-self:center;object-fit:contain}
+@media(max-width:760px){.blog-welcome{grid-template-columns:1fr}.blog-welcome-copy{padding:38px 6%}.blog-welcome h1{font-size:48px}.blog-welcome-copy>p{font-size:14px}}

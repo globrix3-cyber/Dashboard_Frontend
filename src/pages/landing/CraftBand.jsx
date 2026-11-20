@@ -1,42 +1,50 @@
-import { useBreakpoint } from '../../hooks/useBreakpoint';
+import { useLandingBreakpoint } from '../../hooks/useBreakpoint';
 
 const SERIF = "'Canela', 'Cormorant Garamond', Georgia, serif";
 const IMAGE = '/images/v3/craftsmanship-workshop-triptych.jpg';
 const ALT   = 'Craftspeople at work: cutting timber, chiselling wood and stamping a leather wallet';
+const SHADOW = '0 1px 2px rgba(43,32,22,.45), 0 2px 24px rgba(43,32,22,.55)';
 
+// Mirrors the reference .craft-story: full-bleed triptych at its natural ratio with
+// the reference's top/bottom shade; headings at 8% / 4.5% from the corners with
+// clamp() sizes. On phones the photo sits on top and the headings follow on mocha,
+// split by a hairline.
 export default function CraftBand() {
-  const bp = useBreakpoint();
+  const bp = useLandingBreakpoint();
+  const m = bp.isMobile, t = bp.isTablet;
+  const base = { fontFamily: SERIF, fontWeight: 300, color: '#FDF9F1' };
 
-  if (bp.isMobile) {
-    // Reference mobile (415px): the triptych as a 167px strip, then a mocha panel with
-    // both headings split by a hairline.
-    const h = { margin: 0, fontFamily: SERIF, fontWeight: 300, fontSize: 33.15, lineHeight: 1.04, letterSpacing: '-.6px', color: '#FDF9F1' };
+  if (m) {
     return (
-      <section style={{ background: '#5B4632' }}>
+      <section style={{ display: 'grid', gridTemplateColumns: '1fr', background: '#5B4632', color: '#F4D9A0' }}>
         <img src={IMAGE} alt={ALT} loading="lazy" decoding="async"
-          style={{ display: 'block', width: '100%', height: 167, objectFit: 'cover' }} />
-        <div style={{ padding: '40px 27px 30px' }}>
-          <h2 style={h}>Hands behind the craft</h2>
-          <div aria-hidden style={{ height: 1, background: 'rgba(244,217,160,.35)', margin: '43px 0 34px' }} />
-          <h3 style={{ ...h, fontSize: 31.2, lineHeight: 1.05, letterSpacing: '-.5px' }}>Crafting your<br />unique story</h3>
+          style={{ display: 'block', width: '100%', height: 'auto', aspectRatio: '1918 / 820', objectFit: 'cover' }} />
+        <div style={{ padding: '28px 7% 0' }}>
+          <h2 style={{ ...base, fontSize: 'clamp(33px, 8.5vw, 45px)', lineHeight: 1.04, letterSpacing: '-.6px', margin: '12px 0 15px' }}>Hands behind the craft</h2>
+        </div>
+        <div style={{ margin: '28px 7% 30px', paddingTop: 22, borderTop: '1px solid rgba(244,217,160,.25)' }}>
+          <h3 style={{ ...base, fontSize: 'clamp(31px, 8vw, 40px)', lineHeight: 1.05, letterSpacing: '-.5px', margin: '12px 0 0' }}>Crafting your<br />unique story</h3>
         </div>
       </section>
     );
   }
 
-  const h = { position: 'absolute', margin: 0, fontFamily: SERIF, fontWeight: 300, fontSize: bp.isTablet ? 44 : 52.56, lineHeight: 1.04, letterSpacing: '-.6px', color: '#FDF9F1', textShadow: '0 1px 2px rgba(43,32,22,.45), 0 2px 24px rgba(43,32,22,.55)' };
   return (
-    <section style={{ position: 'relative', height: bp.isTablet ? 460 : 616, overflow: 'hidden', background: '#2B2016' }}>
+    <section style={{ position: 'relative', isolation: 'isolate', overflow: 'hidden', background: '#1C1A17' }}>
       <img src={IMAGE} alt={ALT} loading="lazy" decoding="async"
-        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
-      {/* Corner scrims keep the light headings legible over bright areas of the photo (sawdust, sunlight). */}
-      <div aria-hidden style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(43,32,22,.42) 0%, rgba(43,32,22,.18) 26%, rgba(43,32,22,0) 42%), radial-gradient(ellipse 55% 45% at 22% 12%, rgba(43,32,22,.4) 0%, rgba(43,32,22,0) 100%), radial-gradient(ellipse 45% 50% at 88% 90%, rgba(43,32,22,.5) 0%, rgba(43,32,22,.2) 55%, rgba(43,32,22,0) 100%)' }} />
-      <h2 style={{ ...h, top: bp.isTablet ? 40 : 63, left: bp.isTablet ? 32 : 65 }}>
-        Hands behind the craft
-      </h2>
-      <h3 style={{ ...h, fontSize: bp.isTablet ? 40 : 48.96, lineHeight: 1.05, letterSpacing: '-.5px', bottom: bp.isTablet ? 40 : 49, right: bp.isTablet ? 32 : 64, textAlign: 'right' }}>
-        Crafting your<br />unique story
-      </h3>
+        style={{ display: 'block', width: '100%', height: 'auto', aspectRatio: '1918 / 820', objectFit: 'contain' }} />
+      {/* Reference shade: darkens the top and bottom bands where the headings sit. */}
+      <div aria-hidden="true" style={{ position: 'absolute', inset: 0, pointerEvents: 'none', background: 'linear-gradient(180deg, rgba(16,14,11,.76), transparent 43%, rgba(16,14,11,.72)), linear-gradient(90deg, rgba(16,14,11,.28), transparent 60%)' }} />
+      <div style={{ position: 'absolute', top: '8%', left: '4.5%', width: '43%' }}>
+        <h2 style={{ ...base, fontSize: t ? 'clamp(28px, 3.5vw, 37px)' : 'clamp(30px, 3.65vw, 60px)', lineHeight: 1.04, letterSpacing: '-.6px', margin: t ? '10px 0' : '14px 0 15px', textShadow: SHADOW }}>
+          Hands behind the craft
+        </h2>
+      </div>
+      <div style={{ position: 'absolute', right: '4.5%', bottom: '8%', maxWidth: '43%', textAlign: 'right' }}>
+        <h3 style={{ ...base, fontSize: t ? 'clamp(28px, 3.4vw, 36px)' : 'clamp(30px, 3.4vw, 56px)', lineHeight: 1.05, letterSpacing: '-.5px', margin: '12px 0 0', textShadow: SHADOW }}>
+          Crafting your<br />unique story
+        </h3>
+      </div>
     </section>
   );
 }

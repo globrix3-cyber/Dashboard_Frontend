@@ -28,10 +28,13 @@ import AdminDashboard    from "./pages/AdminDashboard";
 import AdminPages        from "./pages/AdminPages";
 import MessagesPage      from "./pages/MessagesPage";
 import CategoriesPage   from "./pages/CategoriesPage";
-import PublicPages       from "./pages/PublicPages";
-import OurStoryPage     from "./pages/OurStoryPage";
 
-const { AboutPage, BlogPage, CareersPage, ContactPage, PrivacyPage, TermsPage, HelpCenterPage } = PublicPages;
+import { Navigate } from 'react-router-dom';
+import AboutPage        from './pages/site/AboutPage';
+import ContactPage      from './pages/site/ContactPage';
+import BlogPage         from './pages/site/BlogPage';
+import PoliciesPage     from './pages/site/PoliciesPage';
+
 
 const {
   AdminUsersPage,
@@ -177,14 +180,19 @@ export const routeConfig = [
   },
 
   // ── Public pages (no auth) ────────────────────────────────────────────────
-  { path: '/our-story',    element: <OurStoryPage />,    public: true },
+  // Old pages with unverified figures (supplier counts, countries, job openings) — send visitors to the client's real pages.
+  { path: '/our-story',    element: <Navigate to="/about" replace />,   public: true },
   { path: '/about',        element: <AboutPage />,       public: true },
   { path: '/blog',         element: <BlogPage />,        public: true },
-  { path: '/careers',      element: <CareersPage />,     public: true },
+  { path: '/careers',      element: <Navigate to="/contact" replace />, public: true },
   { path: '/contact',      element: <ContactPage />,     public: true },
-  { path: '/privacy',      element: <PrivacyPage />,     public: true },
-  { path: '/terms',        element: <TermsPage />,       public: true },
-  { path: '/help',         element: <HelpCenterPage />,  public: true },
+  { path: '/help',         element: <Navigate to="/policies?tab=faqs" replace />, public: true },
+  { path: '/policies',     element: <PoliciesPage />,    public: true },
+  // Old policy URLs (footer links, search engines) land on the matching tab.
+  { path: '/terms',        element: <Navigate to="/policies?tab=terms" replace />,    public: true },
+  { path: '/privacy',      element: <Navigate to="/policies?tab=privacy" replace />,  public: true },
+  { path: '/shipping',     element: <Navigate to="/policies?tab=shipping" replace />, public: true },
+  { path: '/faqs',         element: <Navigate to="/policies?tab=faqs" replace />,     public: true },
 
   // ── Messages (buyer + supplier + admin) ───────────────────────────────────
   {

@@ -34,3 +34,15 @@ export function rGutter(bp) {
   const side = bp.isMobile ? 18 : bp.isTablet ? 32 : 62;
   return { maxWidth: 1440, margin: '0 auto', width: '100%', paddingLeft: side, paddingRight: side, boxSizing: 'border-box' };
 }
+
+// Homepage / marketing pages: breakpoints of the client's reference design
+// (phone ≤760px, tablet 761–1050px). Kept separate so dashboard pages keep theirs.
+export function useLandingBreakpoint() {
+  const { width } = useBreakpoint();
+  return {
+    isMobile:  width <= 760,
+    isTablet:  width > 760 && width <= 1050,
+    isDesktop: width > 1050,
+    width,
+  };
+}

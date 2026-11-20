@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useBreakpoint } from '../../hooks/useBreakpoint';
+import { useLandingBreakpoint } from '../../hooks/useBreakpoint';
 
 const STORIES = [
   { id: 1, label: 'Style in motion' },
@@ -58,7 +58,7 @@ function Story({ story, m }) {
         onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} onClick={toggle}
         style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block', cursor: 'pointer' }} />
       <button type="button" onClick={toggle} aria-label={`${playing ? 'Pause' : 'Play'} ${story.label.toLowerCase()} video`}
-        style={{ position: 'absolute', right: m ? 10 : 14, bottom: m ? 13 : 17, width: size, height: size, borderRadius: '50%', background: '#FDF9F1', border: '1px solid rgba(253,249,241,.65)', color: '#5B4632', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0, cursor: 'pointer', boxShadow: '0 2px 8px rgba(43,32,22,.18)' }}>
+        style={{ position: 'absolute', right: m ? 9 : 13, bottom: m ? 13 : 17, width: size, height: size, borderRadius: '50%', background: '#FDF9F1', border: '1px solid rgba(253,249,241,.65)', color: '#5B4632', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0, cursor: 'pointer', boxShadow: '0 2px 8px rgba(43,32,22,.18)' }}>
         {playing ? (
           <svg width={icon} height={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" aria-hidden="true"><path d="M9 6v12M15 6v12" /></svg>
         ) : (
@@ -69,14 +69,14 @@ function Story({ story, m }) {
   );
 }
 
-// Reference layout: 1440px → 687px tall (four 9:16 videos, 64/62px padding, 62px sides);
-// 390px → 699px tall (2x2 grid, 43px padding, 19.5px sides, 13/14px gaps).
+// Mirrors the reference .motion-stories rules: four 9:16 clips in a 4.3% gutter with
+// 18px gaps (2x2 with 14px gaps and a 5% gutter up to 760px).
 export default function VideoStories() {
-  const bp = useBreakpoint();
+  const bp = useLandingBreakpoint();
   const m  = bp.isMobile;
   return (
-    <section aria-label="Product stories" style={{ background: '#FDF9F1', padding: m ? '43px 19.5px 42px' : bp.isTablet ? '56px 32px' : '64px 62px 62px' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: m ? 'repeat(2, minmax(0, 1fr))' : 'repeat(4, minmax(0, 1fr))', columnGap: m ? 13 : 17.3, rowGap: m ? 14 : 17.3, maxWidth: 1316, margin: '0 auto' }}>
+    <section id="globrixa-in-motion" aria-label="Product stories" style={{ background: '#FDF9F1', padding: m ? '43px 5%' : '64px 4.3% 62px', boxSizing: 'border-box' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: m ? 'repeat(2, minmax(0, 1fr))' : 'repeat(4, minmax(0, 1fr))', gap: m ? 14 : 18 }}>
         {STORIES.map(s => <Story key={s.id} story={s} m={m} />)}
       </div>
     </section>

@@ -1,0 +1,29 @@
+/*
+ * Shared base for the marketing pages (Contact, Blog), ported from the client's
+ * reference site (style.css) so its cascade behaves identically at every width.
+ * Element rules use `main :where(.gx-ref) el` — specificity (0,0,2): above the
+ * app's global resets (index.css / Tailwind preflight) and below every class rule,
+ * exactly as element rules sit under class rules on the reference.
+ */
+.gx-ref{font:14px 'DM Sans',sans-serif;line-height:normal;color:#5B4632;background:#FDF9F1}
+main :where(.gx-ref) p{margin:1em 0;line-height:1.8}
+main :where(.gx-ref) h1{font:500 clamp(58px,5.7vw,86px)/.99 'Cormorant Garamond',Georgia,serif;letter-spacing:-2.8px;margin:28px 0 23px;color:inherit}
+main :where(.gx-ref) h2{font:500 40px/1.1 'Cormorant Garamond',Georgia,serif;letter-spacing:-1px;margin:13px 0 0;color:inherit}
+main :where(.gx-ref) h3{font-family:inherit;font-size:1.17em;font-weight:700;letter-spacing:normal;line-height:normal;margin:1em 0;color:inherit}
+main :where(.gx-ref) a{color:inherit;text-decoration:none}
+main :where(.gx-ref) :is(button,input,select,textarea){font:inherit}
+main :where(.gx-ref) :is(button,a,input,select,textarea){-webkit-tap-highlight-color:transparent}
+main :where(.gx-ref) button{cursor:pointer;color:inherit;border:0;background:none}
+main :where(.gx-ref) svg{width:22px;fill:none;stroke:currentColor;stroke-width:1.5}
+main :where(.gx-ref) img{width:100%;height:100%;object-fit:cover;display:block}
+main :where(.gx-ref) :is(button,a):focus-visible{outline:2px solid #C8792C;outline-offset:5px}
+/* Reference caps the whole page at 1700px from 1550px wide (style.css: body{max-width:1700px;margin:auto}). */
+@media(min-width:1550px){.gx-ref{max-width:1700px;margin-left:auto;margin-right:auto}}
+@media(max-width:760px){main :where(.gx-ref) h1{font-size:64px;margin-top:23px}main :where(.gx-ref) h2{font-size:32px}}
+
+/* Shared reference components (style.css). */
+:where(.gx-ref) .eyebrow{font-size:9px;letter-spacing:1.7px;font-weight:600;display:flex;align-items:center;gap:10px}
+:where(.gx-ref) .btn{display:inline-flex;align-items:center;justify-content:center;gap:38px;background:#C8792C;color:#2B2016;padding:17px 22px;font-size:12px;font-weight:500;border:1px solid #C8792C;transition:background .2s}
+:where(.gx-ref) .btn:hover{background:#5B4632;border-color:#5B4632;color:#F4D9A0}
+@media(max-width:760px){:where(.gx-ref) .eyebrow{font-size:8px}:where(.gx-ref) .btn{padding:15px 18px;gap:23px;font-size:11px}}
+@media(prefers-reduced-motion:reduce){:where(.gx-ref) .btn{transition:none}}
