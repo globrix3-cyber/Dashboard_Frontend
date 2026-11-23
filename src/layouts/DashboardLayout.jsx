@@ -10,7 +10,7 @@ import { LogOut, Search, Bell, ChevronDown, Globe, User, ShoppingBag, Tag } from
 
 /* ── CSS variables injected once into :root ────────────────────────────────── */
 const CSS_VARS = `
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=DM+Sans:wght@400;500;600&display=swap');
 
   :root {
     --cream:        #E3D5C1;

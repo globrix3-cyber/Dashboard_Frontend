@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap');
 
 /* Headings: Canela Light (licensed file supplied by the client), matching the reference site. */
 @font-face {
@@ -61,6 +61,9 @@ html { -webkit-font-smoothing: antialiased; }
 
 body {
   font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+  /* Client type system: DM Sans runs Regular 400 to Semibold 600. Weights above 600 render at 600
+     instead of a browser-faked bold (only 400/500/600 are loaded). */
+  font-synthesis-weight: none;
   font-size: 14px;
   line-height: 1.65;
   color: var(--ink);
