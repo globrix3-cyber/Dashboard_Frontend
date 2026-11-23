@@ -19,24 +19,24 @@ const C = {
   inkSoft:    '#2B2016',
   muted:      '#79634E',
   border:     '#E3D5C1',
-  bg:         '#E3D5C1',
+  bg:         '#F5F0E7',
   white:      '#FDF9F1',
-  emerald:    '#1A7A4A',
-  emeraldLt:  '#EAF5EF',
+  emerald:    '#5B4632',
+  emeraldLt:  '#F0DCC0',
   navy:       '#5B4632',
   navyLt:     '#F0DCC0',
   saffron:    '#C8792C',
   saffronLt:  '#FDF9F1',
-  gold:       '#C8792C',
+  gold:       '#5B4632', // text/icon accent: mocha keeps small text readable on cream
   goldLt:     '#FDF9F1',
-  red:        '#DC2626',
+  red:        '#B42318',
   redLt:      '#FEF2F2',
 };
 
 /* ── Stat card ──────────────────────────────────────────────────────────── */
 function StatCard({ icon: Icon, label, value, color, trend, badge }) {
   return (
-    <div style={{ background: C.white, borderRadius: 14, padding: '20px 22px 18px', border: `1px solid ${C.border}`, borderTop: `3px solid ${color}`, boxShadow: '0 1px 4px rgba(43,32,22,.04)', transition: 'box-shadow .15s, transform .15s' }}
+    <div style={{ background: C.white, borderRadius: 6, padding: '20px 22px 18px', border: `1px solid ${C.border}`, boxShadow: '0 1px 4px rgba(43,32,22,.04)', transition: 'box-shadow .15s, transform .15s' }}
       onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 6px 20px rgba(43,32,22,.09)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
       onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 1px 4px rgba(43,32,22,.04)'; e.currentTarget.style.transform = 'none'; }}
     >
@@ -82,7 +82,7 @@ function Status({ status }) {
 function Panel({ title, count, countColor, onViewAll, children }) {
   const navigate = useNavigate();
   return (
-    <div style={{ background: C.white, borderRadius: 14, border: `1px solid ${C.border}`, overflow: 'hidden' }}>
+    <div style={{ background: C.white, borderRadius: 6, border: `1px solid ${C.border}`, overflow: 'hidden' }}>
       <div style={{ padding: '14px 20px', borderBottom: `1px solid ${C.border}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <span style={{ fontWeight: 700, fontSize: 14, color: C.ink }}>{title}</span>
@@ -153,7 +153,7 @@ export default function AdminDashboard() {
     <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", color: C.ink, display: 'flex', flexDirection: 'column', gap: 24 }}>
 
       {/* ── Page heading ─────────────────────────────────────────────────── */}
-      <div style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: 16, padding: '24px 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap', marginBottom: 8 }}>
+      <div style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: 6, padding: '24px 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap', marginBottom: 8 }}>
         <div>
           <p style={{ fontSize: 11, fontWeight: 700, color: '#79634E', letterSpacing: '.1em', textTransform: 'uppercase', margin: '0 0 6px' }}>
             Globrixa · Admin Control
@@ -180,7 +180,7 @@ export default function AdminDashboard() {
             <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 600, color: C.ink }}>
               <Mail size={14} color={C.saffron} />
               Newsletter
-              <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 100, background: `${C.saffron}18`, color: C.saffron }}>
+              <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 100, background: `${C.saffron}18`, color: '#5B4632' }}>
                 {nl ? '…' : nlError ? '—' : subscriberList.length}
               </span>
             </span>
@@ -264,7 +264,7 @@ export default function AdminDashboard() {
             const role        = u.role;
             const company     = u.company || '—';
             const status      = u.is_active === false ? 'suspended' : u.status || 'active';
-            const avatarColor = role === 'supplier' ? C.emerald : role === 'admin' ? C.saffron : C.navy;
+            const avatarColor = role === 'supplier' ? C.emerald : role === 'admin' ? C.inkSoft : C.navy;
             return (
               <div key={u.id} style={{ padding: '11px 20px', borderBottom: `1px solid ${C.border}`, display: 'flex', alignItems: 'center', gap: 12, transition: 'background .1s', cursor: 'pointer' }}
                 onMouseEnter={e => e.currentTarget.style.background = C.bg}

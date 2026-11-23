@@ -15,13 +15,13 @@ import { formatDate } from '../utils/helpers';
 
 const C = {
   saffron:    '#C8792C', saffronLt: '#FDF9F1',
-  emerald:    '#1A7A4A', emeraldLt: '#EAF5EF',
+  emerald:    '#5B4632', emeraldLt: '#F0DCC0',
   navy:       '#5B4632', navyLt:    '#F0DCC0',
   gold:       '#C8792C', goldLt:    '#FDF9F1',
   ink:        '#5B4632', inkSoft:   '#2B2016',
   muted:      '#79634E',
-  borderSoft: '#E3D5C1', cream:     '#E3D5C1',
-  red:        '#DC2626', redLt:     '#FEF2F2',
+  borderSoft: '#E3D5C1', cream:     '#F5F0E7',
+  red:        '#B42318', redLt:     '#FEF2F2',
 };
 
 const STATUS_META = {
@@ -35,14 +35,13 @@ const STATUS_META = {
 function SectionCard({ title, icon: Icon, accent = C.navy, children }) {
   return (
     <div style={{
-      background: '#FDF9F1', borderRadius: 16,
+      background: '#FDF9F1', borderRadius: 6,
       border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden', marginBottom: 16,
     }}>
-      <div style={{ height: 3, background: accent }} />
       <div style={{ padding: '16px 20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
           <Icon size={15} color={accent} />
-          <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: 14, color: C.ink, margin: 0, textTransform: 'uppercase', letterSpacing: '.04em' }}>
+          <h3 style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontWeight: 300, fontSize: 14, color: C.ink, margin: 0, textTransform: 'uppercase', letterSpacing: '.04em' }}>
             {title}
           </h3>
         </div>
@@ -107,20 +106,20 @@ function ConfirmModal({ message, onConfirm, onCancel, confirmLabel, confirmColor
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
           <AlertTriangle size={20} color={confirmColor || C.saffron} />
-          <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 16, fontWeight: 800, color: C.ink, margin: 0 }}>
+          <h3 style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: 16, fontWeight: 300, color: C.ink, margin: 0 }}>
             Confirm Action
           </h3>
         </div>
         <p style={{ fontSize: 14, color: C.inkSoft, lineHeight: 1.6, marginBottom: 20 }}>{message}</p>
         <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
           <button onClick={onCancel} style={{
-            padding: '9px 20px', borderRadius: 100, border: `1.5px solid ${C.borderSoft}`,
+            padding: '9px 20px', borderRadius: 3, border: `1.5px solid ${C.borderSoft}`,
             background: '#FDF9F1', color: C.muted, cursor: 'pointer',
             fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 13,
           }}>Cancel</button>
           <button onClick={onConfirm} style={{
-            padding: '9px 20px', borderRadius: 100, border: 'none',
-            background: confirmColor || C.saffron, color: '#FDF9F1', cursor: 'pointer',
+            padding: '9px 20px', borderRadius: 3, border: 'none',
+            background: confirmColor || C.saffron, color: (confirmColor || C.saffron) === C.saffron ? '#2B2016' : '#FDF9F1', cursor: 'pointer',
             fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13,
           }}>{confirmLabel || 'Confirm'}</button>
         </div>
@@ -232,7 +231,7 @@ export default function ContractPage() {
                 <StatusIcon size={12} /> {statusMeta.label}
               </span>
             </div>
-            <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, fontWeight: 900, color: C.ink, margin: 0 }}>
+            <h1 style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: 24, fontWeight: 300, color: C.ink, margin: 0 }}>
               {contract.title}
             </h1>
             <p style={{ fontSize: 13, color: C.muted, marginTop: 4 }}>
@@ -240,20 +239,20 @@ export default function ContractPage() {
             </p>
           </div>
         </div>
-        <div style={{ height: 3, marginTop: 12, borderRadius: 2, background: `linear-gradient(90deg, ${C.saffron}, transparent)` }} />
+        <div style={{ height: 1, marginTop: 12, background: '#E3D5C1' }} />
       </div>
 
       {/* ── Action bar ───────────────────────────────────────────────────── */}
       {(canSign || canOrder || canCancel) && (
         <div style={{
           display: 'flex', gap: 10, flexWrap: 'wrap',
-          background: '#FDF9F1', borderRadius: 16, padding: '14px 18px',
+          background: '#FDF9F1', borderRadius: 6, padding: '14px 18px',
           border: `1.5px solid ${C.borderSoft}`, marginBottom: 20,
         }}>
           {canSign && (
             <button onClick={() => setModal('sign')} disabled={busy === 'sign'} style={{
               display: 'flex', alignItems: 'center', gap: 7,
-              padding: '10px 22px', borderRadius: 100, border: 'none',
+              padding: '10px 22px', borderRadius: 3, border: 'none',
               background: '#C8792C', color: '#2B2016', cursor: 'pointer',
               fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13,
               opacity: busy === 'sign' ? 0.7 : 1,
@@ -264,7 +263,7 @@ export default function ContractPage() {
           {canOrder && (
             <button onClick={() => setModal('order')} disabled={busy === 'order'} style={{
               display: 'flex', alignItems: 'center', gap: 7,
-              padding: '10px 22px', borderRadius: 100, border: 'none',
+              padding: '10px 22px', borderRadius: 3, border: 'none',
               background: C.saffron, color: '#2B2016', cursor: 'pointer',
               fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13,
               opacity: busy === 'order' ? 0.7 : 1,
@@ -275,7 +274,7 @@ export default function ContractPage() {
           {canCancel && (
             <button onClick={() => setModal('cancel')} disabled={busy === 'cancel'} style={{
               display: 'flex', alignItems: 'center', gap: 7,
-              padding: '10px 18px', borderRadius: 100,
+              padding: '10px 18px', borderRadius: 3,
               border: `1.5px solid ${C.borderSoft}`, background: '#FDF9F1',
               color: C.red, cursor: 'pointer',
               fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 13,

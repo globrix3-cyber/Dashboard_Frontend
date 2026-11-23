@@ -14,10 +14,9 @@ const INPUT = {
   outline: 'none', boxSizing: 'border-box', transition: 'border-color .18s',
 };
 
-const ROLES = [
-  { value: 'buyer',    label: 'Buyer',    sub: 'I want to source products',  icon: '🛍️' },
-  { value: 'supplier', label: 'Supplier', sub: 'I want to sell my products', icon: '🏭' },
-];
+// Client type system: wordmark in Cormorant Garamond 600 caps, headings in Canela Light.
+const WORDMARK = { fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 600, fontSize: 30, letterSpacing: '4px', textTransform: 'uppercase', color: '#5B4632', lineHeight: 1, margin: 0 };
+const HEADING  = { fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontWeight: 300, fontSize: 28, letterSpacing: '-0.5px', lineHeight: 1.15, color: '#5B4632', margin: '0 0 8px' };
 
 export default function LoginModal({ onSubmit }) {
   const dispatch    = useDispatch();
@@ -27,6 +26,7 @@ export default function LoginModal({ onSubmit }) {
   const [showPwd, setShowPwd] = useState(false);
   const [form, setForm] = useState({ email: '', password: '', name: '', company: '', role: loginIntent === 'supplier' ? 'supplier' : 'buyer', phoneDial: DEFAULT_PHONE_COUNTRY.dial, phoneNumber: '' });
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
+  const [callConsent, setCallConsent] = useState(false);
 
   // Forgot-password flow: 'request' (enter email) → 'confirm' (enter PIN + new password)
   const [resetStep, setResetStep]     = useState('request');
@@ -137,7 +137,8 @@ export default function LoginModal({ onSubmit }) {
         company: form.company.trim(),
         phone_number: combinePhone(form.phoneDial, form.phoneNumber),
         otp: savedOtp,
-        onboarding_answers: onboardingAnswers && Object.keys(onboardingAnswers).length ? onboardingAnswers : undefined,
+        // The call-permission choice travels with the onboarding answers (visible to admins).
+        onboarding_answers: { ...(onboardingAnswers || {}), call_consent: callConsent },
       });
       toast.success('Account created! Signing you in…');
       const response = await api.login({ email: form.email, password: form.password });
@@ -213,9 +214,9 @@ export default function LoginModal({ onSubmit }) {
 
         <div style={{ padding: '36px 32px 28px' }}>
 
-          {/* Logo — centered */}
+          {/* Wordmark — centered */}
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: 22 }}>
-            <img src="/logo-icon.png" alt="Globrixa" style={{ height: 56, objectFit: 'contain', display: 'block' }} />
+            <p style={WORDMARK} aria-label="Globrixa">GLOBRIXA</p>
           </div>
 
           {mode === 'onboarding' ? (
@@ -229,22 +230,22 @@ export default function LoginModal({ onSubmit }) {
           <>
           {/* Headline */}
           <div style={{ textAlign: 'center', marginBottom: 26 }}>
-            <h2 id="login-modal-title" style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: 28, fontWeight: 900, color: '#5B4632', letterSpacing: -0.5, lineHeight: 1.2, marginBottom: 10 }}>
+            <h2 id="login-modal-title" style={HEADING}>
               {mode === 'login'
-                ? <>Source <span style={{ color: '#C8792C' }}>better,</span><br/>grow together.</>
+                ? 'Sign in'
                 : mode === 'register'
-                  ? <>Join <span style={{ color: '#C8792C' }}>Globrixa</span> free.</>
+                  ? (form.role === 'supplier' ? 'Create your brand account' : 'Create your account')
                   : mode === 'verify-email'
-                    ? <>Verify your <span style={{ color: '#C8792C' }}>email.</span></>
-                    : <>Reset your <span style={{ color: '#C8792C' }}>password.</span></>}
+                    ? 'Verify your email'
+                    : 'Reset your password'}
             </h2>
-            <p style={{ fontSize: 14, color: '#79634E', lineHeight: 1.6 }}>
+            <p style={{ fontSize: 14, color: '#79634E', lineHeight: 1.6, margin: 0 }}>
               {mode === 'login'
-                ? 'Sign in to access prices, connect with suppliers, and grow your business.'
+                ? 'Welcome back. Sign in to your Globrixa account.'
                 : mode === 'register'
                   ? (form.role === 'supplier'
-                      ? 'List your products and reach global buyers across 120+ countries.'
-                      : 'Access 50,000+ products from verified Indian manufacturers.')
+                      ? 'List your products and connect with trade buyers.'
+                      : 'Source distinctive products from Indian makers.')
                   : mode === 'verify-email'
                     ? <>Enter the 6-digit code sent to <strong style={{ color: '#5B4632' }}>{form.email}</strong>.</>
                     : (resetStep === 'request'
@@ -255,30 +256,17 @@ export default function LoginModal({ onSubmit }) {
 
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
 
-            {/* Role picker — register only */}
-            {mode === 'register' && (
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-                {ROLES.map(r => (
-                  <button type="button" key={r.value} onClick={() => set('role', r.value)} aria-pressed={form.role === r.value} style={{ padding: '12px', borderRadius: 12, border: `2px solid ${form.role === r.value ? '#C8792C' : '#E3D5C1'}`, background: form.role === r.value ? '#FDF9F1' : '#FDF9F1', cursor: 'pointer', textAlign: 'left', fontFamily: 'inherit', transition: '.15s' }}>
-                    <div style={{ fontSize: 18, marginBottom: 4 }}>{r.icon}</div>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: '#5B4632' }}>{r.label}</div>
-                    <div style={{ fontSize: 11, color: '#79634E' }}>{r.sub}</div>
-                  </button>
-                ))}
-              </div>
-            )}
-
             {/* Name + Company — register only */}
             {mode === 'register' && (
               <>
                 <div>
-                  <label htmlFor="auth-name" style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>Full Name</label>
+                  <label htmlFor="auth-name" style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>Full Name</label>
                   <input id="auth-name" autoComplete="name" value={form.name} onChange={e => set('name', e.target.value)} placeholder="Rajesh Kumar" style={INPUT}
                     onFocus={e => { e.currentTarget.style.borderColor = '#C8792C'; e.currentTarget.style.background = '#FDF9F1'; }}
                     onBlur={e => { e.currentTarget.style.borderColor = '#E3D5C1'; e.currentTarget.style.background = '#FDF9F1'; }} />
                 </div>
                 <div>
-                  <label htmlFor="auth-company" style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>
+                  <label htmlFor="auth-company" style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>
                     {form.role === 'supplier' ? 'Brand / Business Name' : 'Company Name'}
                   </label>
                   <input
@@ -291,7 +279,7 @@ export default function LoginModal({ onSubmit }) {
                     onBlur={e => { e.currentTarget.style.borderColor = '#E3D5C1'; e.currentTarget.style.background = '#FDF9F1'; }} />
                 </div>
                 <div>
-                  <label htmlFor="auth-phone" style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>Phone Number</label>
+                  <label htmlFor="auth-phone" style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>Phone Number</label>
                   <div style={{ display: 'flex', gap: 8 }}>
                     <select aria-label="Country dialling code" value={form.phoneDial} onChange={e => set('phoneDial', e.target.value)} style={{ ...INPUT, width: 110, cursor: 'pointer' }}>
                       {PHONE_COUNTRIES.map(c => (
@@ -315,19 +303,19 @@ export default function LoginModal({ onSubmit }) {
               <>
                 <div style={{ padding: '10px 14px', borderRadius: 10, background: '#E3D5C1', fontSize: 12.5, color: '#79634E', lineHeight: 1.6 }}>
                   Wrong email?{' '}
-                  <button type="button" onClick={backToRegister} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#C8792C', fontWeight: 700, fontSize: 12.5, fontFamily: 'inherit', textDecoration: 'underline' }}>
+                  <button type="button" onClick={backToRegister} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#C8792C', fontWeight: 600, fontSize: 12.5, fontFamily: 'inherit', textDecoration: 'underline' }}>
                     Change it
                   </button>
                 </div>
                 <div>
-                  <label htmlFor="auth-otp" style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>6-digit code</label>
+                  <label htmlFor="auth-otp" style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>6-digit code</label>
                   <input
                     id="auth-otp" autoComplete="one-time-code"
                     autoFocus
                     value={otpInput}
                     onChange={e => setOtpInput(e.target.value.replace(/\D/g, '').slice(0, 6))}
                     placeholder="••••••" inputMode="numeric"
-                    style={{ ...INPUT, letterSpacing: '0.4em', fontWeight: 700, textAlign: 'center' }}
+                    style={{ ...INPUT, letterSpacing: '0.4em', fontWeight: 600, textAlign: 'center' }}
                     onFocus={e => { e.currentTarget.style.borderColor = '#C8792C'; e.currentTarget.style.background = '#FDF9F1'; }}
                     onBlur={e => { e.currentTarget.style.borderColor = '#E3D5C1'; e.currentTarget.style.background = '#FDF9F1'; }}
                   />
@@ -343,7 +331,7 @@ export default function LoginModal({ onSubmit }) {
             {/* Business email — login & register */}
             {mode !== 'forgot' && mode !== 'verify-email' && (
               <div>
-                <label htmlFor="auth-email" style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>Business email</label>
+                <label htmlFor="auth-email" style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>Business email</label>
                 <input id="auth-email" autoComplete="email" type="email" value={form.email} onChange={e => set('email', e.target.value)} placeholder="you@company.com" required style={INPUT}
                   onFocus={e => { e.currentTarget.style.borderColor = '#C8792C'; e.currentTarget.style.background = '#FDF9F1'; }}
                   onBlur={e => { e.currentTarget.style.borderColor = '#E3D5C1'; e.currentTarget.style.background = '#FDF9F1'; }} />
@@ -353,7 +341,7 @@ export default function LoginModal({ onSubmit }) {
             {/* Password — login & register */}
             {mode !== 'forgot' && mode !== 'verify-email' && (
               <div>
-                <label htmlFor="auth-password" style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>Password</label>
+                <label htmlFor="auth-password" style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>Password</label>
                 <div style={{ position: 'relative' }}>
                   <input id="auth-password" autoComplete={mode === 'login' ? 'current-password' : 'new-password'} type={showPwd ? 'text' : 'password'} value={form.password} onChange={e => set('password', e.target.value)} placeholder="••••••••" required style={{ ...INPUT, paddingRight: 52 }}
                     onFocus={e => { e.currentTarget.style.borderColor = '#C8792C'; e.currentTarget.style.background = '#FDF9F1'; }}
@@ -377,7 +365,7 @@ export default function LoginModal({ onSubmit }) {
             {/* Step 1 — request PIN */}
             {mode === 'forgot' && resetStep === 'request' && (
               <div>
-                <label htmlFor="auth-reset-email" style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>Registered email</label>
+                <label htmlFor="auth-reset-email" style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>Registered email</label>
                 <input id="auth-reset-email" autoComplete="email" type="email" value={form.email} onChange={e => set('email', e.target.value)} placeholder="you@company.com" required style={INPUT}
                   onFocus={e => { e.currentTarget.style.borderColor = '#C8792C'; e.currentTarget.style.background = '#FDF9F1'; }}
                   onBlur={e => { e.currentTarget.style.borderColor = '#E3D5C1'; e.currentTarget.style.background = '#FDF9F1'; }} />
@@ -389,19 +377,19 @@ export default function LoginModal({ onSubmit }) {
               <>
                 <div style={{ padding: '10px 14px', borderRadius: 10, background: '#E3D5C1', fontSize: 12.5, color: '#79634E', lineHeight: 1.6 }}>
                   Wrong email?{' '}
-                  <button type="button" onClick={() => setResetStep('request')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#C8792C', fontWeight: 700, fontSize: 12.5, fontFamily: 'inherit', textDecoration: 'underline' }}>
+                  <button type="button" onClick={() => setResetStep('request')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#C8792C', fontWeight: 600, fontSize: 12.5, fontFamily: 'inherit', textDecoration: 'underline' }}>
                     Use a different one
                   </button>
                 </div>
                 <div>
-                  <label htmlFor="auth-pin" style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>6-digit PIN</label>
+                  <label htmlFor="auth-pin" style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>6-digit PIN</label>
                   <input id="auth-pin" autoComplete="one-time-code" value={pin} onChange={e => setPin(e.target.value.replace(/\D/g, '').slice(0, 6))} placeholder="••••••" inputMode="numeric" required
-                    style={{ ...INPUT, letterSpacing: '0.4em', fontWeight: 700, textAlign: 'center' }}
+                    style={{ ...INPUT, letterSpacing: '0.4em', fontWeight: 600, textAlign: 'center' }}
                     onFocus={e => { e.currentTarget.style.borderColor = '#C8792C'; e.currentTarget.style.background = '#FDF9F1'; }}
                     onBlur={e => { e.currentTarget.style.borderColor = '#E3D5C1'; e.currentTarget.style.background = '#FDF9F1'; }} />
                 </div>
                 <div>
-                  <label htmlFor="auth-new-password" style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>New password</label>
+                  <label htmlFor="auth-new-password" style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#5B4632', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '.06em' }}>New password</label>
                   <div style={{ position: 'relative' }}>
                     <input id="auth-new-password" autoComplete="new-password" type={showNewPwd ? 'text' : 'password'} value={newPassword} onChange={e => setNewPassword(e.target.value)} placeholder="••••••••" required style={{ ...INPUT, paddingRight: 52 }}
                       onFocus={e => { e.currentTarget.style.borderColor = '#C8792C'; e.currentTarget.style.background = '#FDF9F1'; }}
@@ -414,9 +402,18 @@ export default function LoginModal({ onSubmit }) {
               </>
             )}
 
+            {/* Permission to call — register only (optional) */}
+            {mode === 'register' && (
+              <label style={{ display: 'flex', alignItems: 'flex-start', gap: 10, fontSize: 13, color: '#5B4632', lineHeight: 1.55, cursor: 'pointer' }}>
+                <input type="checkbox" checked={callConsent} onChange={e => setCallConsent(e.target.checked)}
+                  style={{ width: 17, height: 17, minWidth: 17, marginTop: 2, accentColor: '#5B4632', cursor: 'pointer' }} />
+                <span>I give Globrixa permission to call me about this enquiry.</span>
+              </label>
+            )}
+
             {/* Submit */}
             <button type="submit" disabled={loading}
-              style={{ marginTop: 4, width: '100%', padding: '15px', borderRadius: 10, border: 'none', background: loading ? '#E3D5C1' : '#5B4632', color: '#FDF9F1', fontSize: 15, fontWeight: 700, cursor: loading ? 'not-allowed' : 'pointer', fontFamily: 'inherit', transition: 'background .18s' }}
+              style={{ marginTop: 4, width: '100%', padding: '15px', borderRadius: 10, border: 'none', background: loading ? '#E3D5C1' : '#5B4632', color: '#FDF9F1', fontSize: 15, fontWeight: 600, cursor: loading ? 'not-allowed' : 'pointer', fontFamily: 'inherit', transition: 'background .18s' }}
               onMouseEnter={e => { if (!loading) e.currentTarget.style.background = '#2B2016'; }}
               onMouseLeave={e => { if (!loading) e.currentTarget.style.background = '#5B4632'; }}
             >
@@ -433,9 +430,9 @@ export default function LoginModal({ onSubmit }) {
           {/* Terms */}
           <p style={{ fontSize: 11, color: '#79634E', textAlign: 'center', marginTop: 18, lineHeight: 1.65 }}>
             By continuing, you agree to our{' '}
-            <span style={{ textDecoration: 'underline', cursor: 'pointer' }}>Terms of Service</span>
+            <a href="/policies?tab=terms" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>Terms of Service</a>
             {' '}and{' '}
-            <span style={{ textDecoration: 'underline', cursor: 'pointer' }}>Privacy Policy</span>.
+            <a href="/policies?tab=privacy" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>Privacy Policy</a>.
           </p>
           </>
           )}
@@ -450,7 +447,7 @@ export default function LoginModal({ onSubmit }) {
                 New to Globrixa?{' '}
                 <button
                   onClick={() => { setMode('register'); set('role', 'buyer'); }}
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#5B4632', fontWeight: 700, fontSize: 13, fontFamily: 'inherit', textDecoration: 'underline' }}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#5B4632', fontWeight: 600, fontSize: 13, fontFamily: 'inherit', textDecoration: 'underline' }}
                 >
                   Create an account
                 </button>
@@ -459,7 +456,7 @@ export default function LoginModal({ onSubmit }) {
                 Are you a supplier?{' '}
                 <button
                   onClick={() => { setMode('register'); set('role', 'supplier'); }}
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#5B4632', fontWeight: 700, fontSize: 13, fontFamily: 'inherit', textDecoration: 'underline' }}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#5B4632', fontWeight: 600, fontSize: 13, fontFamily: 'inherit', textDecoration: 'underline' }}
                 >
                   Join as a brand
                 </button>
@@ -468,20 +465,20 @@ export default function LoginModal({ onSubmit }) {
           ) : mode === 'register' ? (
             <p style={{ fontSize: 13, color: '#79634E', textAlign: 'center', margin: 0 }}>
               Already have an account?{' '}
-              <button onClick={() => setMode('login')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#5B4632', fontWeight: 700, fontSize: 13, fontFamily: 'inherit', textDecoration: 'underline' }}>
+              <button onClick={() => setMode('login')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#5B4632', fontWeight: 600, fontSize: 13, fontFamily: 'inherit', textDecoration: 'underline' }}>
                 Sign in
               </button>
             </p>
           ) : mode === 'verify-email' ? (
             <p style={{ fontSize: 13, color: '#79634E', textAlign: 'center', margin: 0 }}>
-              <button onClick={backToRegister} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#5B4632', fontWeight: 700, fontSize: 13, fontFamily: 'inherit', textDecoration: 'underline' }}>
+              <button onClick={backToRegister} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#5B4632', fontWeight: 600, fontSize: 13, fontFamily: 'inherit', textDecoration: 'underline' }}>
                 ← Back to registration
               </button>
             </p>
           ) : (
             <p style={{ fontSize: 13, color: '#79634E', textAlign: 'center', margin: 0 }}>
               Remembered your password?{' '}
-              <button onClick={backToLogin} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#5B4632', fontWeight: 700, fontSize: 13, fontFamily: 'inherit', textDecoration: 'underline' }}>
+              <button onClick={backToLogin} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#5B4632', fontWeight: 600, fontSize: 13, fontFamily: 'inherit', textDecoration: 'underline' }}>
                 Back to sign in
               </button>
             </p>

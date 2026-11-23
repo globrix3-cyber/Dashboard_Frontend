@@ -1,12 +1,14 @@
-import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useMemo, useRef } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, toggleLogin } from '../features/auth/authSlice';
 import { disconnectSocket } from '../services/socket';
 import { useBreakpoint } from '../hooks/useBreakpoint';
-import { useCurrency } from '../hooks/useCurrency';
 import { api } from '../services/api';
-import { LogOut, Search, Bell, ChevronDown, Globe, User, ShoppingBag, Tag } from 'lucide-react';
+import { LogOut, Search, Bell, User, Tag } from 'lucide-react';
+import LandingNavbar from '../pages/landing/LandingNavbar';
+import LandingFooter from '../pages/landing/LandingFooter';
+import { CATEGORY_LINKS, useCategoryCounts, hasProducts } from '../pages/landing/categoryLinks';
 
 /* ── CSS variables injected once into :root ────────────────────────────────── */
 const CSS_VARS = `
@@ -41,167 +43,106 @@ if (!document.getElementById('globrix-vars')) {
   document.head.appendChild(s);
 }
 
-/* ── Nav link definitions — also power the Faire-style top bar for every role ── */
+/* ── Palette & type (client brief: Cormorant wordmark, DM Sans UI, Burnt Amber actions) ── */
+const MOCHA     = '#5B4632';
+const CREAM     = '#FDF9F1';
+const CHAMPAGNE = '#F4D9A0';
+const AMBER     = '#C8792C';
+const DEEP      = '#2B2016';
+const MUTED     = '#79634E';
+const WORDMARK  = "'Cormorant Garamond', Georgia, serif";
+const SERIF     = "'Canela', 'Cormorant Garamond', Georgia, serif";
+
+/* ── Account menu links per role (client: buyers get Wishlist; My Orders / My Cart removed) ── */
 const buyerLinks = [
   { path: '/buyer-dashboard',           label: 'Overview'   },
-  { path: '/buyer-dashboard/rfqs',       label: 'My RFQs'    },
-  { path: '/buyer-dashboard/contracts',  label: 'Contracts'  },
-  { path: '/buyer-dashboard/orders',     label: 'My Orders'  },
-  { path: '/buyer-dashboard/cart',       label: 'My Cart'    },
-  { path: '/buyer-dashboard/messages',   label: 'Messages'   },
-  { path: '/categories',                 label: 'Categories' },
-  { path: '/products',                   label: 'Browse'     },
-  { path: '/edit-profile',               label: 'Profile'    },
+  { path: '/buyer-dashboard/rfqs',      label: 'My RFQs'    },
+  { path: '/buyer-dashboard/contracts', label: 'Contracts'  },
+  { path: '/buyer-dashboard/wishlist',  label: 'Wishlist'   },
+  { path: '/buyer-dashboard/messages',  label: 'Messages'   },
+  { path: '/categories',                label: 'Categories' },
+  { path: '/products',                  label: 'Browse'     },
+  { path: '/edit-profile',              label: 'Profile'    },
 ];
 
 const supplierLinks = [
   { path: '/supplier-dashboard',           label: 'Overview'   },
-  { path: '/supplier-dashboard/rfqs',       label: 'Open RFQs'  },
-  { path: '/supplier-dashboard/quotes',     label: 'My Quotes'  },
-  { path: '/supplier-dashboard/contracts',  label: 'Contracts'  },
-  { path: '/supplier-dashboard/orders',     label: 'Orders'     },
-  { path: '/supplier-dashboard/messages',   label: 'Messages'   },
-  { path: '/categories',                    label: 'Categories' },
-  { path: '/supplier-dashboard/catalog',    label: 'Catalog'    },
-  { path: '/edit-profile',                  label: 'Profile'    },
+  { path: '/supplier-dashboard/rfqs',      label: 'Open RFQs'  },
+  { path: '/supplier-dashboard/quotes',    label: 'My Quotes'  },
+  { path: '/supplier-dashboard/contracts', label: 'Contracts'  },
+  { path: '/supplier-dashboard/orders',    label: 'Orders'     },
+  { path: '/supplier-dashboard/messages',  label: 'Messages'   },
+  { path: '/categories',                   label: 'Categories' },
+  { path: '/supplier-dashboard/catalog',   label: 'Catalog'    },
+  { path: '/edit-profile',                 label: 'Profile'    },
 ];
 
 const adminLinks = [
-  { path: '/admin-dashboard',               label: 'Overview'      },
-  { path: '/admin-dashboard/users',         label: 'Users'         },
-  { path: '/admin-dashboard/companies',     label: 'Companies'     },
-  { path: '/admin-dashboard/verifications', label: 'Verifications' },
-  { path: '/admin-dashboard/messages',      label: 'Messages'      },
-  { path: '/admin-dashboard/reports',       label: 'Reports'       },
-  { path: '/products',                      label: 'Browse Products'},
-  { path: '/edit-profile',                  label: 'Profile'       },
+  { path: '/admin-dashboard',               label: 'Overview'        },
+  { path: '/admin-dashboard/users',         label: 'Users'           },
+  { path: '/admin-dashboard/companies',     label: 'Companies'       },
+  { path: '/admin-dashboard/verifications', label: 'Verifications'   },
+  { path: '/admin-dashboard/messages',      label: 'Messages'        },
+  { path: '/admin-dashboard/reports',       label: 'Reports'         },
+  { path: '/products',                      label: 'Browse Products' },
 ];
 
-/* ── Per-role top bar configuration ───────────────────────────────────────────── */
 const ROLE_CONFIG = {
-  buyer: {
-    links: buyerLinks, accent: '#C8792C', homePath: '/buyer-dashboard',
-    searchPlaceholder: 'Search products or suppliers', cartPath: '/buyer-dashboard/cart',
-  },
-  supplier: {
-    links: supplierLinks, accent: '#C8792C', homePath: '/supplier-dashboard',
-    searchPlaceholder: 'Search RFQs, buyers, orders…', cartPath: '/supplier-dashboard/orders',
-  },
-  admin: {
-    links: adminLinks, accent: '#5B4632', homePath: '/admin-dashboard',
-    searchPlaceholder: 'Search users, companies, orders…', cartPath: '/products',
-  },
-  guest: {
-    links: [], accent: '#C8792C', homePath: '/',
-    searchPlaceholder: 'Search products or suppliers',
-  },
+  buyer:    { links: buyerLinks,    homePath: '/buyer-dashboard',    searchPlaceholder: 'Search products, materials and collections', setupGuide: true  },
+  supplier: { links: supplierLinks, homePath: '/supplier-dashboard', searchPlaceholder: 'Search RFQs, buyers, orders…',                setupGuide: true  },
+  admin:    { links: adminLinks,    homePath: '/admin-dashboard',    searchPlaceholder: 'Search users, companies, orders…',             setupGuide: false },
 };
 
-/* ── Faire-style category browsing row — shared across every role's top bar ────
-   Mirrors the live root categories (api.getCategories()) so a click filters
-   /products to real, matching results instead of landing on an empty grid. ── */
-const CATEGORY_NAV = [
-  'Apparel & Textiles', 'Electronics & Electrical', 'Home & Garden', 'Food & Agriculture',
-  'Industrial & Machinery', 'Beauty & Personal Care', 'Sports & Outdoors',
-  'Packaging & Printing', 'Chemicals & Plastics', 'Handicrafts & Gifts',
-];
+const reset = { background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", color: MOCHA };
+const outlinedBtn = { ...reset, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box', border: '1px solid rgba(91,70,50,.396)', borderRadius: 3, fontSize: 14, fontWeight: 500, letterSpacing: '.1px', whiteSpace: 'nowrap', flexShrink: 0 };
+const iconBtn = { ...outlinedBtn, width: 46, height: 46, padding: 0 };
+const getQuoteBtn = { ...reset, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 12, boxSizing: 'border-box', height: 48, padding: '0 28px', background: AMBER, border: `1px solid ${AMBER}`, borderRadius: 3, color: DEEP, fontSize: 14.5, fontWeight: 600, letterSpacing: '1.2px', textTransform: 'uppercase', whiteSpace: 'nowrap', flexShrink: 0, transition: 'background .15s' };
+const focusCss = `
+.gx-app-search::placeholder{color:rgba(91,70,50,.74);opacity:1}
+.gx-app-hdr a:focus-visible,.gx-app-hdr button:focus-visible,.gx-app-hdr input:focus-visible{outline:2px solid ${AMBER};outline-offset:2px}
+.gx-app-menu button:hover{background:#F5F0E7}
+`;
+
+function Arrow({ size = 18 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flexShrink: 0 }}>
+      <path d="M5 12h14M13 6l6 6-6 6" />
+    </svg>
+  );
+}
 
 /* ── Account dropdown menu ──────────────────────────────────────────────────── */
 function AccountMenu({ userName, items, onNavigate, onLogout, onClose }) {
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
   return (
     <>
       <div onClick={onClose} style={{ position: 'fixed', inset: 0, zIndex: 199 }} />
-      <div style={{
-        position: 'absolute', top: 'calc(100% + 10px)', right: 0, width: 236,
-        background: '#FDF9F1', borderRadius: 14, border: '1px solid #E3D5C1',
-        boxShadow: '0 16px 48px rgba(43,32,22,.16)', overflow: 'hidden', zIndex: 200,
+      <div className="gx-app-menu" role="menu" style={{
+        position: 'absolute', top: 'calc(100% + 10px)', right: 0, width: 248,
+        background: CREAM, borderRadius: 4, border: '1px solid #E3D5C1',
+        boxShadow: '0 16px 40px rgba(43,32,22,.14)', overflow: 'hidden', zIndex: 200,
       }}>
-        <div style={{ padding: '16px 18px', borderBottom: '1px solid #E3D5C1' }}>
-          <div style={{ fontSize: 16, fontWeight: 700, color: '#5B4632', fontFamily: "'Cormorant Garamond', serif" }}>Hi, {userName?.split(' ')[0] || userName}</div>
+        <div style={{ padding: '16px 18px 14px', borderBottom: '1px solid #E3D5C1' }}>
+          <div style={{ fontSize: 11, letterSpacing: '1.6px', textTransform: 'uppercase', color: MUTED, fontWeight: 500 }}>Your account</div>
+          <div style={{ marginTop: 4, fontFamily: SERIF, fontSize: 22, fontWeight: 300, letterSpacing: '-.3px', color: MOCHA, lineHeight: 1.2 }}>Hi, {userName?.split(' ')[0] || userName || 'there'}</div>
         </div>
-        <div style={{ padding: 6, maxHeight: 320, overflowY: 'auto' }}>
+        <div style={{ padding: 6, maxHeight: 340, overflowY: 'auto' }}>
           {items.map(({ path, label }) => (
-            <button
-              key={path}
-              onClick={() => onNavigate(path)}
-              style={{ display: 'block', width: '100%', textAlign: 'left', padding: '10px 12px', borderRadius: 8, border: 'none', background: 'transparent', cursor: 'pointer', fontSize: 13.5, color: '#5B4632', fontFamily: "'DM Sans', sans-serif" }}
-              onMouseEnter={e => { e.currentTarget.style.background = '#FDF9F1'; }}
-              onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
-            >
+            <button key={path} role="menuitem" onClick={() => onNavigate(path)}
+              style={{ ...reset, display: 'block', width: '100%', textAlign: 'left', padding: '11px 12px', borderRadius: 3, fontSize: 14, fontWeight: 400 }}>
               {label}
             </button>
           ))}
         </div>
         <div style={{ borderTop: '1px solid #E3D5C1', padding: 6 }}>
-          <button
-            onClick={onLogout}
-            style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%', textAlign: 'left', padding: '10px 12px', borderRadius: 8, border: 'none', background: 'transparent', cursor: 'pointer', fontSize: 13.5, fontWeight: 600, color: '#C0392B', fontFamily: "'DM Sans', sans-serif" }}
-            onMouseEnter={e => { e.currentTarget.style.background = '#FDEEEC'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
-          >
-            <LogOut size={14} /> Log out
+          <button role="menuitem" onClick={onLogout}
+            style={{ ...reset, display: 'flex', alignItems: 'center', gap: 8, width: '100%', textAlign: 'left', padding: '11px 12px', borderRadius: 3, fontSize: 14, fontWeight: 500, color: '#9B2C2C' }}>
+            <LogOut size={15} /> Log out
           </button>
-        </div>
-      </div>
-    </>
-  );
-}
-
-/* ── "All categories" dropdown — mirrors Faire's category-menu trigger ───────── */
-function CategoryMenu({ onNavigate, onClose }) {
-  return (
-    <>
-      <div onClick={onClose} style={{ position: 'fixed', inset: 0, zIndex: 199 }} />
-      <div style={{
-        position: 'absolute', top: 'calc(100% + 10px)', left: 0, width: 240,
-        background: '#FDF9F1', borderRadius: 14, border: '1px solid #E3D5C1',
-        boxShadow: '0 16px 48px rgba(43,32,22,.16)', overflow: 'hidden', zIndex: 200,
-      }}>
-        <div style={{ padding: 6, maxHeight: 360, overflowY: 'auto' }}>
-          {CATEGORY_NAV.map((label) => (
-            <button
-              key={label}
-              onClick={() => onNavigate(label)}
-              style={{ display: 'block', width: '100%', textAlign: 'left', padding: '10px 12px', borderRadius: 8, border: 'none', background: 'transparent', cursor: 'pointer', fontSize: 13.5, color: '#5B4632', fontFamily: "'DM Sans', sans-serif" }}
-              onMouseEnter={e => { e.currentTarget.style.background = '#FDF9F1'; }}
-              onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-      </div>
-    </>
-  );
-}
-
-function CurrencyMenu({ currencies, active, onSelect, onClose }) {
-  return (
-    <>
-      <div onClick={onClose} style={{ position: 'fixed', inset: 0, zIndex: 199 }} />
-      <div style={{
-        position: 'absolute', top: 'calc(100% + 10px)', right: 0, width: 200,
-        background: '#FDF9F1', borderRadius: 14, border: '1px solid #E3D5C1',
-        boxShadow: '0 16px 48px rgba(43,32,22,.16)', overflow: 'hidden', zIndex: 200,
-      }}>
-        <div style={{ padding: 6, maxHeight: 340, overflowY: 'auto' }}>
-          {currencies.map(({ code, symbol, label }) => (
-            <button
-              key={code}
-              onClick={() => onSelect(code)}
-              style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10,
-                width: '100%', textAlign: 'left', padding: '9px 12px', borderRadius: 8,
-                border: 'none', background: code === active ? '#FDF9F1' : 'transparent', cursor: 'pointer',
-                fontSize: 13, color: '#5B4632', fontFamily: "'DM Sans', sans-serif",
-              }}
-              onMouseEnter={e => { e.currentTarget.style.background = '#FDF9F1'; }}
-              onMouseLeave={e => { e.currentTarget.style.background = code === active ? '#FDF9F1' : 'transparent'; }}
-            >
-              <span>{label}</span>
-              <span style={{ color: '#79634E', fontWeight: 600 }}>{symbol} {code}</span>
-            </button>
-          ))}
         </div>
       </div>
     </>
@@ -211,33 +152,30 @@ function CurrencyMenu({ currencies, active, onSelect, onClose }) {
 function highlightMatch(text, q) {
   const idx = text.toLowerCase().indexOf(q.toLowerCase());
   if (idx < 0) return text;
-  return <>{text.slice(0, idx)}<strong style={{ color: '#5B4632', fontWeight: 700 }}>{text.slice(idx, idx + q.length)}</strong>{text.slice(idx + q.length)}</>;
+  return <>{text.slice(0, idx)}<strong style={{ color: MOCHA, fontWeight: 600 }}>{text.slice(idx, idx + q.length)}</strong>{text.slice(idx + q.length)}</>;
 }
 
-/* ── Top bar — Faire-style header + category browsing row, shared by every role ── */
+/* ── Signed-in header — same size and design language as the homepage header ── */
 function TopBar({ role }) {
   const navigate                      = useNavigate();
+  const location                      = useLocation();
   const dispatch                      = useDispatch();
   const bp                            = useBreakpoint();
+  const counts                        = useCategoryCounts();
   const { userName }                  = useSelector((s) => s.auth);
   const [menuOpen, setMenuOpen]       = useState(false);
-  const [catMenuOpen, setCatMenuOpen] = useState(false);
-  const [currMenuOpen, setCurrMenuOpen] = useState(false);
+  const [navOpen, setNavOpen]         = useState(false);
   const [query, setQuery]             = useState('');
   const [showDrop, setShowDrop]       = useState(false);
-  const [suggestions, setSuggestions] = useState([]);
   const [catalog, setCatalog]         = useState(null);
-  const [cartCount, setCartCount]     = useState(0);
   const loadingRef                    = useRef(false);
 
-  const isGuest = role === 'guest';
-  const { links, accent, homePath, searchPlaceholder, cartPath } = ROLE_CONFIG[role];
+  const { links, homePath, searchPlaceholder, setupGuide } = ROLE_CONFIG[role];
   const messagesPath = `${homePath}/messages`;
-  const openLogin = () => dispatch(toggleLogin(true));
-  const { currency, symbol, currencies, setCurrency: setCurrencyDisplay, loading: currencyLoading } = useCurrency();
-  // Jump straight to the filtered product grid — Faire-style — instead of an
-  // intermediate "pick a category" menu page.
-  const goToCategory = (label) => navigate(`/products?category=${encodeURIComponent(label)}`);
+  const isBuyer = role === 'buyer';
+  const navItems = CATEGORY_LINKS.filter(c => hasProducts(counts, c.root));
+  const isPhone   = bp.width <= 900;
+  const isCompact = bp.width > 900 && bp.width <= 1150;
 
   const handleLogout = () => {
     localStorage.clear();
@@ -256,33 +194,28 @@ function TopBar({ role }) {
     } catch { setCatalog({ products: [], categories: [] }); }
   };
 
-  useEffect(() => {
-    if (!catalog || query.length < 2) { setSuggestions([]); return; }
+  const suggestions = useMemo(() => {
+    if (!catalog || query.length < 2) return [];
     const q = query.toLowerCase();
     const ps = catalog.products.filter(p => p.name?.toLowerCase().includes(q)).slice(0, 5).map(p => ({ type: 'product', label: p.name, id: p.id }));
     const cs = catalog.categories.filter(c => c.name?.toLowerCase().includes(q)).slice(0, 2).map(c => ({ type: 'category', label: c.name }));
-    setSuggestions([...ps, ...cs]);
+    return [...ps, ...cs];
   }, [query, catalog]);
 
-  // Cart badge — refreshed on mount and whenever ProductDetailPage adds an item
-  // (it dispatches "cart:updated" after a successful add, since there's no
-  // global cart store to subscribe to).
+  // Leaving the phone layout closes the phone nav; Escape closes it too.
+  if (!isPhone && navOpen) setNavOpen(false);
   useEffect(() => {
-    if (role !== 'buyer') return;
-    const loadCount = () => {
-      api.getCart()
-        .then(items => setCartCount(Array.isArray(items) ? items.length : 0))
-        .catch(() => {});
-    };
-    loadCount();
-    window.addEventListener('cart:updated', loadCount);
-    return () => window.removeEventListener('cart:updated', loadCount);
-  }, [role]);
+    if (!navOpen) return;
+    const onKey = (e) => { if (e.key === 'Escape') setNavOpen(false); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [navOpen]);
 
-  const submitSearch = () => {
-    if (!query.trim()) return;
+  const submitSearch = (e) => {
+    e?.preventDefault();
     setShowDrop(false);
-    navigate(`/products?search=${encodeURIComponent(query.trim())}`);
+    const q = query.trim();
+    navigate(q ? `/products?search=${encodeURIComponent(q)}` : '/products');
   };
 
   const pickSuggestion = (s) => {
@@ -291,210 +224,184 @@ function TopBar({ role }) {
     else navigate(`/products?category=${encodeURIComponent(s.label)}`);
   };
 
-  return (
-    <header style={{ flexShrink: 0, zIndex: 100, background: '#FDF9F1', borderBottom: '1px solid #FDF9F1' }}>
+  const goQuote = () => { setNavOpen(false); navigate('/buyer-dashboard/rfqs/new'); };
 
-      {/* Row 1 — logo · all categories · search · language · setup guide · bell/account/cart */}
-      <div style={{ height: 64, display: 'flex', alignItems: 'center', gap: bp.isMobile ? 10 : 16, padding: bp.isMobile ? '0 16px' : '0 32px' }}>
-        <span
-          onClick={() => navigate(homePath)}
-          style={{ fontFamily: "'DM Sans', sans-serif", fontSize: bp.isMobile ? 13 : 15, fontWeight: 800, color: '#5B4632', letterSpacing: '0.05em', textTransform: 'uppercase', cursor: 'pointer', flexShrink: 0, userSelect: 'none' }}
-        >
-          GLOBRIXA
-        </span>
+  const wrap = { maxWidth: 1600, margin: '0 auto', boxSizing: 'border-box', paddingLeft: isPhone ? '5%' : '4.5%', paddingRight: isPhone ? '5%' : '4.5%' };
+  const searchBox = { display: 'flex', alignItems: 'center', boxSizing: 'border-box', background: '#F5F0E7', border: `1px solid ${showDrop && query ? AMBER : 'rgba(91,70,50,.145)'}`, borderRadius: 4, gap: 12, transition: 'border-color .15s' };
+  const wordmark = (
+    <Link to={homePath} aria-label="Globrixa home"
+      style={{ fontFamily: WORDMARK, fontSize: isPhone ? (bp.width <= 380 ? 24 : 27) : isCompact ? 28 : 31, fontWeight: 600, letterSpacing: isPhone ? 3.5 : 4.5, lineHeight: 1.2, color: MOCHA, textDecoration: 'none', whiteSpace: 'nowrap', textTransform: 'uppercase' }}>
+      Globrixa
+    </Link>
+  );
 
-        {!bp.isMobile && (
-          <div style={{ position: 'relative', flexShrink: 0 }}>
-            <button
-              onClick={() => setCatMenuOpen(o => !o)}
-              style={{ display: 'flex', alignItems: 'center', gap: 6, height: 38, padding: '0 14px', borderRadius: 10, border: '1.5px solid #E3D5C1', background: catMenuOpen ? '#FDF9F1' : '#FDF9F1', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, color: '#5B4632', whiteSpace: 'nowrap' }}
-            >
-              All categories <ChevronDown size={14} color="#79634E" />
-            </button>
-            {catMenuOpen && (
-              <CategoryMenu
-                onNavigate={(label) => { setCatMenuOpen(false); goToCategory(label); }}
-                onClose={() => setCatMenuOpen(false)}
-              />
-            )}
-          </div>
-        )}
-
-        <div style={{ flex: 1, position: 'relative' }}>
-          <Search size={14} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: '#79634E', pointerEvents: 'none', zIndex: 1 }} />
-          <input
-            value={query}
-            onChange={e => { setQuery(e.target.value); setShowDrop(true); }}
-            onFocus={() => {
-              if (isGuest) { dispatch(toggleLogin(true)); return; }
-              loadCatalog();
-              if (query.length >= 2) setShowDrop(true);
-            }}
-            onBlur={() => setTimeout(() => setShowDrop(false), 150)}
-            onKeyDown={e => { if (e.key === 'Enter') submitSearch(); if (e.key === 'Escape') { setShowDrop(false); setQuery(''); } }}
-            placeholder={bp.isMobile ? 'Search…' : searchPlaceholder}
-            style={{ width: '100%', height: 38, borderRadius: 100, border: `1.5px solid ${showDrop && query ? '#C8792C' : '#E3D5C1'}`, background: '#FDF9F1', padding: '0 16px 0 38px', fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: '#5B4632', outline: 'none', cursor: 'text', boxSizing: 'border-box', transition: 'border-color .15s' }}
-          />
-
-          {/* Autocomplete dropdown */}
-          {showDrop && query.length >= 2 && (
-            <div style={{ position: 'absolute', top: 'calc(100% + 6px)', left: 0, right: 0, background: '#FDF9F1', border: '1.5px solid #E3D5C1', borderRadius: 14, overflow: 'hidden', boxShadow: '0 8px 32px rgba(43,32,22,0.13)', zIndex: 1000 }}>
-              {suggestions.map((s, i) => (
-                <div key={i} onMouseDown={() => pickSuggestion(s)}
-                  style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', cursor: 'pointer', fontSize: 13, color: '#5B4632', borderBottom: '1px solid #E3D5C1', background: '#FDF9F1' }}
-                  onMouseEnter={e => e.currentTarget.style.background = '#FDF9F1'}
-                  onMouseLeave={e => e.currentTarget.style.background = '#FDF9F1'}
-                >
-                  {s.type === 'product'
-                    ? <Search size={13} color="#79634E" style={{ flexShrink: 0 }} />
-                    : <Tag size={13} color="#C8792C" style={{ flexShrink: 0 }} />}
-                  <span style={{ flex: 1 }}>{highlightMatch(s.label, query)}</span>
-                  {s.type === 'category' && <span style={{ fontSize: 11, color: '#79634E', background: '#E3D5C1', padding: '2px 8px', borderRadius: 100, flexShrink: 0 }}>Category</span>}
-                </div>
-              ))}
-              <div onMouseDown={submitSearch}
-                style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 14px', cursor: 'pointer', fontSize: 12, fontWeight: 700, color: '#C8792C', background: '#FDF9F1' }}
-                onMouseEnter={e => e.currentTarget.style.background = '#FDF9F1'}
-                onMouseLeave={e => e.currentTarget.style.background = '#FDF9F1'}
-              >
-                <Search size={13} />
-                Search all results for "{query}"
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Right-anchored cluster — language · setup guide · bell/account/cart */}
-        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: bp.isMobile ? 8 : 16, flexShrink: 0 }}>
-          {!bp.isMobile && (
-            <button
-              style={{ display: 'flex', alignItems: 'center', gap: 5, background: 'transparent', border: 'none', cursor: 'pointer', padding: '6px 4px', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 500, color: '#2B2016', flexShrink: 0 }}
-            >
-              <Globe size={15} /> EN-IN
-            </button>
-          )}
-
-          {!bp.isMobile && (
-            <div style={{ position: 'relative', flexShrink: 0 }}>
-              <button
-                onClick={() => setCurrMenuOpen(o => !o)}
-                disabled={currencyLoading}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: 4,
-                  height: 30, padding: '0 10px', borderRadius: 8,
-                  border: '1.5px solid #E3D5C1',
-                  background: currency !== 'INR' ? '#5B4632' : '#FDF9F1',
-                  color:      currency !== 'INR' ? '#FDF9F1'     : '#2B2016',
-                  cursor: currencyLoading ? 'not-allowed' : 'pointer',
-                  fontFamily: "'DM Sans', sans-serif", fontSize: 12, fontWeight: 700,
-                  transition: 'background .15s, color .15s',
-                  opacity: currencyLoading ? 0.5 : 1,
-                }}
-              >
-                {symbol} {currency}
-              </button>
-              {currMenuOpen && (
-                <CurrencyMenu
-                  currencies={currencies}
-                  active={currency}
-                  onSelect={(code) => { setCurrMenuOpen(false); setCurrencyDisplay(code); }}
-                  onClose={() => setCurrMenuOpen(false)}
-                />
-              )}
-            </div>
-          )}
-
-          {!bp.isMobile && !isGuest && (
-            <button
-              onClick={() => navigate('/edit-profile')}
-              style={{ height: 38, padding: '0 18px', borderRadius: 100, border: '1.5px solid #E3D5C1', background: '#FDF9F1', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 12.5, fontWeight: 600, color: '#5B4632', whiteSpace: 'nowrap', flexShrink: 0 }}
-            >
-              Setup guide
-            </button>
-          )}
-
-          {isGuest ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: bp.isMobile ? 8 : 10, flexShrink: 0 }}>
-              <button
-                onClick={openLogin}
-                style={{ height: 38, padding: '0 16px', borderRadius: 100, border: 'none', background: 'transparent', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, color: '#5B4632', whiteSpace: 'nowrap' }}
-              >
-                Log in
-              </button>
-              <button
-                onClick={openLogin}
-                style={{ height: 38, padding: '0 20px', borderRadius: 100, border: 'none', background: accent, color: accent === '#5B4632' ? '#FDF9F1' : '#2B2016', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 700, whiteSpace: 'nowrap' }}
-              >
-                Sign up
-              </button>
-            </div>
-          ) : (
-            <div style={{ display: 'flex', alignItems: 'center', gap: bp.isMobile ? 6 : 10, flexShrink: 0 }}>
-              <div style={{ position: 'relative' }}>
-                <button
-                  onClick={() => navigate(messagesPath)} title="Notifications"
-                  style={{ width: 38, height: 38, borderRadius: 10, border: '1.5px solid #E3D5C1', background: '#FDF9F1', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
-                >
-                  <Bell size={15} color="#79634E" />
-                </button>
-                <div style={{ position: 'absolute', top: -2, right: -2, width: 8, height: 8, borderRadius: '50%', background: '#DC2626', border: '1.5px solid #FDF9F1' }} />
-              </div>
-
-              <div style={{ position: 'relative' }}>
-                <button
-                  onClick={() => setMenuOpen(o => !o)} title="Account"
-                  style={{ width: 38, height: 38, borderRadius: 10, border: '1.5px solid #E3D5C1', background: '#FDF9F1', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
-                >
-                  <User size={16} color="#79634E" />
-                </button>
-                {menuOpen && (
-                  <AccountMenu
-                    userName={userName}
-                    items={links}
-                    onClose={() => setMenuOpen(false)}
-                    onNavigate={(p) => { setMenuOpen(false); navigate(p); }}
-                    onLogout={handleLogout}
-                  />
-                )}
-              </div>
-
-              <button
-                onClick={() => navigate(cartPath)} title={role === 'buyer' ? 'Cart' : 'Orders'}
-                style={{ position: 'relative', width: 38, height: 38, borderRadius: 10, border: '1.5px solid #E3D5C1', background: '#FDF9F1', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
-              >
-                <ShoppingBag size={16} color="#79634E" />
-                {role === 'buyer' && cartCount > 0 && (
-                  <span style={{
-                    position: 'absolute', top: -5, right: -5, minWidth: 17, height: 17, padding: '0 4px',
-                    borderRadius: 100, background: accent, color: accent === '#5B4632' ? '#FDF9F1' : '#2B2016', fontSize: 10, fontWeight: 700,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1.5px solid #FDF9F1',
-                  }}>{cartCount > 99 ? '99+' : cartCount}</span>
-                )}
-              </button>
-            </div>
-          )}
-        </div>
+  const search = (
+    <form role="search" onSubmit={submitSearch} style={{ position: 'relative', flex: 1, minWidth: 0, maxWidth: isPhone ? 'none' : 640 }}>
+      <div style={{ ...searchBox, height: isPhone ? 46 : 50, padding: '0 8px 0 16px' }}>
+        <Search size={18} color={MOCHA} aria-hidden="true" style={{ flexShrink: 0 }} />
+        <input
+          value={query}
+          aria-label="Search"
+          className="gx-app-search"
+          onChange={e => { setQuery(e.target.value); setShowDrop(true); }}
+          onFocus={() => { loadCatalog(); if (query.length >= 2) setShowDrop(true); }}
+          onBlur={() => setTimeout(() => setShowDrop(false), 150)}
+          onKeyDown={e => { if (e.key === 'Escape') { setShowDrop(false); setQuery(''); } }}
+          placeholder={searchPlaceholder}
+          style={{ flex: 1, minWidth: 0, height: '100%', border: 'none', outline: 'none', background: 'transparent', padding: 0, fontFamily: "'DM Sans', sans-serif", fontSize: isPhone ? 16 : 14.5, color: MOCHA }}
+        />
+        <button type="submit" aria-label="Submit search" style={{ ...reset, width: 34, height: 34, borderRadius: 3, display: 'grid', placeItems: 'center', flexShrink: 0 }}>
+          <Arrow />
+        </button>
       </div>
 
-      {/* Row 2 — Faire-style category browsing row (shared B2B nav now lives in the account menu) */}
-      <nav style={{ display: 'flex', alignItems: 'center', gap: bp.isMobile ? 18 : 28, height: 44, padding: bp.isMobile ? '0 16px' : '0 32px', overflowX: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-        {CATEGORY_NAV.map((label) => (
-          <button
-            key={label}
-            onClick={() => goToCategory(label)}
-            style={{
-              height: '100%', display: 'flex', alignItems: 'center', whiteSpace: 'nowrap',
-              background: 'none', border: 'none', cursor: 'pointer',
-              fontFamily: "'DM Sans', sans-serif", fontSize: 13.5, fontWeight: 500, color: '#79634E',
-              transition: 'color .15s',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.color = accent; }}
-            onMouseLeave={e => { e.currentTarget.style.color = '#79634E'; }}
+      {showDrop && query.length >= 2 && (
+        <div style={{ position: 'absolute', top: 'calc(100% + 6px)', left: 0, right: 0, background: CREAM, border: '1px solid #E3D5C1', borderRadius: 4, overflow: 'hidden', boxShadow: '0 12px 32px rgba(43,32,22,0.13)', zIndex: 1000 }}>
+          {suggestions.map((s, i) => (
+            <div key={i} onMouseDown={() => pickSuggestion(s)}
+              style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '11px 16px', cursor: 'pointer', fontSize: 14, color: MOCHA, borderBottom: '1px solid #E3D5C1', background: CREAM }}
+              onMouseEnter={e => { e.currentTarget.style.background = '#F5F0E7'; }}
+              onMouseLeave={e => { e.currentTarget.style.background = CREAM; }}
+            >
+              {s.type === 'product'
+                ? <Search size={14} color={MUTED} style={{ flexShrink: 0 }} />
+                : <Tag size={14} color={AMBER} style={{ flexShrink: 0 }} />}
+              <span style={{ flex: 1 }}>{highlightMatch(s.label, query)}</span>
+              {s.type === 'category' && <span style={{ fontSize: 11, color: MUTED, letterSpacing: '1px', textTransform: 'uppercase', flexShrink: 0 }}>Category</span>}
+            </div>
+          ))}
+          <div onMouseDown={submitSearch}
+            style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '11px 16px', cursor: 'pointer', fontSize: 13, fontWeight: 600, color: MOCHA, background: CREAM }}
+            onMouseEnter={e => { e.currentTarget.style.background = '#F5F0E7'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = CREAM; }}
           >
-            {label}
+            <Search size={14} />
+            Search all results for "{query}"
+          </div>
+        </div>
+      )}
+    </form>
+  );
+
+  const bell = (
+    <div style={{ position: 'relative' }}>
+      <button type="button" onClick={() => navigate(messagesPath)} aria-label="Notifications and messages" title="Notifications" style={{ ...iconBtn, width: isPhone ? 40 : 46, height: isPhone ? 40 : 46 }}>
+        <Bell size={isPhone ? 17 : 19} color={MOCHA} />
+      </button>
+      <span aria-hidden="true" style={{ position: 'absolute', top: 7, right: 8, width: 7, height: 7, borderRadius: '50%', background: AMBER }} />
+    </div>
+  );
+  const account = (
+    <div style={{ position: 'relative' }}>
+      <button type="button" onClick={() => setMenuOpen(o => !o)} aria-label="Account menu" aria-haspopup="menu" aria-expanded={menuOpen} title="Account"
+        style={{ ...iconBtn, width: isPhone ? 40 : 46, height: isPhone ? 40 : 46, background: menuOpen ? '#F5F0E7' : 'transparent' }}>
+        <User size={isPhone ? 17 : 19} color={MOCHA} />
+      </button>
+      {menuOpen && (
+        <AccountMenu
+          userName={userName}
+          items={links}
+          onClose={() => setMenuOpen(false)}
+          onNavigate={(p) => { setMenuOpen(false); navigate(p); }}
+          onLogout={handleLogout}
+        />
+      )}
+    </div>
+  );
+  const quoteBtn = isBuyer && (
+    <button type="button" onClick={goQuote} style={getQuoteBtn}
+      onMouseEnter={e => { e.currentTarget.style.background = '#B56A22'; }}
+      onMouseLeave={e => { e.currentTarget.style.background = AMBER; }}>
+      Get quote <Arrow size={17} />
+    </button>
+  );
+  const onHome = location.pathname === homePath;
+
+  const announcement = (
+    <div style={{ background: MOCHA, color: CHAMPAGNE, fontSize: isPhone ? 11 : 12, fontWeight: 400, letterSpacing: '.25px', lineHeight: 1.5 }}>
+      <div style={{ ...wrap, paddingTop: 9, paddingBottom: 9, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 20 }}>
+        <span style={{ whiteSpace: 'nowrap' }}>Rooted in India. Global perspective.</span>
+        {!isPhone && <Link to="/contact" style={{ color: CHAMPAGNE, textDecoration: 'none', whiteSpace: 'nowrap' }}>Need help? Talk to our team</Link>}
+      </div>
+    </div>
+  );
+
+  /* ── Desktop / tablet (901px and up) ── */
+  if (!isPhone) {
+    const navItem = { display: 'flex', alignItems: 'center', height: 52, fontSize: isCompact ? 13 : 14, fontWeight: 400, letterSpacing: '.05px', color: MOCHA, textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0 };
+    return (
+      <header className="gx-app-hdr" style={{ flexShrink: 0, position: 'relative', zIndex: 100, background: CREAM, borderBottom: '1px solid rgba(91,70,50,.133)' }}>
+        <style>{focusCss}</style>
+        {announcement}
+        <div style={{ ...wrap, display: 'flex', alignItems: 'center', gap: isCompact ? 20 : 32, minHeight: isCompact ? 96 : 108, paddingTop: 24, paddingBottom: 24 }}>
+          <div style={{ flexShrink: 0 }}>{wordmark}</div>
+          {search}
+          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: isCompact ? 10 : 14, flexShrink: 0 }}>
+            {setupGuide && !isCompact && (
+              <button type="button" onClick={() => navigate('/edit-profile')} style={{ ...outlinedBtn, height: 46, padding: '0 18px' }}>Setup guide</button>
+            )}
+            {bell}
+            {account}
+            {quoteBtn}
+          </div>
+        </div>
+        <nav aria-label="Categories" style={{ borderTop: '1px solid rgba(91,70,50,.082)' }}>
+          <div style={{ ...wrap, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 24 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: isCompact ? 24 : 32, minWidth: 0, overflowX: 'auto', scrollbarWidth: 'none' }}>
+              <Link to={homePath} aria-current={onHome ? 'page' : undefined} style={{ ...navItem, boxShadow: onHome ? `inset 0 -2px 0 ${MOCHA}` : 'none' }}>Discover</Link>
+              {navItems.map(item => <Link key={item.label} to={item.to} style={navItem}>{item.label}</Link>)}
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 28, flexShrink: 0 }}>
+              <Link to="/products" style={navItem}>All products</Link>
+              <Link to="/blog" style={navItem}>Blog</Link>
+            </div>
+          </div>
+        </nav>
+      </header>
+    );
+  }
+
+  /* ── Phone / small tablet (900px and below) ── */
+  const menuLink = { display: 'flex', alignItems: 'center', height: 48, fontSize: 15, fontWeight: 400, color: MOCHA, textDecoration: 'none' };
+  return (
+    <header className="gx-app-hdr" style={{ flexShrink: 0, position: 'relative', zIndex: 100, background: CREAM, borderBottom: '1px solid rgba(91,70,50,.133)' }}>
+      <style>{focusCss}</style>
+      {announcement}
+      <div style={{ padding: '14px 5% 16px', boxSizing: 'border-box' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '40px minmax(0,1fr) auto', gap: 10, alignItems: 'center' }}>
+          <button type="button" onClick={() => setNavOpen(o => !o)} aria-expanded={navOpen} aria-controls="gx-app-mobile-nav"
+            aria-label={navOpen ? 'Close navigation' : 'Open navigation'}
+            style={{ ...iconBtn, width: 40, height: 40, border: '1px solid rgba(91,70,50,.2)' }}>
+            <svg width="15" height="11" viewBox="0 0 13 9" fill="none" stroke="currentColor" strokeWidth="1.2" aria-hidden="true">
+              <path d="M0 .6h13M0 4.5h13M0 8.4h13" />
+            </svg>
           </button>
-        ))}
-      </nav>
+          <div style={{ justifySelf: 'center' }}>{wordmark}</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            {bell}
+            {account}
+          </div>
+        </div>
+        <div style={{ marginTop: 14, display: 'flex' }}>{search}</div>
+        {isBuyer && (
+          <button type="button" onClick={goQuote} style={{ ...getQuoteBtn, width: '100%', marginTop: 12, height: 46 }}>
+            Get quote <Arrow size={17} />
+          </button>
+        )}
+      </div>
+      {navOpen && (
+        <div id="gx-app-mobile-nav" style={{ position: 'absolute', top: '100%', left: 0, right: 0, background: CREAM, borderBottom: '1px solid rgba(91,70,50,.15)', boxShadow: '0 18px 28px rgba(91,70,50,.12)', padding: '12px 5% 20px', boxSizing: 'border-box', maxHeight: 'calc(100dvh - 220px)', overflowY: 'auto', zIndex: 150 }}>
+          <nav aria-label="Main navigation">
+            <div style={{ display: 'grid', gridTemplateColumns: bp.width <= 380 ? '1fr' : '1fr 1fr', columnGap: 24 }}>
+              <Link to={homePath} onClick={() => setNavOpen(false)} style={{ ...menuLink, fontWeight: 600 }}>Discover</Link>
+              {navItems.map(item => <Link key={item.label} to={item.to} onClick={() => setNavOpen(false)} style={menuLink}>{item.label}</Link>)}
+              <Link to="/products" onClick={() => setNavOpen(false)} style={menuLink}>All products</Link>
+              <Link to="/blog" onClick={() => setNavOpen(false)} style={menuLink}>Blog</Link>
+              {setupGuide && <Link to="/edit-profile" onClick={() => setNavOpen(false)} style={menuLink}>Setup guide</Link>}
+            </div>
+          </nav>
+        </div>
+      )}
     </header>
   );
 }
@@ -511,14 +418,19 @@ export default function DashboardLayout({ children, fullBleed = false }) {
   const hPad = bp.isMobile ? 16 : 32;
 
   return (
-    <div style={{ height: '100vh', overflow: 'hidden', display: 'flex', flexDirection: 'column', background: '#FDF9F1' }}>
-      <TopBar role={role} />
-      <main style={{ flex: 1, overflowY: 'auto' }}>
-        {fullBleed ? children : (
-          <div style={{ maxWidth: 1440, margin: '0 auto', padding: `28px ${hPad}px 48px` }}>
-            {children}
-          </div>
-        )}
+    <div style={{ height: '100vh', overflow: 'hidden', display: 'flex', flexDirection: 'column', background: CREAM }}>
+      {/* Guests browsing the catalogue see exactly the homepage header (Sign in / Create account). */}
+      {role === 'guest' ? <div style={{ flexShrink: 0 }}><LandingNavbar /></div> : <TopBar role={role} />}
+      <main style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ flex: '1 0 auto' }}>
+          {fullBleed ? children : (
+            <div style={{ maxWidth: 1440, margin: '0 auto', padding: `28px ${hPad}px 48px` }}>
+              {children}
+            </div>
+          )}
+        </div>
+        {/* Client brief: the homepage footer on every page, dashboards included. */}
+        <LandingFooter />
       </main>
     </div>
   );

@@ -17,6 +17,7 @@ export const allowedPathsByRole = {
     "/buyer-dashboard",
     "/buyer-dashboard/orders",
     "/buyer-dashboard/cart",
+    "/buyer-dashboard/wishlist",
     "/buyer-dashboard/rfqs",
     "/buyer-dashboard/rfqs/new",
     "/buyer-dashboard/rfqs/:id",

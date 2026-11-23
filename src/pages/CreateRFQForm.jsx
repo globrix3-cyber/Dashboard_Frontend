@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { api } from '../services/api';
 import { InputField, SelectField, PageHeader } from '../components/UI';
 import { toast } from 'react-toastify';
@@ -39,6 +39,36 @@ export default function CreateRFQForm() {
 
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
 
+  // "Request quote" on a product page opens this form with ?product=<id>: prefill what we know
+  // about that product. Fields the buyer has already typed are never overwritten.
+  const [searchParams] = useSearchParams();
+  const productId = searchParams.get('product');
+  const [sourceProduct, setSourceProduct] = useState(null);
+  useEffect(() => {
+    if (!productId) return undefined;
+    let cancelled = false;
+    api.getProduct(productId)
+      .then((p) => {
+        if (cancelled || !p) return;
+        setSourceProduct(p);
+        setForm((f) => ({
+          ...f,
+          title:       f.title       || `Quote request: ${p.name}`.slice(0, 200),
+          product:     f.product     || p.name || '',
+          category:    f.category    || p.category_name || '',
+          unit:        p.moq_unit && UNITS.some(u => u.value === p.moq_unit) && f.unit === 'pieces' ? p.moq_unit : f.unit,
+          description: f.description || `I'd like a quote for "${p.name}" (www.globrixa.com/products/${p.id}).`,
+        }));
+      })
+      .catch(() => { /* the form still works without the prefill */ });
+    return () => { cancelled = true; };
+  }, [productId]);
+
+  // The product's own category may not be in the static list; offer it so the prefill shows.
+  const categoryOptions = form.category && !CATEGORIES.some(c => c.value === form.category)
+    ? [...CATEGORIES, { value: form.category, label: form.category }]
+    : CATEGORIES;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.title || !form.quantity || !form.deadline) {
@@ -60,8 +90,8 @@ export default function CreateRFQForm() {
   return (
     <div className="max-w-2xl mx-auto">
       <PageHeader
-        title="Post New RFQ"
-        subtitle="Get competitive quotes from verified suppliers"
+        title={sourceProduct ? 'Request a quote' : 'Post New RFQ'}
+        subtitle={sourceProduct ? `For ${sourceProduct.name}` : 'Get competitive quotes from verified suppliers'}
         action={
           <button onClick={() => navigate(-1)}
             className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700">
@@ -82,7 +112,7 @@ export default function CreateRFQForm() {
               placeholder="Product name" />
             <SelectField label="Category" value={form.category}
               onChange={(e) => set('category', e.target.value)}
-              options={CATEGORIES} />
+              options={categoryOptions} />
           </div>
 
           <div className="grid grid-cols-2 gap-4">

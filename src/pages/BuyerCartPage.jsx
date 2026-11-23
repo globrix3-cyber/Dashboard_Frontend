@@ -65,7 +65,7 @@ function CartRow({ item, onQtyChange, onRemove, removing, fmt }) {
       <div style={{ fontSize: 14, fontWeight: 700, color: '#5B4632' }}>{fmt(lineTotal)}</div>
 
       <button onClick={() => onRemove(item.id)} disabled={removing} title="Remove" style={{
-        width: 32, height: 32, borderRadius: 8, border: 'none', background: '#FEF2F2', color: '#DC2626',
+        width: 32, height: 32, borderRadius: 8, border: 'none', background: '#FEF2F2', color: '#B42318',
         display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: removing ? 'default' : 'pointer', opacity: removing ? 0.6 : 1,
       }}>
         <Trash2 size={14} />
@@ -122,13 +122,13 @@ export default function BuyerCartPage() {
           desc="Browse products and add items to get started"
           action={
             <button onClick={() => navigate('/products')}
-              className="btn-primary px-6 py-3 rounded-2xl text-sm">
+              className="btn-primary text-sm">
               Browse products
             </button>
           } />
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-          <div style={{ background: '#FDF9F1', borderRadius: 18, border: '1.5px solid #E3D5C1', overflow: 'hidden' }}>
+          <div style={{ background: '#FDF9F1', borderRadius: 6, border: '1.5px solid #E3D5C1', overflow: 'hidden' }}>
             <div style={{ display: 'grid', gridTemplateColumns: '64px 2fr 1fr 140px 1fr 40px', gap: 16, padding: '12px 20px', background: '#E3D5C1', borderBottom: '1px solid #E3D5C1' }}>
               {['', 'Product', 'Supplier', 'Quantity', 'Total', ''].map((h, i) => (
                 <span key={h || i} style={{ fontSize: 10, fontWeight: 700, color: '#79634E', textTransform: 'uppercase', letterSpacing: '0.07em' }}>{h}</span>
@@ -146,9 +146,8 @@ export default function BuyerCartPage() {
             <button
               onClick={() => toast.info('Checkout is coming soon — for now, request a quote or contract per supplier.')}
               style={{
-                padding: '13px 28px', borderRadius: 100, border: 'none', cursor: 'pointer',
+                padding: '13px 28px', borderRadius: 3, border: 'none', cursor: 'pointer',
                 background: '#C8792C', color: '#2B2016', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 14,
-                boxShadow: '0 4px 16px rgba(200,121,44,.28)',
               }}>
               Proceed to checkout
             </button>

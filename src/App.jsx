@@ -204,8 +204,13 @@ export default function App() {
         closeOnClick
         pauseOnHover
         toastStyle={{
-          fontFamily: "Sora, sans-serif",
-          borderRadius: 12,
+          fontFamily: "'DM Sans', system-ui, sans-serif",
+          fontSize: 13,
+          color: '#5B4632',
+          background: '#FDF9F1',
+          border: '1px solid #E3D5C1',
+          borderRadius: 4,
+          boxShadow: '0 8px 24px rgba(43,32,22,0.12)',
         }}
       />
     </>

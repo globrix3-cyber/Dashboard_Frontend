@@ -75,11 +75,12 @@ body {
 ::-webkit-scrollbar-thumb { background: var(--saffron-mid); border-radius: 3px; }
 
 /* ── Typography ──────────────────────────────────────────────────────────── */
+/* Client type system: headings in Canela Light 300 (Cormorant Garamond only for the GLOBRIXA wordmark). */
 h1, h2, h3, h4 {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-weight: 800;
-  letter-spacing: -0.4px;
-  line-height: 1.2;
+  font-family: 'Canela', 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  letter-spacing: -0.3px;
+  line-height: 1.15;
   color: var(--ink);
 }
 
@@ -89,48 +90,50 @@ h1, h2, h3, h4 {
   align-items: center;
   justify-content: center;
   gap: 7px;
-  padding: 11px 24px;
-  border-radius: 100px;
-  border: none;
+  padding: 11px 22px;
+  min-height: 42px;
+  border-radius: 3px;
+  border: 1px solid var(--saffron);
   cursor: pointer;
   font-family: 'DM Sans', sans-serif;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
+  letter-spacing: 0.1px;
   color: #2B2016;
   background: var(--saffron);
-  box-shadow: 0 4px 16px rgba(200,121,44,0.30);
-  transition: background 0.18s, transform 0.12s, box-shadow 0.18s;
+  box-shadow: none;
+  transition: background 0.18s, border-color 0.18s, color 0.18s;
   white-space: nowrap;
   text-decoration: none;
 }
-.btn-primary:hover  { background: #5B4632; color: #FDF9F1; transform: translateY(-1px); box-shadow: 0 6px 22px rgba(200,121,44,0.38); }
-.btn-primary:active { transform: translateY(0); }
-.btn-primary:disabled { opacity: 0.55; cursor: not-allowed; transform: none; box-shadow: none; }
+.btn-primary:hover  { background: #5B4632; border-color: #5B4632; color: #FDF9F1; }
+.btn-primary:focus-visible { outline: 2px solid #5B4632; outline-offset: 2px; }
+.btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
 
 .btn-emerald {
   display: inline-flex; align-items: center; justify-content: center; gap: 7px;
-  padding: 11px 24px; border-radius: 100px; border: none; cursor: pointer;
-  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 700;
-  color: #FDF9F1; background: var(--emerald);
-  box-shadow: 0 4px 16px rgba(26,122,74,0.28);
-  transition: background 0.18s, transform 0.12s;
+  padding: 11px 22px; min-height: 42px; border-radius: 3px; border: 1px solid #5B4632; cursor: pointer;
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
+  color: #FDF9F1; background: #5B4632;
+  box-shadow: none;
+  transition: background 0.18s;
 }
-.btn-emerald:hover  { background: #156039; transform: translateY(-1px); }
-.btn-emerald:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+.btn-emerald:hover  { background: #2B2016; border-color: #2B2016; }
+.btn-emerald:disabled { opacity: 0.55; cursor: not-allowed; }
 
 .btn-outline {
   display: inline-flex; align-items: center; justify-content: center; gap: 7px;
-  padding: 10px 22px; border-radius: 100px; border: 1.5px solid var(--border);
+  padding: 10px 21px; min-height: 42px; border-radius: 3px; border: 1px solid rgba(91,70,50,0.45);
   cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
-  color: var(--ink-soft); background: #FDF9F1;
+  color: #5B4632; background: transparent;
   transition: border-color 0.15s, background 0.15s, color 0.15s;
 }
-.btn-outline:hover { border-color: var(--saffron-mid); background: var(--cream); color: var(--ink); }
+.btn-outline:hover { border-color: #5B4632; background: #F5F0E7; color: #5B4632; }
 .btn-outline:disabled { opacity: 0.55; cursor: not-allowed; }
 
 .btn-ghost {
   display: inline-flex; align-items: center; gap: 6px; padding: 7px 13px;
-  border-radius: 9px; border: none; cursor: pointer;
+  border-radius: 3px; border: none; cursor: pointer;
   font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600;
   color: var(--muted); background: transparent;
   transition: background 0.12s, color 0.12s;
@@ -140,30 +143,29 @@ h1, h2, h3, h4 {
 /* ── Cards ───────────────────────────────────────────────────────────────── */
 .card {
   background: #FDF9F1;
-  border: 1.5px solid var(--border-soft);
-  border-radius: 18px;
+  border: 1px solid #E3D5C1;
+  border-radius: 6px;
   box-shadow: var(--shadow-xs);
 }
 
 .card-hover {
   background: #FDF9F1;
-  border: 1.5px solid var(--border-soft);
-  border-radius: 18px;
+  border: 1px solid #E3D5C1;
+  border-radius: 6px;
   box-shadow: var(--shadow-xs);
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
 }
 .card-hover:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-md);
-  border-color: var(--saffron-mid);
+  box-shadow: 0 6px 18px rgba(43,32,22,0.08);
+  border-color: rgba(91,70,50,0.4);
 }
 
 /* ── Stat Card ───────────────────────────────────────────────────────────── */
 .stat-card {
   background: #FDF9F1;
-  border: 1.5px solid var(--border-soft);
-  border-radius: 18px;
+  border: 1px solid #E3D5C1;
+  border-radius: 6px;
   padding: 24px 22px;
   position: relative;
   overflow: hidden;
@@ -202,16 +204,16 @@ h1, h2, h3, h4 {
 .form-input {
   width: 100%;
   padding: 11px 14px;
-  border-radius: 12px;
-  border: 1.5px solid var(--border-soft);
-  background: var(--cream);
+  border-radius: 3px;
+  border: 1px solid #E3D5C1;
+  background: #FDF9F1;
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
   color: var(--ink);
   outline: none;
   transition: border-color 0.15s, background 0.15s;
 }
-.form-input:focus { border-color: var(--saffron); background: #FDF9F1; }
+.form-input:focus { border-color: #5B4632; background: #FDF9F1; outline: 2px solid rgba(200,121,44,0.35); outline-offset: 1px; }
 .form-input::placeholder { color: var(--muted); }
 
 /* ── Animations ──────────────────────────────────────────────────────────── */

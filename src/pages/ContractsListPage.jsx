@@ -8,12 +8,12 @@ import { formatDate } from '../utils/helpers';
 
 const C = {
   saffron:    '#C8792C', saffronLt: '#FDF9F1',
-  emerald:    '#1A7A4A', emeraldLt: '#EAF5EF',
+  emerald:    '#5B4632', emeraldLt: '#F0DCC0',
   navy:       '#5B4632', navyLt:    '#F0DCC0',
   gold:       '#C8792C', goldLt:    '#FDF9F1',
   ink:        '#5B4632', inkSoft:   '#2B2016',
   muted:      '#79634E',
-  borderSoft: '#E3D5C1', cream:     '#E3D5C1',
+  borderSoft: '#E3D5C1', cream:     '#F5F0E7',
 };
 
 const STATUS_META = {
@@ -21,7 +21,7 @@ const STATUS_META = {
   pending_buyer:    { label: 'Awaiting Your Sign',  icon: AlertCircle,  bg: '#FEF3C7',   color: '#C8792C' },
   active:           { label: 'Active',              icon: CheckCircle2, bg: C.emeraldLt, color: C.emerald },
   completed:        { label: 'Completed',           icon: CheckCircle2, bg: '#F0FDF4',   color: '#15803D' },
-  cancelled:        { label: 'Cancelled',           icon: XCircle,      bg: '#FEF2F2',   color: '#DC2626' },
+  cancelled:        { label: 'Cancelled',           icon: XCircle,      bg: '#FEF2F2',   color: '#B42318' },
 };
 
 function StatusBadge({ status }) {
@@ -49,7 +49,7 @@ export default function ContractsListPage() {
     <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", padding: '24px 32px' }}>
       {/* Header */}
       <div style={{ marginBottom: 24 }}>
-        <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 26, fontWeight: 900, color: C.ink, margin: 0 }}>
+        <h1 style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: 26, fontWeight: 300, color: C.ink, margin: 0 }}>
           Contracts
         </h1>
         <p style={{ fontSize: 14, color: C.muted, marginTop: 4 }}>
@@ -57,7 +57,7 @@ export default function ContractsListPage() {
             ? 'Trade agreements with your suppliers'
             : 'Trade agreements from your buyers'}
         </p>
-        <div style={{ height: 3, marginTop: 12, borderRadius: 2, background: `linear-gradient(90deg, ${C.saffron}, transparent)` }} />
+        <div style={{ height: 1, marginTop: 12, background: '#E3D5C1' }} />
       </div>
 
       {loading ? <Spinner /> : !(contracts || []).length ? (
@@ -80,7 +80,7 @@ export default function ContractsListPage() {
                 key={c.id}
                 onClick={() => navigate(`${base}/contracts/${c.id}`)}
                 style={{
-                  background: '#FDF9F1', borderRadius: 18, padding: '18px 22px',
+                  background: '#FDF9F1', borderRadius: 6, padding: '18px 22px',
                   border: `1.5px solid ${needsAction ? C.saffron : C.borderSoft}`,
                   cursor: 'pointer', transition: 'transform 0.18s, box-shadow 0.18s',
                   boxShadow: needsAction ? `0 0 0 3px ${C.saffronLt}` : 'none',
@@ -104,7 +104,7 @@ export default function ContractsListPage() {
                         </span>
                       )}
                     </div>
-                    <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: 15, color: C.ink, margin: '0 0 8px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    <h3 style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontWeight: 300, fontSize: 15, color: C.ink, margin: '0 0 8px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       {c.title}
                     </h3>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 18, fontSize: 12, color: C.muted }}>

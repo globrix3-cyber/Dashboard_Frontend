@@ -1,17 +1,19 @@
 import { PackageSearch } from 'lucide-react';
 
+const SERIF = "'Canela', 'Cormorant Garamond', Georgia, serif";
+
 export default function EmptyState({
   title = "No products found",
   description = "We couldn't find any products matching your search or filters.",
   icon: Icon = PackageSearch,
 }) {
   return (
-    <div className="flex flex-col items-center justify-center py-16 text-center">
-      <div className="w-20 h-20 bg-gray-100 rounded-3xl flex items-center justify-center mb-6">
-        <Icon size={48} className="text-gray-400" />
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '64px 24px', textAlign: 'center', fontFamily: "'DM Sans', system-ui, sans-serif" }}>
+      <div style={{ width: 72, height: 72, borderRadius: 4, background: '#F8F2E9', border: '1px solid #E3D5C1', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 22 }}>
+        <Icon size={32} color="#5B4632" strokeWidth={1.6} />
       </div>
-      <h3 className="text-2xl font-semibold text-gray-900 mb-3">{title}</h3>
-      <p className="text-gray-500 max-w-md">{description}</p>
+      <h3 style={{ fontFamily: SERIF, fontSize: 26, fontWeight: 300, letterSpacing: '-0.4px', color: '#5B4632', margin: '0 0 10px' }}>{title}</h3>
+      <p style={{ color: '#79634E', maxWidth: 420, fontSize: 14, lineHeight: 1.7, margin: 0 }}>{description}</p>
     </div>
   );
 }

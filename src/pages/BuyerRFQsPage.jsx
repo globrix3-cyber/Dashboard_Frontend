@@ -16,7 +16,7 @@ export default function BuyerRFQsPage() {
         subtitle="Manage your requests for quotation"
         action={
           <button onClick={() => navigate('/buyer-dashboard/rfqs/new')}
-            className="btn-primary flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm">
+            className="btn-primary flex items-center gap-2 text-sm">
             <Plus size={15} /> New RFQ
           </button>
         }
@@ -27,7 +27,7 @@ export default function BuyerRFQsPage() {
           desc="Post your first request for quotation to get quotes from verified suppliers"
           action={
             <button onClick={() => navigate('/buyer-dashboard/rfqs/new')}
-              className="btn-primary px-6 py-3 rounded-2xl text-sm">
+              className="btn-primary text-sm">
               Create First RFQ
             </button>
           } />

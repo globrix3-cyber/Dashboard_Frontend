@@ -8,14 +8,14 @@ const C = {
   gold:       '#C8792C', goldLt:    '#FDF9F1',
   ink:        '#5B4632', inkSoft:   '#2B2016',
   muted:      '#79634E', borderSoft:'#E3D5C1',
-  cream:      '#E3D5C1',
+  cream:      '#F5F0E7',
 };
 
 /* ── Spinner ─────────────────────────────────────────────────────────────── */
 export function Spinner({ size = 22 }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '48px 0' }}>
-      <Loader2 size={size} style={{ color: C.saffron, animation: 'spin 0.8s linear infinite' }} />
+      <Loader2 size={size} style={{ color: '#5B4632', animation: 'spin 0.8s linear infinite' }} />
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );
@@ -29,21 +29,21 @@ const BADGE_MAP = {
   approved:      { bg: '#EAF5EF', color: '#1A7A4A' },
   accepted:      { bg: '#EAF5EF', color: '#1A7A4A' },
   verified:      { bg: '#EAF5EF', color: '#1A7A4A' },
-  pending:       { bg: '#FDF9F1', color: '#C8792C' },
+  pending:       { bg: '#C8792C', color: '#2B2016' },
   in_production: { bg: '#F0DCC0', color: '#5B4632' },
   shipped:       { bg: '#F0DCC0', color: '#5B4632' },
   quoted:        { bg: '#F0DCC0', color: '#5B4632' },
   under_review:  { bg: '#F0DCC0', color: '#5B4632' },
-  draft:         { bg: '#E3D5C1', color: '#79634E' },
-  inactive:      { bg: '#E3D5C1', color: '#79634E' },
-  closed:        { bg: '#E3D5C1', color: '#79634E' },
-  rejected:      { bg: '#FEF2F2', color: '#DC2626' },
-  cancelled:     { bg: '#FEF2F2', color: '#DC2626' },
-  suspended:     { bg: '#FEF2F2', color: '#DC2626' },
+  draft:         { bg: '#F5F0E7', color: '#79634E' },
+  inactive:      { bg: '#F5F0E7', color: '#79634E' },
+  closed:        { bg: '#F5F0E7', color: '#79634E' },
+  rejected:      { bg: '#FEF2F2', color: '#B42318' },
+  cancelled:     { bg: '#FEF2F2', color: '#B42318' },
+  suspended:     { bg: '#FEF2F2', color: '#B42318' },
 };
 
 export function Badge({ status, text }) {
-  const s = BADGE_MAP[status] || { bg: '#E3D5C1', color: '#79634E' };
+  const s = BADGE_MAP[status] || { bg: '#F5F0E7', color: '#79634E' };
   const label = text || statusLabel(status);
   return (
     <span style={{
@@ -66,14 +66,14 @@ export function StatCard({ icon: Icon, label, value, color = C.saffron, bg = C.s
       <div style={{ position: 'absolute', top: -20, right: -20, width: 80, height: 80, borderRadius: '50%', background: `${color}0D`, pointerEvents: 'none' }} />
 
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 18 }}>
-        <div style={{ width: 46, height: 46, borderRadius: 13, background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ width: 46, height: 46, borderRadius: 4, background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Icon size={21} color={color} />
         </div>
         {trend !== undefined && trend !== null && (
           <span style={{
             display: 'flex', alignItems: 'center', gap: 3,
             fontSize: 11, fontWeight: 700,
-            color: up ? C.emerald : '#DC2626',
+            color: up ? C.emerald : '#B42318',
             background: up ? C.emeraldLt : '#FEF2F2',
             padding: '3px 9px', borderRadius: 100,
           }}>
@@ -84,8 +84,8 @@ export function StatCard({ icon: Icon, label, value, color = C.saffron, bg = C.s
       </div>
 
       <div style={{
-        fontFamily: "'Playfair Display', Georgia, serif",
-        fontSize: 32, fontWeight: 900, color: C.ink,
+        fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif",
+        fontSize: 36, fontWeight: 300, color: C.ink,
         lineHeight: 1, marginBottom: 6, letterSpacing: '-0.5px',
       }}>
         {value}
@@ -104,13 +104,13 @@ export function EmptyState({ icon: Icon, title, desc, action }) {
       fontFamily: "'DM Sans', system-ui, sans-serif",
     }}>
       <div style={{
-        width: 68, height: 68, borderRadius: 20, background: C.saffronLt,
+        width: 68, height: 68, borderRadius: 4, background: '#F8F2E9', border: `1px solid ${C.borderSoft}`,
         display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 20,
       }}>
-        <Icon size={30} color={C.saffron} />
+        <Icon size={28} color={C.ink} strokeWidth={1.6} />
       </div>
       <h3 style={{
-        fontFamily: "'Playfair Display', serif", fontSize: 18, fontWeight: 800,
+        fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: 24, fontWeight: 300,
         color: C.ink, marginBottom: 10, letterSpacing: '-0.3px',
       }}>
         {title}
@@ -132,8 +132,8 @@ export function PageHeader({ title, subtitle, action }) {
     }}>
       <div>
         <h1 style={{
-          fontFamily: "'Playfair Display', Georgia, serif",
-          fontSize: 27, fontWeight: 900, color: C.ink,
+          fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif",
+          fontSize: 'clamp(30px, 3vw, 40px)', fontWeight: 300, color: C.ink, lineHeight: 1.1,
           margin: 0, letterSpacing: '-0.5px',
         }}>
           {title}
@@ -153,7 +153,7 @@ export function InputField({ label, error, ...props }) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 7, fontFamily: "'DM Sans', system-ui, sans-serif" }}>
       {label && (
         <label style={{
-          fontSize: 11, fontWeight: 700, color: C.inkSoft,
+          fontSize: 11, fontWeight: 600, color: C.muted,
           textTransform: 'uppercase', letterSpacing: '0.07em',
         }}>
           {label}
@@ -161,17 +161,17 @@ export function InputField({ label, error, ...props }) {
       )}
       <input
         style={{
-          width: '100%', padding: '11px 14px', borderRadius: 12,
-          border: `1.5px solid ${error ? '#DC2626' : C.borderSoft}`,
-          background: C.cream, fontFamily: "'DM Sans', sans-serif",
+          width: '100%', padding: '11px 14px', borderRadius: 3,
+          border: `1px solid ${error ? '#B42318' : C.borderSoft}`,
+          background: '#FDF9F1', fontFamily: "'DM Sans', sans-serif",
           fontSize: 14, color: C.ink, outline: 'none',
           transition: 'border-color 0.15s, background 0.15s',
         }}
-        onFocus={e => { e.currentTarget.style.borderColor = C.saffron; e.currentTarget.style.background = '#FDF9F1'; }}
-        onBlur={e => { e.currentTarget.style.borderColor = error ? '#DC2626' : C.borderSoft; e.currentTarget.style.background = C.cream; }}
+        onFocus={e => { e.currentTarget.style.borderColor = C.ink; }}
+        onBlur={e => { e.currentTarget.style.borderColor = error ? '#B42318' : C.borderSoft; }}
         {...props}
       />
-      {error && <span style={{ fontSize: 11, color: '#DC2626' }}>{error}</span>}
+      {error && <span style={{ fontSize: 11, color: '#B42318' }}>{error}</span>}
     </div>
   );
 }
@@ -182,7 +182,7 @@ export function SelectField({ label, options = [], error, ...props }) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 7, fontFamily: "'DM Sans', system-ui, sans-serif" }}>
       {label && (
         <label style={{
-          fontSize: 11, fontWeight: 700, color: C.inkSoft,
+          fontSize: 11, fontWeight: 600, color: C.muted,
           textTransform: 'uppercase', letterSpacing: '0.07em',
         }}>
           {label}
@@ -190,21 +190,21 @@ export function SelectField({ label, options = [], error, ...props }) {
       )}
       <select
         style={{
-          width: '100%', padding: '11px 14px', borderRadius: 12,
-          border: `1.5px solid ${error ? '#DC2626' : C.borderSoft}`,
-          background: C.cream, fontFamily: "'DM Sans', sans-serif",
+          width: '100%', padding: '11px 14px', borderRadius: 3,
+          border: `1px solid ${error ? '#B42318' : C.borderSoft}`,
+          background: '#FDF9F1', fontFamily: "'DM Sans', sans-serif",
           fontSize: 14, color: C.ink, outline: 'none', cursor: 'pointer',
           transition: 'border-color 0.15s',
         }}
-        onFocus={e => { e.currentTarget.style.borderColor = C.saffron; }}
-        onBlur={e => { e.currentTarget.style.borderColor = error ? '#DC2626' : C.borderSoft; }}
+        onFocus={e => { e.currentTarget.style.borderColor = C.ink; }}
+        onBlur={e => { e.currentTarget.style.borderColor = error ? '#B42318' : C.borderSoft; }}
         {...props}
       >
         {options.map(({ value, label: lbl }) => (
           <option key={value} value={value}>{lbl}</option>
         ))}
       </select>
-      {error && <span style={{ fontSize: 11, color: '#DC2626' }}>{error}</span>}
+      {error && <span style={{ fontSize: 11, color: '#B42318' }}>{error}</span>}
     </div>
   );
 }

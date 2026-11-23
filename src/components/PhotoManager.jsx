@@ -223,7 +223,7 @@ function PhotoTile({ item, index, count, dragging, onDragStart, onDragEnd, onDro
       onDrop={e => { if (!e.dataTransfer?.files?.length) { e.preventDefault(); e.stopPropagation(); onDropOn(); } }}
       style={{
         position: 'relative', aspectRatio: '1 / 1', borderRadius: 12, overflow: 'hidden',
-        border: `2px solid ${index === 0 ? '#C8792C' : failed ? '#DC2626' : '#E3D5C1'}`,
+        border: `2px solid ${index === 0 ? '#C8792C' : failed ? '#B42318' : '#E3D5C1'}`,
         background: '#F0DCC0', opacity: dragging ? 0.4 : 1, cursor: busy ? 'default' : 'grab',
       }}>
       {src && !item.broken ? (

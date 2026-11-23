@@ -5,7 +5,7 @@ import { api } from '../services/api';
 import { useFetchData } from '../hooks/useFetchData';
 import { Spinner, EmptyState } from '../components/UI';
 import {
-  Users, Building2, ShoppingBag, BarChart2,
+  Users, Building2, ShoppingBag,
   ShieldCheck, Search, CheckCircle2, XCircle,
   Eye, Ban, ArrowLeft, TrendingUp, MapPin, Download,
   Package, DollarSign, Loader2, X, ClipboardList,
@@ -16,12 +16,12 @@ import { toCsv, downloadCsv, todayStamp, csvDate } from '../utils/csv';
 const C = {
   navy: '#5B4632', navyLt: '#F0DCC0',
   saffron: '#C8792C', saffronLt: '#FDF9F1',
-  emerald: '#1A7A4A', emeraldLt: '#EAF5EF',
-  gold: '#C8792C', goldLt: '#FDF9F1',
-  red: '#DC2626', redLt: '#FEF2F2',
+  emerald: '#5B4632', emeraldLt: '#F0DCC0',
+  gold: '#5B4632', goldLt: '#F0DCC0',
+  red: '#B42318', redLt: '#FEF2F2',
   ink: '#5B4632', inkSoft: '#2B2016',
   muted: '#79634E', border: '#E3D5C1',
-  borderSoft: '#E3D5C1', cream: '#E3D5C1',
+  borderSoft: '#E3D5C1', cream: '#F5F0E7',
 };
 
 /* ── Onboarding question label maps ────────────────────────────────────────── */
@@ -100,7 +100,7 @@ function UserDetailPanel({ userId, onClose }) {
           <div style={{ padding: '24px', fontFamily: "'DM Sans', sans-serif" }}>
             {/* Avatar + name */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 22 }}>
-              <div style={{ width: 52, height: 52, borderRadius: 14, flexShrink: 0, background: user.role === 'supplier' ? C.emerald : C.navy, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FDF9F1', fontSize: 20, fontWeight: 900, fontFamily: "'Playfair Display', serif" }}>
+              <div style={{ width: 52, height: 52, borderRadius: 14, flexShrink: 0, background: user.role === 'supplier' ? C.emerald : C.navy, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FDF9F1', fontSize: 20, fontWeight: 300, fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif" }}>
                 {name[0]?.toUpperCase()}
               </div>
               <div>
@@ -170,12 +170,12 @@ function PageHeader({ title, subtitle, accentColor, onBack, action }) {
       )}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: 14 }}>
         <div>
-          <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 27, fontWeight: 900, color: C.ink, margin: 0, letterSpacing: '-0.4px' }}>{title}</h1>
+          <h1 style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: 27, fontWeight: 300, color: C.ink, margin: 0, letterSpacing: '-0.4px' }}>{title}</h1>
           {subtitle && <p style={{ fontSize: 13, color: C.muted, marginTop: 6 }}>{subtitle}</p>}
         </div>
         {action}
       </div>
-      <div style={{ height: 3, marginTop: 16, borderRadius: 2, background: `linear-gradient(90deg, ${accentColor}, transparent)` }} />
+      <div style={{ height: 1, marginTop: 16, background: '#E3D5C1' }} />
     </div>
   );
 }
@@ -291,10 +291,10 @@ export function AdminUsersPage() {
 
       <div style={{ display: 'flex', gap: 10, marginBottom: 20, flexWrap: 'wrap' }}>
         <SearchBar value={search} onChange={setSearch} placeholder="Search users, email, company…" />
-        <div style={{ display: 'flex', gap: 6 }}>
+        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
           {['all', 'buyer', 'supplier', 'active', 'suspended'].map(f => (
             <button key={f} onClick={() => setFilter(f)} style={{
-              padding: '8px 15px', borderRadius: 100, fontSize: 12, fontWeight: 600, cursor: 'pointer',
+              padding: '8px 15px', borderRadius: 3, fontSize: 12, fontWeight: 600, cursor: 'pointer',
               background: filter === f ? C.navy : '#FDF9F1',
               color: filter === f ? '#FDF9F1' : C.inkSoft,
               border: `1.5px solid ${filter === f ? C.navy : C.borderSoft}`,
@@ -307,9 +307,8 @@ export function AdminUsersPage() {
       {loading ? <Spinner /> : filtered.length === 0 ? (
         <EmptyState icon={Users} title="No users found" desc={search ? 'Try a different search term' : 'No users registered yet'} />
       ) : (
-        <div style={{ background: '#FDF9F1', borderRadius: 20, border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden' }}>
-          <div style={{ borderTop: `3px solid ${C.navy}` }} />
-          <div style={{ display: 'grid', gridTemplateColumns: '2fr 1.5fr 1.3fr 1fr 1fr auto', padding: '11px 22px', borderBottom: `1px solid ${C.borderSoft}`, background: C.cream }}>
+        <div style={{ background: '#FDF9F1', borderRadius: 6, border: `1.5px solid ${C.borderSoft}`, overflowX: 'auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '2fr 1.5fr 1.3fr 1fr 1fr auto', minWidth: 860, padding: '11px 22px', borderBottom: `1px solid ${C.borderSoft}`, background: C.cream }}>
             {['User', 'Company', 'Phone', 'Role', 'Status', 'Actions'].map(h => (
               <span key={h} style={{ fontSize: 10, fontWeight: 700, color: C.muted, textTransform: 'uppercase', letterSpacing: '.07em' }}>{h}</span>
             ))}
@@ -320,14 +319,14 @@ export function AdminUsersPage() {
             const isSusp = status === 'suspended';
             return (
               <div key={u.id} style={{
-                display: 'grid', gridTemplateColumns: '2fr 1.5fr 1.3fr 1fr 1fr auto',
+                display: 'grid', gridTemplateColumns: '2fr 1.5fr 1.3fr 1fr 1fr auto', minWidth: 860,
                 padding: '15px 22px', borderBottom: `1px solid ${C.borderSoft}`,
                 alignItems: 'center', gap: 10, transition: 'background 0.12s',
               }}
-                onMouseEnter={e => { e.currentTarget.style.background = C.cream; }}
+                onMouseEnter={e => { e.currentTarget.style.background = '#F5F0E7'; }}
                 onMouseLeave={e => { e.currentTarget.style.background = '#FDF9F1'; }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <div style={{ width: 34, height: 34, borderRadius: 10, flexShrink: 0, background: u.role === 'supplier' ? C.emerald : C.navy, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FDF9F1', fontSize: 13, fontWeight: 800, fontFamily: "'Playfair Display', serif" }}>
+                  <div style={{ width: 34, height: 34, borderRadius: 10, flexShrink: 0, background: u.role === 'supplier' ? C.emerald : C.navy, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FDF9F1', fontSize: 13, fontWeight: 300, fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif" }}>
                     {name[0]?.toUpperCase()}
                   </div>
                   <div>
@@ -420,14 +419,13 @@ export function AdminCompaniesPage() {
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 16 }}>
           {filtered.map(co => (
-            <div key={co.id} style={{ background: '#FDF9F1', borderRadius: 18, border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden', transition: 'box-shadow 0.2s' }}
+            <div key={co.id} style={{ background: '#FDF9F1', borderRadius: 6, border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden', transition: 'box-shadow 0.2s' }}
               onMouseEnter={e => { e.currentTarget.style.boxShadow = `0 6px 20px rgba(91,70,50,0.10)`; }}
               onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; }}>
-              <div style={{ height: 3, background: co.verified_status === 'verified' ? C.emerald : C.gold }} />
               <div style={{ padding: '18px 20px' }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 12 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <div style={{ width: 38, height: 38, borderRadius: 10, background: C.navyLt, display: 'flex', alignItems: 'center', justifyContent: 'center', color: C.navy, fontSize: 15, fontWeight: 900, fontFamily: "'Playfair Display', serif" }}>
+                    <div style={{ width: 38, height: 38, borderRadius: 10, background: C.navyLt, display: 'flex', alignItems: 'center', justifyContent: 'center', color: C.navy, fontSize: 15, fontWeight: 300, fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif" }}>
                       {co.legal_name?.[0] || '?'}
                     </div>
                     <div>
@@ -526,7 +524,7 @@ export function AdminVerificationsPage() {
           { key: 'rejected', label: 'Rejected', count: counts.rejected, color: C.red,     bg: C.redLt     },
         ].map(({ key, label, count, color, bg }) => (
           <button key={key} onClick={() => setFilter(key)} style={{
-            display: 'flex', alignItems: 'center', gap: 8, padding: '9px 16px', borderRadius: 100,
+            display: 'flex', alignItems: 'center', gap: 8, padding: '9px 16px', borderRadius: 3,
             background: filter === key ? color : '#FDF9F1', color: filter === key ? '#FDF9F1' : C.inkSoft,
             border: `1.5px solid ${filter === key ? color : C.borderSoft}`,
             cursor: 'pointer', fontSize: 13, fontWeight: 600, transition: 'all 0.15s',
@@ -546,12 +544,11 @@ export function AdminVerificationsPage() {
           {filtered.map(v => {
             const isPending = v.status === 'pending' || v.status === 'under_review';
             return (
-              <div key={v.id} style={{ background: '#FDF9F1', borderRadius: 18, border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden' }}>
-                <div style={{ height: 3, background: v.status === 'verified' || v.status === 'approved' ? C.emerald : v.status === 'rejected' ? C.red : C.gold }} />
-                <div style={{ padding: '20px 24px', display: 'grid', gridTemplateColumns: '1fr auto', gap: 20, alignItems: 'start' }}>
-                  <div>
+              <div key={v.id} style={{ background: '#FDF9F1', borderRadius: 6, border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden' }}>
+                <div style={{ padding: '20px 24px', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: 20, alignItems: 'flex-start' }}>
+                  <div style={{ flex: '1 1 260px', minWidth: 0 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
-                      <div style={{ width: 40, height: 40, borderRadius: 10, background: C.navyLt, color: C.navy, fontSize: 16, fontWeight: 900, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Playfair Display', serif" }}>
+                      <div style={{ width: 40, height: 40, borderRadius: 10, background: C.navyLt, color: C.navy, fontSize: 16, fontWeight: 300, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif" }}>
                         {v.company[0]}
                       </div>
                       <div>
@@ -574,16 +571,16 @@ export function AdminVerificationsPage() {
                       ))}
                     </div>
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 10 }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 10, marginLeft: 'auto' }}>
                     <StatusBadge status={v.status === 'verified' ? 'verified' : v.status} />
                     {isPending && (
                       <div style={{ display: 'flex', gap: 8 }}>
                         <button disabled={actingId === v.id} onClick={() => handleAction(v.id, 'approve')}
-                          style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 16px', borderRadius: 100, background: '#C8792C', color: '#2B2016', border: 'none', cursor: 'pointer', fontSize: 12, fontWeight: 700, opacity: actingId === v.id ? 0.65 : 1 }}>
+                          style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 16px', borderRadius: 3, background: '#C8792C', color: '#2B2016', border: 'none', cursor: 'pointer', fontSize: 12, fontWeight: 700, opacity: actingId === v.id ? 0.65 : 1 }}>
                           <CheckCircle2 size={13} /> {actingId === v.id ? '…' : 'Approve'}
                         </button>
                         <button disabled={actingId === v.id} onClick={() => handleAction(v.id, 'reject')}
-                          style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 16px', borderRadius: 100, background: C.redLt, color: C.red, border: `1.5px solid ${C.red}22`, cursor: 'pointer', fontSize: 12, fontWeight: 700, opacity: actingId === v.id ? 0.65 : 1 }}>
+                          style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 16px', borderRadius: 3, background: C.redLt, color: C.red, border: `1.5px solid ${C.red}22`, cursor: 'pointer', fontSize: 12, fontWeight: 700, opacity: actingId === v.id ? 0.65 : 1 }}>
                           <XCircle size={13} /> {actingId === v.id ? '…' : 'Reject'}
                         </button>
                       </div>
@@ -643,12 +640,11 @@ export function AdminReportsPage() {
           {/* KPI grid */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 28 }}>
             {kpis.map(({ label, value, color, bg, icon: Icon }) => (
-              <div key={label} style={{ background: '#FDF9F1', borderRadius: 18, padding: '22px 22px', border: `1.5px solid ${C.borderSoft}`, position: 'relative', overflow: 'hidden', boxShadow: '0 1px 4px rgba(43,32,22,0.04)' }}>
-                <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: 3, background: color }} />
+              <div key={label} style={{ background: '#FDF9F1', borderRadius: 6, padding: '22px 22px', border: `1.5px solid ${C.borderSoft}`, position: 'relative', overflow: 'hidden', boxShadow: '0 1px 4px rgba(43,32,22,0.04)' }}>
                 <div style={{ width: 42, height: 42, borderRadius: 12, background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16, marginTop: 8 }}>
                   <Icon size={19} color={color} />
                 </div>
-                <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 30, fontWeight: 900, color: C.ink, lineHeight: 1, marginBottom: 6, letterSpacing: '-0.5px' }}>
+                <div style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: 30, fontWeight: 300, color: C.ink, lineHeight: 1, marginBottom: 6, letterSpacing: '-0.5px' }}>
                   {value}
                 </div>
                 <div style={{ fontSize: 12, color: C.muted, fontWeight: 500 }}>{label}</div>
@@ -656,18 +652,6 @@ export function AdminReportsPage() {
             ))}
           </div>
 
-          {/* Coming soon panel */}
-          <div style={{ background: '#FDF9F1', borderRadius: 20, border: `1.5px solid ${C.borderSoft}`, padding: '48px 32px', textAlign: 'center' }}>
-            <div style={{ width: 64, height: 64, borderRadius: 18, background: C.navyLt, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
-              <BarChart2 size={30} color={C.navy} />
-            </div>
-            <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, fontWeight: 800, color: C.ink, margin: '0 0 10px' }}>
-              Detailed Analytics Coming Soon
-            </h3>
-            <p style={{ fontSize: 14, color: C.muted, maxWidth: 360, margin: '0 auto' }}>
-              Category breakdowns, city-wise performance, trend charts, and more — currently in development.
-            </p>
-          </div>
         </>
       )}
     </div>

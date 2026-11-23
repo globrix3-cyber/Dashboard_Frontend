@@ -12,8 +12,8 @@ const C = {
   navy: '#5B4632', navyLt: '#F0DCC0',
   gold: '#C8792C', goldLt: '#FDF9F1',
   ink: '#5B4632', inkSoft: '#2B2016',
-  muted: '#79634E', borderSoft: '#E3D5C1', cream: '#E3D5C1',
-  red: '#DC2626', redLt: '#FEF2F2',
+  muted: '#79634E', borderSoft: '#E3D5C1', cream: '#F5F0E7',
+  red: '#B42318', redLt: '#FEF2F2',
 };
 
 const STATUS = {
@@ -93,13 +93,13 @@ export default function SupplierCatalog() {
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: 14, paddingBottom: 22, borderBottom: `1px solid ${C.borderSoft}` }}>
         <div>
-          <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 27, fontWeight: 900, color: C.ink, margin: 0, letterSpacing: '-0.4px' }}>My Catalog</h1>
+          <h1 style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: 27, fontWeight: 300, color: C.ink, margin: 0, letterSpacing: '-0.4px' }}>My Catalog</h1>
           <p style={{ fontSize: 13, color: C.muted, marginTop: 6 }}>
             {loading ? '…' : `${products.length} product${products.length !== 1 ? 's' : ''} listed`}
           </p>
         </div>
         <button onClick={() => navigate('/supplier-dashboard/catalog/new')} style={{
-          display: 'flex', alignItems: 'center', gap: 8, padding: '11px 22px', borderRadius: 100, border: 'none',
+          display: 'flex', alignItems: 'center', gap: 8, padding: '11px 22px', borderRadius: 3, border: 'none',
           cursor: 'pointer', background: '#C8792C', color: '#2B2016',
           fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13,
           boxShadow: '0 4px 14px rgba(26,122,74,0.28)', transition: 'transform 0.12s',
@@ -112,17 +112,17 @@ export default function SupplierCatalog() {
 
       {/* Filters */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '9px 14px', borderRadius: 12, border: `1.5px solid ${C.borderSoft}`, background: '#FDF9F1', flex: 1, maxWidth: 300 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '9px 14px', borderRadius: 3, border: `1px solid ${C.borderSoft}`, background: '#FDF9F1', flex: '1 1 220px', maxWidth: 300 }}>
           <Search size={14} color={C.muted} />
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search products…"
             style={{ border: 'none', outline: 'none', fontSize: 13, color: C.ink, background: 'transparent', width: '100%', fontFamily: "'DM Sans', sans-serif" }} />
         </div>
         {['all', 'active', 'draft', 'inactive'].map(f => (
           <button key={f} onClick={() => setFilter(f)} style={{
-            padding: '8px 16px', borderRadius: 100, cursor: 'pointer',
+            padding: '8px 16px', borderRadius: 3, cursor: 'pointer',
             border: `1.5px solid ${filter === f ? C.emerald : C.borderSoft}`,
             background: filter === f ? C.emeraldLt : '#FDF9F1',
-            color: filter === f ? C.emerald : C.muted,
+            color: filter === f ? C.ink : C.muted,
             fontSize: 12, fontWeight: 600, textTransform: 'capitalize', transition: 'all 0.15s',
           }}>{f}</button>
         ))}
@@ -139,12 +139,12 @@ export default function SupplierCatalog() {
           <button onClick={load} style={{ marginLeft: 'auto', padding: '5px 14px', borderRadius: 8, border: `1.5px solid ${C.red}`, background: '#FDF9F1', color: C.red, fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>Retry</button>
         </div>
       ) : visible.length === 0 ? (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14, padding: '56px 24px', borderRadius: 20, border: `1.5px dashed ${C.borderSoft}`, background: '#FDF9F1', textAlign: 'center' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14, padding: '56px 24px', borderRadius: 6, border: `1.5px dashed ${C.borderSoft}`, background: '#FDF9F1', textAlign: 'center' }}>
           <div style={{ width: 56, height: 56, borderRadius: 16, background: C.emeraldLt, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Package size={26} color={C.emerald} />
           </div>
           <div>
-            <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, fontWeight: 800, color: C.ink }}>
+            <div style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: 17, fontWeight: 300, color: C.ink }}>
               {search || filter !== 'all' ? 'No products match your filters' : 'No products yet'}
             </div>
             <div style={{ fontSize: 13, color: C.muted, marginTop: 5 }}>
@@ -153,7 +153,7 @@ export default function SupplierCatalog() {
           </div>
           {!search && filter === 'all' && (
             <button onClick={() => navigate('/supplier-dashboard/catalog/new')} style={{
-              display: 'flex', alignItems: 'center', gap: 7, padding: '10px 22px', borderRadius: 100,
+              display: 'flex', alignItems: 'center', gap: 7, padding: '10px 22px', borderRadius: 3,
               border: 'none', cursor: 'pointer', background: '#C8792C', color: '#2B2016',
               fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13,
             }}>
@@ -162,10 +162,9 @@ export default function SupplierCatalog() {
           )}
         </div>
       ) : (
-        <div style={{ background: '#FDF9F1', borderRadius: 18, border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden' }}>
-          <div style={{ borderTop: `3px solid ${C.emerald}` }} />
+        <div style={{ background: '#FDF9F1', borderRadius: 6, border: `1.5px solid ${C.borderSoft}`, overflowX: 'auto' }}>
           {/* Header row */}
-          <div style={{ display: 'grid', gridTemplateColumns: '56px 2fr 1fr 1fr 1fr 110px', gap: 12, padding: '12px 22px', borderBottom: `1px solid ${C.borderSoft}`, background: C.cream }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '56px 2fr 1fr 1fr 1fr 110px', minWidth: 760, gap: 12, padding: '12px 22px', borderBottom: `1px solid ${C.borderSoft}`, background: C.cream }}>
             {['', 'Product', 'Category', 'Base Price', 'Status', 'Actions'].map((h, i) => (
               <span key={h || i} style={{ fontSize: 10, fontWeight: 700, color: C.muted, textTransform: 'uppercase', letterSpacing: '0.07em' }}>{h}</span>
             ))}
@@ -174,12 +173,12 @@ export default function SupplierCatalog() {
             const thumb = resolveImageUrl(p.images?.[0]?.image_url, 120);
             return (
             <Link key={p.id} to={`/products/${p.id}`} style={{
-              display: 'grid', gridTemplateColumns: '56px 2fr 1fr 1fr 1fr 110px', gap: 12,
+              display: 'grid', gridTemplateColumns: '56px 2fr 1fr 1fr 1fr 110px', minWidth: 760, gap: 12,
               padding: '15px 22px', borderBottom: i < visible.length - 1 ? `1px solid ${C.borderSoft}` : 'none',
               alignItems: 'center', transition: 'background 0.12s', cursor: 'pointer',
               textDecoration: 'none', color: 'inherit',
             }}
-              onMouseEnter={e => { e.currentTarget.style.background = C.cream; }}
+              onMouseEnter={e => { e.currentTarget.style.background = '#F5F0E7'; }}
               onMouseLeave={e => { e.currentTarget.style.background = '#FDF9F1'; }}>
               <div style={{ width: 44, height: 44, borderRadius: 8, overflow: 'hidden', background: C.cream, border: `1px solid ${C.borderSoft}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 {thumb

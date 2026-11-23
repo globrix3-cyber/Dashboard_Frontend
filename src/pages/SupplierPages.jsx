@@ -19,7 +19,7 @@ const C = {
   gold:       '#C8792C', goldLt:    '#FDF9F1',
   ink:        '#5B4632', inkSoft:   '#2B2016',
   muted:      '#79634E', border:    '#E3D5C1',
-  borderSoft: '#E3D5C1', cream:     '#E3D5C1',
+  borderSoft: '#E3D5C1', cream:     '#F5F0E7',
 };
 
 function PageHeader({ title, subtitle, color = C.emerald, onBack, action }) {
@@ -36,12 +36,12 @@ function PageHeader({ title, subtitle, color = C.emerald, onBack, action }) {
       )}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
         <div>
-          <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 26, fontWeight: 900, color: C.ink, margin: 0, letterSpacing: -0.5 }}>{title}</h1>
+          <h1 style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: 26, fontWeight: 300, color: C.ink, margin: 0, letterSpacing: -0.5 }}>{title}</h1>
           {subtitle && <p style={{ fontSize: 14, color: C.muted, marginTop: 4 }}>{subtitle}</p>}
         </div>
         {action}
       </div>
-      <div style={{ height: 3, marginTop: 12, borderRadius: 2, background: `linear-gradient(90deg, ${color}, transparent)` }} />
+      <div style={{ height: 1, marginTop: 12, background: '#E3D5C1' }} />
     </div>
   );
 }
@@ -95,7 +95,7 @@ export function SupplierRFQsPage() {
             <div key={r.id}
               onClick={() => navigate(`/supplier-dashboard/rfqs/${r.id}`)}
               style={{
-                background: '#FDF9F1', borderRadius: 18, padding: '20px 24px',
+                background: '#FDF9F1', borderRadius: 6, padding: '20px 24px',
                 border: `1.5px solid ${C.borderSoft}`, cursor: 'pointer',
                 transition: 'transform 0.18s, box-shadow 0.18s, border-color 0.18s',
               }}
@@ -105,7 +105,7 @@ export function SupplierRFQsPage() {
               <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
-                    <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: 16, color: C.ink, margin: 0 }}>{r.title}</h3>
+                    <h3 style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontWeight: 300, fontSize: 16, color: C.ink, margin: 0 }}>{r.title}</h3>
                     <Badge status={r.status} />
                   </div>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, marginBottom: 10 }}>
@@ -130,7 +130,7 @@ export function SupplierRFQsPage() {
                   </span>
                   <button style={{
                     display: 'flex', alignItems: 'center', gap: 6,
-                    padding: '8px 16px', borderRadius: 100, border: 'none', cursor: 'pointer',
+                    padding: '8px 16px', borderRadius: 3, border: 'none', cursor: 'pointer',
                     background: '#C8792C', color: '#2B2016',
                     fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 12,
                   }}>
@@ -200,8 +200,7 @@ export function SupplierRFQDetail() {
       <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: 20 }}>
 
         {/* RFQ Details */}
-        <div style={{ background: '#FDF9F1', borderRadius: 18, border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden' }}>
-          <div style={{ borderTop: `3px solid ${C.emerald}` }} />
+        <div style={{ background: '#FDF9F1', borderRadius: 6, border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden' }}>
           <div style={{ padding: '20px 24px' }}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
               {[
@@ -243,7 +242,7 @@ export function SupplierRFQDetail() {
                       <div style={{ fontSize: 11, color: C.muted }}>{q.supplier_city}</div>
                     </div>
                     <div style={{ textAlign: 'right' }}>
-                      <div style={{ fontSize: 14, fontWeight: 700, color: C.emerald }}>
+                      <div style={{ fontSize: 14, fontWeight: 700, color: '#5B4632' }}>
                         {q.currency} {Number(q.price_per_unit).toLocaleString('en-IN')}/unit
                       </div>
                       <div style={{ fontSize: 11, color: C.muted }}>{q.lead_time || 'Lead time TBD'}</div>
@@ -256,10 +255,9 @@ export function SupplierRFQDetail() {
         </div>
 
         {/* Submit Quote Form */}
-        <div style={{ background: '#FDF9F1', borderRadius: 18, border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden' }}>
-          <div style={{ borderTop: `3px solid ${C.saffron}` }} />
+        <div style={{ background: '#FDF9F1', borderRadius: 6, border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden' }}>
           <div style={{ padding: '20px 24px' }}>
-            <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, fontWeight: 800, color: C.ink, margin: '0 0 16px' }}>
+            <h3 style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: 17, fontWeight: 300, color: C.ink, margin: '0 0 16px' }}>
               {submitted ? '✅ Quote Submitted' : 'Submit Your Quote'}
             </h3>
 
@@ -270,7 +268,7 @@ export function SupplierRFQDetail() {
                   Your quote has been submitted. The buyer will review and respond.
                 </p>
                 <button onClick={() => navigate('/supplier-dashboard/quotes')} style={{
-                  padding: '10px 20px', borderRadius: 100, background: '#C8792C', color: '#2B2016',
+                  padding: '10px 20px', borderRadius: 3, background: '#C8792C', color: '#2B2016',
                   border: 'none', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13,
                 }}>
                   View My Quotes
@@ -289,12 +287,12 @@ export function SupplierRFQDetail() {
                       placeholder={placeholder}
                       style={{
                         width: '100%', padding: '10px 12px', borderRadius: 10,
-                        border: `1.5px solid ${C.borderSoft}`, background: C.cream,
+                        border: `1.5px solid ${C.borderSoft}`, background: '#FDF9F1',
                         fontSize: 13, color: C.ink, fontFamily: "'DM Sans', sans-serif", outline: 'none',
                         boxSizing: 'border-box',
                       }}
                       onFocus={e => { e.currentTarget.style.borderColor = C.emerald; e.currentTarget.style.background = '#FDF9F1'; }}
-                      onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = C.cream; }} />
+                      onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = '#FDF9F1'; }} />
                   </div>
                 ))}
                 <div>
@@ -303,12 +301,12 @@ export function SupplierRFQDetail() {
                     rows={3} placeholder="Quality certifications, payment terms, packaging details…"
                     style={{
                       width: '100%', padding: '10px 12px', borderRadius: 10,
-                      border: `1.5px solid ${C.borderSoft}`, background: C.cream,
+                      border: `1.5px solid ${C.borderSoft}`, background: '#FDF9F1',
                       fontSize: 13, color: C.ink, fontFamily: "'DM Sans', sans-serif",
                       outline: 'none', resize: 'vertical', boxSizing: 'border-box',
                     }}
                     onFocus={e => { e.currentTarget.style.borderColor = C.emerald; e.currentTarget.style.background = '#FDF9F1'; }}
-                    onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = C.cream; }} />
+                    onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = '#FDF9F1'; }} />
                 </div>
                 <button type="submit" disabled={submitting} style={{
                   display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
@@ -341,7 +339,7 @@ export function SupplierQuotesPage() {
 
   const statusColor = (s) => {
     if (s === 'accepted')  return { bg: C.emeraldLt, color: C.emerald };
-    if (s === 'rejected')  return { bg: '#FEF2F2',   color: '#DC2626'  };
+    if (s === 'rejected')  return { bg: '#FEF2F2',   color: '#B42318'  };
     return                        { bg: C.goldLt,    color: C.gold     };
   };
 
@@ -358,7 +356,7 @@ export function SupplierQuotesPage() {
           desc="Browse open RFQs and submit competitive quotes"
           action={
             <button onClick={() => navigate('/supplier-dashboard/rfqs')} style={{
-              padding: '9px 20px', borderRadius: 100, background: '#C8792C', color: '#2B2016',
+              padding: '9px 20px', borderRadius: 3, background: '#C8792C', color: '#2B2016',
               border: 'none', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13,
             }}>
               Browse RFQs
@@ -371,12 +369,12 @@ export function SupplierQuotesPage() {
             const sc = statusColor(q.status);
             return (
               <div key={q.id} style={{
-                background: '#FDF9F1', borderRadius: 16, padding: '18px 22px',
+                background: '#FDF9F1', borderRadius: 6, padding: '18px 22px',
                 border: `1.5px solid ${C.borderSoft}`,
                 display: 'grid', gridTemplateColumns: '1fr auto', gap: 16, alignItems: 'center',
               }}>
                 <div>
-                  <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: 15, color: C.ink, marginBottom: 6 }}>
+                  <div style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontWeight: 300, fontSize: 15, color: C.ink, marginBottom: 6 }}>
                     {q.rfqTitle}
                   </div>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
@@ -481,7 +479,7 @@ export function SupplierOrdersPage() {
             const nextStatus = NEXT_STATUS[o.status];
             return (
               <div key={o.id} style={{
-                background: '#FDF9F1', borderRadius: 18, padding: '20px 24px',
+                background: '#FDF9F1', borderRadius: 6, padding: '20px 24px',
                 border: `1.5px solid ${C.borderSoft}`,
                 transition: 'box-shadow 0.2s',
               }}
@@ -490,7 +488,7 @@ export function SupplierOrdersPage() {
                 <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
-                      <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: 15, color: C.ink, margin: 0 }}>{o.orderNo}</h3>
+                      <h3 style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontWeight: 300, fontSize: 15, color: C.ink, margin: 0 }}>{o.orderNo}</h3>
                       <Badge status={o.status} />
                     </div>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, marginBottom: 4 }}>
@@ -519,7 +517,7 @@ export function SupplierOrdersPage() {
                       disabled={updatingId === o.id}
                       style={{
                         display: 'flex', alignItems: 'center', gap: 7,
-                        padding: '9px 16px', borderRadius: 100, border: 'none', cursor: 'pointer',
+                        padding: '9px 16px', borderRadius: 3, border: 'none', cursor: 'pointer',
                         background: '#C8792C', color: '#2B2016',
                         fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 12,
                         opacity: updatingId === o.id ? 0.65 : 1,

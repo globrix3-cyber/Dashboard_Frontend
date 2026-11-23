@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { toggleLogin } from '../features/auth/authSlice';
 import { api } from '../services/api';
 import { useFetchData } from '../hooks/useFetchData';
 import { Spinner, EmptyState } from '../components/UI';
@@ -9,8 +8,9 @@ import {
   Search, ShoppingBag, ChevronRight, ArrowRight,
   Package, Star, BadgeCheck, Filter, MapPin, Zap,
 } from 'lucide-react';
-import { formatDate, imageProps } from '../utils/helpers';
+import { imageProps } from '../utils/helpers';
 import usePageMeta from '../hooks/usePageMeta';
+import { useBreakpoint } from '../hooks/useBreakpoint';
 
 /* ── Design tokens ───────────────────────────────────────────────────────── */
 const C = {
@@ -104,7 +104,7 @@ export default function CategoriesPage() {
               India's B2B Marketplace
             </span>
           </div>
-          <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 32, fontWeight: 900, color: '#FDF9F1', margin: '0 0 8px', letterSpacing: '-0.5px', lineHeight: 1.1 }}>
+          <h1 style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: 34, fontWeight: 300, color: '#FDF9F1', margin: '0 0 8px', letterSpacing: '-0.5px', lineHeight: 1.1 }}>
             Browse by Category
           </h1>
           <p style={{ color: 'rgba(253,249,241,0.65)', fontSize: 14, margin: '0 0 24px' }}>
@@ -150,7 +150,7 @@ export default function CategoriesPage() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                   <span style={{ fontSize: 24 }}>{selectedMeta?.emoji}</span>
                   <div>
-                    <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 800, fontSize: 15, color: C.ink }}>{selectedCat?.name}</div>
+                    <div style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontWeight: 300, fontSize: 15, color: C.ink }}>{selectedCat?.name}</div>
                     <div style={{ fontSize: 11, color: C.muted, marginTop: 2 }}>{selectedSubs.length} sub-categories</div>
                   </div>
                 </div>
@@ -237,7 +237,7 @@ export default function CategoriesPage() {
                               {meta.emoji}
                             </div>
                             <div>
-                              <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 800, fontSize: 16, color: C.ink, margin: 0, letterSpacing: '-0.2px' }}>
+                              <h3 style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontWeight: 300, fontSize: 16, color: C.ink, margin: 0, letterSpacing: '-0.2px' }}>
                                 {cat.name}
                               </h3>
                               {cat.description && (
@@ -300,7 +300,8 @@ export default function CategoriesPage() {
 /* ═══════════════════════════════════════════════════════════════════════════
    CategoryProducts — product grid when a category is selected
 ═══════════════════════════════════════════════════════════════════════════ */
-function CategoryProducts({ category, meta, navigate, dispatch }) {
+function CategoryProducts({ category, meta, navigate }) {
+  const bp = useBreakpoint();
   const [search, setSearch] = useState('');
   const { data: raw = [], loading } = useFetchData(() => api.getProducts());
   const allProds = Array.isArray(raw) ? raw : [];
@@ -311,11 +312,6 @@ function CategoryProducts({ category, meta, navigate, dispatch }) {
     return catMatch && qMatch;
   });
 
-  const handleGetQuote = (e, p) => {
-    e.preventDefault();
-    e.stopPropagation();
-    navigate('/buyer-dashboard/rfqs/new');
-  };
 
   return (
     <div>
@@ -324,7 +320,7 @@ function CategoryProducts({ category, meta, navigate, dispatch }) {
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <span style={{ fontSize: 28 }}>{meta?.emoji}</span>
           <div>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 900, fontSize: 22, color: C.ink, margin: 0 }}>{category?.name}</h2>
+            <h2 style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontWeight: 300, fontSize: 22, color: C.ink, margin: 0 }}>{category?.name}</h2>
             <p style={{ fontSize: 13, color: C.muted, margin: '4px 0 0' }}>{category?.description || `GST-verified Indian ${category?.name} suppliers`}</p>
           </div>
         </div>
@@ -366,47 +362,23 @@ function CategoryProducts({ category, meta, navigate, dispatch }) {
         </div>
       ) : (
         <>
+          <style>{`.gx-product-card:hover .gx-product-img { transform: scale(1.03); } .gx-product-card:focus-visible { outline: 2px solid #C8792C; outline-offset: 4px; } @media (prefers-reduced-motion: reduce) { .gx-product-img { transition: none !important; } }`}</style>
           <p style={{ fontSize: 12, color: C.muted, marginBottom: 14 }}>{filtered.length} products found</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))', gap: 16 }}>
+          {/* Client rule (Canva V2): listings show only the photo, category and name — 4 per row, 3:4. */}
+          <div style={{ display: 'grid', gridTemplateColumns: `repeat(${bp.isMobile ? 2 : bp.isTablet ? 3 : 4}, minmax(0, 1fr))`, columnGap: bp.isMobile ? 12 : 22, rowGap: bp.isMobile ? 22 : 32 }}>
             {filtered.map(p => (
-              <Link key={p.id} to={`/products/${p.id}`} style={{
-                display: 'block', background: '#FDF9F1', borderRadius: 16, border: `1.5px solid ${C.borderSoft}`,
-                overflow: 'hidden', cursor: 'pointer', textDecoration: 'none', color: 'inherit',
-                transition: 'transform 0.18s, box-shadow 0.18s, border-color 0.18s',
-              }}
-                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = `0 8px 24px ${meta?.color || C.navy}1A`; e.currentTarget.style.borderColor = meta?.color || C.navy; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = C.borderSoft; }}>
-
-                <div style={{ height: 140, background: `linear-gradient(135deg, ${C.cream}, #F0DCC0)`, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+              <Link key={p.id} to={`/products/${p.id}`} className="gx-product-card" style={{ display: 'block', textDecoration: 'none', color: 'inherit', minWidth: 0 }}>
+                <div style={{ aspectRatio: '3 / 4', borderRadius: bp.isMobile ? 12 : 16, overflow: 'hidden', background: '#F0E6D6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   {p.images?.[0]?.image_url
-                    ? <img loading="lazy" decoding="async" {...imageProps(p.images[0].image_url, 300)} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    : <span style={{ fontSize: 36 }}>{meta?.emoji || '📦'}</span>
-                  }
-                  {p.status === 'active' && (
-                    <span style={{ position: 'absolute', top: 8, right: 8, fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 100, background: '#FDF9F1', color: '#14663D', boxShadow: '0 1px 3px rgba(43,32,22,.18)', display: 'flex', alignItems: 'center', gap: 3 }}>
-                      <BadgeCheck size={10} /> Verified
-                    </span>
-                  )}
+                    ? <img className="gx-product-img" loading="lazy" decoding="async" {...imageProps(p.images[0].image_url, 400)} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'transform .35s ease' }} />
+                    : <span aria-hidden="true" style={{ fontSize: 36 }}>{meta?.emoji || '📦'}</span>}
                 </div>
-
-                <div style={{ padding: '14px 16px' }}>
-                  <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: 14, color: C.ink, marginBottom: 8, lineHeight: 1.3, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                    {p.name}
+                <div style={{ textAlign: 'center', padding: bp.isMobile ? '12px 4px 4px' : '16px 8px 6px' }}>
+                  <div style={{ fontSize: bp.isMobile ? 9.5 : 10.5, fontWeight: 500, color: '#79634E', textTransform: 'uppercase', letterSpacing: '1.6px', marginBottom: 6 }}>
+                    {p.category_name || 'Uncategorised'}
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <div>
-                      <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 900, fontSize: 18, color: C.ink, letterSpacing: '-0.3px' }}>
-                        {p.base_price ? `₹${Number(p.base_price).toLocaleString('en-IN')}` : 'On Request'}
-                      </div>
-                      {p.moq_unit && <div style={{ fontSize: 10, color: C.muted, marginTop: 1 }}>MOQ: {p.min_order_quantity} {p.moq_unit}</div>}
-                    </div>
-                    <button onClick={e => handleGetQuote(e, p)} style={{
-                      padding: '7px 13px', borderRadius: 100, border: 'none', cursor: 'pointer',
-                      background: meta?.color || C.saffron, color: '#FDF9F1',
-                      fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 11,
-                    }}>
-                      Get Quote
-                    </button>
+                  <div style={{ fontSize: bp.isMobile ? 12.5 : 14, fontWeight: 500, color: '#5B4632', lineHeight: 1.4, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                    {p.name}
                   </div>
                 </div>
               </Link>

@@ -8,9 +8,9 @@ import { PHONE_COUNTRIES, DEFAULT_PHONE_COUNTRY, combinePhone, splitPhone } from
 
 const C = {
   saffron: '#C8792C', saffronLt: '#FDF9F1',
-  emerald: '#1A7A4A', navy: '#5B4632',
+  emerald: '#5B4632', navy: '#5B4632',
   ink: '#5B4632', inkSoft: '#2B2016',
-  muted: '#79634E', borderSoft: '#E3D5C1', cream: '#E3D5C1',
+  muted: '#79634E', borderSoft: '#E3D5C1', cream: '#F5F0E7',
 };
 
 function Field({ label, icon: Icon, readOnly, ...props }) {
@@ -24,14 +24,14 @@ function Field({ label, icon: Icon, readOnly, ...props }) {
         <input readOnly={readOnly} {...props} style={{
           width: '100%', padding: Icon ? '12px 14px 12px 40px' : '12px 14px',
           borderRadius: 12, border: `1.5px solid ${C.borderSoft}`,
-          background: readOnly ? '#E3D5C1' : C.cream,
+          background: readOnly ? '#F5F0E7' : '#FDF9F1',
           fontFamily: "'DM Sans', sans-serif", fontSize: 14,
           color: readOnly ? C.muted : C.ink,
           outline: 'none', transition: 'border-color 0.15s, background 0.15s',
           boxSizing: 'border-box', cursor: readOnly ? 'not-allowed' : 'text',
         }}
           onFocus={e => { if (!readOnly) { e.currentTarget.style.borderColor = C.saffron; e.currentTarget.style.background = '#FDF9F1'; } }}
-          onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = readOnly ? '#E3D5C1' : C.cream; }}
+          onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = '#FDF9F1'; }}
         />
       </div>
     </div>
@@ -79,16 +79,11 @@ export default function EditProfile() {
   return (
     <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", maxWidth: 560, margin: '0 auto', padding: '24px 32px' }}>
       <div style={{ marginBottom: 32, paddingBottom: 22, borderBottom: `1px solid ${C.borderSoft}` }}>
-        <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 27, fontWeight: 900, color: C.ink, margin: 0, letterSpacing: '-0.4px' }}>Edit Profile</h1>
+        <h1 style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: 27, fontWeight: 300, color: C.ink, margin: 0, letterSpacing: '-0.4px' }}>Edit Profile</h1>
         <p style={{ fontSize: 13, color: C.muted, marginTop: 6 }}>Update your account information</p>
       </div>
 
-      <div style={{ background: '#FDF9F1', borderRadius: 20, border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden', boxShadow: '0 2px 8px rgba(43,32,22,0.06)' }}>
-        <div style={{ display: 'flex', height: 3 }}>
-          <div style={{ flex: 1, background: C.saffron }} />
-          <div style={{ flex: 1, background: '#FDF9F1', borderTop: `0.5px solid ${C.borderSoft}`, borderBottom: `0.5px solid ${C.borderSoft}` }} />
-          <div style={{ flex: 1, background: '#C8792C' }} />
-        </div>
+      <div style={{ background: '#FDF9F1', borderRadius: 6, border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden', boxShadow: '0 2px 8px rgba(43,32,22,0.06)' }}>
         <div style={{ padding: '32px 36px' }}>
           {/* Avatar */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 20, marginBottom: 36, paddingBottom: 28, borderBottom: `1px solid ${C.borderSoft}` }}>
@@ -96,14 +91,14 @@ export default function EditProfile() {
               width: 76, height: 76, borderRadius: 20, flexShrink: 0,
               background: `linear-gradient(135deg, ${roleColor}, ${roleColor}cc)`,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              color: '#FDF9F1', fontSize: 30, fontFamily: "'Playfair Display', serif", fontWeight: 900,
+              color: '#FDF9F1', fontSize: 30, fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontWeight: 300,
               boxShadow: `0 6px 20px ${roleColor}30`,
             }}>
               {fetching ? <User size={28} /> : initials}
             </div>
             <div>
-              <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, fontWeight: 800, color: C.ink }}>{form.full_name || userName || '—'}</div>
-              <div style={{ fontSize: 12, color: roleColor, fontWeight: 600, textTransform: 'capitalize', marginTop: 4 }}>{userRole}</div>
+              <div style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: 20, fontWeight: 300, color: C.ink }}>{form.full_name || userName || '—'}</div>
+              <div style={{ fontSize: 12, color: C.ink, fontWeight: 600, textTransform: 'capitalize', marginTop: 4 }}>{userRole}</div>
               <div style={{ fontSize: 12, color: C.muted, marginTop: 2 }}>{form.email}</div>
             </div>
           </div>
@@ -118,7 +113,7 @@ export default function EditProfile() {
               <div style={{ display: 'flex', gap: 8 }}>
                 <select value={form.phone_dial} onChange={e => set('phone_dial', e.target.value)} style={{
                   width: 110, padding: '12px 10px', borderRadius: 12, border: `1.5px solid ${C.borderSoft}`,
-                  background: C.cream, fontFamily: "'DM Sans', sans-serif", fontSize: 13.5, color: C.ink,
+                  background: '#FDF9F1', fontFamily: "'DM Sans', sans-serif", fontSize: 13.5, color: C.ink,
                   outline: 'none', cursor: 'pointer', boxSizing: 'border-box',
                 }}>
                   {PHONE_COUNTRIES.map(c => (
@@ -133,11 +128,11 @@ export default function EditProfile() {
                     placeholder="98765 43210"
                     style={{
                       width: '100%', padding: '12px 14px 12px 40px', borderRadius: 12, border: `1.5px solid ${C.borderSoft}`,
-                      background: C.cream, fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: C.ink,
+                      background: '#FDF9F1', fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: C.ink,
                       outline: 'none', boxSizing: 'border-box', transition: 'border-color 0.15s, background 0.15s',
                     }}
                     onFocus={e => { e.currentTarget.style.borderColor = C.saffron; e.currentTarget.style.background = '#FDF9F1'; }}
-                    onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = C.cream; }}
+                    onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = '#FDF9F1'; }}
                   />
                 </div>
               </div>
@@ -149,8 +144,7 @@ export default function EditProfile() {
               cursor: (saving || fetching) ? 'not-allowed' : 'pointer',
               background: C.saffron, color: '#2B2016',
               fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 14,
-              opacity: (saving || fetching) ? 0.65 : 1,
-              boxShadow: '0 4px 16px rgba(200,121,44,0.30)', transition: 'background 0.18s, transform 0.12s',
+              opacity: (saving || fetching) ? 0.65 : 1, transition: 'background 0.18s, transform 0.12s',
             }}
               onMouseEnter={e => { if (!saving) { e.currentTarget.style.background = '#C8792C'; e.currentTarget.style.transform = 'translateY(-1px)'; } }}
               onMouseLeave={e => { e.currentTarget.style.background = C.saffron; e.currentTarget.style.transform = 'none'; }}>

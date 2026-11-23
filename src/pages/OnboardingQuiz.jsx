@@ -206,7 +206,7 @@ export default function OnboardingQuiz({ role, onComplete, onSkip, onBack }) {
         <span style={{ fontSize: 12, fontWeight: 700, color: '#79634E', whiteSpace: 'nowrap' }}>{step + 1} / {questions.length}</span>
       </div>
 
-      <h3 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: 21, fontWeight: 800, color: '#5B4632', lineHeight: 1.35, marginBottom: 18 }}>
+      <h3 style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: 21, fontWeight: 300, color: '#5B4632', lineHeight: 1.35, marginBottom: 18 }}>
         {q.question}
       </h3>
 

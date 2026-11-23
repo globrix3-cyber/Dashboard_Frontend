@@ -13,12 +13,12 @@ import { formatDate } from '../utils/helpers';
 /* ── Design tokens (matching SupplierPages palette) ─────────────────────────── */
 const C = {
   saffron:    '#C8792C', saffronLt: '#FDF9F1',
-  emerald:    '#1A7A4A', emeraldLt: '#EAF5EF',
+  emerald:    '#5B4632', emeraldLt: '#F0DCC0',
   navy:       '#5B4632', navyLt:    '#F0DCC0',
   gold:       '#C8792C', goldLt:    '#FDF9F1',
   ink:        '#5B4632', inkSoft:   '#2B2016',
   muted:      '#79634E', border:    '#E3D5C1',
-  borderSoft: '#E3D5C1', cream:     '#E3D5C1',
+  borderSoft: '#E3D5C1', cream:     '#F5F0E7',
 };
 
 const field = (label, value, colSpan = 1) => ({ label, value, colSpan });
@@ -26,10 +26,9 @@ const field = (label, value, colSpan = 1) => ({ label, value, colSpan });
 function InfoCard({ children, accent = C.saffron }) {
   return (
     <div style={{
-      background: '#FDF9F1', borderRadius: 18,
+      background: '#FDF9F1', borderRadius: 6,
       border: `1.5px solid ${C.borderSoft}`, overflow: 'hidden',
     }}>
-      <div style={{ height: 3, background: accent }} />
       <div style={{ padding: '20px 24px' }}>{children}</div>
     </div>
   );
@@ -57,10 +56,10 @@ function InputField({ label, type = 'text', value, onChange, placeholder, requir
       {multiline
         ? <textarea rows={3} value={value} onChange={onChange} placeholder={placeholder} style={style}
             onFocus={e => { e.currentTarget.style.borderColor = C.saffron; e.currentTarget.style.background = '#FDF9F1'; }}
-            onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = C.cream; }} />
+            onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = '#FDF9F1'; }} />
         : <input type={type} value={value} onChange={onChange} placeholder={placeholder} style={style}
             onFocus={e => { e.currentTarget.style.borderColor = C.saffron; e.currentTarget.style.background = '#FDF9F1'; }}
-            onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = C.cream; }} />
+            onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = '#FDF9F1'; }} />
       }
     </div>
   );
@@ -72,7 +71,7 @@ function SelectField({ label, value, onChange, options, required }) {
       <Label>{label}{required && ' *'}</Label>
       <select value={value} onChange={onChange} style={{
         width: '100%', padding: '9px 12px', borderRadius: 10,
-        border: `1.5px solid ${C.borderSoft}`, background: C.cream,
+        border: `1.5px solid ${C.borderSoft}`, background: '#FDF9F1',
         fontSize: 13, color: C.ink, fontFamily: "'DM Sans', sans-serif",
         outline: 'none', boxSizing: 'border-box', cursor: 'pointer',
       }}>
@@ -172,7 +171,7 @@ export default function BuyerRFQDetail() {
         </button>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
           <div>
-            <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 26, fontWeight: 900, color: C.ink, margin: 0 }}>
+            <h1 style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: 26, fontWeight: 300, color: C.ink, margin: 0 }}>
               {rfq.title}
             </h1>
             <p style={{ fontSize: 14, color: C.muted, marginTop: 4 }}>
@@ -181,12 +180,12 @@ export default function BuyerRFQDetail() {
           </div>
           <Badge status={rfq.status} />
         </div>
-        <div style={{ height: 3, marginTop: 12, borderRadius: 2, background: `linear-gradient(90deg, ${C.saffron}, transparent)` }} />
+        <div style={{ height: 1, marginTop: 12, background: '#E3D5C1' }} />
       </div>
 
       {/* ── RFQ details ──────────────────────────────────────────────────── */}
       <InfoCard accent={C.navy}>
-        <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: 15, color: C.ink, margin: '0 0 16px' }}>
+        <h3 style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontWeight: 300, fontSize: 15, color: C.ink, margin: '0 0 16px' }}>
           RFQ Details
         </h3>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 12, marginBottom: rfq.description ? 16 : 0 }}>
@@ -215,13 +214,13 @@ export default function BuyerRFQDetail() {
 
       {/* ── Supplier Quotes ───────────────────────────────────────────────── */}
       <div style={{ marginTop: 20 }}>
-        <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, fontWeight: 800, color: C.ink, marginBottom: 14 }}>
+        <h2 style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: 18, fontWeight: 300, color: C.ink, marginBottom: 14 }}>
           Supplier Quotes ({quotes.length})
         </h2>
 
         {quotes.length === 0 ? (
           <div style={{
-            background: '#FDF9F1', borderRadius: 18, border: `1.5px solid ${C.borderSoft}`,
+            background: '#FDF9F1', borderRadius: 6, border: `1.5px solid ${C.borderSoft}`,
             padding: '32px 24px', textAlign: 'center', color: C.muted,
           }}>
             <FileText size={36} color={C.borderSoft} style={{ marginBottom: 10 }} />
@@ -233,14 +232,14 @@ export default function BuyerRFQDetail() {
               const isSelected = selectedQuote?.id === q.id;
               return (
                 <div key={q.id} style={{
-                  background: '#FDF9F1', borderRadius: 18, padding: '18px 22px',
+                  background: '#FDF9F1', borderRadius: 6, padding: '18px 22px',
                   border: `2px solid ${isSelected ? C.saffron : C.borderSoft}`,
                   transition: 'border-color 0.2s, box-shadow 0.2s',
                   boxShadow: isSelected ? `0 0 0 3px ${C.saffronLt}` : 'none',
                 }}>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 16, alignItems: 'center' }}>
                     <div>
-                      <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: 15, color: C.ink, marginBottom: 8 }}>
+                      <div style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontWeight: 300, fontSize: 15, color: C.ink, marginBottom: 8 }}>
                         {q.supplier_name}
                         {q.supplier_city && <span style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 400, fontSize: 12, color: C.muted, marginLeft: 8 }}>· {q.supplier_city}</span>}
                       </div>
@@ -289,7 +288,7 @@ export default function BuyerRFQDetail() {
                       {isSelected ? (
                         <button onClick={() => { setSelectedQuote(null); setShowForm(false); }} style={{
                           display: 'flex', alignItems: 'center', gap: 6,
-                          padding: '8px 16px', borderRadius: 100, border: `1.5px solid ${C.saffron}`,
+                          padding: '8px 16px', borderRadius: 3, border: `1.5px solid ${C.saffron}`,
                           background: C.saffronLt, color: C.saffron, cursor: 'pointer',
                           fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 12,
                         }}>
@@ -298,7 +297,7 @@ export default function BuyerRFQDetail() {
                       ) : (
                         <button onClick={() => handleSelectQuote(q)} style={{
                           display: 'flex', alignItems: 'center', gap: 6,
-                          padding: '8px 16px', borderRadius: 100, border: 'none',
+                          padding: '8px 16px', borderRadius: 3, border: 'none',
                           background: C.saffron, color: '#2B2016', cursor: 'pointer',
                           fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 12,
                         }}>
@@ -306,7 +305,7 @@ export default function BuyerRFQDetail() {
                         </button>
                       )}
                       {isSelected && (
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 11, color: C.saffron, fontWeight: 700 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 11, color: '#5B4632', fontWeight: 700 }}>
                           <CheckCircle2 size={12} /> Selected
                         </div>
                       )}
@@ -323,7 +322,7 @@ export default function BuyerRFQDetail() {
       {showForm && selectedQuote && (
         <div id="contract-form" style={{ marginTop: 28 }}>
           <InfoCard accent={C.saffron}>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, fontWeight: 800, color: C.ink, margin: '0 0 4px' }}>
+            <h2 style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: 18, fontWeight: 300, color: C.ink, margin: '0 0 4px' }}>
               Draft Contract
             </h2>
             <p style={{ fontSize: 13, color: C.muted, marginBottom: 20 }}>
@@ -450,7 +449,7 @@ export default function BuyerRFQDetail() {
               {/* Submit */}
               <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end', paddingTop: 8, borderTop: `1px solid ${C.borderSoft}` }}>
                 <button type="button" onClick={() => { setShowForm(false); setSelectedQuote(null); }} style={{
-                  padding: '11px 24px', borderRadius: 100, border: `1.5px solid ${C.borderSoft}`,
+                  padding: '11px 24px', borderRadius: 3, border: `1.5px solid ${C.borderSoft}`,
                   background: '#FDF9F1', color: C.muted, cursor: 'pointer',
                   fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 13,
                 }}>

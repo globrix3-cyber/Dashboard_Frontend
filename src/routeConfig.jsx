@@ -16,6 +16,7 @@ import BuyerRFQsPage     from "./pages/BuyerRFQsPage";
 import BuyerRFQDetail    from "./pages/BuyerRFQDetail";
 import BuyerOrdersPage   from "./pages/BuyerOrdersPage";
 import BuyerCartPage     from "./pages/BuyerCartPage";
+import BuyerWishlistPage from "./pages/BuyerWishlistPage";
 import CreateRFQForm     from "./pages/CreateRFQForm";
 import ContractsListPage from "./pages/ContractsListPage";
 import ContractPage      from "./pages/ContractPage";
@@ -107,6 +108,11 @@ export const routeConfig = [
   {
     path:    "/buyer-dashboard/cart",
     element: withLayout(BuyerCartPage),
+    roles:   [ROLES.BUYER],
+  },
+  {
+    path:    "/buyer-dashboard/wishlist",
+    element: withLayout(BuyerWishlistPage),
     roles:   [ROLES.BUYER],
   },
   {

@@ -17,7 +17,7 @@ import {
 /* ─── Tiny shared primitives ─────────────────────────────────────────────── */
 const Label = ({ children, required }) => (
   <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--ink-soft)', textTransform: 'uppercase', letterSpacing: '.06em', marginBottom: 6 }}>
-    {children}{required && <span style={{ color: '#EF4444', marginLeft: 3 }}>*</span>}
+    {children}{required && <span style={{ color: '#B42318', marginLeft: 3 }}>*</span>}
   </label>
 );
 
@@ -31,7 +31,7 @@ const Input = ({ style, ...props }) => (
       boxSizing: 'border-box',
       ...style,
     }}
-    onFocus={e => { e.currentTarget.style.borderColor = 'var(--emerald)'; }}
+    onFocus={e => { e.currentTarget.style.borderColor = '#5B4632'; }}
     onBlur={e  => { e.currentTarget.style.borderColor = 'var(--border-soft)'; }}
     {...props}
   />
@@ -63,7 +63,7 @@ const Textarea = ({ style, ...props }) => (
       boxSizing: 'border-box',
       ...style,
     }}
-    onFocus={e => { e.currentTarget.style.borderColor = 'var(--emerald)'; }}
+    onFocus={e => { e.currentTarget.style.borderColor = '#5B4632'; }}
     onBlur={e  => { e.currentTarget.style.borderColor = 'var(--border-soft)'; }}
     {...props}
   />
@@ -103,21 +103,21 @@ function StepBar({ current }) {
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5 }}>
               <div style={{
                 width: 36, height: 36, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                border: `2px solid ${done ? 'var(--emerald)' : active ? 'var(--emerald)' : 'var(--border-soft)'}`,
-                background: done ? 'var(--emerald)' : active ? 'var(--emerald-lt)' : '#FDF9F1',
+                border: `2px solid ${done ? '#5B4632' : active ? '#5B4632' : 'var(--border-soft)'}`,
+                background: done ? '#5B4632' : active ? '#F0DCC0' : '#FDF9F1',
                 transition: 'all .2s',
               }}>
                 {done
                   ? <Check size={15} color="#FDF9F1" />
-                  : <Icon size={14} color={active ? 'var(--emerald)' : 'var(--muted)'} />
+                  : <Icon size={14} color={active ? '#5B4632' : 'var(--muted)'} />
                 }
               </div>
-              <span style={{ fontSize: 10, fontWeight: 600, color: active ? 'var(--emerald)' : done ? 'var(--ink-soft)' : 'var(--muted)', whiteSpace: 'nowrap' }}>
+              <span style={{ fontSize: 10, fontWeight: 600, color: active ? '#5B4632' : done ? 'var(--ink-soft)' : 'var(--muted)', whiteSpace: 'nowrap' }}>
                 {s.label}
               </span>
             </div>
             {i < STEPS.length - 1 && (
-              <div style={{ flex: 1, height: 2, margin: '0 8px', marginBottom: 20, background: done ? 'var(--emerald)' : 'var(--border-soft)', borderRadius: 1, transition: 'background .2s' }} />
+              <div style={{ flex: 1, height: 2, margin: '0 8px', marginBottom: 20, background: done ? '#5B4632' : 'var(--border-soft)', borderRadius: 1, transition: 'background .2s' }} />
             )}
           </div>
         );
@@ -405,7 +405,7 @@ export default function ListProduct() {
 
       {/* Header */}
       <div style={{ marginBottom: 28 }}>
-        <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 26, fontWeight: 900, color: 'var(--ink)', margin: 0, letterSpacing: -.5 }}>
+        <h1 style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: 26, fontWeight: 300, color: 'var(--ink)', margin: 0, letterSpacing: -.5 }}>
           {isEditMode ? 'Edit Product' : 'List a Product'}
         </h1>
         <p style={{ color: 'var(--muted)', fontSize: 14, marginTop: 5 }}>
@@ -420,7 +420,7 @@ export default function ListProduct() {
 
       {/* Card */}
       <div style={{
-        background: '#FDF9F1', borderRadius: 20, padding: '28px 32px',
+        background: '#FDF9F1', borderRadius: 6, padding: '28px 32px',
         border: '1.5px solid var(--border-soft)',
         boxShadow: '0 1px 4px rgba(43,32,22,.04)',
         marginBottom: 20,
@@ -511,8 +511,8 @@ export default function ListProduct() {
                 <button type="button" onClick={addTier}
                   style={{
                     display: 'flex', alignItems: 'center', gap: 5, padding: '6px 14px', borderRadius: 8,
-                    border: '1.5px dashed var(--emerald)', background: 'var(--emerald-lt)',
-                    color: 'var(--emerald)', fontSize: 12, fontWeight: 600, cursor: 'pointer',
+                    border: '1.5px dashed #5B4632', background: '#F0DCC0',
+                    color: '#5B4632', fontSize: 12, fontWeight: 600, cursor: 'pointer',
                   }}>
                   <Plus size={12} /> Add Tier
                 </button>
@@ -536,15 +536,15 @@ export default function ListProduct() {
                       background: priceTiers.length === 1 ? '#E3D5C1' : '#FEE2E2',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                     }}>
-                    <Trash2 size={13} color={priceTiers.length === 1 ? '#E3D5C1' : '#EF4444'} />
+                    <Trash2 size={13} color={priceTiers.length === 1 ? '#E3D5C1' : '#B42318'} />
                   </button>
                 </div>
               ))}
 
               {/* Preview */}
               {priceTiers.some(t => t.price) && (
-                <div style={{ marginTop: 12, padding: '12px 16px', borderRadius: 10, background: 'var(--emerald-lt)', border: '1px solid rgba(16,185,129,0.2)' }}>
-                  <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--emerald)' }}>Preview: </span>
+                <div style={{ marginTop: 12, padding: '12px 16px', borderRadius: 10, background: '#F0DCC0', border: '1px solid rgba(16,185,129,0.2)' }}>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: '#5B4632' }}>Preview: </span>
                   <span style={{ fontSize: 12, color: 'var(--ink)' }}>
                     ₹{priceTiers.filter(t => t.price).map(t =>
                       `${t.price}/${t.min_qty}${t.max_qty ? `–${t.max_qty}` : '+'} ${pricing.moq_unit}`
@@ -629,10 +629,10 @@ export default function ListProduct() {
                   return (
                     <button key={tag.id} type="button" onClick={() => toggleTag(tag.id)}
                       style={{
-                        padding: '5px 12px', borderRadius: 100, fontSize: 12, fontWeight: 600, cursor: 'pointer',
-                        border: `1.5px solid ${selected ? 'var(--emerald)' : 'var(--border-soft)'}`,
-                        background: selected ? 'var(--emerald-lt)' : '#FDF9F1',
-                        color: selected ? 'var(--emerald)' : 'var(--muted)',
+                        padding: '5px 12px', borderRadius: 3, fontSize: 12, fontWeight: 600, cursor: 'pointer',
+                        border: `1.5px solid ${selected ? '#5B4632' : 'var(--border-soft)'}`,
+                        background: selected ? '#F0DCC0' : '#FDF9F1',
+                        color: selected ? '#5B4632' : 'var(--muted)',
                         transition: 'all .15s',
                       }}>
                       {selected && <Check size={10} style={{ marginRight: 4 }} />}
@@ -654,7 +654,7 @@ export default function ListProduct() {
                 <button type="button" onClick={handleCreateTag}
                   style={{
                     padding: '10px 18px', borderRadius: 10, border: 'none', cursor: 'pointer',
-                    background: 'var(--emerald)', color: '#FDF9F1', fontWeight: 600, fontSize: 13,
+                    background: '#5B4632', color: '#FDF9F1', fontWeight: 600, fontSize: 13,
                   }}>
                   Add
                 </button>
@@ -721,7 +721,7 @@ export default function ListProduct() {
               <ReviewSection title="Tags">
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                   {allTags.filter(t => tagIds.includes(t.id)).map(t => (
-                    <span key={t.id} style={{ padding: '3px 10px', borderRadius: 100, background: 'var(--emerald-lt)', color: 'var(--emerald)', fontSize: 12, fontWeight: 600 }}>
+                    <span key={t.id} style={{ padding: '3px 10px', borderRadius: 100, background: '#F0DCC0', color: '#5B4632', fontSize: 12, fontWeight: 600 }}>
                       {t.name}
                     </span>
                   ))}
@@ -766,7 +766,7 @@ export default function ListProduct() {
               <button type="button" onClick={() => handleSubmit(!isEditMode)} disabled={submitting || photosBusy}
                 style={{
                   display: 'flex', alignItems: 'center', gap: 7, padding: '10px 22px', borderRadius: 10,
-                  border: 'none', background: 'var(--emerald)', color: '#FDF9F1',
+                  border: 'none', background: '#5B4632', color: '#FDF9F1',
                   fontSize: 14, fontWeight: 700, cursor: submitting || photosBusy ? 'not-allowed' : 'pointer',
                   opacity: submitting || photosBusy ? 0.7 : 1,
                   boxShadow: '0 4px 14px rgba(16,185,129,0.3)',
@@ -785,7 +785,7 @@ export default function ListProduct() {
             <button type="button" onClick={next} disabled={photosBusy}
               style={{
                 display: 'flex', alignItems: 'center', gap: 6, padding: '10px 22px', borderRadius: 10,
-                border: 'none', background: 'var(--emerald)', color: '#FDF9F1',
+                border: 'none', background: '#5B4632', color: '#FDF9F1',
                 fontSize: 14, fontWeight: 700, cursor: photosBusy ? 'not-allowed' : 'pointer',
                 opacity: photosBusy ? 0.7 : 1,
                 boxShadow: '0 4px 14px rgba(16,185,129,0.3)',

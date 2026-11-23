@@ -19,7 +19,7 @@ const T = {
   saffron:    '#C8792C', saffronLt: '#FDF9F1',
   navy:       '#5B4632', navyLt:    '#F0DCC0',
   gold:       '#C8792C', goldLt:    '#FDF9F1',
-  red:        '#DC2626', redLt:     '#FEF2F2',
+  red:        '#B42318', redLt:     '#FEF2F2',
 };
 
 const PRODUCT_STATUS = {
@@ -36,7 +36,7 @@ function StatCard({ icon: Icon, label, value, accent, bg }) {
       onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 4px 18px rgba(43,32,22,.08)'; }}
       onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; }}
       style={{
-        background: '#FDF9F1', borderRadius: 14, border: `1.5px solid ${T.borderSoft}`,
+        background: '#FDF9F1', borderRadius: 6, border: `1.5px solid ${T.borderSoft}`,
         padding: '18px 20px', display: 'flex', alignItems: 'center', gap: 14,
         transition: 'box-shadow .2s',
       }}>
@@ -44,7 +44,7 @@ function StatCard({ icon: Icon, label, value, accent, bg }) {
         <Icon size={18} color={accent} />
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 26, fontWeight: 700, color: T.ink, lineHeight: 1 }}>{value ?? '—'}</div>
+        <div style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: 26, fontWeight: 300, color: T.ink, lineHeight: 1 }}>{value ?? '—'}</div>
         <div style={{ fontSize: 11.5, color: T.muted, marginTop: 4, fontWeight: 500 }}>{label}</div>
       </div>
     </div>
@@ -54,17 +54,16 @@ function StatCard({ icon: Icon, label, value, accent, bg }) {
 /* ── Panel wrapper ─────────────────────────────────────────────────────────── */
 function Panel({ title, accent, count, onViewAll, loading, empty, children }) {
   return (
-    <div style={{ background: '#FDF9F1', borderRadius: 14, border: `1.5px solid ${T.borderSoft}`, overflow: 'hidden' }}>
-      <div style={{ height: 3, background: accent }} />
+    <div style={{ background: '#FDF9F1', borderRadius: 6, border: `1.5px solid ${T.borderSoft}`, overflow: 'hidden' }}>
       <div style={{ padding: '14px 20px', borderBottom: `1px solid ${T.borderSoft}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 17, fontWeight: 700, color: T.ink }}>{title}</span>
+          <span style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: 17, fontWeight: 300, color: T.ink }}>{title}</span>
           {count != null && (
             <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 100, background: T.cream, color: T.muted }}>{count}</span>
           )}
         </div>
         {onViewAll && (
-          <button onClick={onViewAll} style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, fontWeight: 600, color: accent, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
+          <button onClick={onViewAll} style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, fontWeight: 600, color: T.ink, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
             View all <ArrowRight size={12} />
           </button>
         )}
@@ -80,7 +79,7 @@ function Panel({ title, accent, count, onViewAll, loading, empty, children }) {
 function RFQCard({ r, onClick }) {
   return (
     <div onClick={onClick}
-      onMouseEnter={e => { e.currentTarget.style.background = T.cream; }}
+      onMouseEnter={e => { e.currentTarget.style.background = '#F5F0E7'; }}
       onMouseLeave={e => { e.currentTarget.style.background = '#FDF9F1'; }}
       style={{ padding: '13px 20px', borderBottom: `1px solid ${T.borderSoft}`, cursor: 'pointer', transition: 'background .15s', background: '#FDF9F1' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
@@ -107,7 +106,7 @@ const QUOTE_COLORS = {
 };
 
 function QuoteRow({ q }) {
-  const s = QUOTE_COLORS[q.status] ?? { bg: '#E3D5C1', color: T.muted };
+  const s = QUOTE_COLORS[q.status] ?? { bg: '#F5F0E7', color: T.muted };
   return (
     <div style={{ padding: '13px 20px', borderBottom: `1px solid ${T.borderSoft}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
       <div style={{ flex: 1, minWidth: 0 }}>
@@ -125,7 +124,7 @@ function CatalogRow({ p, onEdit }) {
   const imgUrl = resolveImageUrl(p.images?.[0]?.image_url, 120);
   return (
     <div
-      onMouseEnter={e => { e.currentTarget.style.background = T.cream; }}
+      onMouseEnter={e => { e.currentTarget.style.background = '#F5F0E7'; }}
       onMouseLeave={e => { e.currentTarget.style.background = '#FDF9F1'; }}
       style={{ padding: '12px 20px', borderBottom: `1px solid ${T.borderSoft}`, transition: 'background .15s', background: '#FDF9F1', display: 'flex', alignItems: 'center', gap: 12 }}>
       <div style={{ width: 44, height: 44, borderRadius: 8, overflow: 'hidden', background: T.cream, flexShrink: 0, border: `1px solid ${T.borderSoft}` }}>
@@ -179,7 +178,7 @@ export default function SupplierDashboard() {
       <div style={{ display: 'flex', alignItems: bp.isMobile ? 'flex-start' : 'center', justifyContent: 'space-between', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
         <div>
           <p style={{ fontSize: 11.5, fontWeight: 600, color: T.muted, textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 4 }}>{today}</p>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: bp.isMobile ? 22 : 28, fontWeight: 700, color: T.ink, marginBottom: 4 }}>
+          <h2 style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: bp.isMobile ? 22 : 28, fontWeight: 300, color: T.ink, marginBottom: 4 }}>
             Welcome back, {firstName}
           </h2>
           <p style={{ fontSize: 13, color: T.muted }}>Manage your catalog, respond to RFQs, and grow your business.</p>
@@ -202,7 +201,7 @@ export default function SupplierDashboard() {
       <div style={{ display: 'grid', gridTemplateColumns: bp.isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: bp.isMobile ? 8 : 14, marginBottom: 24 }}>
         {sl || pl ? (
           Array(4).fill(0).map((_, i) => (
-            <div key={i} style={{ background: '#FDF9F1', borderRadius: 14, border: `1.5px solid ${T.borderSoft}`, padding: '18px 20px', height: 82 }} />
+            <div key={i} style={{ background: '#FDF9F1', borderRadius: 6, border: `1.5px solid ${T.borderSoft}`, padding: '18px 20px', height: 82 }} />
           ))
         ) : (
           <>
@@ -255,7 +254,7 @@ export default function SupplierDashboard() {
             <div style={{ fontSize: 14.5, fontWeight: 700, color: T.ink, marginBottom: 5 }}>No products listed yet</div>
             <div style={{ fontSize: 12.5, color: T.muted, marginBottom: 18 }}>List your first product to start reaching buyers on Globrixa</div>
             <button onClick={() => navigate('/supplier-dashboard/catalog/new')}
-              style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '10px 22px', borderRadius: 100, border: 'none', background: '#C8792C', color: '#2B2016', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
+              style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '10px 22px', borderRadius: 3, border: 'none', background: '#C8792C', color: '#2B2016', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
               <Plus size={14} /> List your first product
             </button>
           </div>

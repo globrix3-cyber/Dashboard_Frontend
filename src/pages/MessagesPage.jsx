@@ -14,11 +14,11 @@ import { formatDate } from '../utils/helpers';
 const C = {
   navy:       '#5B4632', navyLt:     '#F0DCC0',
   saffron:    '#C8792C', saffronLt:  '#FDF9F1',
-  emerald:    '#1A7A4A', emeraldLt:  '#EAF5EF',
+  emerald:    '#5B4632', emeraldLt:  '#F0DCC0',
   gold:       '#C8792C', goldLt:     '#FDF9F1',
   ink:        '#5B4632', inkSoft:    '#2B2016',
   muted:      '#79634E', border:     '#E3D5C1',
-  borderSoft: '#E3D5C1', cream:      '#E3D5C1',
+  borderSoft: '#E3D5C1', cream:      '#F5F0E7',
   warmWhite:  '#FDF9F1',
 };
 
@@ -46,14 +46,14 @@ function QuoteOfferCard({ data, isMine, onAccept, onCounter, accepting }) {
     <div style={{
       background: isMine ? C.emeraldLt : '#FDF9F1',
       border: `2px solid ${C.emerald}`,
-      borderRadius: 16, padding: '16px 18px', maxWidth: 320,
+      borderRadius: 6, padding: '16px 18px', maxWidth: 320,
       boxShadow: '0 4px 16px rgba(26,122,74,0.12)',
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
         <div style={{ width: 28, height: 28, borderRadius: 8, background: '#C8792C', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <ShieldCheck size={14} color="#FDF9F1" />
         </div>
-        <span style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: 13, color: C.emerald }}>
+        <span style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontWeight: 300, fontSize: 13, color: C.emerald }}>
           Quote Offer
         </span>
         <span style={{ marginLeft: 'auto', fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 100, background: C.goldLt, color: C.gold }}>
@@ -87,7 +87,7 @@ function QuoteOfferCard({ data, isMine, onAccept, onCounter, accepting }) {
         <div style={{ display: 'flex', gap: 8 }}>
           <button onClick={onAccept} disabled={accepting}
             style={{
-              flex: 1, padding: '8px 0', borderRadius: 100, border: 'none', cursor: 'pointer',
+              flex: 1, padding: '8px 0', borderRadius: 3, border: 'none', cursor: 'pointer',
               background: '#C8792C', color: '#2B2016',
               fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 12,
               opacity: accepting ? 0.65 : 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
@@ -96,8 +96,8 @@ function QuoteOfferCard({ data, isMine, onAccept, onCounter, accepting }) {
           </button>
           <button onClick={onCounter}
             style={{
-              flex: 1, padding: '8px 0', borderRadius: 100, cursor: 'pointer',
-              background: 'transparent', color: C.saffron,
+              flex: 1, padding: '8px 0', borderRadius: 3, cursor: 'pointer',
+              background: 'transparent', color: '#5B4632',
               border: `1.5px solid ${C.saffron}`,
               fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 12,
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
@@ -116,7 +116,7 @@ function QuoteAcceptedCard({ data }) {
   return (
     <div style={{
       background: C.emeraldLt, border: `2px solid ${C.emerald}`,
-      borderRadius: 16, padding: '14px 16px', maxWidth: 280,
+      borderRadius: 6, padding: '14px 16px', maxWidth: 280,
       display: 'flex', flexDirection: 'column', gap: 8,
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
@@ -128,7 +128,7 @@ function QuoteAcceptedCard({ data }) {
       </p>
       <button onClick={() => navigate('/buyer-dashboard/orders')}
         style={{
-          padding: '6px 14px', borderRadius: 100, border: 'none', cursor: 'pointer',
+          padding: '6px 14px', borderRadius: 3, border: 'none', cursor: 'pointer',
           background: '#C8792C', color: '#2B2016', fontSize: 11, fontWeight: 700,
           fontFamily: "'DM Sans', sans-serif",
         }}>
@@ -168,7 +168,7 @@ function QuoteOfferForm({ convId, onSent }) {
 
   return (
     <form onSubmit={handleSend} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-      <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: 14, color: C.ink, marginBottom: 4 }}>
+      <div style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontWeight: 300, fontSize: 14, color: C.ink, marginBottom: 4 }}>
         Send Quote Offer
       </div>
       {[
@@ -180,21 +180,21 @@ function QuoteOfferForm({ convId, onSent }) {
         <div key={key}>
           <label style={{ display: 'block', fontSize: 10, fontWeight: 700, color: C.muted, textTransform: 'uppercase', letterSpacing: '.06em', marginBottom: 4 }}>{label}</label>
           <input type={type} value={form[key]} onChange={e => set(key, e.target.value)} placeholder={placeholder}
-            style={{ width: '100%', padding: '8px 10px', borderRadius: 8, border: `1.5px solid ${C.borderSoft}`, background: C.cream, fontSize: 13, color: C.ink, fontFamily: "'DM Sans', sans-serif", outline: 'none', boxSizing: 'border-box' }}
+            style={{ width: '100%', padding: '8px 10px', borderRadius: 8, border: `1.5px solid ${C.borderSoft}`, background: '#FDF9F1', fontSize: 13, color: C.ink, fontFamily: "'DM Sans', sans-serif", outline: 'none', boxSizing: 'border-box' }}
             onFocus={e => { e.currentTarget.style.borderColor = C.emerald; e.currentTarget.style.background = '#FDF9F1'; }}
-            onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = C.cream; }} />
+            onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = '#FDF9F1'; }} />
         </div>
       ))}
       <div>
         <label style={{ display: 'block', fontSize: 10, fontWeight: 700, color: C.muted, textTransform: 'uppercase', letterSpacing: '.06em', marginBottom: 4 }}>Notes / Terms</label>
         <textarea value={form.notes} onChange={e => set('notes', e.target.value)} rows={2}
           placeholder="Quality, packaging, payment terms…"
-          style={{ width: '100%', padding: '8px 10px', borderRadius: 8, border: `1.5px solid ${C.borderSoft}`, background: C.cream, fontSize: 12, color: C.ink, fontFamily: "'DM Sans', sans-serif", outline: 'none', resize: 'none', boxSizing: 'border-box' }}
+          style={{ width: '100%', padding: '8px 10px', borderRadius: 8, border: `1.5px solid ${C.borderSoft}`, background: '#FDF9F1', fontSize: 12, color: C.ink, fontFamily: "'DM Sans', sans-serif", outline: 'none', resize: 'none', boxSizing: 'border-box' }}
           onFocus={e => { e.currentTarget.style.borderColor = C.emerald; e.currentTarget.style.background = '#FDF9F1'; }}
-          onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = C.cream; }} />
+          onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = '#FDF9F1'; }} />
       </div>
       <button type="submit" disabled={sending} style={{
-        padding: '9px 0', borderRadius: 100, border: 'none', cursor: 'pointer',
+        padding: '9px 0', borderRadius: 3, border: 'none', cursor: 'pointer',
         background: '#C8792C', color: '#2B2016', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 13,
         opacity: sending ? 0.65 : 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
       }}>
@@ -334,21 +334,20 @@ export default function MessagesPage() {
 
       {/* Page header */}
       <div style={{ marginBottom: 16, padding: '24px 32px 0' }}>
-        <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, fontWeight: 900, color: C.ink, margin: 0 }}>
+        <h1 style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: 24, fontWeight: 300, color: C.ink, margin: 0 }}>
           {isAdmin ? 'All Conversations' : 'Messages'}
         </h1>
         <p style={{ fontSize: 13, color: C.muted, marginTop: 3 }}>
           {isAdmin ? 'Monitor all platform conversations' : 'Negotiate, bargain and close deals with your trade partners'}
         </p>
-        <div style={{ height: 3, marginTop: 10, borderRadius: 2, background: `linear-gradient(90deg, ${isSupplier ? C.emerald : isAdmin ? C.navy : C.saffron}, transparent)` }} />
+        <div style={{ height: 1, marginTop: 10, background: '#E3D5C1' }} />
       </div>
 
       {/* Main layout */}
       <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '300px 1fr', gap: 16, minHeight: 0, padding: '0 32px 24px' }}>
 
         {/* ── LEFT: Conversation list ─────────────────────────────────────── */}
-        <div style={{ background: '#FDF9F1', borderRadius: 18, border: `1.5px solid ${C.borderSoft}`, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-          <div style={{ borderTop: `3px solid ${isSupplier ? C.emerald : isAdmin ? C.navy : C.saffron}` }} />
+        <div style={{ background: '#FDF9F1', borderRadius: 6, border: `1.5px solid ${C.borderSoft}`, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
 
           {/* Search */}
           <div style={{ padding: '12px 14px', borderBottom: `1px solid ${C.borderSoft}` }}>
@@ -356,7 +355,7 @@ export default function MessagesPage() {
               <Search size={13} color={C.muted} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} />
               <input value={search} onChange={e => setSearch(e.target.value)}
                 placeholder="Search conversations…"
-                style={{ width: '100%', padding: '8px 10px 8px 30px', borderRadius: 9, border: `1.5px solid ${C.borderSoft}`, background: C.cream, fontSize: 12, color: C.ink, fontFamily: "'DM Sans', sans-serif", outline: 'none', boxSizing: 'border-box' }} />
+                style={{ width: '100%', padding: '8px 10px 8px 30px', borderRadius: 9, border: `1.5px solid ${C.borderSoft}`, background: '#FDF9F1', fontSize: 12, color: C.ink, fontFamily: "'DM Sans', sans-serif", outline: 'none', boxSizing: 'border-box' }} />
             </div>
           </div>
 
@@ -370,7 +369,7 @@ export default function MessagesPage() {
                 <p style={{ fontSize: 13, color: C.muted }}>No conversations yet</p>
                 {!isAdmin && (
                   <button onClick={() => navigate(isSupplier ? '/supplier-dashboard/rfqs' : '/products')}
-                    style={{ marginTop: 10, padding: '7px 16px', borderRadius: 100, background: isSupplier ? C.emerald : C.saffron, color: '#FDF9F1', border: 'none', cursor: 'pointer', fontSize: 12, fontWeight: 700, fontFamily: "'DM Sans', sans-serif" }}>
+                    style={{ marginTop: 10, padding: '7px 16px', borderRadius: 3, background: isSupplier ? C.emerald : C.saffron, color: isSupplier ? '#FDF9F1' : '#2B2016', border: 'none', cursor: 'pointer', fontSize: 12, fontWeight: 700, fontFamily: "'DM Sans', sans-serif" }}>
                     {isSupplier ? 'Browse RFQs' : 'Browse Suppliers'}
                   </button>
                 )}
@@ -394,14 +393,14 @@ export default function MessagesPage() {
                     background: isActive ? (isSupplier ? C.emeraldLt : isAdmin ? C.navyLt : C.saffronLt) : '#FDF9F1',
                     borderLeft: isActive ? `3px solid ${isSupplier ? C.emerald : isAdmin ? C.navy : C.saffron}` : '3px solid transparent',
                   }}
-                  onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = C.cream; }}
+                  onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = '#F5F0E7'; }}
                   onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = '#FDF9F1'; }}>
                   <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
                     <div style={{
                       width: 36, height: 36, borderRadius: 10, flexShrink: 0,
                       background: isSupplier ? C.navy : isAdmin ? C.saffron : C.emerald,
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      color: '#FDF9F1', fontSize: 14, fontWeight: 800, fontFamily: "'Playfair Display', serif",
+                      color: '#FDF9F1', fontSize: 14, fontWeight: 300, fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif",
                     }}>
                       {party[0]?.toUpperCase() || '?'}
                     </div>
@@ -432,7 +431,7 @@ export default function MessagesPage() {
         </div>
 
         {/* ── RIGHT: Chat window ──────────────────────────────────────────── */}
-        <div style={{ background: '#FDF9F1', borderRadius: 18, border: `1.5px solid ${C.borderSoft}`, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <div style={{ background: '#FDF9F1', borderRadius: 6, border: `1.5px solid ${C.borderSoft}`, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
 
           {!activeConvId ? (
             /* Empty state */
@@ -441,20 +440,19 @@ export default function MessagesPage() {
                 <MessageSquare size={32} color={C.borderSoft} />
               </div>
               <div style={{ textAlign: 'center' }}>
-                <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, fontWeight: 800, color: C.ink, margin: '0 0 6px' }}>Select a conversation</p>
+                <p style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: 18, fontWeight: 300, color: C.ink, margin: '0 0 6px' }}>Select a conversation</p>
                 <p style={{ fontSize: 13, color: C.muted }}>Choose from the left panel to start chatting</p>
               </div>
             </div>
           ) : (
             <>
               {/* Chat header */}
-              <div style={{ borderTop: `3px solid ${isSupplier ? C.emerald : isAdmin ? C.navy : C.saffron}` }} />
               <div style={{
                 padding: '14px 18px', borderBottom: `1px solid ${C.borderSoft}`,
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <div style={{ width: 38, height: 38, borderRadius: 10, background: isSupplier ? C.navy : isAdmin ? C.saffron : C.emerald, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FDF9F1', fontSize: 15, fontWeight: 800, fontFamily: "'Playfair Display', serif" }}>
+                  <div style={{ width: 38, height: 38, borderRadius: 10, background: isSupplier ? C.navy : isAdmin ? C.saffron : C.emerald, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FDF9F1', fontSize: 15, fontWeight: 300, fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif" }}>
                     {otherParty(activeConv)?.[0]?.toUpperCase() || '?'}
                   </div>
                   <div>
@@ -469,7 +467,7 @@ export default function MessagesPage() {
                 {isSupplier && !isAdmin && (
                   <button onClick={() => setShowQuoteForm(v => !v)}
                     style={{
-                      display: 'flex', alignItems: 'center', gap: 6, padding: '7px 14px', borderRadius: 100,
+                      display: 'flex', alignItems: 'center', gap: 6, padding: '7px 14px', borderRadius: 3,
                       background: showQuoteForm ? C.emerald : C.emeraldLt, color: showQuoteForm ? '#FDF9F1' : C.emerald,
                       border: `1.5px solid ${C.emerald}`, cursor: 'pointer',
                       fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 12, transition: 'all 0.15s',
@@ -553,12 +551,12 @@ export default function MessagesPage() {
                       onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) sendMessage(e); }}
                       style={{
                         flex: 1, padding: '11px 14px', borderRadius: 12,
-                        border: `1.5px solid ${C.borderSoft}`, background: C.cream,
+                        border: `1.5px solid ${C.borderSoft}`, background: '#FDF9F1',
                         fontSize: 13, color: C.ink, fontFamily: "'DM Sans', sans-serif",
                         outline: 'none', transition: 'border-color 0.15s',
                       }}
                       onFocus={e => { e.currentTarget.style.borderColor = isSupplier ? C.emerald : C.saffron; e.currentTarget.style.background = '#FDF9F1'; }}
-                      onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = C.cream; }}
+                      onBlur={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.background = '#FDF9F1'; }}
                     />
                     <button type="submit" disabled={sending || !msgText.trim()}
                       style={{
