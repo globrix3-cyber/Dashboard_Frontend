@@ -42,7 +42,9 @@ export default function CreateRFQForm() {
   // "Request quote" on a product page opens this form with ?product=<id>: prefill what we know
   // about that product. Fields the buyer has already typed are never overwritten.
   const [searchParams] = useSearchParams();
-  const productId = searchParams.get('product');
+  // Only accept a real product id from the URL (UUID); anything else is ignored.
+  const rawProductId = searchParams.get('product');
+  const productId = rawProductId && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(rawProductId) ? rawProductId : null;
   const [sourceProduct, setSourceProduct] = useState(null);
   useEffect(() => {
     if (!productId) return undefined;

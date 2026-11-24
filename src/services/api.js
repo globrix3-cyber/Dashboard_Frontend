@@ -43,6 +43,9 @@ const clearTokens = () => {
 // login, and after every refresh cycle.
 let proactiveRefreshTimer = null;
 
+// Path segments built from ids (some come from the URL) are encoded so they can't change the API path.
+const seg = (v) => encodeURIComponent(String(v));
+
 export function scheduleProactiveRefresh() {
   clearTimeout(proactiveRefreshTimer);
   const token = getToken();
@@ -257,29 +260,29 @@ export const api = {
 
   // ── RFQs ─────────────────────────────────────────────────────────────────
   getRFQs:    ()       => get('/api/rfqs'),
-  getRFQ:     (id)     => get(`/api/rfqs/${id}`),
+  getRFQ:     (id)     => get(`/api/rfqs/${seg(id)}`),
   createRFQ:  (body)   => post('/api/rfqs', body),
-  updateRFQ:  (id, body) => patch(`/api/rfqs/${id}`, body),
+  updateRFQ:  (id, body) => patch(`/api/rfqs/${seg(id)}`, body),
 
   // ── Quotes (supplier submits / lists) ────────────────────────────────────
   getQuotes:   ()            => get('/api/quotes'),
-  submitQuote: (rfqId, body) => post(`/api/rfqs/${rfqId}/quotes`, body),
-  updateQuote: (id, body)    => patch(`/api/quotes/${id}`, body),
+  submitQuote: (rfqId, body) => post(`/api/rfqs/${seg(rfqId)}/quotes`, body),
+  updateQuote: (id, body)    => patch(`/api/quotes/${seg(id)}`, body),
 
   // ── Orders ───────────────────────────────────────────────────────────────
   getOrders:     ()       => get('/api/orders'),
-  getOrder:      (id)     => get(`/api/orders/${id}`),
-  updateOrderStatus: (id, status) => patch(`/api/orders/${id}/status`, { status }),
+  getOrder:      (id)     => get(`/api/orders/${seg(id)}`),
+  updateOrderStatus: (id, status) => patch(`/api/orders/${seg(id)}/status`, { status }),
 
   // ── Products ─────────────────────────────────────────────────────────────
   // Signed params for direct browser → Cloudinary uploads (see utils/imageUpload.js)
   getUploadSignature: (opts = {}) => post('/api/uploads/signature', opts),
   subscribeNewsletter: (email) => post('/api/newsletter/subscribe', { email }),
   getProducts:   (params = {}) => get(`/api/products?${new URLSearchParams(params)}`),
-  getProduct:    (id)          => get(`/api/products/${id}`),
+  getProduct:    (id)          => get(`/api/products/${seg(id)}`),
   createProduct: (body)        => post('/api/products', body),
-  updateProduct: (id, body)    => put(`/api/products/${id}`, body),
-  deleteProduct: (id)          => del(`/api/products/${id}`),
+  updateProduct: (id, body)    => put(`/api/products/${seg(id)}`, body),
+  deleteProduct: (id)          => del(`/api/products/${seg(id)}`),
 
   // ── Categories & Tags ────────────────────────────────────────────────────
   getCategories: () => get('/api/products/categories'),
@@ -288,12 +291,12 @@ export const api = {
   // ── Notifications ────────────────────────────────────────────────────────
   getNotifications:  ()   => get('/api/notifications'),
   markAllRead:       ()   => patch('/api/notifications/read-all'),
-  markRead:          (id) => patch(`/api/notifications/${id}/read`),
+  markRead:          (id) => patch(`/api/notifications/${seg(id)}/read`),
   getUnreadCount:    ()   => get('/api/notifications/unread-count'),
 
   // ── Messaging ────────────────────────────────────────────────────────────
   getConversations:    ()              => get('/api/conversations'),
-  getConversation:     (id)           => get(`/api/conversations/${id}`),
+  getConversation:     (id)           => get(`/api/conversations/${seg(id)}`),
   startConversation:   (body)         => post('/api/conversations', body),
   sendMessage:         (convId, body) => post(`/api/conversations/${convId}/messages`, { body }),
   sendQuoteOffer:      (convId, data) => post(`/api/conversations/${convId}/quote-offer`, data),
@@ -301,33 +304,33 @@ export const api = {
 
   // ── Contracts ────────────────────────────────────────────────────────────
   getContracts:     ()       => get('/api/contracts'),
-  getContract:      (id)     => get(`/api/contracts/${id}`),
+  getContract:      (id)     => get(`/api/contracts/${seg(id)}`),
   createContract:   (body)   => post('/api/contracts', body),
-  updateContract:   (id, body) => patch(`/api/contracts/${id}`, body),
-  signContract:     (id)     => post(`/api/contracts/${id}/sign`),
-  cancelContract:   (id)     => post(`/api/contracts/${id}/cancel`),
-  placeOrderFromContract: (id) => post(`/api/contracts/${id}/order`),
+  updateContract:   (id, body) => patch(`/api/contracts/${seg(id)}`, body),
+  signContract:     (id)     => post(`/api/contracts/${seg(id)}/sign`),
+  cancelContract:   (id)     => post(`/api/contracts/${seg(id)}/cancel`),
+  placeOrderFromContract: (id) => post(`/api/contracts/${seg(id)}/order`),
 
   // ── Cart ─────────────────────────────────────────────────────────────────
   getCart:        ()              => get('/api/cart'),
   addToCart:      (body)          => post('/api/cart', body),
-  updateCartItem: (id, quantity)  => patch(`/api/cart/${id}`, { quantity }),
-  removeCartItem: (id)            => del(`/api/cart/${id}`),
+  updateCartItem: (id, quantity)  => patch(`/api/cart/${seg(id)}`, { quantity }),
+  removeCartItem: (id)            => del(`/api/cart/${seg(id)}`),
   clearCart:      ()              => del('/api/cart'),
 
   // ── Wishlist ─────────────────────────────────────────────────────────────
   getWishlist:        ()   => get('/api/wishlist'),
-  addToWishlist:      (id) => post(`/api/wishlist/${id}`),
-  removeFromWishlist: (id) => del(`/api/wishlist/${id}`),
+  addToWishlist:      (id) => post(`/api/wishlist/${seg(id)}`),
+  removeFromWishlist: (id) => del(`/api/wishlist/${seg(id)}`),
 
   // ── Admin ────────────────────────────────────────────────────────────────
   admin: {
     getUsers:         (params = {}) => get(`/api/admin/users?${new URLSearchParams(params)}`),
-    getUserDetail:    (id)          => get(`/api/admin/users/${id}`),
-    suspendUser:      (id)          => patch(`/api/admin/users/${id}/suspend`),
+    getUserDetail:    (id)          => get(`/api/admin/users/${seg(id)}`),
+    suspendUser:      (id)          => patch(`/api/admin/users/${seg(id)}/suspend`),
     getCompanies:     (params = {}) => get(`/api/admin/companies?${new URLSearchParams(params)}`),
     getVerifications: ()            => get('/api/admin/verifications'),
-    verifyCompany:    (id, status, notes) => patch(`/api/admin/companies/${id}/verify`, { status, notes }),
+    verifyCompany:    (id, status, notes) => patch(`/api/admin/companies/${seg(id)}/verify`, { status, notes }),
     getStats:         ()            => get('/api/admin/stats'),
     // Resolves to the subscriber array [{ email, created_at }] (get() unwraps json.data)
     getNewsletterSubscribers: ()    => get('/api/newsletter/subscribers'),
