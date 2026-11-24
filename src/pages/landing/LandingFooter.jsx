@@ -37,9 +37,9 @@ const PhoneIcon = () => <svg viewBox="0 0 24 24" aria-hidden="true" focusable="f
 export default function LandingFooter() {
   const bp = useBreakpoint();
   const m  = bp.width <= 760;
-  const link = { display: 'block', margin: `0 0 ${m ? 15 : 16}px`, padding: 0, fontFamily: "'DM Sans', Arial, sans-serif", fontSize: 11, fontWeight: 400, lineHeight: 1.8, letterSpacing: 0, color: CREAM, textAlign: 'left', textDecoration: 'none' };
+  const link = { display: 'block', margin: `0 0 ${m ? 15 : 16}px`, padding: 0, fontFamily: "'DM Sans', Arial, sans-serif", fontSize: 14, fontWeight: 400, lineHeight: 1.8, letterSpacing: 0, color: CREAM, textAlign: 'left', textDecoration: 'none' };
   const row  = { ...link, display: 'flex', alignItems: 'flex-start', gap: m ? 9 : 10 };
-  const heading = { margin: `5px 0 ${m ? 20 : 24}px`, fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: m ? 25 : 26, fontWeight: 300, lineHeight: 1.2, letterSpacing: 'normal', color: GOLD };
+  const heading = { margin: `5px 0 ${m ? 20 : 24}px`, fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: m ? 28 : 30, fontWeight: 300, lineHeight: 1.2, letterSpacing: 'normal', color: GOLD };
   return (
     <footer className="gx-footer" style={{ background: '#5B4632', color: GOLD, borderTop: '1px solid #f4d9a045', padding: '54px 4.3% 0' }}>
       <style>{`
@@ -51,10 +51,10 @@ export default function LandingFooter() {
       `}</style>
       <div style={{ display: 'grid', gridTemplateColumns: m ? '1fr 1fr' : '1.6fr 1fr 1fr 1.2fr', gap: m ? 25 : 30, paddingBottom: 45 }}>
         <div style={{ gridColumn: m ? '1 / -1' : 'auto' }}>
-          <Link to="/" aria-label="Globrixa home" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: m ? 27 : 30, fontWeight: 600, fontStyle: 'normal', letterSpacing: m ? '2.5px' : '3px', lineHeight: 'normal', color: GOLD, textDecoration: 'none' }}>
+          <Link to="/" aria-label="Globrixa home" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: m ? 31 : 34, fontWeight: 600, fontStyle: 'normal', letterSpacing: m ? '2.5px' : '3px', lineHeight: 'normal', color: GOLD, textDecoration: 'none' }}>
             GLOBRIXA
           </Link>
-          <p style={{ margin: '11px 0', fontSize: 11, lineHeight: 1.8, color: CREAM }}>Crafted with character.<br />Sourced for your store.</p>
+          <p style={{ margin: '1em 0', fontSize: 14, lineHeight: 1.8, color: CREAM }}>Crafted with character.<br />Sourced for your store.</p>
         </div>
         <nav aria-label="Quick links">
           <h2 style={heading}>Quick Links</h2>
@@ -88,7 +88,7 @@ export default function LandingFooter() {
           </div>
         </div>
       </div>
-      <div style={{ borderTop: '1px solid #f4d9a045', padding: '22px 0', display: 'flex', justifyContent: 'space-between', flexWrap: m ? 'wrap' : 'nowrap', gap: m ? 20 : 0, fontSize: m ? 8 : 9, lineHeight: 'normal', color: CREAM }}>
+      <div style={{ borderTop: '1px solid #f4d9a045', padding: '22px 0', display: 'flex', flexDirection: m ? 'column' : 'row', alignItems: m ? 'flex-start' : 'stretch', justifyContent: 'space-between', flexWrap: m ? 'wrap' : 'nowrap', gap: m ? 20 : 0, fontSize: 12, lineHeight: 'normal', color: CREAM }}>
         <span>© 2026 Globrixa</span>
         <span>India · English · INR ₹</span>
       </div>
