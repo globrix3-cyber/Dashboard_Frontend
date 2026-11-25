@@ -92,7 +92,9 @@ export default function HomeBanner({ slides = BANNER_SLIDES }) {
             <p style={{ margin: 0, fontSize: m ? 10 : 11, letterSpacing: '1.6px', textTransform: 'uppercase', fontWeight: 600, color: '#F4D9A0' }}>{s.eyebrow}</p>
             <h2 style={{ margin: m ? '8px 0 14px' : '12px 0 22px', fontFamily: SERIF, fontWeight: 300, lineHeight: 1.05, letterSpacing: '-.8px', color: '#FDF9F1', fontSize: m ? 30 : 'clamp(38px, 3.9vw, 60px)', textShadow: '0 1px 2px rgba(43,32,22,.35)' }}>{s.title}</h2>
             <Link to={s.to} tabIndex={i === index ? 0 : -1}
-              style={{ display: 'inline-flex', alignItems: 'center', height: m ? 40 : 44, padding: '0 20px', background: '#C8792C', color: '#2B2016', fontSize: 13, fontWeight: 600, letterSpacing: '.1px', borderRadius: 3, textDecoration: 'none' }}>
+              style={{ display: 'inline-flex', alignItems: 'center', height: m ? 40 : 44, padding: '0 20px', background: '#5B4632', color: '#FDF9F1', fontSize: 13, fontWeight: 600, letterSpacing: '.1px', borderRadius: 3, textDecoration: 'none', transition: 'background .15s, color .15s' }}
+              onMouseEnter={e => { e.currentTarget.style.background = '#F4D9A0'; e.currentTarget.style.color = '#5B4632'; }}
+              onMouseLeave={e => { e.currentTarget.style.background = '#5B4632'; e.currentTarget.style.color = '#FDF9F1'; }}>
               {s.cta}
             </Link>
           </div>

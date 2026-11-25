@@ -452,15 +452,6 @@ export default function LoginModal({ onSubmit }) {
                   Create an account
                 </button>
               </p>
-              <p style={{ fontSize: 13, color: '#79634E', textAlign: 'center', margin: 0 }}>
-                Are you a supplier?{' '}
-                <button
-                  onClick={() => { setMode('register'); set('role', 'supplier'); }}
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#5B4632', fontWeight: 600, fontSize: 13, fontFamily: 'inherit', textDecoration: 'underline' }}
-                >
-                  Join as a brand
-                </button>
-              </p>
             </>
           ) : mode === 'register' ? (
             <p style={{ fontSize: 13, color: '#79634E', textAlign: 'center', margin: 0 }}>

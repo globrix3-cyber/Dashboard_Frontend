@@ -43,7 +43,11 @@ const CAT_META = {
   'leather-footwear':      { emoji: '👞', color: '#7C3AED', bg: '#EDE9FE',     label: 'Leather & Footwear'       },
 };
 
+const CLIENT_CATEGORIES = ['Side Tables', 'Bedside Tables', 'Console Tables', 'Coffee Tables', 'Table Lamps & Shades', 'Chairs', 'Vegan Leather Bags', 'Genuine Leather Bags', 'Jute Bags', 'Cotton Bags', 'Wooden Serveware', 'Wall & Home Decor'];
+const CLIENT_META = { 'side-tables': '🪵', 'bedside-tables': '🛏️', 'console-tables': '🪞', 'coffee-tables': '☕', 'table-lamps-shades': '💡', chairs: '🪑', 'vegan-leather-bags': '👜', 'genuine-leather-bags': '👜', 'jute-bags': '🧺', 'cotton-bags': '🛍️', 'wooden-serveware': '🥣', 'wall-home-decor': '🖼️' };
+
 function getMeta(slug) {
+  if (CLIENT_META[slug]) return { emoji: CLIENT_META[slug], color: '#5B4632', bg: '#F0E6D6' };
   return CAT_META[slug] || { emoji: '📋', color: C.navy, bg: C.navyLt };
 }
 
@@ -60,7 +64,9 @@ export default function CategoriesPage() {
   const { data: raw = [], loading } = useFetchData(() => api.getCategories());
   const allCats = Array.isArray(raw) ? raw : [];
 
-  const roots = allCats.filter(c => !c.parent_id);
+  // Client Canva p33: the page is built around the client's own category list (falls back to the full tree).
+  const clientRoots = CLIENT_CATEGORIES.map(n => allCats.find(c => c.name === n)).filter(Boolean);
+  const roots = clientRoots.length ? clientRoots : allCats.filter(c => !c.parent_id);
   const subs  = allCats.filter(c => !!c.parent_id);
 
   const filteredRoots = roots.filter(r =>
@@ -98,25 +104,17 @@ export default function CategoriesPage() {
         <div style={{ position: 'absolute', top: -40, right: -40, width: 200, height: 200, borderRadius: '50%', border: '1px dashed rgba(26,122,74,0.2)', pointerEvents: 'none' }} />
 
         <div style={{ position: 'relative', zIndex: 1 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
-            <span style={{ fontSize: 20 }}>🇮🇳</span>
-            <span style={{ fontSize: 11, fontWeight: 700, color: 'rgba(253,249,241,0.55)', letterSpacing: '.12em', textTransform: 'uppercase' }}>
-              India's B2B Marketplace
-            </span>
-          </div>
           <h1 style={{ fontFamily: "'Canela', 'Cormorant Garamond', Georgia, serif", fontSize: 34, fontWeight: 300, color: '#FDF9F1', margin: '0 0 8px', letterSpacing: '-0.5px', lineHeight: 1.1 }}>
             Browse by Category
           </h1>
-          <p style={{ color: 'rgba(253,249,241,0.65)', fontSize: 14, margin: '0 0 24px' }}>
-            {allCats.length > 0 ? `${roots.length} industry verticals · ${allCats.length} categories` : 'All Indian industry verticals in one place'} · GST-verified suppliers
-          </p>
+          <div style={{ height: 18 }} />
 
           {/* Search */}
           <div style={{ position: 'relative', maxWidth: 520 }}>
             <Search size={16} color="rgba(253,249,241,0.5)" style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} />
             <input
               value={search} onChange={e => setSearch(e.target.value)}
-              placeholder="Search categories — Textiles, Electronics, Pharma…"
+              placeholder="Search categories — tables, lamps, bags…"
               style={{
                 width: '100%', padding: '13px 16px 13px 44px', borderRadius: 12,
                 border: '1.5px solid rgba(253,249,241,0.18)', background: 'rgba(253,249,241,0.10)',

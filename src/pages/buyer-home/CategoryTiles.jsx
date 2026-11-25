@@ -14,8 +14,8 @@ function Tile({ item, big, bp, style }) {
       onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
       style={{ position: 'relative', display: 'block', overflow: 'hidden', minWidth: 0, borderRadius: m ? 16 : 'clamp(16px, 2vw, 26px)', background: '#EEE0CC', textDecoration: 'none', isolation: 'isolate', ...(m ? { aspectRatio: big ? '4 / 3' : '1 / 1.1' } : null), ...style }}>
       <img src={item.img} alt="" loading="lazy" decoding="async"
-        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', transform: hov ? 'scale(1.04)' : 'none', transition: 'transform .45s ease' }} />
-      <span style={{ position: 'absolute', left: inset, right: inset, bottom: inset, display: 'block', padding: m ? '9px 12px' : '11px 15px', background: '#FDF9F1', borderRadius: 8, boxShadow: '0 2px 12px rgba(43,32,22,.08)', fontFamily: SERIF, fontWeight: 300, color: INK, fontSize: m ? (big ? 24 : 16) : 'clamp(19px, 1.7vw, 27px)', lineHeight: 1.15, letterSpacing: '-.3px', ...(m && !big ? { overflowWrap: 'anywhere' } : { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }) }}>
+        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', transition: 'transform .45s ease' }} />
+      <span style={{ position: 'absolute', left: inset, right: inset, bottom: inset, display: 'block', padding: m ? '9px 12px' : '11px 15px', background: hov ? '#F4D9A0' : '#FDF9F1', transition: 'background .2s', borderRadius: 8, boxShadow: '0 2px 12px rgba(43,32,22,.08)', fontFamily: SERIF, fontWeight: 300, color: INK, fontSize: m ? (big ? 24 : 16) : 'clamp(19px, 1.7vw, 27px)', lineHeight: 1.15, letterSpacing: '-.3px', ...(m && !big ? { overflowWrap: 'anywhere' } : { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }) }}>
         {item.name}
       </span>
     </Link>
@@ -33,9 +33,11 @@ export default function CategoryTiles({ tiles }) {
       <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16, marginBottom: m ? 18 : 26 }}>
         <div>
           <p style={{ margin: 0, fontSize: 11, letterSpacing: '1.6px', textTransform: 'uppercase', fontWeight: 600, color: '#79634E' }}>Shop by category</p>
-          <h2 id="home-categories" style={{ margin: '8px 0 0', fontFamily: SERIF, fontWeight: 300, color: INK, letterSpacing: '-1px', lineHeight: 1.05, fontSize: m ? 34 : 'clamp(38px, 3.6vw, 54px)' }}>Find your foundation</h2>
+          <h2 id="home-categories" style={{ margin: '8px 0 0', fontFamily: SERIF, fontWeight: 300, color: INK, letterSpacing: '-1px', lineHeight: 1.05, fontSize: m ? 34 : 'clamp(38px, 3.6vw, 54px)' }}>Find your next bestseller</h2>
         </div>
-        <Link to="/products" style={{ flexShrink: 0, fontSize: 12, fontWeight: 600, letterSpacing: '1.2px', textTransform: 'uppercase', color: INK, textDecoration: 'none', borderBottom: `1px solid ${INK}`, paddingBottom: 4 }}>View all</Link>
+        <Link to="/products" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box', flex: 'none', width: m ? 'auto' : 176, height: 44, padding: '0 16px', borderRadius: 3, background: INK, color: '#FDF9F1', fontSize: 13, fontWeight: 600, lineHeight: 1.4, letterSpacing: '.1px', textDecoration: 'none', whiteSpace: 'nowrap', transition: 'background .2s, color .2s' }}
+          onMouseEnter={e => { e.currentTarget.style.background = '#F4D9A0'; e.currentTarget.style.color = INK; }}
+          onMouseLeave={e => { e.currentTarget.style.background = INK; e.currentTarget.style.color = '#FDF9F1'; }}>VIEW ALL</Link>
       </div>
       {m ? (
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>

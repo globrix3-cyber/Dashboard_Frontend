@@ -96,7 +96,10 @@ const ROLE_CONFIG = {
 const reset = { background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", color: MOCHA };
 const outlinedBtn = { ...reset, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box', border: '1px solid rgba(91,70,50,.396)', borderRadius: 3, fontSize: 14, fontWeight: 500, letterSpacing: '.1px', whiteSpace: 'nowrap', flexShrink: 0 };
 const iconBtn = { ...outlinedBtn, width: 46, height: 46, padding: 0 };
-const getQuoteBtn = { ...reset, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 12, boxSizing: 'border-box', height: 48, padding: '0 28px', background: AMBER, border: `1px solid ${AMBER}`, borderRadius: 3, color: DEEP, fontSize: 14.5, fontWeight: 600, letterSpacing: '1.2px', textTransform: 'uppercase', whiteSpace: 'nowrap', flexShrink: 0, transition: 'background .15s' };
+const getQuoteBtn = { ...reset, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 12, boxSizing: 'border-box', height: 48, padding: '0 28px', background: MOCHA, border: `1px solid ${MOCHA}`, borderRadius: 3, color: CREAM, fontSize: 14.5, fontWeight: 600, letterSpacing: '1.2px', textTransform: 'uppercase', whiteSpace: 'nowrap', flexShrink: 0, transition: 'background .15s, color .15s, border-color .15s' };
+// Client Canva p26: action buttons are mocha, turning champagne gold on hover.
+const quoteHoverOn  = e => { const s = e.currentTarget.style; s.background = CHAMPAGNE; s.borderColor = CHAMPAGNE; s.color = MOCHA; };
+const quoteHoverOff = e => { const s = e.currentTarget.style; s.background = MOCHA; s.borderColor = MOCHA; s.color = CREAM; };
 const focusCss = `
 .gx-app-search::placeholder{color:rgba(91,70,50,.74);opacity:1}
 .gx-app-hdr a:focus-visible,.gx-app-hdr button:focus-visible,.gx-app-hdr input:focus-visible{outline:2px solid ${AMBER};outline-offset:2px}
@@ -310,8 +313,7 @@ function TopBar({ role }) {
   );
   const quoteBtn = isBuyer && (
     <button type="button" onClick={goQuote} style={getQuoteBtn}
-      onMouseEnter={e => { e.currentTarget.style.background = '#B56A22'; }}
-      onMouseLeave={e => { e.currentTarget.style.background = AMBER; }}>
+      onMouseEnter={quoteHoverOn} onMouseLeave={quoteHoverOff} onFocus={quoteHoverOn} onBlur={quoteHoverOff}>
       Get quote <Arrow size={17} />
     </button>
   );
@@ -338,7 +340,7 @@ function TopBar({ role }) {
           {search}
           <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: isCompact ? 10 : 14, flexShrink: 0 }}>
             {setupGuide && !isCompact && (
-              <button type="button" onClick={() => navigate('/edit-profile')} style={{ ...outlinedBtn, height: 46, padding: '0 18px' }}>Setup guide</button>
+              <button type="button" onClick={() => navigate('/contact')} style={{ ...outlinedBtn, height: 46, padding: '0 18px' }}>Contact us</button>
             )}
             {bell}
             {account}
@@ -384,7 +386,7 @@ function TopBar({ role }) {
         </div>
         <div style={{ marginTop: 14, display: 'flex' }}>{search}</div>
         {isBuyer && (
-          <button type="button" onClick={goQuote} style={{ ...getQuoteBtn, width: '100%', marginTop: 12, height: 46 }}>
+          <button type="button" onClick={goQuote} onMouseEnter={quoteHoverOn} onMouseLeave={quoteHoverOff} style={{ ...getQuoteBtn, width: '100%', marginTop: 12, height: 46 }}>
             Get quote <Arrow size={17} />
           </button>
         )}
@@ -397,7 +399,7 @@ function TopBar({ role }) {
               {navItems.map(item => <Link key={item.label} to={item.to} onClick={() => setNavOpen(false)} style={menuLink}>{item.label}</Link>)}
               <Link to="/products" onClick={() => setNavOpen(false)} style={menuLink}>All products</Link>
               <Link to="/blog" onClick={() => setNavOpen(false)} style={menuLink}>Blog</Link>
-              {setupGuide && <Link to="/edit-profile" onClick={() => setNavOpen(false)} style={menuLink}>Setup guide</Link>}
+              {setupGuide && <Link to="/contact" onClick={() => setNavOpen(false)} style={menuLink}>Contact us</Link>}
             </div>
           </nav>
         </div>

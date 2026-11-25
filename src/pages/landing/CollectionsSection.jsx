@@ -34,10 +34,10 @@ function CollectionCard({ item, style, bp, big }) {
       }}
     >
       <img src={item.img} alt={item.alt} loading="lazy" decoding="async"
-        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: item.pos || 'center', transform: hov ? 'scale(1.04)' : 'none', transition: 'transform .45s ease' }} />
+        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: item.pos || 'center', transition: 'transform .45s ease' }} />
       <span style={{
         position: 'absolute', left: inset, right: inset, bottom: inset, display: 'flex', alignItems: 'center',
-        background: '#FDF9F1', borderRadius: m ? 7 : 9, boxShadow: '0 2px 12px rgba(43,32,22,.07)', ...label,
+        background: hov ? '#F4D9A0' : '#FDF9F1', transition: 'background .2s', borderRadius: m ? 7 : 9, boxShadow: '0 2px 12px rgba(43,32,22,.07)', ...label,
         fontFamily: SERIF, fontWeight: 300, lineHeight: 1.13, color: INK, textAlign: 'left',
       }}>
         {item.name}
@@ -64,9 +64,9 @@ export default function CollectionsSection() {
           Trending Categories
         </h2>
         <Link to="/products"
-          style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box', flex: 'none', width: 176, maxWidth: '100%', height: 44, padding: '0 16px', borderRadius: 3, background: INK, color: '#FDF9F1', fontSize: 13, fontWeight: 600, lineHeight: 1.4, letterSpacing: '.1px', textDecoration: 'none', whiteSpace: 'nowrap', transition: 'background .2s' }}
-          onMouseEnter={e => { e.currentTarget.style.background = '#2B2016'; }}
-          onMouseLeave={e => { e.currentTarget.style.background = INK; }}>
+          style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box', flex: 'none', width: 176, maxWidth: '100%', height: 44, padding: '0 16px', borderRadius: 3, background: INK, color: '#FDF9F1', fontSize: 13, fontWeight: 600, lineHeight: 1.4, letterSpacing: '.1px', textDecoration: 'none', whiteSpace: 'nowrap', transition: 'background .2s, color .2s' }}
+          onMouseEnter={e => { e.currentTarget.style.background = '#F4D9A0'; e.currentTarget.style.color = INK; }}
+          onMouseLeave={e => { e.currentTarget.style.background = INK; e.currentTarget.style.color = '#FDF9F1'; }}>
           VIEW ALL
         </Link>
       </div>

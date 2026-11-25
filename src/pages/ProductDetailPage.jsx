@@ -1,7 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { toast } from 'react-toastify';
 import { api } from '../services/api';
 import { useFetchData } from '../hooks/useFetchData';
 import { Spinner, EmptyState } from '../components/UI';
@@ -9,7 +8,7 @@ import { useBreakpoint } from '../hooks/useBreakpoint';
 import { resolveImageUrl, imageProps } from '../utils/helpers';
 import usePageMeta from '../hooks/usePageMeta';
 import { toggleLogin } from '../features/auth/authSlice';
-import { ChevronLeft, ChevronDown, ShoppingBag, MessageSquare } from 'lucide-react';
+import { ChevronLeft, ChevronDown, ShoppingBag } from 'lucide-react';
 
 /* ── Design tokens (client palette) ────────────────────────────────────────── */
 const C = {
@@ -95,8 +94,8 @@ export default function ProductDetailPage() {
   const { data: allRaw }                  = useFetchData(() => api.getProducts());
 
   const [activeImg, setActiveImg] = useState(0);
+  const [zoomOpen, setZoomOpen]   = useState(false); // client Canva p34: click the photo to enlarge
   const [prevId, setPrevId]       = useState(id);
-  const [messaging, setMessaging] = useState(false);
 
   // Moving to another product resets the gallery to its first image.
   if (prevId !== id) {
@@ -163,22 +162,6 @@ export default function ProductDetailPage() {
     navigate(`/buyer-dashboard/rfqs/new?product=${encodeURIComponent(product.id)}`);
   };
 
-  const handleMessageSupplier = async () => {
-    if (!product.supplier_company_id) return;
-    setMessaging(true);
-    try {
-      const conv = await api.startConversation({
-        supplier_company_id: product.supplier_company_id,
-        subject: `Inquiry: ${product.name}`,
-        initial_message: `Hi, I'm interested in "${product.name}". Could you share more details and pricing for bulk orders?`,
-      });
-      navigate(`/buyer-dashboard/messages${conv?.id ? `?conv=${conv.id}` : ''}`);
-    } catch (err) {
-      toast.error(err.message || 'Could not start conversation');
-    } finally {
-      setMessaging(false);
-    }
-  };
 
   const canQuote  = !userRole || userRole === 'buyer';
   const thumbSize = bp.isMobile ? 52 : 72;
@@ -189,7 +172,7 @@ export default function ProductDetailPage() {
       <style>{`
         .gx-product-card:hover .gx-product-img { transform: scale(1.03); }
         .gx-product-card:focus-visible, .gx-thumb:focus-visible { outline: 2px solid ${C.amber}; outline-offset: 3px; }
-        .gx-quote-btn:hover { background: #B56A22 !important; }
+        .gx-quote-btn:hover, .gx-quote-btn:focus-visible { background: #F4D9A0 !important; color: #5B4632 !important; }
         .gx-secondary-btn:hover { background: #F5F0E7 !important; }
         @media (prefers-reduced-motion: reduce) { .gx-product-img { transition: none !important; } .gx-product-card:hover .gx-product-img { transform: none; } }
       `}</style>
@@ -230,11 +213,16 @@ export default function ProductDetailPage() {
               display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: 0,
             }}>
               {current?.image_url
-                ? <img fetchPriority="high" {...imageProps(current.image_url, 800)} alt={current.alt_text || product.name}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                ? <button type="button" onClick={() => setZoomOpen(true)} aria-label="Enlarge photo"
+                    style={{ all: 'unset', display: 'block', width: '100%', height: '100%', cursor: 'zoom-in' }}>
+                    <img fetchPriority="high" {...imageProps(current.image_url, 800)} alt={current.alt_text || product.name}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                  </button>
                 : <ShoppingBag size={56} color="#C9B89F" aria-hidden="true" />}
             </div>
           </div>
+
+          {zoomOpen && <PhotoViewer images={images} index={activeImg} onIndex={setActiveImg} onClose={() => setZoomOpen(false)} title={product.name} />}
 
           {/* Details */}
           <div style={{ paddingTop: stacked ? 0 : 8 }}>
@@ -268,29 +256,14 @@ export default function ProductDetailPage() {
             {canQuote && (
               <button type="button" className="gx-quote-btn" onClick={handleRequestQuote} style={{
                 width: '100%', maxWidth: 420, height: 52, padding: '0 22px', borderRadius: 3, border: 'none', cursor: 'pointer',
-                background: C.amber, color: C.deep, fontFamily: SANS, fontSize: 15, fontWeight: 600, letterSpacing: '.2px',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 12, transition: 'background .15s',
+                background: '#5B4632', color: '#FDF9F1', fontFamily: SANS, fontSize: 15, fontWeight: 600, letterSpacing: '.2px',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 12, transition: 'background .15s, color .15s',
               }}>
                 {userRole ? 'Request quote' : 'Sign in to request a quote'}
               </button>
             )}
 
-            {userRole === 'buyer' && product.supplier_company_id && (
-              <button type="button" className="gx-secondary-btn" onClick={handleMessageSupplier} disabled={messaging} style={{
-                width: '100%', maxWidth: 420, height: 48, padding: '0 20px', borderRadius: 3, cursor: messaging ? 'default' : 'pointer',
-                border: '1px solid rgba(91,70,50,.4)', background: 'transparent', color: C.ink,
-                fontFamily: SANS, fontSize: 14, fontWeight: 500,
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, opacity: messaging ? .6 : 1, transition: 'background .15s',
-              }}>
-                <MessageSquare size={15} aria-hidden="true" /> {messaging ? 'Starting conversation…' : 'Message supplier'}
-              </button>
-            )}
 
-            {canQuote && (
-              <p style={{ fontSize: 12.5, color: C.muted, lineHeight: 1.7, margin: '16px 0 0', maxWidth: 420 }}>
-                Tell us the quantity and finish you need — pricing, minimums and delivery are confirmed in your quote.
-              </p>
-            )}
           </div>
         </div>
 
@@ -352,6 +325,41 @@ function DetailRow({ label, value }) {
     <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, padding: '7px 0', borderBottom: `1px solid ${C.border}` }}>
       <span style={{ color: C.muted }}>{label}</span>
       <span style={{ color: C.ink, fontWeight: 500, textAlign: 'right', overflowWrap: 'anywhere' }}>{value}</span>
+    </div>
+  );
+}
+
+// Full-screen photo viewer (client Canva p34). Escape / backdrop click closes; arrows step through photos.
+function PhotoViewer({ images, index, onIndex, onClose, title }) {
+  const count = images.length;
+  const img = images[index] || images[0];
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape') onClose();
+      else if (e.key === 'ArrowRight' && count > 1) onIndex((index + 1) % count);
+      else if (e.key === 'ArrowLeft' && count > 1) onIndex((index - 1 + count) % count);
+    };
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKey);
+    return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = prevOverflow; };
+  }, [index, count, onClose, onIndex]);
+  if (!img?.image_url) return null;
+  const navBtn = { position: 'absolute', top: '50%', transform: 'translateY(-50%)', width: 46, height: 46, borderRadius: 3, border: '1px solid rgba(253,249,241,.5)', background: 'rgba(43,32,22,.45)', color: '#FDF9F1', fontSize: 22, lineHeight: 1, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' };
+  return (
+    <div role="dialog" aria-modal="true" aria-label={`${title} — photo ${index + 1} of ${count}`} onClick={onClose}
+      style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(43,32,22,.88)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '56px 4%' }}>
+      <img src={img.image_url} alt={img.alt_text || title} onClick={(e) => e.stopPropagation()}
+        style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', borderRadius: 6, boxShadow: '0 20px 60px rgba(0,0,0,.35)', cursor: 'default' }} />
+      <button type="button" onClick={onClose} aria-label="Close photo" autoFocus
+        style={{ ...navBtn, top: 16, right: 16, transform: 'none', width: 42, height: 42 }}>×</button>
+      {count > 1 && (
+        <>
+          <button type="button" aria-label="Previous photo" onClick={(e) => { e.stopPropagation(); onIndex((index - 1 + count) % count); }} style={{ ...navBtn, left: 16 }}>‹</button>
+          <button type="button" aria-label="Next photo" onClick={(e) => { e.stopPropagation(); onIndex((index + 1) % count); }} style={{ ...navBtn, right: 16 }}>›</button>
+          <span style={{ position: 'absolute', bottom: 18, left: '50%', transform: 'translateX(-50%)', color: '#F0DCC0', fontSize: 13 }}>{index + 1} / {count}</span>
+        </>
+      )}
     </div>
   );
 }

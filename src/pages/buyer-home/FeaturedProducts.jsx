@@ -41,8 +41,7 @@ export default function FeaturedProducts({ products, wishlist, loading, error })
   const items = products.slice(0, 8);
   return (
     <section aria-labelledby="home-featured" style={{ marginTop: m ? 48 : 76 }}>
-      <p style={{ margin: 0, fontSize: 11, letterSpacing: '1.6px', textTransform: 'uppercase', fontWeight: 600, color: MUTED }}>Featured products</p>
-      <h2 id="home-featured" style={{ margin: '8px 0 0', fontFamily: SERIF, fontWeight: 300, color: INK, letterSpacing: '-1px', lineHeight: 1.05, fontSize: m ? 34 : 'clamp(38px, 3.6vw, 54px)' }}>Picked for your store</h2>
+      <h2 id="home-featured" style={{ margin: 0, fontFamily: SERIF, fontWeight: 300, color: INK, letterSpacing: '-1px', lineHeight: 1.05, fontSize: m ? 34 : 'clamp(38px, 3.6vw, 54px)' }}>STANDOUT FINDS</h2>
       <div style={{ marginTop: m ? 20 : 30 }}>
         {loading ? (
           <div style={{ display: 'grid', gridTemplateColumns: `repeat(${m ? 2 : 4}, minmax(0, 1fr))`, gap: m ? '22px 12px' : 'clamp(14px, 1.6vw, 24px)' }}>

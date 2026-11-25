@@ -7,7 +7,6 @@ import HomeBanner from './buyer-home/HomeBanner';
 import CategoryTiles from './buyer-home/CategoryTiles';
 import { pickCategoryTiles } from './buyer-home/pickCategoryTiles';
 import FeaturedProducts from './buyer-home/FeaturedProducts';
-import RetailBand from './buyer-home/RetailBand';
 
 const SERIF = "'Canela', 'Cormorant Garamond', Georgia, serif";
 
@@ -34,15 +33,11 @@ export default function BuyerDashboard() {
         <h1 style={{ margin: 0, fontFamily: SERIF, fontWeight: 300, letterSpacing: '-1px', lineHeight: 1.05, fontSize: m ? 34 : 'clamp(40px, 3.6vw, 56px)', color: '#5B4632' }}>
           {firstName ? `Hi, ${firstName}` : 'Welcome back'}
         </h1>
-        <p style={{ margin: '10px 0 0', fontSize: m ? 14 : 15, lineHeight: 1.6, color: '#79634E', maxWidth: 560 }}>
-          Fresh picks from Indian makers, curated for your business.
-        </p>
 
         <CategoryTiles tiles={tiles} />
         <FeaturedProducts products={products} wishlist={wishlist} loading={productsLoading} error={productsError} />
       </div>
 
-      <RetailBand />
     </div>
   );
 }

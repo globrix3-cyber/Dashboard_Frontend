@@ -82,7 +82,8 @@ export const routeConfig = [
   // ── Buyer ─────────────────────────────────────────────────────────────────
   {
     path:    "/buyer-dashboard",
-    element: withLayout(BuyerDashboard),
+    // Full-bleed so the home banner runs edge to edge (client Canva p27); the page pads its own content.
+    element: <DashboardLayout fullBleed><BuyerDashboard /></DashboardLayout>,
     roles:   [ROLES.BUYER],
   },
   {
