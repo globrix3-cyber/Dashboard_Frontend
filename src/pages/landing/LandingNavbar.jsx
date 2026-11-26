@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { SUPPLIER_SIGNUP_OPEN } from '../../constants';
 import { useDispatch } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toggleLogin } from '../../features/auth/authSlice';
@@ -190,7 +191,7 @@ export default function LandingNavbar() {
               <div style={{ height: 1, background: 'rgba(91,70,50,.13)', marginTop: 14 }} />
               <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', columnGap: 28, minHeight: 48, marginTop: 7 }}>
                 <Link to="/blog" onClick={closeMenu} style={menuInline}>Blog</Link>
-                <button type="button" onClick={openSupplierRegister} style={{ ...reset, ...menuInline }}>Become a seller</button>
+                {SUPPLIER_SIGNUP_OPEN && <button type="button" onClick={openSupplierRegister} style={{ ...reset, ...menuInline }}>Become a seller</button>}
               </div>
             </nav>
             <div style={{ display: 'flex', alignItems: 'center', gap: 18, marginTop: 18 }}>

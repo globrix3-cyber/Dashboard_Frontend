@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { SUPPLIER_SIGNUP_OPEN } from '../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuth, toggleLogin } from '../features/auth/authSlice';
 import { toast } from 'react-toastify';
@@ -24,7 +25,7 @@ export default function LoginModal({ onSubmit }) {
   const [mode, setMode]       = useState(() => (loginIntent === 'supplier' || loginIntent === 'register') ? 'register' : 'login');
   const [loading, setLoading] = useState(false);
   const [showPwd, setShowPwd] = useState(false);
-  const [form, setForm] = useState({ email: '', password: '', name: '', company: '', role: loginIntent === 'supplier' ? 'supplier' : 'buyer', phoneDial: DEFAULT_PHONE_COUNTRY.dial, phoneNumber: '' });
+  const [form, setForm] = useState({ email: '', password: '', name: '', company: '', role: loginIntent === 'supplier' && SUPPLIER_SIGNUP_OPEN ? 'supplier' : 'buyer', phoneDial: DEFAULT_PHONE_COUNTRY.dial, phoneNumber: '' });
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
   const [callConsent, setCallConsent] = useState(false);
 

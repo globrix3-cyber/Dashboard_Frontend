@@ -1,3 +1,7 @@
+// Client: for now new accounts can only be created as buyers. Set to true to reopen supplier
+// sign-up (and set SUPPLIER_SIGNUP_ENABLED=true on the backend). Existing suppliers can still sign in.
+export const SUPPLIER_SIGNUP_OPEN = false;
+
 export const ROLES = {
   BUYER:    "buyer",
   SUPPLIER: "supplier",
