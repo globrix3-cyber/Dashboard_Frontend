@@ -37,7 +37,7 @@ const CSS = `
 .gx-about .ab-values-grid>article{display:flex;flex-direction:column;align-items:center;padding:0 clamp(22px,3vw,48px);border-right:1px solid #5b46322e}
 .gx-about .ab-values-grid>article:last-child{border-right:0}
 .gx-about .ab-value-icon{display:block;width:88px;height:88px;object-fit:contain;margin-bottom:21px;flex-shrink:0}
-.gx-about .ab-values-grid h3{font-family:var(--canela);font-size:12.6px;font-weight:300;font-synthesis:none;line-height:1.4;letter-spacing:1.6px;text-transform:uppercase;margin:0 0 17px}
+.gx-about .ab-values-grid h3{font-family:var(--sans);font-size:16px;font-weight:600;line-height:1.4;letter-spacing:1.6px;text-transform:uppercase;margin:0 0 15px}
 .gx-about .ab-values-grid p{font-family:var(--sans);font-size:14px;line-height:1.85;color:var(--mocha);max-width:310px;margin:0}
 
 /* Mission & vision */

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Heart } from 'lucide-react';
 import { useLandingBreakpoint } from '../../hooks/useBreakpoint';
@@ -34,18 +34,27 @@ function ProductTile({ p, isFav, onFav }) {
   );
 }
 
-// Featured products (Canva V2, page 8): 4 across × 2 rows, then "View all".
+// Standout finds (client Canva p8 / p39): 4 across × 3 rows, a fresh random pick on each visit, then "View all".
+const ROWS = 3;
+
+function pickRandom(list, n) {
+  const a = list.slice();
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a.slice(0, n);
+}
 export default function FeaturedProducts({ products, wishlist, loading, error }) {
   const bp = useLandingBreakpoint();
   const m = bp.isMobile;
-  const items = products.slice(0, 8);
+  const cols = m ? 2 : 4;
+  // Shuffle once per product list (not on every render), so hovering or saving doesn't reshuffle the grid.
+  const items = useMemo(() => pickRandom(products, cols * ROWS), [products, cols]);
   return (
-    <section aria-labelledby="home-featured" style={{ marginTop: m ? 48 : 76 }}>
+    <section aria-labelledby="home-featured" style={{ marginTop: m ? 48 : 76, paddingBottom: m ? 56 : 88 }}>
       <h2 id="home-featured" style={{ margin: 0, fontFamily: SERIF, fontWeight: 300, color: INK, letterSpacing: '-1px', lineHeight: 1.05, fontSize: m ? 34 : 'clamp(38px, 3.6vw, 54px)' }}>STANDOUT FINDS</h2>
       <div style={{ marginTop: m ? 20 : 30 }}>
         {loading ? (
           <div style={{ display: 'grid', gridTemplateColumns: `repeat(${m ? 2 : 4}, minmax(0, 1fr))`, gap: m ? '22px 12px' : 'clamp(14px, 1.6vw, 24px)' }}>
-            {Array.from({ length: m ? 4 : 8 }, (_, i) => (
+            {Array.from({ length: cols * ROWS }, (_, i) => (
               <div key={i} aria-hidden style={{ aspectRatio: '3 / 4', borderRadius: 14, background: '#F0E6D6' }} />
             ))}
           </div>

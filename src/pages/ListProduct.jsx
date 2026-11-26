@@ -127,6 +127,8 @@ function StepBar({ current }) {
 }
 
 /* ─── Category tree builder ──────────────────────────────────────────────── */
+const CLIENT_CATEGORIES = ['Side Tables', 'Bedside Tables', 'Console Tables', 'Coffee Tables', 'Table Lamps & Shades', 'Chairs', 'Vegan Leather Bags', 'Genuine Leather Bags', 'Jute Bags', 'Cotton Bags', 'Wooden Serveware', 'Wall & Home Decor'];
+
 function buildTree(cats) {
   const map  = {};
   const tree = [];
@@ -388,6 +390,9 @@ export default function ListProduct() {
 
   /* ── Category flat options ───────────────────────────────────────────────── */
   const catOptions = flatOptions(buildTree(categories));
+  // Client Canva p42: the client's own categories come first in the seller form.
+  const clientCatOptions = CLIENT_CATEGORIES.map(n => catOptions.find(c => c.name === n && c.depth === 0)).filter(Boolean);
+  const otherCatOptions  = catOptions.filter(c => !clientCatOptions.includes(c));
 
   /* ─── Render ─────────────────────────────────────────────────────────────── */
   if (loadingProduct) {
@@ -439,11 +444,18 @@ export default function ListProduct() {
               <Field label="Category" required>
                 <Select value={basic.category_id} onChange={e => setB('category_id', e.target.value)}>
                   <option value="">Select category…</option>
-                  {catOptions.map(c => (
-                    <option key={c.id} value={c.id}>
-                      {'—'.repeat(c.depth)} {c.name}
-                    </option>
-                  ))}
+                  {clientCatOptions.length > 0 && (
+                    <optgroup label="Globrixa categories">
+                      {clientCatOptions.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                    </optgroup>
+                  )}
+                  <optgroup label={clientCatOptions.length > 0 ? 'Other categories' : 'All categories'}>
+                    {otherCatOptions.map(c => (
+                      <option key={c.id} value={c.id}>
+                        {'—'.repeat(c.depth)} {c.name}
+                      </option>
+                    ))}
+                  </optgroup>
                 </Select>
               </Field>
               <Field label="Country of Origin">

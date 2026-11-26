@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { api } from '../services/api';
 import { useFetchData } from '../hooks/useFetchData';
 import { Spinner, EmptyState } from '../components/UI';
-import { ShoppingBag, ChevronDown, SlidersHorizontal, X } from 'lucide-react';
+import { ShoppingBag, ChevronDown, ChevronLeft, SlidersHorizontal, X } from 'lucide-react';
 import { imageProps } from '../utils/helpers';
 import { useBreakpoint } from '../hooks/useBreakpoint';
 import usePageMeta from '../hooks/usePageMeta';
@@ -24,15 +24,21 @@ const SORT_OPTIONS = [
 ];
 
 const PAGE_SIZE = 24;
-const HELP_AFTER_ROWS = 3;
+const HELP_AFTER_ROWS = 6; // client Canva p41: the help band repeats after every 6 rows
 
 function HelpBand({ mobile }) {
+  const link = { color: '#FDF9F1', textDecoration: 'underline', textDecorationColor: 'rgba(244,217,160,.5)', textUnderlineOffset: 4, overflowWrap: 'anywhere' };
   return (
-    <section aria-label="Contact Globrixa" style={{ gridColumn: '1 / -1', background: '#5B4632', color: '#FDF9F1', textAlign: 'center', padding: mobile ? '26px 18px' : '30px 24px', margin: mobile ? '6px 0' : '10px 0' }}>
-      <h2 style={{ fontFamily: SERIF, fontWeight: 300, fontSize: mobile ? 26 : 32, letterSpacing: '-.5px', lineHeight: 1.15, margin: '0 0 8px', color: '#F4D9A0' }}>We&rsquo;re here to help</h2>
-      <p style={{ margin: 0, fontSize: mobile ? 13 : 14, lineHeight: 1.7, color: '#F0DCC0' }}>
-        Call us on <a href="tel:+918700076057" style={{ color: '#FDF9F1', textUnderlineOffset: 4 }}>+91 8700076057</a> or email us{' '}
-        <a href="mailto:support@globrixa.com" style={{ color: '#FDF9F1', textUnderlineOffset: 4, overflowWrap: 'anywhere' }}>support@globrixa.com</a>
+    <section aria-label="Contact Globrixa" style={{
+      gridColumn: '1 / -1', display: 'flex', flexDirection: mobile ? 'column' : 'row', alignItems: mobile ? 'flex-start' : 'center',
+      justifyContent: 'space-between', gap: mobile ? 6 : 24, boxSizing: 'border-box',
+      background: '#5B4632', color: '#F0DCC0', borderRadius: 4, padding: mobile ? '18px 18px' : '18px 28px',
+      margin: mobile ? '4px 0' : '6px 0', borderLeft: '3px solid #F4D9A0',
+    }}>
+      <h2 style={{ fontFamily: SERIF, fontWeight: 300, fontSize: mobile ? 22 : 26, letterSpacing: '-.4px', lineHeight: 1.15, margin: 0, color: '#F4D9A0', whiteSpace: 'nowrap' }}>We&rsquo;re here to help</h2>
+      <p style={{ margin: 0, fontSize: mobile ? 13 : 14, lineHeight: 1.6 }}>
+        Call us on <a href="tel:+918700076057" style={link}>+91 8700076057</a> or email us{' '}
+        <a href="mailto:support@globrixa.com" style={link}>support@globrixa.com</a>
       </p>
     </section>
   );
@@ -47,7 +53,7 @@ export default function ProductsPage() {
   const [sort, setSort]                  = useState('featured');
   const [showSort, setShowSort]          = useState(false);
   const [showMobileFilter, setShowMobileFilter] = useState(false);
-  const [catsOpen, setCatsOpen]          = useState(true);
+  const [sideOpen, setSideOpen]          = useState(true); // p40: the category column collapses sideways
   const [paging, setPaging]              = useState({ key: '', count: PAGE_SIZE });
   const [prevParams, setPrevParams]      = useState(searchParams);
 
@@ -116,6 +122,12 @@ export default function ProductsPage() {
     path: '/products',
   });
 
+  const pageTitle = (
+    <h1 style={{ fontFamily: SERIF, fontWeight: 300, fontSize: bp.isMobile ? 34 : 46, letterSpacing: '-1px', lineHeight: 1.05, margin: `0 0 ${bp.isMobile ? 18 : 22}px`, color: '#5B4632' }}>
+      {cat !== 'All' ? cat : search ? 'Search results' : 'All products'}
+    </h1>
+  );
+
   /* ── Sidebar panel (shared between desktop sidebar and mobile drawer) ── */
   const renderSidebar = (collapsible) => (
     <>
@@ -124,21 +136,24 @@ export default function ProductsPage() {
           Results for &ldquo;{search}&rdquo;
         </div>
       )}
-      <button type="button" onClick={() => collapsible && setCatsOpen(o => !o)} aria-expanded={collapsible ? catsOpen : true}
-        aria-controls="product-categories" disabled={!collapsible}
-        style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', padding: '0 0 12px', marginBottom: 8, background: 'none', border: 'none', borderBottom: '1px solid #E3D5C1', cursor: collapsible ? 'pointer' : 'default', fontFamily: "'DM Sans', sans-serif", fontSize: 11, fontWeight: 600, letterSpacing: '1.6px', textTransform: 'uppercase', color: '#5B4632' }}>
-        Categories
-        {collapsible && <ChevronDown size={15} aria-hidden="true" style={{ transform: catsOpen ? 'rotate(180deg)' : 'none', transition: 'transform .2s' }} />}
-      </button>
-      {(!collapsible || catsOpen) && (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, padding: '0 0 12px', marginBottom: 8, borderBottom: '1px solid #E3D5C1' }}>
+        <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, letterSpacing: '1.6px', textTransform: 'uppercase', color: '#5B4632' }}>Categories</span>
+        {collapsible && (
+          <button type="button" onClick={() => setSideOpen(false)} aria-label="Hide categories" aria-controls="product-categories" aria-expanded="true"
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 30, height: 30, padding: 0, borderRadius: 3, border: '1px solid rgba(91,70,50,.3)', background: 'transparent', cursor: 'pointer', color: '#5B4632' }}>
+            <ChevronLeft size={16} aria-hidden="true" />
+          </button>
+        )}
+      </div>
+      {(
         <div id="product-categories" style={{ display: 'flex', flexDirection: 'column' }}>
           {sideItems.map(c => {
             const active = cat === c;
             return (
               <button key={c} type="button" onClick={() => selectCat(c)} aria-pressed={active} style={{
                 display: 'block', width: '100%', textAlign: 'left',
-                padding: '8px 0 8px 12px', border: 'none', borderLeft: `2px solid ${active ? '#C8792C' : 'transparent'}`,
-                fontFamily: "'DM Sans', sans-serif", fontSize: 14, lineHeight: 1.4,
+                padding: '9px 0 9px 14px', border: 'none', borderLeft: `2px solid ${active ? '#C8792C' : 'transparent'}`,
+                fontFamily: "'DM Sans', sans-serif", fontSize: 15.5, lineHeight: 1.4,
                 fontWeight: active ? 600 : 400,
                 color: active ? '#5B4632' : '#79634E',
                 background: 'transparent', cursor: 'pointer', transition: 'color .12s',
@@ -196,9 +211,7 @@ export default function ProductsPage() {
         @media (prefers-reduced-motion: reduce) { .gx-product-img { transition: none !important; } .gx-product-card:hover .gx-product-img { transform: none; } }
       `}</style>
 
-      <h1 style={{ fontFamily: SERIF, fontWeight: 300, fontSize: bp.isMobile ? 34 : 46, letterSpacing: '-1px', lineHeight: 1.05, margin: `0 0 ${bp.isMobile ? 18 : 28}px`, color: '#5B4632' }}>
-        {cat !== 'All' ? cat : search ? 'Search results' : 'All products'}
-      </h1>
+      {bp.isMobile && pageTitle}
 
       {/* ── Mobile: filter bar ───────────────────────────────────────────── */}
       {bp.isMobile && (
@@ -240,14 +253,23 @@ export default function ProductsPage() {
       <div style={{ display: 'flex', gap: bp.isTablet ? 24 : 40, alignItems: 'flex-start' }}>
 
         {/* Sidebar — desktop & tablet only */}
-        {!bp.isMobile && (
-          <aside aria-label="Product categories" style={{ width: bp.isTablet ? 170 : 210, flexShrink: 0, position: 'sticky', top: 160, maxHeight: 'calc(100vh - 180px)', overflowY: 'auto' }}>
+        {!bp.isMobile && (sideOpen ? (
+          <aside aria-label="Product categories" style={{ width: bp.isTablet ? 200 : 236, flexShrink: 0, position: 'sticky', top: 24, maxHeight: 'calc(100vh - 250px)', overflowY: 'auto', paddingTop: 6 }}>
             {renderSidebar(true)}
           </aside>
-        )}
+        ) : (
+          <aside aria-label="Product categories" style={{ flexShrink: 0, position: 'sticky', top: 24, paddingTop: 6 }}>
+            <button type="button" onClick={() => setSideOpen(true)} aria-label="Show categories" aria-controls="product-categories" aria-expanded="false"
+              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, width: 44, padding: '12px 0', borderRadius: 3, border: '1px solid rgba(91,70,50,.3)', background: '#F8F2E9', cursor: 'pointer', color: '#5B4632' }}>
+              <SlidersHorizontal size={16} aria-hidden="true" />
+              <span style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)', fontFamily: "'DM Sans', sans-serif", fontSize: 12.5, fontWeight: 600, letterSpacing: '1.6px', textTransform: 'uppercase' }}>Categories</span>
+            </button>
+          </aside>
+        ))}
 
         {/* Content */}
         <div style={{ flex: 1, minWidth: 0 }}>
+          {!bp.isMobile && pageTitle}
 
           {/* Sort / count bar — desktop & tablet */}
           {!bp.isMobile && (
@@ -305,7 +327,7 @@ export default function ProductsPage() {
               {visible.map((p, i) => (
                 <Fragment key={p.id}>
                   {card(p)}
-                  {i === helpAt - 1 && <HelpBand mobile={bp.isMobile} />}
+                  {(i + 1) % helpAt === 0 && <HelpBand mobile={bp.isMobile} />}
                 </Fragment>
               ))}
               {visible.length < helpAt && <HelpBand mobile={bp.isMobile} />}

@@ -72,10 +72,10 @@ export const POLICY_CSS = `
 .policy-help-note a:hover{color:#2B2016;text-decoration-color:#2B2016}
 @media(max-width:600px){.policy-help-note{padding:20px;gap:10px}.policy-help-note p{font-size:13px}.policy-help-note a{font-size:13px}}
 @media(prefers-reduced-motion:reduce){.policy-help-note a{transition:none}}
-/* Globrixa-specific: our header is sticky (136px), so the sticky sidebar sits below it. */
+/* Globrixa-specific: the site header scrolls away (and signed-in pages scroll inside the app panel), so the sidebar sticks 24px from the top. */
 .policy-updated.policy-updated-after{margin-top:24px!important}
-.policy-sidebar{top:161px}
-.policy-panel{scroll-margin-top:161px}
+.policy-sidebar{top:24px}
+.policy-panel{scroll-margin-top:24px}
 /* The reference caps the page body at 1700px, so its 6% side padding stops growing at 102px. */
 @media(min-width:1101px){.policy-hub{padding-left:min(6%,102px);padding-right:min(6%,102px)}}
 `;

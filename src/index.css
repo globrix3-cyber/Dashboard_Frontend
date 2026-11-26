@@ -55,7 +55,8 @@
 /* ── Base ────────────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html, body { overflow-x: hidden; max-width: 100%; }
+/* clip (not hidden): hidden turns <body> into its own scroll box, which silently breaks every position:sticky element. */
+html, body { overflow-x: clip; max-width: 100%; }
 
 html { -webkit-font-smoothing: antialiased; }
 
