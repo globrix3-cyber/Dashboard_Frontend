@@ -124,10 +124,10 @@ export default function LandingNavbar() {
               {submitBtn}
             </form>
             <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: isCompact ? 10 : 14, flexShrink: 0 }}>
-              <Link to="/about" style={{ ...outlinedBtn, height: 46, padding: isCompact ? '0 14px' : '0 18px' }}>About us</Link>
-              <Link to="/contact" style={{ ...outlinedBtn, height: 46, padding: isCompact ? '0 14px' : '0 18px' }}>Contact us</Link>
+              <Link className="gx-btn-gold" to="/about" style={{ ...outlinedBtn, height: 46, padding: isCompact ? '0 14px' : '0 18px' }}>About us</Link>
+              <Link className="gx-btn-gold" to="/contact" style={{ ...outlinedBtn, height: 46, padding: isCompact ? '0 14px' : '0 18px' }}>Contact us</Link>
               <button type="button" onClick={openLogin} style={{ ...reset, height: 46, display: 'flex', alignItems: 'center', padding: '0 4px', boxSizing: 'border-box', fontSize: 14, fontWeight: 500, lineHeight: 1.4, whiteSpace: 'nowrap' }}>Sign in</button>
-              <button type="button" onClick={openRegister} style={{ ...createBtn, gap: 12, justifyContent: 'center', padding: isCompact ? '0 20px' : '0 28px' }}>
+              <button className="gx-btn-gold" type="button" onClick={openRegister} style={{ ...createBtn, gap: 12, justifyContent: 'center', padding: isCompact ? '0 20px' : '0 28px' }}>
                 Create account <Arrow size={17} />
               </button>
             </div>
@@ -176,8 +176,8 @@ export default function LandingNavbar() {
             {submitBtn}
           </form>
           <div style={{ display: 'flex', justifyContent: 'center', gap: 10, marginTop: 12 }}>
-            <Link to="/about" onClick={closeMenu} style={mBtn}>About us</Link>
-            <Link to="/contact" onClick={closeMenu} style={mBtn}>Contact us</Link>
+            <Link className="gx-btn-gold" to="/about" onClick={closeMenu} style={mBtn}>About us</Link>
+            <Link className="gx-btn-gold" to="/contact" onClick={closeMenu} style={mBtn}>Contact us</Link>
           </div>
         </div>
 
@@ -196,7 +196,7 @@ export default function LandingNavbar() {
             </nav>
             <div style={{ display: 'flex', alignItems: 'center', gap: 18, marginTop: 18 }}>
               <button type="button" onClick={openLogin} style={{ ...reset, fontSize: 15, fontWeight: 400, textDecoration: 'underline', textUnderlineOffset: 3, whiteSpace: 'nowrap' }}>Sign in</button>
-              <button type="button" onClick={openRegister} style={{ ...createBtn, height: 46, flex: 1, minWidth: 0, maxWidth: 300, justifyContent: 'center', gap: 12, padding: '0 17px' }}>
+              <button className="gx-btn-gold" type="button" onClick={openRegister} style={{ ...createBtn, height: 46, flex: 1, minWidth: 0, maxWidth: 300, justifyContent: 'center', gap: 12, padding: '0 17px' }}>
                 Create account <Arrow size={16} />
               </button>
             </div>

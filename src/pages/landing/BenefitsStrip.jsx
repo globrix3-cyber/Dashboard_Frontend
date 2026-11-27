@@ -31,7 +31,7 @@ export default function BenefitsStrip() {
           </p>
         </div>
       ))}
-      <Link to="/contact"
+      <Link className="gx-btn-gold" to="/contact"
         style={{ gridColumn: '1 / -1', justifySelf: 'center', marginTop: m ? 22 : 40, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box', width: 176, maxWidth: '100%', height: 44, padding: '0 16px', background: MOCHA, color: '#FDF9F1', borderRadius: 3, fontSize: 13, fontWeight: 600, lineHeight: 1.4, letterSpacing: '.1px', textDecoration: 'none', whiteSpace: 'nowrap', transition: 'background .2s' }}
         onMouseEnter={e => { e.currentTarget.style.background = '#2B2016'; }}
         onMouseLeave={e => { e.currentTarget.style.background = MOCHA; }}>

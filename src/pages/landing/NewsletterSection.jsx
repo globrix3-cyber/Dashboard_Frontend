@@ -62,7 +62,7 @@ export default function NewsletterSection() {
             <div style={{ display: 'flex', flexDirection: col ? 'column' : 'row', alignItems: 'stretch', border: `1px solid ${INK}`, background: '#FDF9F1' }}>
               <input id="newsletter-email" type="email" required autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="you@yourbusiness.com"
                 style={{ flex: col ? 'none' : 1, minWidth: 0, padding: '11px 12px', lineHeight: 1.5, border: 'none', background: '#FDF9F1', color: INK, fontSize: m ? 16 : 12, fontFamily: 'inherit', boxSizing: 'border-box' }} />
-              <button type="submit" disabled={submitting} aria-busy={submitting}
+              <button className="gx-btn-gold" type="submit" disabled={submitting} aria-busy={submitting}
                 style={{ width: col ? '100%' : 'auto', padding: m ? '11px 13px' : '11px 14px', background: INK, color: '#F4D9A0', fontSize: 11, lineHeight: 1.5, fontWeight: 700, border: 'none', cursor: submitting ? 'wait' : 'pointer', opacity: submitting ? 0.7 : 1, fontFamily: 'inherit', whiteSpace: 'nowrap' }}>
                 {submitting ? 'Signing you up…' : 'Sign up to our newsletter'}
               </button>

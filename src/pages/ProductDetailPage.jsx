@@ -47,13 +47,13 @@ function Accordion({ title, defaultOpen = false, children }) {
         style={{
           width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: '18px 0', background: 'none', border: 'none', cursor: 'pointer',
-          fontFamily: SERIF, fontSize: 22, fontWeight: 300, letterSpacing: '-.3px', color: C.ink, textAlign: 'left',
+          fontFamily: SERIF, fontSize: 25, fontWeight: 300, letterSpacing: '-.3px', color: C.ink, textAlign: 'left',
         }}
       >
         {title}
         <ChevronDown size={18} color={C.muted} aria-hidden="true" style={{ transform: open ? 'rotate(180deg)' : 'none', transition: 'transform .15s', flexShrink: 0 }} />
       </button>
-      {open && <div style={{ paddingBottom: 20, fontSize: 14, color: C.ink, lineHeight: 1.75 }}>{children}</div>}
+      {open && <div style={{ paddingBottom: 22, fontSize: 16, color: C.ink, lineHeight: 1.75 }}>{children}</div>}
     </div>
   );
 }
@@ -237,7 +237,7 @@ export default function ProductDetailPage() {
             </h1>
 
             {product.description && (
-              <p style={{ fontSize: 14.5, color: C.muted, lineHeight: 1.75, margin: '0 0 26px', display: '-webkit-box', WebkitLineClamp: 4, WebkitBoxOrient: 'vertical', overflow: 'hidden', whiteSpace: 'pre-line' }}>
+              <p style={{ fontSize: 16.5, color: C.muted, lineHeight: 1.7, margin: '0 0 26px', display: '-webkit-box', WebkitLineClamp: 4, WebkitBoxOrient: 'vertical', overflow: 'hidden', whiteSpace: 'pre-line' }}>
                 {product.description}
               </p>
             )}
@@ -263,36 +263,37 @@ export default function ProductDetailPage() {
               </button>
             )}
 
+            {/* Description / Details sit under the quote button, beside the photo (client Canva p46). */}
+            <div style={{ marginTop: 30, maxWidth: 560 }}>
+              <Accordion title="Description" defaultOpen>
+                {product.description ? <p style={{ margin: 0, whiteSpace: 'pre-wrap' }}>{product.description}</p>
+                  : <p style={{ margin: 0, color: C.muted }}>Ask us for full details in your quote request.</p>}
+              </Accordion>
+
+              <Accordion title="Details">
+                <div style={{ display: 'grid', gridTemplateColumns: bp.isMobile ? '1fr' : '1fr 1fr', rowGap: 8, columnGap: 24 }}>
+                  <DetailRow label="Country of origin" value={countryName(product.country_of_origin)} />
+                  {product.hs_code && <DetailRow label="HS code" value={product.hs_code} />}
+                  {(product.specifications || []).map(s => (
+                    <DetailRow key={s.id} label={s.attr_name} value={`${s.value_text ?? s.value_numeric ?? '—'}${s.unit ? ` ${s.unit}` : ''}`} />
+                  ))}
+                </div>
+                {product.tags?.length > 0 && (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 16 }}>
+                    {product.tags.map(t => (
+                      <span key={t.id} style={{ fontSize: 11.5, fontWeight: 500, color: C.ink, background: '#F0DCC0', padding: '4px 10px', borderRadius: 999 }}>
+                        {t.name}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </Accordion>
+            </div>
+
 
           </div>
         </div>
 
-        {/* ── Description / Details accordions ─────────────────────────────── */}
-        <div style={{ marginTop: bp.isMobile ? 36 : 56, maxWidth: 780 }}>
-          <Accordion title="Description" defaultOpen>
-            {product.description ? <p style={{ margin: 0, whiteSpace: 'pre-wrap' }}>{product.description}</p>
-              : <p style={{ margin: 0, color: C.muted }}>Ask us for full details in your quote request.</p>}
-          </Accordion>
-
-          <Accordion title="Details">
-            <div style={{ display: 'grid', gridTemplateColumns: bp.isMobile ? '1fr' : '1fr 1fr', rowGap: 8, columnGap: 24 }}>
-              <DetailRow label="Country of origin" value={countryName(product.country_of_origin)} />
-              {product.hs_code && <DetailRow label="HS code" value={product.hs_code} />}
-              {(product.specifications || []).map(s => (
-                <DetailRow key={s.id} label={s.attr_name} value={`${s.value_text ?? s.value_numeric ?? '—'}${s.unit ? ` ${s.unit}` : ''}`} />
-              ))}
-            </div>
-            {product.tags?.length > 0 && (
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 16 }}>
-                {product.tags.map(t => (
-                  <span key={t.id} style={{ fontSize: 11.5, fontWeight: 500, color: C.ink, background: '#F0DCC0', padding: '4px 10px', borderRadius: 999 }}>
-                    {t.name}
-                  </span>
-                ))}
-              </div>
-            )}
-          </Accordion>
-        </div>
 
         {/* ── More similar products ─────────────────────────────────────────── */}
         {similar.length > 0 && (

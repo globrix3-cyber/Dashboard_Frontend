@@ -26,7 +26,7 @@ export default function AboutBanner() {
           <p style={{ margin: 0, lineHeight: 1.45, whiteSpace: m ? 'normal' : 'nowrap' }}>Rooted in India, Globrixa brings furniture and home accessories with character to retailers, importers and online sellers.</p>
           <p style={{ margin: 0, lineHeight: 1.45, whiteSpace: m ? 'normal' : 'nowrap' }}>From thoughtfully chosen collections to custom creations, we help shape your store’s vision into pieces your customers connect with.</p>
         </div>
-        <Link to="/about" aria-label="Know more about Globrixa"
+        <Link className="gx-btn-gold" to="/about" aria-label="Know more about Globrixa"
           style={{ position: 'relative', top: 0, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box', width: 176, maxWidth: '100%', height: 44, padding: '0 16px', background: MOCHA, color: CREAM, borderRadius: 3, fontSize: 13, fontWeight: 600, lineHeight: 1.4, letterSpacing: '.1px', textDecoration: 'none', whiteSpace: 'nowrap', transition: 'background .2s' }}
           onMouseEnter={e => { e.currentTarget.style.background = '#2B2016'; }}
           onMouseLeave={e => { e.currentTarget.style.background = MOCHA; }}>

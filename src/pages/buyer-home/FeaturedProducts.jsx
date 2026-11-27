@@ -71,7 +71,7 @@ export default function FeaturedProducts({ products, wishlist, loading, error })
         )}
       </div>
       <div style={{ textAlign: 'center', marginTop: m ? 30 : 44 }}>
-        <Link to="/products" style={{ display: 'inline-flex', alignItems: 'center', height: 44, padding: '0 26px', background: INK, color: '#FDF9F1', fontSize: 13, fontWeight: 600, letterSpacing: '.1px', borderRadius: 3, textDecoration: 'none' }}>View all products</Link>
+        <Link className="gx-btn-gold" to="/products" style={{ display: 'inline-flex', alignItems: 'center', height: 44, padding: '0 26px', background: INK, color: '#FDF9F1', fontSize: 13, fontWeight: 600, letterSpacing: '.1px', borderRadius: 3, textDecoration: 'none' }}>View all products</Link>
       </div>
     </section>
   );

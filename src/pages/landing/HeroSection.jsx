@@ -48,7 +48,7 @@ export default function HeroSection() {
         <h1 style={h1}>From India<br /><span>with intention</span></h1>
         <p style={p}>Your next bestsellers start here.</p>
         <div style={{ display: 'flex', alignItems: 'center', gap: m ? 20 : t ? 16 : 24, flexWrap: m ? 'wrap' : 'nowrap', marginTop: m ? 22 : t ? 16 : 'clamp(18px, 2vw, 32px)' }}>
-          <Link to="/products" style={ctaStyle} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>Explore wholesale</Link>
+          <Link className="gx-btn-gold" to="/products" style={ctaStyle} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>Explore wholesale</Link>
         </div>
       </div>
     </section>

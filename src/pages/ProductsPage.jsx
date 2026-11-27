@@ -150,7 +150,7 @@ export default function ProductsPage() {
           {sideItems.map(c => {
             const active = cat === c;
             return (
-              <button key={c} type="button" onClick={() => selectCat(c)} aria-pressed={active} style={{
+              <button className="gx-btn-gold" key={c} type="button" onClick={() => selectCat(c)} aria-pressed={active} style={{
                 display: 'block', width: '100%', textAlign: 'left',
                 padding: '9px 0 9px 14px', border: 'none', borderLeft: `2px solid ${active ? '#C8792C' : 'transparent'}`,
                 fontFamily: "'DM Sans', sans-serif", fontSize: 15.5, lineHeight: 1.4,

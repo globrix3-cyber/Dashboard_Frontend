@@ -231,7 +231,7 @@ export default function OnboardingQuiz({ role, onComplete, onSkip, onBack }) {
         <button type="button" onClick={onSkip} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#79634E', fontSize: 13, fontWeight: 600, fontFamily: 'inherit', textDecoration: 'underline' }}>
           Skip for now
         </button>
-        <button
+        <button className="gx-btn-gold"
           type="button"
           onClick={next}
           disabled={!hasAnswer}

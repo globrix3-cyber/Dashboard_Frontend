@@ -112,7 +112,7 @@ export function SupplierRFQsPage() {
                     <InfoChip icon={Tag}      text={r.category || 'General'}               color={C.navy}    />
                     <InfoChip icon={Package}  text={`${r.quantity} ${r.quantity_unit || 'units'}`} color={C.ink} />
                     <InfoChip icon={DollarSign} text={r.budget || 'Budget TBD'}             color={C.saffron} />
-                    <InfoChip icon={Calendar} text={`Due ${formatDate(r.deadline)}`}        color={C.gold}    />
+                    {r.deadline && <InfoChip icon={Calendar} text={`Due ${formatDate(r.deadline)}`}        color={C.gold}    />}
                     {r.destination_country && <InfoChip icon={MapPin} text={r.destination_country} color={C.muted} />}
                   </div>
                   {r.additional_requirements && (

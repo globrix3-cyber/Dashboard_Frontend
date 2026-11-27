@@ -33,7 +33,7 @@ export default function CustomisationSection() {
             </div>
           ))}
         </dl>
-        <Link to="/contact"
+        <Link className="gx-btn-gold" to="/contact"
           style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box', width: 176, maxWidth: '100%', height: 44, padding: '0 16px', background: '#FDF9F1', color: '#5B4632', borderRadius: 3, fontSize: 13, lineHeight: 1.4, fontWeight: 600, letterSpacing: '.1px', textDecoration: 'none', whiteSpace: 'nowrap', transition: 'background .2s' }}
           onMouseEnter={e => { e.currentTarget.style.background = '#F0DCC0'; }}
           onMouseLeave={e => { e.currentTarget.style.background = '#FDF9F1'; }}>

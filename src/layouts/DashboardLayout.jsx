@@ -135,7 +135,7 @@ function AccountMenu({ userName, items, onNavigate, onLogout, onClose }) {
         </div>
         <div style={{ padding: 6, maxHeight: 340, overflowY: 'auto' }}>
           {items.map(({ path, label }) => (
-            <button key={path} role="menuitem" onClick={() => onNavigate(path)}
+            <button className="gx-btn-gold" key={path} role="menuitem" onClick={() => onNavigate(path)}
               style={{ ...reset, display: 'block', width: '100%', textAlign: 'left', padding: '11px 12px', borderRadius: 3, fontSize: 14, fontWeight: 400 }}>
               {label}
             </button>
@@ -288,7 +288,7 @@ function TopBar({ role }) {
 
   const bell = (
     <div style={{ position: 'relative' }}>
-      <button type="button" onClick={() => navigate(messagesPath)} aria-label="Notifications and messages" title="Notifications" style={{ ...iconBtn, width: isPhone ? 40 : 46, height: isPhone ? 40 : 46 }}>
+      <button className="gx-btn-gold" type="button" onClick={() => navigate(messagesPath)} aria-label="Notifications and messages" title="Notifications" style={{ ...iconBtn, width: isPhone ? 40 : 46, height: isPhone ? 40 : 46 }}>
         <Bell size={isPhone ? 17 : 19} color={MOCHA} />
       </button>
       <span aria-hidden="true" style={{ position: 'absolute', top: 7, right: 8, width: 7, height: 7, borderRadius: '50%', background: AMBER }} />
@@ -296,7 +296,7 @@ function TopBar({ role }) {
   );
   const account = (
     <div style={{ position: 'relative' }}>
-      <button type="button" onClick={() => setMenuOpen(o => !o)} aria-label="Account menu" aria-haspopup="menu" aria-expanded={menuOpen} title="Account"
+      <button className="gx-btn-gold" type="button" onClick={() => setMenuOpen(o => !o)} aria-label="Account menu" aria-haspopup="menu" aria-expanded={menuOpen} title="Account"
         style={{ ...iconBtn, width: isPhone ? 40 : 46, height: isPhone ? 40 : 46, background: menuOpen ? '#F5F0E7' : 'transparent' }}>
         <User size={isPhone ? 17 : 19} color={MOCHA} />
       </button>
@@ -340,7 +340,7 @@ function TopBar({ role }) {
           {search}
           <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: isCompact ? 10 : 14, flexShrink: 0 }}>
             {setupGuide && !isCompact && (
-              <button type="button" onClick={() => navigate('/contact')} style={{ ...outlinedBtn, height: 46, padding: '0 18px' }}>Contact us</button>
+              <button className="gx-btn-gold" type="button" onClick={() => navigate('/contact')} style={{ ...outlinedBtn, height: 46, padding: '0 18px' }}>Contact us</button>
             )}
             {bell}
             {account}
@@ -371,7 +371,7 @@ function TopBar({ role }) {
       {announcement}
       <div style={{ padding: '14px 5% 16px', boxSizing: 'border-box' }}>
         <div style={{ display: 'grid', gridTemplateColumns: '40px minmax(0,1fr) auto', gap: 10, alignItems: 'center' }}>
-          <button type="button" onClick={() => setNavOpen(o => !o)} aria-expanded={navOpen} aria-controls="gx-app-mobile-nav"
+          <button className="gx-btn-gold" type="button" onClick={() => setNavOpen(o => !o)} aria-expanded={navOpen} aria-controls="gx-app-mobile-nav"
             aria-label={navOpen ? 'Close navigation' : 'Open navigation'}
             style={{ ...iconBtn, width: 40, height: 40, border: '1px solid rgba(91,70,50,.2)' }}>
             <svg width="15" height="11" viewBox="0 0 13 9" fill="none" stroke="currentColor" strokeWidth="1.2" aria-hidden="true">

@@ -107,7 +107,7 @@ h1, h2, h3, h4 {
   white-space: nowrap;
   text-decoration: none;
 }
-.btn-primary:hover  { background: #5B4632; border-color: #5B4632; color: #FDF9F1; }
+.btn-primary:hover  { background: #F4D9A0; border-color: #F4D9A0; color: #5B4632; }
 .btn-primary:focus-visible { outline: 2px solid #5B4632; outline-offset: 2px; }
 .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
 
@@ -129,7 +129,7 @@ h1, h2, h3, h4 {
   color: #5B4632; background: transparent;
   transition: border-color 0.15s, background 0.15s, color 0.15s;
 }
-.btn-outline:hover { border-color: #5B4632; background: #F5F0E7; color: #5B4632; }
+.btn-outline:hover { border-color: #F4D9A0; background: #F4D9A0; color: #5B4632; }
 .btn-outline:disabled { opacity: 0.55; cursor: not-allowed; }
 
 .btn-ghost {
@@ -224,3 +224,9 @@ h1, h2, h3, h4 {
 
 .animate-fade-up  { animation: fadeUp  0.45s ease both; }
 .animate-fade-in  { animation: fadeIn  0.3s ease both; }
+
+/* Client: one hover for every button - champagne gold with mocha text (header buttons, category list, actions). */
+.gx-btn-gold { transition: background-color .15s, border-color .15s, color .15s; }
+.gx-btn-gold:hover, .gx-btn-gold:focus-visible {
+  background: #F4D9A0 !important; border-color: #F4D9A0 !important; color: #5B4632 !important;
+}

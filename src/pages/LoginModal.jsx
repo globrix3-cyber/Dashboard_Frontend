@@ -413,7 +413,7 @@ export default function LoginModal({ onSubmit }) {
             )}
 
             {/* Submit */}
-            <button type="submit" disabled={loading}
+            <button className="gx-btn-gold" type="submit" disabled={loading}
               style={{ marginTop: 4, width: '100%', padding: '15px', borderRadius: 10, border: 'none', background: loading ? '#E3D5C1' : '#5B4632', color: '#FDF9F1', fontSize: 15, fontWeight: 600, cursor: loading ? 'not-allowed' : 'pointer', fontFamily: 'inherit', transition: 'background .18s' }}
               onMouseEnter={e => { if (!loading) e.currentTarget.style.background = '#2B2016'; }}
               onMouseLeave={e => { if (!loading) e.currentTarget.style.background = '#5B4632'; }}

@@ -110,7 +110,7 @@ export default function NewThisWeek() {
       )}
 
       <div style={{ textAlign: 'center', marginTop: 40 }}>
-        <Link to="/products" className="sf-all"
+        <Link to="/products" className="sf-all gx-btn-gold"
           style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 176, maxWidth: '100%', height: 44, boxSizing: 'border-box', padding: '0 16px', borderRadius: 3, background: INK, color: '#FDF9F1', fontSize: 13, fontWeight: 600, lineHeight: 1.4, letterSpacing: '.1px', textDecoration: 'none', whiteSpace: 'nowrap', transition: 'background .2s ease' }}>
           View all products
         </Link>

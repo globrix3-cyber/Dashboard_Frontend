@@ -33,7 +33,7 @@ export default function RetailAudience() {
       <p style={{ fontWeight: 400, color: '#F0DCC0', ...p }}>
         Globrixa helps retailers, importers, and online sellers source distinctive furniture and home accessories their customers will love.
       </p>
-      <Link
+      <Link className="gx-btn-gold"
         to="/contact"
         onMouseEnter={() => setBtnHov(true)}
         onMouseLeave={() => setBtnHov(false)}
