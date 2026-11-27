@@ -29,6 +29,22 @@ const UNITS = [
   { value: 'boxes', label: 'Boxes' },
 ];
 
+// Country list for the destination dropdown (ISO code -> English name), India first.
+const COUNTRIES = (() => {
+  const names = new Intl.DisplayNames(['en'], { type: 'region' });
+  const list = [];
+  for (let a = 65; a <= 90; a++) for (let b = 65; b <= 90; b++) {
+    const code = String.fromCharCode(a, b);
+    let name;
+    try { name = names.of(code); } catch { continue; }
+    if (name && name !== code && !/Unknown/i.test(name)) list.push({ code, name });
+  }
+  list.sort((x, y) => x.name.localeCompare(y.name));
+  const india = list.findIndex(c => c.code === 'IN');
+  if (india > 0) list.unshift(list.splice(india, 1)[0]);
+  return list;
+})();
+
 const label = { display: 'block', fontSize: 12, fontWeight: 600, letterSpacing: '1.2px', textTransform: 'uppercase', color: MOCHA, marginBottom: 9 };
 const field = {
   display: 'block', width: '100%', boxSizing: 'border-box', minHeight: 50, padding: '13px 15px',
@@ -51,7 +67,7 @@ export default function CreateRFQForm() {
   const m = bp.isMobile, stacked = bp.isMobile || bp.isTablet;
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
-    title: '', product: '', category: '', quantity: '', unit: 'pieces', description: '', destination: '',
+    title: '', product: '', category: '', quantity: '', unit: 'pieces', description: '', destination: 'IN',
   });
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
 
@@ -185,7 +201,9 @@ export default function CreateRFQForm() {
             </Field>
             <div style={m ? { gridColumn: '1 / -1' } : null}>
               <Field id="rfq-dest" text="Destination country">
-                <input id="rfq-dest" value={form.destination} onChange={(e) => set('destination', e.target.value)} placeholder="India" style={field} {...inputProps} />
+                <select id="rfq-dest" value={form.destination} onChange={(e) => set('destination', e.target.value)} style={{ ...field, cursor: 'pointer' }} {...inputProps}>
+                  {COUNTRIES.map(c => <option key={c.code} value={c.code}>{c.name}</option>)}
+                </select>
               </Field>
             </div>
           </div>
