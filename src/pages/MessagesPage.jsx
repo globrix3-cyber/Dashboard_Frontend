@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { api } from '../services/api';
+import { getSocket } from '../services/socket';
 import { Spinner } from '../components/UI';
 import { toast } from 'react-toastify';
 import {
@@ -230,19 +231,58 @@ export default function MessagesPage() {
   const isAdmin    = userRole === 'admin';
 
   /* load conversation list */
+  const loadConversations = async ({ quiet = false } = {}) => {
+    if (!quiet) setLoadingConvs(true);
+    try {
+      const data = await api.get('/api/conversations');
+      setConversations(Array.isArray(data) ? data : data.data || []);
+    } catch {
+      if (!quiet) toast.error('Failed to load conversations');
+    } finally {
+      if (!quiet) setLoadingConvs(false);
+    }
+  };
+  useEffect(() => { loadConversations(); }, []);
+
+  /* live updates: join the open conversation's room and add incoming messages as they arrive */
   useEffect(() => {
-    (async () => {
-      setLoadingConvs(true);
+    const socket = getSocket();
+    if (!socket) return undefined;
+    const addMessage = (msg) => {
+      if (!msg || msg.conversation_id !== activeConvId) return;
+      setActiveConv(prev => {
+        if (!prev || (prev.messages || []).some(m => m.id === msg.id)) return prev;
+        return { ...prev, messages: [...(prev.messages || []), msg] };
+      });
+    };
+    const onNewConversation = () => loadConversations({ quiet: true });
+    const join = () => { if (activeConvId) socket.emit('conversation:join', activeConvId); };
+    join();
+    socket.on('connect', join);
+    socket.on('message:new', addMessage);
+    socket.on('conversation:new', onNewConversation);
+    return () => {
+      if (activeConvId) socket.emit('conversation:leave', activeConvId);
+      socket.off('connect', join);
+      socket.off('message:new', addMessage);
+      socket.off('conversation:new', onNewConversation);
+    };
+  }, [activeConvId]);
+
+  /* safety net: if the live connection drops, quietly refresh every 20s while the page is visible */
+  useEffect(() => {
+    const t = setInterval(async () => {
+      if (document.hidden) return;
+      loadConversations({ quiet: true });
+      if (!activeConvId) return;
       try {
-        const data = await api.get('/api/conversations');
-        setConversations(Array.isArray(data) ? data : data.data || []);
-      } catch (err) {
-        toast.error('Failed to load conversations');
-      } finally {
-        setLoadingConvs(false);
-      }
-    })();
-  }, []);
+        const data = await api.get(`/api/conversations/${activeConvId}`);
+        const cv = data?.data || data;
+        setActiveConv(prev => (prev && cv && (cv.messages || []).length !== (prev.messages || []).length ? cv : prev));
+      } catch { /* next tick will retry */ }
+    }, 20000);
+    return () => clearInterval(t);
+  }, [activeConvId]);
 
   /* load messages when active conversation changes */
   useEffect(() => {
@@ -278,7 +318,7 @@ export default function MessagesPage() {
     try {
       const data = await api.post(`/api/conversations/${activeConvId}/messages`, { body: text });
       const newMsg = data?.data || data;
-      setActiveConv(prev => prev ? { ...prev, messages: [...(prev.messages || []), newMsg] } : prev);
+      setActiveConv(prev => (!prev || (prev.messages || []).some(m => m.id === newMsg.id)) ? prev : { ...prev, messages: [...(prev.messages || []), newMsg] });
       setConversations(prev => prev.map(c => c.id === activeConvId ? { ...c, last_message: text, last_message_at: new Date().toISOString() } : c));
     } catch (err) {
       toast.error(err.message);
