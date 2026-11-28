@@ -49,7 +49,7 @@ export default function FaqSection() {
       gap: le600 ? 28 : le900 ? 30 : 'clamp(40px, 6vw, 100px)',
       padding: le600 ? '43px 5%' : le900 ? '55px 5%' : '80px 6%',
     }}>
-      <div style={le900 ? { padding: 0 } : { position: 'sticky', top: 32, padding: '9px 0' }}>
+      <div style={le900 ? { padding: 0 } : { position: 'sticky', top: 'calc(var(--gx-hdr, 0px) + 32px)', padding: '9px 0' }}>
         <h2 style={{ fontFamily: SERIF, fontSize: le600 ? 43 : le900 ? 47 : 'clamp(38px, 4.1vw, 62px)', fontWeight: 300, lineHeight: 1.02, letterSpacing: '-1px', color: INK, margin: le600 ? '16px 0' : le900 ? '15px 0 0' : '20px 0 22px', maxWidth: le900 && !le600 ? 'calc(50% - 15px)' : 'none' }}>
           Frequently asked<br />questions.
         </h2>

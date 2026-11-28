@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { SUPPLIER_SIGNUP_OPEN } from '../../constants';
 import { useDispatch } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -64,6 +64,19 @@ export default function LandingNavbar() {
   const NAV_ITEMS = CATEGORY_LINKS.filter(c => hasProducts(counts, c.root));
   const [query, setQuery]       = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
+  // The header stays on screen while scrolling (as it does after login). Publish its height so
+  // other sticky blocks and in-page jumps can sit below it instead of under it.
+  const headerRef = useRef(null);
+  useEffect(() => {
+    const el = headerRef.current;
+    if (!el || typeof ResizeObserver === 'undefined') return undefined;
+    const root = document.documentElement;
+    const set = () => root.style.setProperty('--gx-hdr', `${el.offsetHeight}px`);
+    set();
+    const ro = new ResizeObserver(set);
+    ro.observe(el);
+    return () => { ro.disconnect(); root.style.removeProperty('--gx-hdr'); };
+  });
 
   const closeMenu            = () => setMenuOpen(false);
   const openLogin            = () => { closeMenu(); dispatch(toggleLogin(true)); };
@@ -113,7 +126,7 @@ export default function LandingNavbar() {
       <>
         <style>{SEARCH_CSS}</style>
         <AnnouncementBar isMobile={false} />
-        <header style={{ background: CREAM, borderBottom: '1px solid rgba(91,70,50,.133)', position: 'relative', zIndex: 1000 }}>
+        <header ref={headerRef} style={{ background: CREAM, borderBottom: '1px solid rgba(91,70,50,.133)', position: 'sticky', top: 0, zIndex: 1000 }}>
           <div style={{ ...wrap, display: 'flex', alignItems: 'center', gap: isCompact ? 20 : 32, minHeight: isCompact ? 96 : 108, paddingTop: 24, paddingBottom: 24 }}>
             <Link to="/" aria-label="Globrixa home" style={{ flexShrink: 0, fontFamily: SERIF, fontSize: isCompact ? 28 : 31, fontWeight: 600, letterSpacing: 4.5, lineHeight: 1.2, color: MOCHA, textDecoration: 'none', whiteSpace: 'nowrap' }}>
               GLOBRIXA
@@ -156,7 +169,7 @@ export default function LandingNavbar() {
     <>
       <style>{SEARCH_CSS}</style>
       <AnnouncementBar isMobile />
-      <header style={{ background: CREAM, borderBottom: '1px solid rgba(91,70,50,.133)', position: 'relative', zIndex: 1000 }}>
+      <header ref={headerRef} style={{ background: CREAM, borderBottom: '1px solid rgba(91,70,50,.133)', position: 'sticky', top: 0, zIndex: 1000 }}>
         <div style={{ padding: '14px 5% 16px', boxSizing: 'border-box' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '40px minmax(0, 1fr) 40px', gap: 10, alignItems: 'center', height: 40 }}>
             <button type="button" onClick={() => setMenuOpen(o => !o)} aria-expanded={menuOpen} aria-controls="gx-mobile-menu"
